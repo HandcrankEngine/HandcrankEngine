@@ -20,6 +20,10 @@ class ImageRenderObject : public GameObject
 
     SDL_Rect *srcRect;
 
+    SDL_Point *centerPoint;
+
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+
   public:
     explicit ImageRenderObject() : GameObject() {}
     explicit ImageRenderObject(SDL_Rect *_rect) : GameObject(_rect) {}
@@ -82,12 +86,15 @@ class ImageRenderObject : public GameObject
         this->srcRect->h = h;
     }
 
+    void SetFlip(SDL_RendererFlip _flip) { flip = _flip; }
+
     /**
      * Render image to the scene.
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_RenderCopy(renderer, texture, srcRect, GetScaledRect());
+        SDL_RenderCopyEx(renderer, texture, srcRect, GetScaledRect(), 0,
+                         centerPoint, flip);
     }
 
     /**
