@@ -69,7 +69,7 @@ class ImageRenderObject : public GameObject
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(SDL_Rect *srcRect) { this->srcRect = srcRect; }
+    void SetSrcRect(SDL_Rect *_srcRect) { srcRect = _srcRect; }
 
     void SetSrcRect(int x, int y, int w, int h)
     {
