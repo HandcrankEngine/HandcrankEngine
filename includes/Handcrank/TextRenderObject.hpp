@@ -65,7 +65,27 @@ class TextRenderObject : public GameObject
     {
         text = std::move(_text);
 
-        textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
+
+        rect->w = textSurface->w;
+        rect->h = textSurface->h;
+
+        textTexture = nullptr;
+    }
+
+    /**
+     * Set text content.
+     * @param text Text value to set.
+     */
+    void SetWrappedText(std::string _text)
+    {
+        text = std::move(_text);
+
+        textSurface =
+            TTF_RenderText_Blended_Wrapped(font, text.c_str(), color, rect->w);
+
+        rect->w = textSurface->w;
+        rect->h = textSurface->h;
 
         textTexture = nullptr;
     }
@@ -77,12 +97,14 @@ class TextRenderObject : public GameObject
      */
     void Render(SDL_Renderer *renderer) override
     {
+        GameObject::Render(renderer);
+
         if (textTexture == nullptr)
         {
             textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         }
 
-        SDL_RenderCopy(renderer, textTexture, nullptr, GetScaledRect());
+        SDL_RenderCopy(renderer, textTexture, nullptr, GetTransformedRect());
     }
 
     /**

@@ -39,6 +39,13 @@ class SDL_Utilities
         SDL_RenderFillRect(renderer, rect);
     }
 
+    [[nodiscard]] static SDL_Rect *PositionRect(SDL_Rect *rect,
+                                                SDL_Rect *parent)
+    {
+        return new SDL_Rect{(*rect).x + (*parent).x, (*rect).y + (*parent).y,
+                            (*rect).w, (*rect).h};
+    }
+
     [[nodiscard]] static SDL_Rect *ScaleRect(SDL_Rect *rect, double scale)
     {
         return new SDL_Rect{(*rect).x, (*rect).y,
