@@ -93,7 +93,9 @@ class ImageRenderObject : public GameObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_RenderCopyEx(renderer, texture, srcRect, GetScaledRect(), 0,
+        GameObject::Render(renderer);
+
+        SDL_RenderCopyEx(renderer, texture, srcRect, GetTransformedRect(), 0,
                          centerPoint, flip);
     }
 

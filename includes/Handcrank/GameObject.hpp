@@ -29,6 +29,10 @@ class GameObject
     double scale = 1;
 
   public:
+    std::list<std::unique_ptr<GameObject>> children;
+
+    GameObject *parent;
+
     explicit GameObject()
     {
         rect = new SDL_Rect;
@@ -104,9 +108,18 @@ class GameObject
 
     [[nodiscard]] SDL_Rect *GetRect() { return rect; }
 
-    [[nodiscard]] SDL_Rect *GetScaledRect()
+    [[nodiscard]] SDL_Rect *GetTransformedRect()
     {
-        return SDL_Utilities::ScaleRect(rect, scale);
+        SDL_Rect *transformedRect;
+
+        transformedRect = SDL_Utilities::ScaleRect(rect, scale);
+
+        if (parent != nullptr)
+        {
+            transformedRect = SDL_Utilities::PositionRect(rect, parent->rect);
+        }
+
+        return transformedRect;
     }
 
     /**
@@ -148,7 +161,65 @@ class GameObject
     /**
      * Render GameObject to the scene.
      */
-    virtual void Render(SDL_Renderer *_renderer) {}
+    virtual void Render(SDL_Renderer *_renderer)
+    {
+        for (auto &iter : children)
+        {
+            auto gameObject = iter.get();
+
+            if (gameObject != nullptr)
+            {
+                gameObject->Render(_renderer);
+            }
+        }
+    }
+
+    void AddChildGameObject(std::unique_ptr<GameObject> gameObject)
+    {
+        gameObject->parent = this;
+
+        children.push_back(std::move(gameObject));
+    }
+
+    template <typename T> std::vector<T *> GetChildrenByType()
+    {
+        static_assert(std::is_base_of<GameObject, T>::value,
+                      "T must be derived from GameObject");
+
+        std::vector<T *> results;
+
+        for (auto &iter : children)
+        {
+            auto gameObject = iter.get();
+
+            if (gameObject != nullptr && typeid(*gameObject) == typeid(T))
+            {
+                auto castedGameObject = dynamic_cast<T *>(gameObject);
+
+                if (castedGameObject != nullptr)
+                {
+                    results.push_back(castedGameObject);
+                }
+            }
+        }
+
+        return results;
+    }
+
+    template <typename T> T *GetChildByType()
+    {
+        static_assert(std::is_base_of<GameObject, T>::value,
+                      "T must be derived from GameObject");
+
+        auto children = GetChildrenByType<T>();
+
+        if (!children.empty())
+        {
+            return children.front();
+        }
+
+        return nullptr;
+    }
 
     /**
      * Cleanup function to run after the GameObject is unloaded.

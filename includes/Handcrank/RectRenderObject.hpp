@@ -34,7 +34,9 @@ class RectRenderObject : public GameObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_Utilities::RenderRect(renderer, GetScaledRect(), color);
+        GameObject::Render(renderer);
+
+        SDL_Utilities::RenderRect(renderer, GetTransformedRect(), color);
     }
 
     /**
