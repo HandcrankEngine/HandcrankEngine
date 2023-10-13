@@ -31,7 +31,7 @@ int main()
 
     text->SetRect(0, 0, logo->GetRect()->w, logo->GetRect()->h);
 
-    text->SetWrappedText("HandCrank\nEngine");
+    text->SetWrappedText("Handcrank\nEngine");
 
     SDL_Color colors[3] = {
         {255, 0, 0, 255}, {0, 255, 0, 255}, {0, 0, 255, 255}};
