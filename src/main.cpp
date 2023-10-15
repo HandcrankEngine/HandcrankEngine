@@ -11,7 +11,7 @@ using namespace Handcrank;
 
 auto game = new Game();
 
-int main()
+auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 

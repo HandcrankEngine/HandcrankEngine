@@ -12,7 +12,7 @@
 
 auto game = new Handcrank::Game();
 
-int main()
+auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 
