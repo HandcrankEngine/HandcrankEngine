@@ -116,9 +116,11 @@ class GameObject
 
         if (parent != nullptr)
         {
-            transformedRect = SDL_Utilities::PositionRect(transformedRect, parent->rect);
+            transformedRect =
+                SDL_Utilities::PositionRect(transformedRect, parent->rect);
 
-            transformedRect = SDL_Utilities::ScaleRect(transformedRect, parent->scale);
+            transformedRect =
+                SDL_Utilities::ScaleRect(transformedRect, parent->scale);
         }
 
         return transformedRect;
