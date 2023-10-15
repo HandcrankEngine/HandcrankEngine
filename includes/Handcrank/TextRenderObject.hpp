@@ -97,14 +97,14 @@ class TextRenderObject : public GameObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        GameObject::Render(renderer);
-
         if (textTexture == nullptr)
         {
             textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         }
 
         SDL_RenderCopy(renderer, textTexture, nullptr, GetTransformedRect());
+
+        GameObject::Render(renderer);
     }
 
     /**
