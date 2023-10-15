@@ -17,6 +17,8 @@ int main()
 
     auto logo = std::make_unique<GameObject>();
 
+    logo->SetScale(1.5);
+
     logo->SetRect(0, 0, 200, 200);
 
     auto cube = std::make_unique<RectRenderObject>();
@@ -61,6 +63,8 @@ int main()
                 return;
             }
 
+            auto transformedRect = ref->GetTransformedRect();
+
             auto rect = ref->GetRect();
 
             auto cube = ref->GetChildByType<RectRenderObject>();
@@ -68,7 +72,7 @@ int main()
             rect->x += movementSpeed * xDirection;
             rect->y += movementSpeed * yDirection;
 
-            if (rect->x > game->GetWidth() - rect->w || rect->x < 0)
+            if (rect->x > game->GetWidth() - transformedRect->w || rect->x < 0)
             {
                 colorIndex++;
 
@@ -77,12 +81,15 @@ int main()
                     colorIndex = 0;
                 }
 
-                cube->SetColor(colors[colorIndex]);
+                if (cube != nullptr)
+                {
+                    cube->SetColor(colors[colorIndex]);
+                }
 
                 xDirection = -xDirection;
             }
 
-            if (rect->y > game->GetHeight() - rect->h || rect->y < 0)
+            if (rect->y > game->GetHeight() - transformedRect->h || rect->y < 0)
             {
                 colorIndex++;
 
@@ -91,7 +98,10 @@ int main()
                     colorIndex = 0;
                 }
 
-                cube->SetColor(colors[colorIndex]);
+                if (cube != nullptr)
+                {
+                    cube->SetColor(colors[colorIndex]);
+                }
 
                 yDirection = -yDirection;
             }
