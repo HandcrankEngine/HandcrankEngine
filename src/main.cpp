@@ -52,7 +52,7 @@ auto main() -> int
     int xDirection = 1;
     int yDirection = 1;
 
-    int movementSpeed = 10;
+    int movementSpeed = 500;
 
     logo->SetUpdate(
         [&xDirection, &yDirection, movementSpeed, colors, &colorIndex,
@@ -69,8 +69,8 @@ auto main() -> int
 
             auto cube = ref->GetChildByType<RectRenderObject>();
 
-            rect->x += movementSpeed * xDirection;
-            rect->y += movementSpeed * yDirection;
+            rect->x += movementSpeed * xDirection * deltaTime;
+            rect->y += movementSpeed * yDirection * deltaTime;
 
             if (rect->x > game->GetWidth() - transformedRect->w || rect->x < 0)
             {
