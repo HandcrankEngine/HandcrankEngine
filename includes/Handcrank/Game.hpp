@@ -245,6 +245,13 @@ class Game
         SDL_RenderPresent(renderer);
     }
 
+    void AddChildObject(std::unique_ptr<RenderObject> child)
+    {
+        child->parent = nullptr;
+
+        children.push_back(std::move(child));
+    }
+
     void DestroyChildObjects()
     {
         for (auto iter = children.begin(); iter != children.end();)

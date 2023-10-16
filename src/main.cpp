@@ -107,7 +107,7 @@ auto main() -> int
             }
         });
 
-    game->children.push_back(std::move(logo));
+    game->AddChildObject(std::move(logo));
 
     return game->Run();
 }
