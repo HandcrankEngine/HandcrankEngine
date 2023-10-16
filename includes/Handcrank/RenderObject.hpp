@@ -251,6 +251,28 @@ class RenderObject
         return boundingBox;
     }
 
+    void DestroyChildObjects()
+    {
+        for (auto iter = children.begin(); iter != children.end();)
+        {
+            auto child = iter->get();
+
+            if (child != nullptr)
+            {
+                child->DestroyChildObjects();
+
+                if (child->HasBeenMarkedForDestroy())
+                {
+                    iter = children.erase(iter);
+                }
+                else
+                {
+                    ++iter;
+                }
+            }
+        }
+    }
+
     /**
      * Cleanup function to run after the RenderObject is unloaded.
      */

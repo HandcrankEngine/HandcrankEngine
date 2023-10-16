@@ -258,13 +258,18 @@ class Game
         {
             auto child = iter->get();
 
-            if (child != nullptr && child->HasBeenMarkedForDestroy())
+            if (child != nullptr)
             {
-                iter = children.erase(iter);
-            }
-            else
-            {
-                ++iter;
+                child->DestroyChildObjects();
+
+                if (child->HasBeenMarkedForDestroy())
+                {
+                    iter = children.erase(iter);
+                }
+                else
+                {
+                    ++iter;
+                }
             }
         }
     }
