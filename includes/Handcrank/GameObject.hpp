@@ -139,7 +139,7 @@ class GameObject
      * @param w Width of rect.
      * @param h Height of rect.
      */
-    void SetRect(int x, int y, int w, int h)
+    void SetRect(float x, float y, float w, float h)
     {
         this->rect->x = x;
         this->rect->y = y;
@@ -152,7 +152,7 @@ class GameObject
      * @param x X position.
      * @param y Y position.
      */
-    void SetRect(int x, int y)
+    void SetRect(float x, float y)
     {
         this->rect->x = x;
         this->rect->y = y;

@@ -71,7 +71,7 @@ class ImageRenderObject : public GameObject
 
     void SetSrcRect(SDL_FRect *_srcRect) { srcRect = _srcRect; }
 
-    void SetSrcRect(int x, int y, int w, int h)
+    void SetSrcRect(float x, float y, float w, float h)
     {
         if (srcRect == nullptr)
         {
