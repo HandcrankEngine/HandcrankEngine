@@ -14,7 +14,7 @@ namespace Handcrank
 class GameObject
 {
   protected:
-    SDL_Rect *rect;
+    SDL_FRect *rect;
 
     std::function<void(GameObject *)> startFunction;
 
@@ -35,13 +35,13 @@ class GameObject
 
     explicit GameObject()
     {
-        rect = new SDL_Rect;
+        rect = new SDL_FRect;
         rect->x = 0;
         rect->y = 0;
         rect->w = 100;
         rect->h = 100;
     }
-    explicit GameObject(SDL_Rect *_rect) : rect(_rect) {}
+    explicit GameObject(SDL_FRect *_rect) : rect(_rect) {}
 
     ~GameObject() = default;
 
@@ -106,11 +106,11 @@ class GameObject
         }
     }
 
-    [[nodiscard]] SDL_Rect *GetRect() { return rect; }
+    [[nodiscard]] SDL_FRect *GetRect() { return rect; }
 
-    [[nodiscard]] SDL_Rect *GetTransformedRect()
+    [[nodiscard]] SDL_FRect *GetTransformedRect()
     {
-        SDL_Rect *transformedRect;
+        SDL_FRect *transformedRect;
 
         transformedRect = SDL_Utilities::ScaleRect(rect, scale);
 
@@ -130,7 +130,7 @@ class GameObject
      * Set rect position and size of the GameObject.
      * @param rect A rectangle, with the origin at the upper left (integer).
      */
-    void SetRect(SDL_Rect *_rect) { rect = _rect; }
+    void SetRect(SDL_FRect *_rect) { rect = _rect; }
 
     /**
      * Set rect position and size of the GameObject.

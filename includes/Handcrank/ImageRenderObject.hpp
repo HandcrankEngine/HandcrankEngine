@@ -18,7 +18,7 @@ class ImageRenderObject : public GameObject
   private:
     SDL_Texture *texture;
 
-    SDL_Rect *srcRect;
+    SDL_FRect *srcRect;
 
     SDL_Point *centerPoint;
 
@@ -26,7 +26,7 @@ class ImageRenderObject : public GameObject
 
   public:
     explicit ImageRenderObject() : GameObject() {}
-    explicit ImageRenderObject(SDL_Rect *_rect) : GameObject(_rect) {}
+    explicit ImageRenderObject(SDL_FRect *_rect) : GameObject(_rect) {}
 
     ~ImageRenderObject() { SDL_DestroyTexture(texture); }
 
@@ -69,13 +69,13 @@ class ImageRenderObject : public GameObject
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(SDL_Rect *_srcRect) { srcRect = _srcRect; }
+    void SetSrcRect(SDL_FRect *_srcRect) { srcRect = _srcRect; }
 
     void SetSrcRect(int x, int y, int w, int h)
     {
         if (srcRect == nullptr)
         {
-            srcRect = new SDL_Rect{x, y, w, h};
+            srcRect = new SDL_FRect{x, y, w, h};
 
             return;
         }
