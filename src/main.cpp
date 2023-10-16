@@ -1,8 +1,8 @@
 #include "../fonts/Roboto/Roboto-Regular.h"
 
 #include "Handcrank/Game.hpp"
-#include "Handcrank/GameObject.hpp"
 #include "Handcrank/RectRenderObject.hpp"
+#include "Handcrank/RenderObject.hpp"
 #include "Handcrank/TextRenderObject.hpp"
 
 #include "Handcrank/sdl/SDL_TTF_Utilities.hpp"
@@ -15,7 +15,7 @@ auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    auto logo = std::make_unique<GameObject>();
+    auto logo = std::make_unique<RenderObject>();
 
     logo->SetScale(1.5);
 
@@ -46,8 +46,8 @@ auto main() -> int
 
     cube->SetRect(0, 0, logo->GetRect()->w, logo->GetRect()->h);
 
-    logo->AddChildGameObject(std::move(cube));
-    logo->AddChildGameObject(std::move(text));
+    logo->AddChildObject(std::move(cube));
+    logo->AddChildObject(std::move(text));
 
     int xDirection = 1;
     int yDirection = 1;
@@ -56,7 +56,7 @@ auto main() -> int
 
     logo->SetUpdate(
         [&xDirection, &yDirection, movementSpeed, colors, &colorIndex,
-         colorIndexMax](GameObject *ref, double deltaTime)
+         colorIndexMax](RenderObject *ref, double deltaTime)
         {
             if (!game->HasFocus())
             {
@@ -107,7 +107,7 @@ auto main() -> int
             }
         });
 
-    game->gameObjects.push_back(std::move(logo));
+    game->children.push_back(std::move(logo));
 
     return game->Run();
 }
