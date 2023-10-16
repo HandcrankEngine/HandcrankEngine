@@ -18,9 +18,9 @@ class ImageRenderObject : public GameObject
   private:
     SDL_Texture *texture;
 
-    SDL_FRect *srcRect;
+    SDL_Rect *srcRect;
 
-    SDL_Point *centerPoint;
+    SDL_FPoint *centerPoint;
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
@@ -69,13 +69,13 @@ class ImageRenderObject : public GameObject
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(SDL_FRect *_srcRect) { srcRect = _srcRect; }
+    void SetSrcRect(SDL_Rect *_srcRect) { srcRect = _srcRect; }
 
-    void SetSrcRect(float x, float y, float w, float h)
+    void SetSrcRect(int x, int y, int w, int h)
     {
         if (srcRect == nullptr)
         {
-            srcRect = new SDL_FRect{x, y, w, h};
+            srcRect = new SDL_Rect{x, y, w, h};
 
             return;
         }
@@ -93,8 +93,8 @@ class ImageRenderObject : public GameObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_RenderCopyEx(renderer, texture, srcRect, GetTransformedRect(), 0,
-                         centerPoint, flip);
+        SDL_RenderCopyExF(renderer, texture, srcRect, GetTransformedRect(), 0,
+                          centerPoint, flip);
 
         GameObject::Render(renderer);
     }

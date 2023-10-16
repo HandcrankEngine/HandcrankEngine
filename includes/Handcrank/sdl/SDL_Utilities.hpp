@@ -48,8 +48,7 @@ class SDL_Utilities
 
     [[nodiscard]] static SDL_FRect *ScaleRect(SDL_FRect *rect, float scale)
     {
-        return new SDL_FRect{(*rect).x, (*rect).y,
-                             (*rect).w * scale,
+        return new SDL_FRect{(*rect).x, (*rect).y, (*rect).w * scale,
                              (*rect).h * scale};
     }
 };
