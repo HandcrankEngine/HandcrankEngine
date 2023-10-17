@@ -80,27 +80,14 @@ auto main() -> int
 
             auto cube = ref->GetChildByType<RectRenderObject>();
 
-            rect->x += movementSpeed * xDirection * deltaTime;
-            rect->y += movementSpeed * yDirection * deltaTime;
-
             auto maxX = game->GetWidth() - transformedRect->w;
             auto maxY = game->GetHeight() - transformedRect->h;
 
-            if (rect->x > maxX)
+            rect->x += movementSpeed * xDirection * deltaTime;
+            rect->y += movementSpeed * yDirection * deltaTime;
+
+            if (rect->x > maxX || rect->x < 0)
             {
-                rect->x = maxX;
-
-                xDirection = -xDirection;
-
-                if (cube != nullptr)
-                {
-                    cube->SetColor(selectNextColor());
-                }
-            }
-            else if (rect->x < 0)
-            {
-                rect->x = 0;
-
                 xDirection = -xDirection;
 
                 if (cube != nullptr)
@@ -109,10 +96,8 @@ auto main() -> int
                 }
             }
 
-            if (rect->y > maxY)
+            if (rect->y > maxY || rect->y < 0)
             {
-                rect->y = maxY;
-
                 yDirection = -yDirection;
 
                 if (cube != nullptr)
@@ -120,17 +105,9 @@ auto main() -> int
                     cube->SetColor(selectNextColor());
                 }
             }
-            else if (rect->y < 0)
-            {
-                rect->y = 0;
 
-                yDirection = -yDirection;
-
-                if (cube != nullptr)
-                {
-                    cube->SetColor(selectNextColor());
-                }
-            }
+            rect->x = std::clamp<float>(rect->x, 0, maxX);
+            rect->y = std::clamp<float>(rect->y, 0, maxY);
         });
 
     game->AddChildObject(std::move(logo));
