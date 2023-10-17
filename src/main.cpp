@@ -11,6 +11,24 @@ using namespace Handcrank;
 
 auto game = new Game();
 
+SDL_Color colors[3] = {{255, 0, 0, 255}, {0, 255, 0, 255}, {0, 0, 255, 255}};
+
+const int colorIndexMax = sizeof(colors) / sizeof(colors[0]);
+
+int colorIndex = 0;
+
+auto selectNextColor() -> SDL_Color
+{
+    colorIndex++;
+
+    if (colorIndex > colorIndexMax - 1)
+    {
+        colorIndex = 0;
+    }
+
+    return colors[colorIndex];
+}
+
 auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
@@ -35,13 +53,6 @@ auto main() -> int
 
     text->SetWrappedText("Handcrank\nEngine");
 
-    SDL_Color colors[3] = {
-        {255, 0, 0, 255}, {0, 255, 0, 255}, {0, 0, 255, 255}};
-
-    const int colorIndexMax = sizeof(colors) / sizeof(colors[0]);
-
-    int colorIndex = 0;
-
     cube->SetColor(colors[colorIndex]);
 
     cube->SetRect(0, 0, logo->GetRect()->w, logo->GetRect()->h);
@@ -55,8 +66,8 @@ auto main() -> int
     int movementSpeed = 500;
 
     logo->SetUpdate(
-        [&xDirection, &yDirection, movementSpeed, colors, &colorIndex,
-         colorIndexMax](RenderObject *ref, double deltaTime)
+        [&xDirection, &yDirection, movementSpeed](RenderObject *ref,
+                                                  double deltaTime)
         {
             if (!game->HasFocus())
             {
@@ -72,38 +83,53 @@ auto main() -> int
             rect->x += movementSpeed * xDirection * deltaTime;
             rect->y += movementSpeed * yDirection * deltaTime;
 
-            if (rect->x > game->GetWidth() - transformedRect->w || rect->x < 0)
+            auto maxX = game->GetWidth() - transformedRect->w;
+            auto maxY = game->GetHeight() - transformedRect->h;
+
+            if (rect->x > maxX)
             {
-                colorIndex++;
-
-                if (colorIndex > colorIndexMax - 1)
-                {
-                    colorIndex = 0;
-                }
-
-                if (cube != nullptr)
-                {
-                    cube->SetColor(colors[colorIndex]);
-                }
+                rect->x = maxX;
 
                 xDirection = -xDirection;
-            }
-
-            if (rect->y > game->GetHeight() - transformedRect->h || rect->y < 0)
-            {
-                colorIndex++;
-
-                if (colorIndex > colorIndexMax - 1)
-                {
-                    colorIndex = 0;
-                }
 
                 if (cube != nullptr)
                 {
-                    cube->SetColor(colors[colorIndex]);
+                    cube->SetColor(selectNextColor());
                 }
+            }
+            else if (rect->x < 0)
+            {
+                rect->x = 0;
+
+                xDirection = -xDirection;
+
+                if (cube != nullptr)
+                {
+                    cube->SetColor(selectNextColor());
+                }
+            }
+
+            if (rect->y > maxY)
+            {
+                rect->y = maxY;
 
                 yDirection = -yDirection;
+
+                if (cube != nullptr)
+                {
+                    cube->SetColor(selectNextColor());
+                }
+            }
+            else if (rect->y < 0)
+            {
+                rect->y = 0;
+
+                yDirection = -yDirection;
+
+                if (cube != nullptr)
+                {
+                    cube->SetColor(selectNextColor());
+                }
             }
         });
 
