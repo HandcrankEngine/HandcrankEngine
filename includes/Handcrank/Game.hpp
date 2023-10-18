@@ -234,12 +234,9 @@ class Game
     {
         SDL_Utilities::ClearRect(renderer, clearColor);
 
-        children.sort(
-            [](const std::unique_ptr<RenderObject> &a,
-               const std::unique_ptr<RenderObject> &b)
-            {
-                return a->z < b->z;
-            });
+        children.sort([](const std::unique_ptr<RenderObject> &a,
+                         const std::unique_ptr<RenderObject> &b)
+                      { return a->z < b->z; });
 
         for (auto &iter : children)
         {

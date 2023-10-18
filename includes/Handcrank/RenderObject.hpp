@@ -169,12 +169,9 @@ class RenderObject
      */
     virtual void Render(SDL_Renderer *_renderer)
     {
-        children.sort(
-            [](const std::unique_ptr<RenderObject> &a,
-               const std::unique_ptr<RenderObject> &b)
-            {
-                return a->z < b->z;
-            });
+        children.sort([](const std::unique_ptr<RenderObject> &a,
+                         const std::unique_ptr<RenderObject> &b)
+                      { return a->z < b->z; });
 
         for (auto &iter : children)
         {
