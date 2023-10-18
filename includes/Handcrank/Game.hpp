@@ -192,21 +192,14 @@ class Game
 
     void Update()
     {
-        updateDeltaTime += deltaTime;
-
-        if (updateDeltaTime > targetFrameTime)
+        for (auto &iter : children)
         {
-            for (auto &iter : children)
+            auto child = iter.get();
+
+            if (child != nullptr)
             {
-                auto child = iter.get();
-
-                if (child != nullptr)
-                {
-                    child->Update(updateDeltaTime);
-                }
+                child->Update(deltaTime);
             }
-
-            updateDeltaTime = 0;
         }
     }
 
@@ -232,23 +225,30 @@ class Game
 
     void Render()
     {
-        SDL_Utilities::ClearRect(renderer, clearColor);
+        updateDeltaTime += deltaTime;
 
-        children.sort([](const std::unique_ptr<RenderObject> &a,
-                         const std::unique_ptr<RenderObject> &b)
-                      { return a->z < b->z; });
-
-        for (auto &iter : children)
+        if (updateDeltaTime > targetFrameTime)
         {
-            auto child = iter.get();
+            SDL_Utilities::ClearRect(renderer, clearColor);
 
-            if (child != nullptr)
+            children.sort([](const std::unique_ptr<RenderObject> &a,
+                             const std::unique_ptr<RenderObject> &b)
+                          { return a->z < b->z; });
+
+            for (auto &iter : children)
             {
-                child->Render(renderer);
-            }
-        }
+                auto child = iter.get();
 
-        SDL_RenderPresent(renderer);
+                if (child != nullptr)
+                {
+                    child->Render(renderer);
+                }
+            }
+
+            SDL_RenderPresent(renderer);
+
+            updateDeltaTime = 0;
+        }
     }
 
     void AddChildObject(std::unique_ptr<RenderObject> child)
