@@ -33,6 +33,26 @@ auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 
+    auto font =
+        SDL_TTF_Utilities::LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                                      fonts_Roboto_Roboto_Regular_ttf_len, 30);
+
+    auto framerateLabel = std::make_unique<TextRenderObject>();
+
+    framerateLabel->SetFont(font);
+
+    framerateLabel->SetText(std::to_string(0));
+
+    framerateLabel->SetUpdate(
+        [](RenderObject *ref, double deltaTime)
+        {
+            auto textRenderObject = dynamic_cast<TextRenderObject *>(ref);
+
+            textRenderObject->SetText(std::to_string(1.0 / deltaTime));
+        });
+
+    game->AddChildObject(std::move(framerateLabel));
+
     auto logo = std::make_unique<RenderObject>();
 
     logo->SetScale(1.5);
@@ -42,10 +62,6 @@ auto main() -> int
     auto cube = std::make_unique<RectRenderObject>();
 
     auto text = std::make_unique<TextRenderObject>();
-
-    auto font =
-        SDL_TTF_Utilities::LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
-                                      fonts_Roboto_Roboto_Regular_ttf_len, 30);
 
     text->SetFont(font);
 
