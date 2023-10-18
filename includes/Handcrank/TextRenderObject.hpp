@@ -65,6 +65,13 @@ class TextRenderObject : public RenderObject
     {
         text = std::move(_text);
 
+        if (font == nullptr)
+        {
+            std::cerr << "ERROR! Missing font reference.\n";
+
+            return;
+        }
+
         textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
 
         rect->w = textSurface->w;
