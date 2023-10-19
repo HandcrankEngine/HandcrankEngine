@@ -6,6 +6,7 @@
 #include <chrono>
 #include <iostream>
 #include <list>
+#include <memory>
 
 #include <SDL.h>
 #include <SDL_ttf.h>

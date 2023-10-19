@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "../fonts/Roboto/Roboto-Regular.h"
 
 #include "Handcrank/Handcrank.hpp"
