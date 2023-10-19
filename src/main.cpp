@@ -1,8 +1,7 @@
 #include "../fonts/Roboto/Roboto-Regular.h"
 
-#include "Handcrank/Game.hpp"
+#include "Handcrank/Handcrank.hpp"
 #include "Handcrank/RectRenderObject.hpp"
-#include "Handcrank/RenderObject.hpp"
 #include "Handcrank/TextRenderObject.hpp"
 
 #include "Handcrank/sdl/SDL_TTF_Utilities.hpp"
@@ -85,7 +84,7 @@ auto main() -> int
         [&xDirection, &yDirection, movementSpeed](RenderObject *ref,
                                                   double deltaTime)
         {
-            if (!game->HasFocus())
+            if (!ref->game->HasFocus())
             {
                 return;
             }
@@ -96,8 +95,8 @@ auto main() -> int
 
             auto cube = ref->GetChildByType<RectRenderObject>();
 
-            auto maxX = game->GetWidth() - transformedRect->w;
-            auto maxY = game->GetHeight() - transformedRect->h;
+            auto maxX = ref->game->GetWidth() - transformedRect->w;
+            auto maxY = ref->game->GetHeight() - transformedRect->h;
 
             rect->x += movementSpeed * xDirection * deltaTime;
             rect->y += movementSpeed * yDirection * deltaTime;
