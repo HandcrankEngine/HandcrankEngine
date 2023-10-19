@@ -136,8 +136,12 @@ class RenderObject
     void SetUpdate(std::function<void(RenderObject *, double)> _func);
     void SetFixedUpdate(std::function<void(RenderObject *, double)> _func);
 
-    void Update(double deltaTime);
-    void FixedUpdate(double deltaTime);
+    virtual void Start();
+    virtual void Update(double deltaTime);
+    virtual void FixedUpdate(double deltaTime);
+
+    void InternalUpdate(double deltaTime);
+    void InternalFixedUpdate(double deltaTime);
 
     [[nodiscard]] SDL_FRect *GetRect();
     void SetRect(SDL_FRect *_rect);
@@ -321,7 +325,7 @@ void Game::Update()
 
         if (child != nullptr)
         {
-            child->Update(deltaTime);
+            child->InternalUpdate(deltaTime);
         }
     }
 }
@@ -338,7 +342,7 @@ void Game::FixedUpdate()
 
             if (child != nullptr)
             {
-                child->FixedUpdate(fixedUpdateDeltaTime);
+                child->InternalFixedUpdate(fixedUpdateDeltaTime);
             }
         }
 
@@ -476,10 +480,18 @@ void RenderObject::SetFixedUpdate(
     fixedUpdateFunction = _func;
 }
 
-void RenderObject::Update(double deltaTime)
+void RenderObject::Start(){};
+
+void RenderObject::Update(double deltaTime){};
+
+void RenderObject::FixedUpdate(double deltaTime){};
+
+void RenderObject::InternalUpdate(double deltaTime)
 {
     if (!hasStarted)
     {
+        Start();
+
         if (startFunction)
         {
             startFunction(this);
@@ -488,14 +500,18 @@ void RenderObject::Update(double deltaTime)
         hasStarted = true;
     }
 
+    Update(deltaTime);
+
     if (updateFunction)
     {
         updateFunction(this, deltaTime);
     }
 }
 
-void RenderObject::FixedUpdate(double fixedDeltaTime)
+void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
 {
+    FixedUpdate(fixedDeltaTime);
+
     if (fixedUpdateFunction)
     {
         fixedUpdateFunction(this, fixedDeltaTime);
