@@ -17,6 +17,7 @@ auto font = SDL_TTF_Utilities::LoadFontRW(
 
 class Logo : public RenderObject
 {
+  private:
     SDL_Color colors[3] = {
         {255, 0, 0, 255}, {0, 255, 0, 255}, {0, 0, 255, 255}};
 
@@ -41,6 +42,7 @@ class Logo : public RenderObject
 
     int movementSpeed = 500;
 
+  public:
     void Start() override
     {
         SetScale(1.5);
