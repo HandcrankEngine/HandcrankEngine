@@ -25,6 +25,9 @@ class Game
     SDL_Window *window;
     SDL_Renderer *renderer;
 
+    SDL_Rect *viewport;
+    SDL_FRect *viewportf;
+
     SDL_Color clearColor{0, 0, 0, 255};
 
     bool quit = false;
@@ -45,8 +48,8 @@ class Game
 
     const double fixedFrameTime = 0.02;
 
-    int width = 0;
-    int height = 0;
+    int width = 800;
+    int height = 600;
 
     bool focused = false;
 
@@ -63,6 +66,7 @@ class Game
 
     [[nodiscard]] SDL_Window *GetWindow() const;
     [[nodiscard]] SDL_Renderer *GetRenderer() const;
+    [[nodiscard]] SDL_FRect *GetViewport() const;
 
     bool Setup();
 
@@ -157,14 +161,14 @@ class RenderObject
     [[nodiscard]] double GetScale() const;
     void SetScale(double _scale);
 
-    [[nodiscard]] SDL_FRect *GetTransformedRect();
+    [[nodiscard]] SDL_FRect *GetTransformedRect() const;
 
     virtual void Render(SDL_Renderer *_renderer);
 
     template <typename T> std::vector<T *> GetChildrenByType();
     template <typename T> T *GetChildByType();
 
-    SDL_FRect *CalculateBoundingBox();
+    SDL_FRect *CalculateBoundingBox() const;
 
     void DestroyChildObjects();
 
@@ -178,13 +182,13 @@ class RenderObject
 Game::Game()
 {
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, 800, 600,
+                              SDL_WINDOWPOS_CENTERED, width, height,
                               SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 
     renderer = SDL_CreateRenderer(
         window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    SDL_GL_GetDrawableSize(window, &width, &height);
+    SetScreenSize(width, height);
 }
 
 void Game::AddChildObject(std::unique_ptr<RenderObject> child)
@@ -199,6 +203,8 @@ void Game::AddChildObject(std::unique_ptr<RenderObject> child)
 [[nodiscard]] SDL_Window *Game::GetWindow() const { return window; }
 
 [[nodiscard]] SDL_Renderer *Game::GetRenderer() const { return renderer; }
+
+[[nodiscard]] SDL_FRect *Game::GetViewport() const { return viewportf; }
 
 bool Game::Setup()
 {
@@ -218,6 +224,9 @@ void Game::SetScreenSize(int _width, int _height)
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
+
+    viewport = new SDL_Rect{0, 0, width, height};
+    viewportf = new SDL_FRect{0, 0, (float)width, (float)height};
 }
 
 void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
@@ -371,6 +380,8 @@ void Game::Render()
     if (renderDeltaTime > targetFrameTime)
     {
         SDL_Utilities::ClearRect(renderer, clearColor);
+
+        SDL_RenderSetViewport(renderer, viewport);
 
         children.sort([](const std::unique_ptr<RenderObject> &a,
                          const std::unique_ptr<RenderObject> &b)
@@ -556,7 +567,7 @@ void RenderObject::SetRect(float x, float y)
 
 void RenderObject::SetScale(double _scale) { scale = _scale; }
 
-[[nodiscard]] SDL_FRect *RenderObject::GetTransformedRect()
+[[nodiscard]] SDL_FRect *RenderObject::GetTransformedRect() const
 {
     SDL_FRect *transformedRect;
 
@@ -579,6 +590,13 @@ void RenderObject::Render(SDL_Renderer *_renderer)
     children.sort([](const std::unique_ptr<RenderObject> &a,
                      const std::unique_ptr<RenderObject> &b)
                   { return a->z < b->z; });
+
+    auto boundingBox = CalculateBoundingBox();
+
+    if (!SDL_HasIntersectionF(boundingBox, game->GetViewport()))
+    {
+        return;
+    }
 
     for (auto &iter : children)
     {
@@ -631,7 +649,7 @@ template <typename T> T *RenderObject::GetChildByType()
     return nullptr;
 }
 
-SDL_FRect *RenderObject::CalculateBoundingBox()
+SDL_FRect *RenderObject::CalculateBoundingBox() const
 {
     auto boundingBox = GetTransformedRect();
 
