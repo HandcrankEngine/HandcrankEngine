@@ -52,6 +52,8 @@ class Game
 
   public:
     std::unordered_map<SDL_Keycode, bool> keyState;
+    std::unordered_map<SDL_Keycode, bool> keyPressedState;
+    std::unordered_map<SDL_Keycode, bool> keyReleasedState;
 
     std::list<std::unique_ptr<RenderObject>> children;
 
@@ -271,9 +273,12 @@ void Game::Loop()
 
 void Game::HandleInput()
 {
+    keyPressedState.clear();
+    keyReleasedState.clear();
+
     while (SDL_PollEvent(&event) != 0)
     {
-        SDL_Keycode key = event.key.keysym.sym;
+        SDL_Keycode keyCode = event.key.keysym.sym;
 
         switch (event.type)
         {
@@ -300,11 +305,14 @@ void Game::HandleInput()
             break;
 
         case SDL_KEYDOWN:
-            keyState[key] = true;
+            keyPressedState[keyCode] = !keyState[keyCode];
+            keyState[keyCode] = true;
             break;
 
         case SDL_KEYUP:
-            keyState[key] = false;
+            keyState[keyCode] = false;
+            keyPressedState[keyCode] = false;
+            keyReleasedState[keyCode] = true;
             break;
 
         default:
