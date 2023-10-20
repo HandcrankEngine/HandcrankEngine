@@ -24,13 +24,65 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Cache SDL2 dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.sdl/SDL2-2.28.4
+            ~/.sdl/SDL2_image-2.6.3
+            ~/.sdl/SDL2_ttf-2.20.2
+          key: sdl2-${{ runner.os }}
+
+      - name: Install SDL
+        run: |
+          if [ ! -d "~/.sdl/SDL2-2.28.4" ]; then
+            mkdir -p ~/.sdl
+            cd ~/.sdl
+            curl -LO https://github.com/libsdl-org/SDL/releases/download/release-2.28.4/SDL2-2.28.4.tar.gz
+            tar -xzvf SDL2-2.28.4.tar.gz
+            cd SDL2-2.28.4
+            ./configure
+            make
+            sudo make install
+          fi
+
+      - name: Install SDL_image
+        run: |
+          if [ ! -d "~/.sdl/SDL2_image-2.6.3" ]; then
+            mkdir -p ~/.sdl
+            cd ~/.sdl
+            curl -LO https://github.com/libsdl-org/SDL_image/releases/download/release-2.6.3/SDL2_image-2.6.3.tar.gz
+            tar -xzvf SDL2_image-2.6.3.tar.gz
+            cd SDL2_image-2.6.3
+            ./configure
+            make
+            sudo make install
+          fi
+
+      - name: Install SDL_ttf
+        run: |
+          if [ ! -d "~/.sdl/SDL2_ttf-2.20.2" ]; then
+            mkdir -p ~/.sdl
+            cd ~/.sdl
+            curl -LO https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.20.2/SDL2_ttf-2.20.2.tar.gz
+            tar -xzvf SDL2_ttf-2.20.2.tar.gz
+            cd SDL2_ttf-2.20.2
+            ./configure
+            make
+            sudo make install
+          fi
+
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
-          sudo apt-get install -y g++ cmake
+          sudo apt-get install -y cmake
 
       - name: Build and test
         run: |
           cmake .
           make
+        env:
+          SDL2_PATH: ~/.sdl/SDL2-2.28.4
+          SDL2_IMAGE_PATH: ~/.sdl/SDL2_image-2.6.3
+          SDL2_TTF_PATH: ~/.sdl/SDL2_ttf-2.20.2
