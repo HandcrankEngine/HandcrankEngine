@@ -1,8 +1,10 @@
 #include <algorithm>
 
 #include "../fonts/Roboto/Roboto-Regular.h"
+#include "../images/sdl_logo.h"
 
 #include "Handcrank/Handcrank.hpp"
+#include "Handcrank/ImageRenderObject.hpp"
 #include "Handcrank/RectRenderObject.hpp"
 #include "Handcrank/TextRenderObject.hpp"
 
@@ -17,7 +19,7 @@ auto font = SDL_TTF_Utilities::LoadFontRW(
 
 class Logo : public RenderObject
 {
-  private:
+  protected:
     SDL_Color colors[3] = {
         {255, 0, 0, 255}, {0, 255, 0, 255}, {0, 0, 255, 255}};
 
@@ -43,32 +45,6 @@ class Logo : public RenderObject
     int movementSpeed = rand() % 400 + 100;
 
   public:
-    void Start() override
-    {
-        SetScale(1.5);
-
-        SetRect(rand() % game->GetWidth() - 200,
-                rand() % game->GetWidth() - 200, 200, 200);
-
-        auto cube = std::make_unique<RectRenderObject>();
-
-        cube->SetColor(colors[colorIndex]);
-
-        cube->SetRect(0, 0, GetRect()->w, GetRect()->h);
-
-        AddChildObject(std::move(cube));
-
-        auto text = std::make_unique<TextRenderObject>();
-
-        text->SetFont(font);
-
-        text->SetRect(0, 0, GetRect()->w, GetRect()->h);
-
-        text->SetWrappedText("Handcrank\nEngine");
-
-        AddChildObject(std::move(text));
-    }
-
     void Update(double deltaTime) override
     {
         if (!game->HasFocus())
@@ -113,6 +89,54 @@ class Logo : public RenderObject
     }
 };
 
+class HandcrankLogo : public Logo
+{
+  public:
+    void Start() override
+    {
+        SetScale(1.5);
+
+        SetRect(rand() % game->GetWidth() - 200,
+                rand() % game->GetWidth() - 200, 200, 200);
+
+        auto cube = std::make_unique<RectRenderObject>();
+
+        cube->SetColor(colors[colorIndex]);
+
+        cube->SetRect(0, 0, GetRect()->w, GetRect()->h);
+
+        AddChildObject(std::move(cube));
+
+        auto text = std::make_unique<TextRenderObject>();
+
+        text->SetFont(font);
+
+        text->SetRect(0, 0, GetRect()->w, GetRect()->h);
+
+        text->SetWrappedText("Handcrank\nEngine");
+
+        AddChildObject(std::move(text));
+    }
+};
+
+class SDL_Logo : public Logo
+{
+  public:
+    void Start() override
+    {
+        auto image = std::make_unique<ImageRenderObject>();
+
+        image->LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
+                             images_sdl_logo_png_len);
+
+        SetRect(rand() % game->GetWidth() - 200,
+                rand() % game->GetWidth() - 200, image->GetRect()->w,
+                image->GetRect()->h);
+
+        AddChildObject(std::move(image));
+    }
+};
+
 auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
@@ -135,7 +159,7 @@ auto main() -> int
 
     game->AddChildObject(std::move(framerateLabel));
 
-    game->AddChildObject(std::move(std::make_unique<Logo>()));
+    game->AddChildObject(std::move(std::make_unique<HandcrankLogo>()));
 
     return game->Run();
 }
