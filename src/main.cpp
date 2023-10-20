@@ -127,7 +127,7 @@ auto main() -> int
         {
             auto textRenderObject = dynamic_cast<TextRenderObject *>(ref);
 
-            textRenderObject->SetText(std::to_string(1.0 / deltaTime));
+            textRenderObject->SetText(std::to_string(game->GetFPS()));
         });
 
     game->AddChildObject(std::move(framerateLabel));
