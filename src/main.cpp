@@ -58,13 +58,16 @@ class Logo : public RenderObject
 
         auto cube = GetChildByType<RectRenderObject>();
 
+        auto minX = 0;
+        auto minY = 0;
+
         auto maxX = game->GetWidth() - transformedRect->w;
         auto maxY = game->GetHeight() - transformedRect->h;
 
         rect->x += movementSpeed * xDirection * deltaTime;
         rect->y += movementSpeed * yDirection * deltaTime;
 
-        if (rect->x > maxX || rect->x < 0)
+        if (rect->x > maxX || rect->x < minX)
         {
             xDirection = -xDirection;
 
@@ -74,7 +77,7 @@ class Logo : public RenderObject
             }
         }
 
-        if (rect->y > maxY || rect->y < 0)
+        if (rect->y > maxY || rect->y < minY)
         {
             yDirection = -yDirection;
 
@@ -84,8 +87,8 @@ class Logo : public RenderObject
             }
         }
 
-        rect->x = std::clamp<float>(rect->x, 0, maxX);
-        rect->y = std::clamp<float>(rect->y, 0, maxY);
+        rect->x = std::clamp<float>(rect->x, minX, maxX);
+        rect->y = std::clamp<float>(rect->y, minY, maxY);
     }
 };
 
