@@ -34,10 +34,12 @@ class Game
     std::chrono::steady_clock::time_point previousTime;
 
     double deltaTime = 0;
-    double updateDeltaTime = 0;
+    double renderDeltaTime = 0;
     double fixedUpdateDeltaTime = 0;
 
     double frameRate = 60;
+
+    double fps;
 
     const double targetFrameTime = 1.0 / frameRate;
 
@@ -74,6 +76,8 @@ class Game
     [[nodiscard]] bool HasFocus() const;
 
     [[nodiscard]] double GetFrameRate() const;
+
+    [[nodiscard]] double GetFPS() const;
 
     void SetFrameRate(double _frameRate);
 
@@ -226,6 +230,8 @@ void Game::SetClearColor(SDL_Color color) { this->clearColor = color; }
 
 [[nodiscard]] double Game::GetFrameRate() const { return frameRate; }
 
+[[nodiscard]] double Game::GetFPS() const { return fps; }
+
 void Game::SetFrameRate(double _frameRate) { frameRate = _frameRate; }
 
 [[nodiscard]] bool Game::GetQuit() const { return quit; }
@@ -352,9 +358,9 @@ void Game::FixedUpdate()
 
 void Game::Render()
 {
-    updateDeltaTime += deltaTime;
+    renderDeltaTime += deltaTime;
 
-    if (updateDeltaTime > targetFrameTime)
+    if (renderDeltaTime > targetFrameTime)
     {
         SDL_Utilities::ClearRect(renderer, clearColor);
 
@@ -374,7 +380,9 @@ void Game::Render()
 
         SDL_RenderPresent(renderer);
 
-        updateDeltaTime = 0;
+        fps = 1.0 / renderDeltaTime;
+
+        renderDeltaTime = 0;
     }
 }
 
