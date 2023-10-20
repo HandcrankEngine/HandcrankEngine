@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Cache SDL2 dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache
         with:
           path: |
