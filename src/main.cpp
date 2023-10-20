@@ -37,17 +37,18 @@ class Logo : public RenderObject
         return colors[colorIndex];
     }
 
-    int xDirection = 1;
-    int yDirection = 1;
+    int xDirection = rand() % 1 ? -1 : 1;
+    int yDirection = rand() % 1 ? -1 : 1;
 
-    int movementSpeed = 500;
+    int movementSpeed = rand() % 400 + 100;
 
   public:
     void Start() override
     {
         SetScale(1.5);
 
-        SetRect(0, 0, 200, 200);
+        SetRect(rand() % game->GetWidth() - 200,
+                rand() % game->GetWidth() - 200, 200, 200);
 
         auto cube = std::make_unique<RectRenderObject>();
 
@@ -120,6 +121,8 @@ auto main() -> int
 
     framerateLabel->SetFont(font);
 
+    framerateLabel->z = 100;
+
     framerateLabel->SetText(std::to_string(0));
 
     framerateLabel->SetUpdate(
@@ -132,9 +135,7 @@ auto main() -> int
 
     game->AddChildObject(std::move(framerateLabel));
 
-    auto logo = std::make_unique<Logo>();
-
-    game->AddChildObject(std::move(logo));
+    game->AddChildObject(std::move(std::make_unique<Logo>()));
 
     return game->Run();
 }
