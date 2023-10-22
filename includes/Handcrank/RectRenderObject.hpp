@@ -12,11 +12,16 @@ namespace Handcrank
 
 class RectRenderObject : public RenderObject
 {
+  protected:
+    double rotation;
+
   private:
     SDL_Color *borderColor;
     SDL_Color *fillColor;
 
     SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
+
+    SDL_Texture *tempRenderTexture;
 
   public:
     explicit RectRenderObject() {}
@@ -115,6 +120,17 @@ class RectRenderObject : public RenderObject
     {
         SDL_SetRenderDrawBlendMode(renderer, blendMode);
 
+        if (rotation != 0)
+        {
+            tempRenderTexture =
+                SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                                  SDL_TEXTUREACCESS_TARGET, rect->w, rect->h);
+
+            SDL_SetRenderTarget(renderer, tempRenderTexture);
+
+            std::cout << "temp" << std::endl;
+        }
+
         if (fillColor != nullptr)
         {
             SDL_SetRenderDrawColor(renderer, fillColor->r, fillColor->g,
@@ -132,6 +148,15 @@ class RectRenderObject : public RenderObject
         }
 
         RenderObject::Render(renderer);
+
+        if (rotation != 0)
+        {
+            SDL_SetRenderTarget(renderer, nullptr);
+
+            SDL_RenderCopyExF(renderer, tempRenderTexture, nullptr,
+                              GetTransformedRect(), rotation, nullptr,
+                              SDL_FLIP_NONE);
+        }
     }
 
     /**
