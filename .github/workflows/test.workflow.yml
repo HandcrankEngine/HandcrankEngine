@@ -24,7 +24,7 @@ jobs:
       - if: steps.cache-sdl.outputs.cache-hit != 'true'
         name: Install SDL2-2.28.4
         run: |
-          mkdir -p /.sdl
+          sudo mkdir -p /.sdl
           cd /.sdl
           curl -LO https://github.com/libsdl-org/SDL/releases/download/release-2.28.4/SDL2-2.28.4.tar.gz
           tar -xzvf SDL2-2.28.4.tar.gz
@@ -50,7 +50,7 @@ jobs:
       - if: steps.cache-sdl-image.outputs.cache-hit != 'true'
         name: Install SDL_image
         run: |
-          mkdir -p /.sdl
+          sudo mkdir -p /.sdl
           cd /.sdl
           curl -LO https://github.com/libsdl-org/SDL_image/releases/download/release-2.6.3/SDL2_image-2.6.3.tar.gz
           tar -xzvf SDL2_image-2.6.3.tar.gz
@@ -78,7 +78,7 @@ jobs:
       - if: steps.cache-sdl-ttf.outputs.cache-hit != 'true'
         name: Install SDL_ttf
         run: |
-          mkdir -p /.sdl
+          sudo mkdir -p /.sdl
           cd /.sdl
           curl -LO https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.20.2/SDL2_ttf-2.20.2.tar.gz
           tar -xzvf SDL2_ttf-2.20.2.tar.gz
