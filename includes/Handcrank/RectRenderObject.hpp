@@ -5,8 +5,6 @@
 
 #include <SDL.h>
 
-#include "sdl/SDL_Utilities.hpp"
-
 #include "Handcrank.hpp"
 
 namespace Handcrank
@@ -34,7 +32,13 @@ class RectRenderObject : public RenderObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_Utilities::RenderRect(renderer, GetTransformedRect(), color);
+        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+        SDL_RenderFillRectF(renderer, GetTransformedRect());
+
+        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+        SDL_RenderDrawRectF(renderer, GetTransformedRect());
 
         RenderObject::Render(renderer);
     }
