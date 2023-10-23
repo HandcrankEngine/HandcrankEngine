@@ -78,7 +78,7 @@ class Logo : public RenderObject
 
             if (cube != nullptr)
             {
-                cube->SetColor(selectNextColor());
+                cube->SetFillColor(selectNextColor());
             }
         }
 
@@ -88,7 +88,7 @@ class Logo : public RenderObject
 
             if (cube != nullptr)
             {
-                cube->SetColor(selectNextColor());
+                cube->SetFillColor(selectNextColor());
             }
         }
 
@@ -109,7 +109,7 @@ class HandcrankLogo : public Logo
 
         auto cube = std::make_unique<RectRenderObject>();
 
-        cube->SetColor(colors[colorIndex]);
+        cube->SetFillColor(colors[colorIndex]);
 
         cube->SetRect(0, 0, GetRect()->w, GetRect()->h);
 

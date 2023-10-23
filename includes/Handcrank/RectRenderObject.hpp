@@ -13,7 +13,8 @@ namespace Handcrank
 class RectRenderObject : public RenderObject
 {
   private:
-    SDL_Color color{255, 255, 255, 255};
+    SDL_Color *borderColor;
+    SDL_Color *fillColor;
 
   public:
     explicit RectRenderObject() : RenderObject() {}
@@ -22,23 +23,59 @@ class RectRenderObject : public RenderObject
     ~RectRenderObject() = default;
 
     /**
-     * Set rect color.
+     * Set rect border color.
      * @param color Color value to set.
      */
-    void SetColor(SDL_Color _color) { color = _color; }
+    void SetBorderColor(SDL_Color _borderColor)
+    {
+        if (borderColor == nullptr)
+        {
+            borderColor = new SDL_Color();
+        }
+
+        borderColor->r = _borderColor.r;
+        borderColor->g = _borderColor.g;
+        borderColor->b = _borderColor.b;
+        borderColor->a = _borderColor.a;
+    }
+
+    /**
+     * Set rect fill color.
+     * @param color Color value to set.
+     */
+    void SetFillColor(SDL_Color _fillColor)
+    {
+        if (fillColor == nullptr)
+        {
+            fillColor = new SDL_Color();
+        }
+
+        fillColor->r = _fillColor.r;
+        fillColor->g = _fillColor.g;
+        fillColor->b = _fillColor.b;
+        fillColor->a = _fillColor.a;
+    }
 
     /**
      * Render rect to the scene.
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        if (fillColor != nullptr)
+        {
+            SDL_SetRenderDrawColor(renderer, fillColor->r, fillColor->g,
+                                   fillColor->b, fillColor->a);
 
-        SDL_RenderFillRectF(renderer, GetTransformedRect());
+            SDL_RenderFillRectF(renderer, GetTransformedRect());
+        }
 
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        if (borderColor != nullptr)
+        {
+            SDL_SetRenderDrawColor(renderer, borderColor->r, borderColor->g,
+                                   borderColor->b, borderColor->a);
 
-        SDL_RenderDrawRectF(renderer, GetTransformedRect());
+            SDL_RenderDrawRectF(renderer, GetTransformedRect());
+        }
 
         RenderObject::Render(renderer);
     }
