@@ -379,7 +379,10 @@ void Game::Render()
 
     if (renderDeltaTime > targetFrameTime)
     {
-        SDL_Utilities::ClearRect(renderer, clearColor);
+        SDL_SetRenderDrawColor(renderer, clearColor.r, clearColor.g,
+                               clearColor.b, clearColor.a);
+
+        SDL_RenderClear(renderer);
 
         SDL_RenderSetViewport(renderer, viewport);
 
