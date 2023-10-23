@@ -17,6 +17,11 @@ auto game = new Game();
 auto font = SDL_TTF_Utilities::LoadFontRW(
     fonts_Roboto_Roboto_Regular_ttf, fonts_Roboto_Roboto_Regular_ttf_len, 30);
 
+int randomNumberRange(int min, int max)
+{
+    return rand() % (max - min + 1) + min;
+}
+
 class Logo : public RenderObject
 {
   protected:
@@ -99,8 +104,8 @@ class HandcrankLogo : public Logo
     {
         SetScale(1.5);
 
-        SetRect(rand() % game->GetWidth() - 200,
-                rand() % game->GetWidth() - 200, 200, 200);
+        SetRect(randomNumberRange(0, game->GetWidth() - 200),
+                randomNumberRange(0, game->GetWidth() - 200), 200, 200);
 
         auto cube = std::make_unique<RectRenderObject>();
 
