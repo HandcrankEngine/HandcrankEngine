@@ -137,9 +137,9 @@ class SDL_Logo : public Logo
         image->LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
                              images_sdl_logo_png_len);
 
-        SetRect(rand() % game->GetWidth() - 200,
-                rand() % game->GetWidth() - 200, image->GetRect()->w,
-                image->GetRect()->h);
+        SetRect(randomNumberRange(0, game->GetWidth() - 200),
+                randomNumberRange(0, game->GetWidth() - 200),
+                image->GetRect()->w, image->GetRect()->h);
 
         AddChildObject(std::move(image));
     }
