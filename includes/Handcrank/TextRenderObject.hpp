@@ -66,7 +66,7 @@ class TextRenderObject : public RenderObject
 
         if (font == nullptr)
         {
-            std::cerr << "ERROR! Missing font reference.\n";
+            std::cerr << "ERROR! Missing font reference." << std::endl;
 
             return;
         }
