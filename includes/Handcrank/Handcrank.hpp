@@ -664,10 +664,10 @@ SDL_FRect *RenderObject::CalculateBoundingBox() const
         {
             auto childBoundingBox = child->CalculateBoundingBox();
 
-            (*boundingBox).x = fminf((*boundingBox).x, (*childBoundingBox).x);
-            (*boundingBox).y = fminf((*boundingBox).y, (*childBoundingBox).y);
-            (*boundingBox).w = fmaxf((*boundingBox).w, (*childBoundingBox).w);
-            (*boundingBox).h = fmaxf((*boundingBox).h, (*childBoundingBox).h);
+            boundingBox->x = fminf(boundingBox->x, childBoundingBox->x);
+            boundingBox->y = fminf(boundingBox->y, childBoundingBox->y);
+            boundingBox->w = fmaxf(boundingBox->w, childBoundingBox->w);
+            boundingBox->h = fmaxf(boundingBox->h, childBoundingBox->h);
         }
     }
 
