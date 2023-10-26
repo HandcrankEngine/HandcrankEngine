@@ -58,6 +58,10 @@ class Game
     std::unordered_map<SDL_Keycode, bool> keyPressedState;
     std::unordered_map<SDL_Keycode, bool> keyReleasedState;
 
+    std::unordered_map<Uint8, bool> mouseState;
+    std::unordered_map<Uint8, bool> mousePressedState;
+    std::unordered_map<Uint8, bool> mouseReleasedState;
+
     std::list<std::unique_ptr<RenderObject>> children;
 
     Game();
@@ -285,9 +289,14 @@ void Game::HandleInput()
     keyPressedState.clear();
     keyReleasedState.clear();
 
+    mousePressedState.clear();
+    mouseReleasedState.clear();
+
     while (SDL_PollEvent(&event) != 0)
     {
         SDL_Keycode keyCode = event.key.keysym.sym;
+
+        Uint8 mouseButtonIndex = event.button.button;
 
         switch (event.type)
         {
@@ -322,6 +331,17 @@ void Game::HandleInput()
             keyState[keyCode] = false;
             keyPressedState[keyCode] = false;
             keyReleasedState[keyCode] = true;
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            mousePressedState[mouseButtonIndex] = !mouseState[mouseButtonIndex];
+            mouseState[mouseButtonIndex] = true;
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+            mouseState[mouseButtonIndex] = false;
+            mousePressedState[mouseButtonIndex] = false;
+            mouseReleasedState[mouseButtonIndex] = true;
             break;
 
         default:
