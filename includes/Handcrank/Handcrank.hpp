@@ -574,15 +574,13 @@ void RenderObject::SetScale(double _scale) { scale = _scale; }
 {
     SDL_FRect *transformedRect;
 
-    transformedRect = SDL_Utilities::ScaleRect(rect, scale);
+    transformedRect = ScaleRect(rect, scale);
 
     if (parent != nullptr)
     {
-        transformedRect =
-            SDL_Utilities::PositionRect(transformedRect, parent->rect);
+        transformedRect = PositionRect(transformedRect, parent->rect);
 
-        transformedRect =
-            SDL_Utilities::ScaleRect(transformedRect, parent->scale);
+        transformedRect = ScaleRect(transformedRect, parent->scale);
     }
 
     return transformedRect;

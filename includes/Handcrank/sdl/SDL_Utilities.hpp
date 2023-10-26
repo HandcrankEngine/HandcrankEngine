@@ -5,24 +5,13 @@
 
 #include <SDL.h>
 
-namespace Handcrank
+extern SDL_FRect *PositionRect(SDL_FRect *rect, SDL_FRect *parent)
 {
+    return new SDL_FRect{rect->x + parent->x, rect->y + parent->y, rect->w,
+                         rect->h};
+}
 
-class SDL_Utilities
+extern SDL_FRect *ScaleRect(SDL_FRect *rect, float scale)
 {
-  public:
-    [[nodiscard]] static SDL_FRect *PositionRect(SDL_FRect *rect,
-                                                 SDL_FRect *parent)
-    {
-        return new SDL_FRect{rect->x + parent->x, rect->y + parent->y, rect->w,
-                             rect->h};
-    }
-
-    [[nodiscard]] static SDL_FRect *ScaleRect(SDL_FRect *rect, float scale)
-    {
-        return new SDL_FRect{rect->x, rect->y, rect->w * scale,
-                             rect->h * scale};
-    }
-};
-
-} // namespace Handcrank
+    return new SDL_FRect{rect->x, rect->y, rect->w * scale, rect->h * scale};
+}
