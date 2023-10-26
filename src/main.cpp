@@ -14,8 +14,8 @@ using namespace Handcrank;
 
 auto game = new Game();
 
-auto font = SDL_TTF_Utilities::LoadFontRW(
-    fonts_Roboto_Roboto_Regular_ttf, fonts_Roboto_Roboto_Regular_ttf_len, 30);
+auto font = SDL_LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                           fonts_Roboto_Roboto_Regular_ttf_len, 30);
 
 int randomNumberRange(int min, int max)
 {
