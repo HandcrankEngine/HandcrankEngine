@@ -125,5 +125,23 @@ int main()
         assert(c.z == 6);
     }
 
+    {
+        // Convert to SDL_FPoint
+        Vector3 a = Vector3(1, 2, 3);
+        SDL_FPoint b = a.SDL_FPoint();
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
+    {
+        // Convert to SDL_FRect
+        Vector3 a = Vector3(1, 2, 3);
+        SDL_FRect b = a.SDL_FRect();
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
     return 0;
 }

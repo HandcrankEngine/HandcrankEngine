@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include <SDL.h>
+
 struct Vector2
 {
     float x;
@@ -52,4 +54,8 @@ struct Vector2
 
         return newPosition;
     }
+
+    SDL_FPoint SDL_FPoint() { return {x, y}; }
+
+    SDL_FRect SDL_FRect() { return {x, y}; }
 };
