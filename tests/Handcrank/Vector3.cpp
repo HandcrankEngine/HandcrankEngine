@@ -56,6 +56,22 @@ int main()
     }
 
     {
+        // Divide Vector3 struct by 0
+        Vector3 a = Vector3(1, 2, 3);
+
+        try
+        {
+            auto b = a / 0;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::string message = e.what();
+
+            assert(message.find("divide by zero") != std::string::npos);
+        }
+    }
+
+    {
         // Multiply Vector3 struct by int
         Vector3 a = Vector3(1, 2, 3);
         auto b = a * 2;
