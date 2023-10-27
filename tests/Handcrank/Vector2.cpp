@@ -126,9 +126,27 @@ int main()
     }
 
     {
+        // Create from SDL_FPoint
+        SDL_FPoint a = {1, 2};
+        Vector2 b = Vector2(a);
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
+    {
         // Convert to SDL_FRect
         Vector2 a = Vector2(1, 2);
         SDL_FRect b = a.SDL_FRect();
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
+    {
+        // Create from SDL_FRect
+        SDL_FRect a = {1, 2};
+        Vector2 b = Vector2(a);
 
         assert(b.x == a.x);
         assert(b.y == a.y);
