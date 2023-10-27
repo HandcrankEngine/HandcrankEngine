@@ -131,6 +131,8 @@ class RenderObject
 
     bool isMarkedForDestroy = false;
 
+    bool isInputActive = false;
+
     std::list<std::unique_ptr<RenderObject>> children;
 
     std::function<void(RenderObject *)> startFunction;
@@ -160,6 +162,9 @@ class RenderObject
     virtual void Start();
     virtual void Update(double deltaTime);
     virtual void FixedUpdate(double deltaTime);
+
+    virtual void OnMouseDown();
+    virtual void OnMouseUp();
 
     void InternalUpdate(double deltaTime);
     void InternalFixedUpdate(double deltaTime);
@@ -555,6 +560,10 @@ void RenderObject::Update(double deltaTime) {}
 
 void RenderObject::FixedUpdate(double deltaTime) {}
 
+void RenderObject::OnMouseDown() {}
+
+void RenderObject::OnMouseUp() {}
+
 void RenderObject::InternalUpdate(double deltaTime)
 {
     if (!hasStarted)
@@ -570,6 +579,20 @@ void RenderObject::InternalUpdate(double deltaTime)
     }
 
     Update(deltaTime);
+
+    if (game->mousePressedState[SDL_BUTTON_LEFT] &&
+        SDL_PointInFRect(game->mousePosition, rect))
+    {
+        OnMouseDown();
+
+        isInputActive = true;
+    }
+    else if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
+    {
+        OnMouseUp();
+
+        isInputActive = false;
+    }
 
     if (updateFunction)
     {
