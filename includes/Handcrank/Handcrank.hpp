@@ -11,6 +11,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "Vector2.hpp"
+
 #include "sdl/SDL_Utilities.hpp"
 
 namespace Handcrank
@@ -51,12 +53,17 @@ class Game
     int width = 800;
     int height = 600;
 
+    float dpiScaleX;
+    float dpiScaleY;
+
     bool focused = false;
 
   public:
     std::unordered_map<SDL_Keycode, bool> keyState;
     std::unordered_map<SDL_Keycode, bool> keyPressedState;
     std::unordered_map<SDL_Keycode, bool> keyReleasedState;
+
+    Vector2 mousePosition;
 
     std::unordered_map<Uint8, bool> mouseState;
     std::unordered_map<Uint8, bool> mousePressedState;
@@ -231,6 +238,9 @@ void Game::SetScreenSize(int _width, int _height)
 
     viewport = new SDL_Rect{0, 0, width, height};
     viewportf = new SDL_FRect{0, 0, (float)width, (float)height};
+
+    dpiScaleX = width / _width;
+    dpiScaleY = height / _height;
 }
 
 void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
@@ -331,6 +341,11 @@ void Game::HandleInput()
             keyState[keyCode] = false;
             keyPressedState[keyCode] = false;
             keyReleasedState[keyCode] = true;
+            break;
+
+        case SDL_MOUSEMOTION:
+            mousePosition.x = event.motion.x * dpiScaleX;
+            mousePosition.y = event.motion.y * dpiScaleY;
             break;
 
         case SDL_MOUSEBUTTONDOWN:
