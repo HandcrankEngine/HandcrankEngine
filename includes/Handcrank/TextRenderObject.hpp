@@ -40,7 +40,7 @@ class TextRenderObject : public RenderObject
     {
         SDL_FreeSurface(textSurface);
         SDL_DestroyTexture(textTexture);
-    };
+    }
 
     /**
      * Set text font.

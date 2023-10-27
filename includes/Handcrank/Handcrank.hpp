@@ -545,11 +545,11 @@ void RenderObject::SetFixedUpdate(
     fixedUpdateFunction = _func;
 }
 
-void RenderObject::Start(){};
+void RenderObject::Start() {}
 
-void RenderObject::Update(double deltaTime){};
+void RenderObject::Update(double deltaTime) {}
 
-void RenderObject::FixedUpdate(double deltaTime){};
+void RenderObject::FixedUpdate(double deltaTime) {}
 
 void RenderObject::InternalUpdate(double deltaTime)
 {
