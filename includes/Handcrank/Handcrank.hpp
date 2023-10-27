@@ -581,7 +581,7 @@ void RenderObject::InternalUpdate(double deltaTime)
     Update(deltaTime);
 
     if (game->mousePressedState[SDL_BUTTON_LEFT] &&
-        SDL_PointInFRect(game->mousePosition, rect))
+        SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
     {
         OnMouseDown();
 
