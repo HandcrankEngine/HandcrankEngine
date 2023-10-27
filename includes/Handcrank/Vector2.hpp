@@ -36,14 +36,14 @@ struct Vector2
         return Vector2(x / number, y / number);
     }
 
-    static Vector2 Lerp(const Vector2 start, const Vector2 destination,
+    static Vector2 Lerp(const Vector2 &start, const Vector2 &destination,
                         const float t)
     {
         return LerpUnclamped(start, destination, std::clamp<float>(t, 0, 1));
     }
 
-    static Vector2 LerpUnclamped(const Vector2 start, const Vector2 destination,
-                                 const float t)
+    static Vector2 LerpUnclamped(const Vector2 &start,
+                                 const Vector2 &destination, const float t)
     {
         auto newPosition = Vector2(start);
 
