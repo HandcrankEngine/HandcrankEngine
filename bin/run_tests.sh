@@ -1,15 +1,21 @@
 #!/bin/bash
 
+REDON=$(tput setaf 1)
+GREENON=$(tput setaf 2)
+COLOROFF=$(tput sgr0)
+
+printf "Running Unit Tests\n"
+
 find ./tests -type f -name "*.cpp" | while read -r FILE; do
 
-    printf "Running tests in %s ..." "${FILE}"
+    printf "Running tests in %s ... " "${FILE}"
 
     g++ -std=c++17 -o test "${FILE}" -Iincludes
 
     if ./test; then
-        echo "PASS"
+        printf "%sPASS%s\n" "${GREENON}" "${COLOROFF}"
     else
-        echo "FAIL"
+        printf "%FAIL%s\n" "${REDON}" "${COLOROFF}"
     fi
 
     rm test
