@@ -131,7 +131,7 @@ class RenderObject
 
     bool isMarkedForDestroy = false;
 
-    bool isHovered = false;
+    bool isInputActive = false;
 
     std::list<std::unique_ptr<RenderObject>> children;
 
@@ -585,13 +585,13 @@ void RenderObject::InternalUpdate(double deltaTime)
     {
         OnMouseDown();
 
-        isHovered = true;
+        isInputActive = true;
     }
-    else if (isHovered && game->mouseReleasedState[SDL_BUTTON_LEFT])
+    else if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
     {
         OnMouseUp();
 
-        isHovered = false;
+        isInputActive = false;
     }
 
     if (updateFunction)
