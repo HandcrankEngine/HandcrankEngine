@@ -46,7 +46,7 @@ int main()
     }
 
     {
-        // Divide two Vector3 structs
+        // Divide Vector3 struct by int
         Vector3 a = Vector3(1, 2, 3);
         auto b = a / 2;
 
@@ -56,7 +56,7 @@ int main()
     }
 
     {
-        // Multiply two Vector3 structs
+        // Multiply Vector3 struct by int
         Vector3 a = Vector3(1, 2, 3);
         auto b = a * 2;
 

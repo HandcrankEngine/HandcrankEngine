@@ -43,7 +43,7 @@ int main()
     }
 
     {
-        // Divide two Vector2 structs
+        // Divide Vector2 struct by int
         Vector2 a = Vector2(1, 2);
         auto b = a / 2;
 
@@ -52,7 +52,7 @@ int main()
     }
 
     {
-        // Multiply two Vector2 structs
+        // Multiply Vector2 struct by int
         Vector2 a = Vector2(1, 2);
         auto b = a * 2;
 
