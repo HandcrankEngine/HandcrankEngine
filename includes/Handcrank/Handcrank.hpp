@@ -63,7 +63,7 @@ class Game
     std::unordered_map<SDL_Keycode, bool> keyPressedState;
     std::unordered_map<SDL_Keycode, bool> keyReleasedState;
 
-    Vector2 mousePosition;
+    SDL_FPoint *mousePosition;
 
     std::unordered_map<Uint8, bool> mouseState;
     std::unordered_map<Uint8, bool> mousePressedState;
@@ -344,8 +344,12 @@ void Game::HandleInput()
             break;
 
         case SDL_MOUSEMOTION:
-            mousePosition.x = event.motion.x * dpiScaleX;
-            mousePosition.y = event.motion.y * dpiScaleY;
+            if (mousePosition == nullptr)
+            {
+                mousePosition = new SDL_FPoint();
+            }
+            mousePosition->x = event.motion.x * dpiScaleX;
+            mousePosition->y = event.motion.y * dpiScaleY;
             break;
 
         case SDL_MOUSEBUTTONDOWN:
