@@ -39,6 +39,29 @@ class RectRenderObject : public RenderObject
         borderColor->a = _borderColor.a;
     }
 
+    void SetBorderColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {
+        if (borderColor == nullptr)
+        {
+            borderColor = new SDL_Color();
+        }
+
+        borderColor->r = r;
+        borderColor->g = g;
+        borderColor->b = b;
+        borderColor->a = a;
+    }
+
+    SDL_Color *GetBorderColor()
+    {
+        if (borderColor == nullptr)
+        {
+            return nullptr;
+        }
+
+        return borderColor;
+    }
+
     /**
      * Set rect fill color.
      * @param color Color value to set.
@@ -54,6 +77,29 @@ class RectRenderObject : public RenderObject
         fillColor->g = _fillColor.g;
         fillColor->b = _fillColor.b;
         fillColor->a = _fillColor.a;
+    }
+
+    void SetFillColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {
+        if (fillColor == nullptr)
+        {
+            fillColor = new SDL_Color();
+        }
+
+        fillColor->r = r;
+        fillColor->g = g;
+        fillColor->b = b;
+        fillColor->a = a;
+    }
+
+    SDL_Color *GetFillColor()
+    {
+        if (fillColor == nullptr)
+        {
+            return nullptr;
+        }
+
+        return fillColor;
     }
 
     /**
