@@ -52,6 +52,22 @@ int main()
     }
 
     {
+        // Divide Vector2 struct by 0
+        Vector2 a = Vector2(1, 2);
+
+        try
+        {
+            auto b = a / 0;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::string message = e.what();
+
+            assert(message.find("divide by zero") != std::string::npos);
+        }
+    }
+
+    {
         // Multiply Vector2 struct by int
         Vector2 a = Vector2(1, 2);
         auto b = a * 2;
