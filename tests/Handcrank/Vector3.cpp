@@ -125,5 +125,49 @@ int main()
         assert(c.z == 6);
     }
 
+    {
+        // Convert to SDL_FPoint
+        Vector3 a = Vector3(1, 2, 3);
+        SDL_FPoint b = a.ToFPoint();
+
+        assert(typeid(SDL_FPoint) == typeid(b));
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
+    {
+        // Create from SDL_FPoint
+        SDL_FPoint a = {1, 2};
+        Vector3 b = Vector3(a);
+
+        assert(typeid(Vector3) == typeid(b));
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
+    {
+        // Convert to SDL_FRect
+        Vector3 a = Vector3(1, 2, 3);
+        SDL_FRect b = a.ToFRect();
+
+        assert(typeid(SDL_FRect) == typeid(b));
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
+    {
+        // Create from SDL_FRect
+        SDL_FRect a = {1, 2};
+        Vector3 b = Vector3(a);
+
+        assert(typeid(Vector3) == typeid(b));
+
+        assert(b.x == a.x);
+        assert(b.y == a.y);
+    }
+
     return 0;
 }

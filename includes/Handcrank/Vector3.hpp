@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include <SDL.h>
+
 struct Vector3
 {
     float x;
@@ -11,6 +13,8 @@ struct Vector3
 
     Vector3() : x(0), y(0), z(0) {}
     Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
+    Vector3(SDL_FPoint point) : x(point.x), y(point.y) {}
+    Vector3(SDL_FRect rect) : x(rect.x), y(rect.y) {}
 
     Vector3 operator+(const Vector3 &other) const
     {
@@ -54,4 +58,8 @@ struct Vector3
 
         return newPosition;
     }
+
+    SDL_FPoint ToFPoint() { return {x, y}; }
+
+    SDL_FRect ToFRect() { return {x, y}; }
 };
