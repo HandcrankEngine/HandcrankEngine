@@ -128,7 +128,7 @@ int main()
     {
         // Convert to SDL_FPoint
         Vector3 a = Vector3(1, 2, 3);
-        SDL_FPoint b = a.SDL_FPoint();
+        SDL_FPoint b = a.ToFPoint();
 
         assert(typeid(SDL_FPoint) == typeid(b));
 
@@ -150,7 +150,7 @@ int main()
     {
         // Convert to SDL_FRect
         Vector3 a = Vector3(1, 2, 3);
-        SDL_FRect b = a.SDL_FRect();
+        SDL_FRect b = a.ToFRect();
 
         assert(typeid(SDL_FRect) == typeid(b));
 

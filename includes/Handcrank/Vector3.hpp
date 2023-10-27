@@ -59,7 +59,7 @@ struct Vector3
         return newPosition;
     }
 
-    SDL_FPoint SDL_FPoint() { return {x, y}; }
+    SDL_FPoint ToFPoint() { return {x, y}; }
 
-    SDL_FRect SDL_FRect() { return {x, y}; }
+    SDL_FRect ToFRect() { return {x, y}; }
 };
