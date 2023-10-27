@@ -1,4 +1,4 @@
-name: Test
+name: Build
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
       - main
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
@@ -26,7 +26,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++
+          sudo apt-get install -y cmake
 
-      - name: Run tests
-        run: ./bin/run_tests.sh
+      - name: Build and test
+        run: |
+          cmake .github/workflows/
+          make
