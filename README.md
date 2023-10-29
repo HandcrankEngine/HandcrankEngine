@@ -52,7 +52,7 @@ auto main() -> int
 
     auto square = std::make_unique<RectRenderObject>();
 
-    square->SetFillColor({255, 0, 0, 255});
+    square->SetFillColor(255, 0, 0, 255);
 
     game->AddChildObject(std::move(square));
 
@@ -74,7 +74,7 @@ class RedSquare : public RectRenderObject
 {
 
   public:
-    void Start() override { SetFillColor({255, 0, 0, 255}); }
+    void Start() override { SetFillColor(255, 0, 0, 255); }
 };
 
 auto main() -> int
