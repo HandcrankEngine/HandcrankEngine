@@ -27,8 +27,8 @@ class Game
     SDL_Window *window;
     SDL_Renderer *renderer;
 
-    SDL_Rect *viewport;
-    SDL_FRect *viewportf;
+    SDL_Rect *viewport = new SDL_Rect;
+    SDL_FRect *viewportf = new SDL_FRect;
 
     SDL_Color clearColor{0, 0, 0, 255};
 
@@ -63,7 +63,7 @@ class Game
     std::unordered_map<SDL_Keycode, bool> keyPressedState;
     std::unordered_map<SDL_Keycode, bool> keyReleasedState;
 
-    SDL_FPoint *mousePosition;
+    SDL_FPoint *mousePosition = new SDL_FPoint;
 
     std::unordered_map<Uint8, bool> mouseState;
     std::unordered_map<Uint8, bool> mousePressedState;
@@ -123,7 +123,7 @@ class Game
 class RenderObject
 {
   protected:
-    SDL_FRect *rect;
+    SDL_FRect *rect = new SDL_FRect;
 
     double scale = 1;
 
@@ -250,8 +250,11 @@ void Game::SetScreenSize(int _width, int _height)
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
 
-    viewport = new SDL_Rect{0, 0, width, height};
-    viewportf = new SDL_FRect{0, 0, (float)width, (float)height};
+    viewport->w = width;
+    viewport->h = height;
+
+    viewportf->w = (float)width;
+    viewportf->h = (float)height;
 
     dpiScaleX = width / _width;
     dpiScaleY = height / _height;
@@ -358,10 +361,6 @@ void Game::HandleInput()
             break;
 
         case SDL_MOUSEMOTION:
-            if (mousePosition == nullptr)
-            {
-                mousePosition = new SDL_FPoint();
-            }
             mousePosition->x = event.motion.x * dpiScaleX;
             mousePosition->y = event.motion.y * dpiScaleY;
             break;
@@ -608,37 +607,34 @@ void RenderObject::InternalUpdate(double deltaTime)
 
     Update(deltaTime);
 
-    if (game->mousePosition != nullptr)
+    if (SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
     {
-        if (SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
+        if (game->mousePressedState[SDL_BUTTON_LEFT])
         {
-            if (game->mousePressedState[SDL_BUTTON_LEFT])
-            {
-                OnMouseDown();
+            OnMouseDown();
 
-                isInputActive = true;
-            }
-
-            if (!isInputHovered)
-            {
-                OnMouseOver();
-
-                isInputHovered = true;
-            }
-        }
-        else if (isInputHovered)
-        {
-            OnMouseOut();
-
-            isInputHovered = false;
+            isInputActive = true;
         }
 
-        if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
+        if (!isInputHovered)
         {
-            OnMouseUp();
+            OnMouseOver();
 
-            isInputActive = false;
+            isInputHovered = true;
         }
+    }
+    else if (isInputHovered)
+    {
+        OnMouseOut();
+
+        isInputHovered = false;
+    }
+
+    if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
+    {
+        OnMouseUp();
+
+        isInputActive = false;
     }
 
     if (updateFunction)
