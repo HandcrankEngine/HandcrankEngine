@@ -133,6 +133,7 @@ class RenderObject
 
     bool isMarkedForDestroy = false;
 
+    bool isInputHovered = false;
     bool isInputActive = false;
 
     std::list<std::unique_ptr<RenderObject>> children;
@@ -169,6 +170,8 @@ class RenderObject
     virtual void Update(double deltaTime);
     virtual void FixedUpdate(double deltaTime);
 
+    virtual void OnMouseOver();
+    virtual void OnMouseOut();
     virtual void OnMouseDown();
     virtual void OnMouseUp();
 
@@ -581,6 +584,10 @@ void RenderObject::Update(double deltaTime) {}
 
 void RenderObject::FixedUpdate(double deltaTime) {}
 
+void RenderObject::OnMouseOver() {}
+
+void RenderObject::OnMouseOut() {}
+
 void RenderObject::OnMouseDown() {}
 
 void RenderObject::OnMouseUp() {}
@@ -601,18 +608,37 @@ void RenderObject::InternalUpdate(double deltaTime)
 
     Update(deltaTime);
 
-    if (game->mousePressedState[SDL_BUTTON_LEFT] &&
-        SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
+    if (game->mousePosition != nullptr)
     {
-        OnMouseDown();
+        if (SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
+        {
+            if (game->mousePressedState[SDL_BUTTON_LEFT])
+            {
+                OnMouseDown();
 
-        isInputActive = true;
-    }
-    else if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
-    {
-        OnMouseUp();
+                isInputActive = true;
+            }
 
-        isInputActive = false;
+            if (!isInputHovered)
+            {
+                OnMouseOver();
+
+                isInputHovered = true;
+            }
+        }
+        else if (isInputHovered)
+        {
+            OnMouseOut();
+
+            isInputHovered = false;
+        }
+
+        if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
+        {
+            OnMouseUp();
+
+            isInputActive = false;
+        }
     }
 
     if (updateFunction)
