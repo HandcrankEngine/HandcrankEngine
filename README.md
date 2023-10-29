@@ -28,6 +28,7 @@ auto main() -> int
 
 1. [Adding Native Objects](#adding-native-objects)
 1. [Creating Custom Objects](#creating-custom-objects)
+1. [Update and FixedUpdate Events](#update-and-fixedupdate-events)
 1. [Loading Fonts and Rendering Text](#loading-fonts-and-rendering-text)
 
 ### Adding Native Objects
@@ -76,6 +77,41 @@ auto main() -> int
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::move(std::make_unique<RedSquare>()));
+
+    return game->Run();
+}
+```
+
+### Update and FixedUpdate Events
+
+```cpp
+#include <iostream>
+
+#include "Handcrank/Handcrank.hpp"
+
+using namespace Handcrank;
+
+auto game = new Game();
+
+class LoopDebugger : public RenderObject
+{
+
+  public:
+    void Update(double deltaTime) override
+    {
+        std::cout << "Update" << std::endl;
+    }
+    void FixedUpdate(double deltaTime) override
+    {
+        std::cout << "Fixed Update" << std::endl;
+    }
+};
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    game->AddChildObject(std::move(std::make_unique<LoopDebugger>()));
 
     return game->Run();
 }
