@@ -16,6 +16,8 @@ class RectRenderObject : public RenderObject
     SDL_Color *borderColor;
     SDL_Color *fillColor;
 
+    SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
+
   public:
     explicit RectRenderObject() : RenderObject() {}
     explicit RectRenderObject(SDL_FRect *_rect) : RenderObject(_rect) {}
@@ -107,6 +109,8 @@ class RectRenderObject : public RenderObject
      */
     void Render(SDL_Renderer *renderer) override
     {
+        SDL_SetRenderDrawBlendMode(renderer, blendMode);
+
         if (fillColor != nullptr)
         {
             SDL_SetRenderDrawColor(renderer, fillColor->r, fillColor->g,
