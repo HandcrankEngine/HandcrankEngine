@@ -34,6 +34,7 @@ auto main() -> int
 1. [MouseOver and MouseOut Events](#mouseover-and-mouseout-events)
 1. [MouseDown and MouseUp Events](#mousedown-and-mouseup-events)
 1. [Loading Fonts and Rendering Text](#loading-fonts-and-rendering-text)
+1. [Display FPS](#display-fps)
 
 ### Adding Native Objects
 
@@ -279,6 +280,50 @@ auto main() -> int
     label->SetText("Hello, World");
 
     game->AddChildObject(std::move(label));
+
+    return game->Run();
+}
+```
+
+### Display FPS
+
+```cpp
+#include "../fonts/Roboto/Roboto-Regular.h"
+
+#include "Handcrank/Handcrank.hpp"
+#include "Handcrank/TextRenderObject.hpp"
+
+#include "Handcrank/sdl/SDL_TTF_Utilities.hpp"
+
+using namespace Handcrank;
+
+auto game = new Game();
+
+auto font = SDL_LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                           fonts_Roboto_Roboto_Regular_ttf_len, 30);
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    auto framerateLabel = std::make_unique<TextRenderObject>();
+
+    framerateLabel->SetFont(font);
+
+    framerateLabel->SetUpdate(
+        [](RenderObject *ref, double deltaTime)
+        {
+            if (!game->HasFocus())
+            {
+                return;
+            }
+
+            auto textRenderObject = dynamic_cast<TextRenderObject *>(ref);
+
+            textRenderObject->SetText(std::to_string(game->GetFPS()));
+        });
+
+    game->AddChildObject(std::move(framerateLabel));
 
     return game->Run();
 }
