@@ -29,6 +29,8 @@ auto main() -> int
 1. [Adding Native Objects](#adding-native-objects)
 1. [Creating Custom Objects](#creating-custom-objects)
 1. [Update and FixedUpdate Events](#update-and-fixedupdate-events)
+1. [MouseOver and MouseOut Events](#mouseover-and-mouseout-events)
+1. [MouseDown and MouseUp Events](#mousedown-and-mouseup-events)
 1. [Loading Fonts and Rendering Text](#loading-fonts-and-rendering-text)
 
 ### Adding Native Objects
@@ -112,6 +114,64 @@ auto main() -> int
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::move(std::make_unique<LoopDebugger>()));
+
+    return game->Run();
+}
+```
+
+### MouseOver and MouseOut Events
+
+```cpp
+#include "Handcrank/Handcrank.hpp"
+#include "Handcrank/RectRenderObject.hpp"
+
+using namespace Handcrank;
+
+auto game = new Game();
+
+class Button : public RectRenderObject
+{
+
+  public:
+    void Start() override { SetFillColor(255, 0, 0, 255); }
+    void OnMouseOver() override { SetFillColor(255, 0, 0, 100); }
+    void OnMouseOut() override { SetFillColor(255, 0, 0, 255); }
+};
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    game->AddChildObject(std::move(std::make_unique<Button>()));
+
+    return game->Run();
+}
+```
+
+### MouseDown and MouseUp Events
+
+```cpp
+#include "Handcrank/Handcrank.hpp"
+#include "Handcrank/RectRenderObject.hpp"
+
+using namespace Handcrank;
+
+auto game = new Game();
+
+class Button : public RectRenderObject
+{
+
+  public:
+    void Start() override { SetFillColor(255, 0, 0, 255); }
+    void OnMouseDown() override { SetFillColor(255, 0, 0, 100); }
+    void OnMouseUp() override { SetFillColor(255, 0, 0, 255); }
+};
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    game->AddChildObject(std::move(std::make_unique<Button>()));
 
     return game->Run();
 }
