@@ -9,13 +9,20 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+set(BOX2D_LIBRARY_DIR "/opt/homebrew/Cellar/box2d/2.4.1/lib")
+set(BOX2D_INCLUDE_DIR "/opt/homebrew/Cellar/box2d/2.4.1/include")
+
+find_library(BOX2D_LIBRARY NAMES BOX2D HINTS ${BOX2D_LIBRARY_DIR})
+
+find_package(BOX2D REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_IMAGE_INCLUDE_DIR}
-                    ${SDL2_TTF_INCLUDE_DIR})
+                    ${SDL2_TTF_INCLUDE_DIR}
+                    ${BOX2D_INCLUDE_DIR})
 
 include_directories("fonts")
 include_directories("images")
@@ -30,4 +37,5 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES})
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY}
                              ${SDL2_IMAGE_LIBRARIES}
-                             ${SDL2_TTF_LIBRARIES})
+                             ${SDL2_TTF_LIBRARIES}
+                             ${BOX2D_LIBRARY})
