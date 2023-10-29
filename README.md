@@ -313,11 +313,6 @@ auto main() -> int
     framerateLabel->SetUpdate(
         [](RenderObject *ref, double deltaTime)
         {
-            if (!game->HasFocus())
-            {
-                return;
-            }
-
             auto textRenderObject = dynamic_cast<TextRenderObject *>(ref);
 
             textRenderObject->SetText(std::to_string(game->GetFPS()));
