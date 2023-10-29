@@ -300,26 +300,24 @@ using namespace Handcrank;
 
 auto game = new Game();
 
-auto font = SDL_LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
-                           fonts_Roboto_Roboto_Regular_ttf_len, 30);
+auto robotoFont = SDL_LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                                 fonts_Roboto_Roboto_Regular_ttf_len, 30);
+
+class FPS : public TextRenderObject
+{
+  public:
+    void Start() override { SetFont(robotoFont); }
+    void Update(double deltaTime) override
+    {
+        SetText(std::to_string(game->GetFPS()));
+    }
+};
 
 auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    auto framerateLabel = std::make_unique<TextRenderObject>();
-
-    framerateLabel->SetFont(font);
-
-    framerateLabel->SetUpdate(
-        [](RenderObject *ref, double deltaTime)
-        {
-            auto textRenderObject = dynamic_cast<TextRenderObject *>(ref);
-
-            textRenderObject->SetText(std::to_string(game->GetFPS()));
-        });
-
-    game->AddChildObject(std::move(framerateLabel));
+    game->AddChildObject(std::move(std::make_unique<FPS>()));
 
     return game->Run();
 }
