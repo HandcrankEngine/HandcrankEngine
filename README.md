@@ -29,6 +29,7 @@ auto main() -> int
 1. [Rendering Rectangle Object](#rendering-rectangle-object)
 1. [Creating Custom Objects](#creating-custom-objects)
 1. [Update and FixedUpdate Events](#update-and-fixedupdate-events)
+1. [Inline Update and FixedUpdate Events](#inline-update-and-fixedupdate-events)
 1. [KeyPressed and KeyReleased States](#keypressed-and-keyreleased-states)
 1. [Mouse Position](#mouse-position)
 1. [MouseOver and MouseOut Events](#mouseover-and-mouseout-events)
@@ -118,6 +119,35 @@ auto main() -> int
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::move(std::make_unique<LoopDebugger>()));
+
+    return game->Run();
+}
+```
+
+### Inline Update and FixedUpdate Events
+
+```cpp
+#include <iostream>
+
+#include "Handcrank/Handcrank.hpp"
+
+using namespace Handcrank;
+
+auto game = new Game();
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    auto loopDebugger = std::make_unique<RenderObject>();
+
+    loopDebugger->SetUpdate([](RenderObject *ref, double deltaTime)
+                            { std::cout << "Update" << std::endl; });
+
+    loopDebugger->SetFixedUpdate([](RenderObject *ref, double deltaTime)
+                                 { std::cout << "Fixed Update" << std::endl; });
+
+    game->AddChildObject(std::move(loopDebugger));
 
     return game->Run();
 }
