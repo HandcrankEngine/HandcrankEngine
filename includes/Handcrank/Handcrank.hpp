@@ -605,8 +605,6 @@ void RenderObject::InternalUpdate(double deltaTime)
         hasStarted = true;
     }
 
-    Update(deltaTime);
-
     if (SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
     {
         if (game->mousePressedState[SDL_BUTTON_LEFT])
@@ -636,6 +634,8 @@ void RenderObject::InternalUpdate(double deltaTime)
 
         isInputActive = false;
     }
+
+    Update(deltaTime);
 
     if (updateFunction)
     {
