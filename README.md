@@ -26,7 +26,7 @@ auto main() -> int
 
 ## Examples
 
-1. [Adding Native Objects](#adding-native-objects)
+1. [Rendering Rectangle Object](#rendering-rectangle-object)
 1. [Creating Custom Objects](#creating-custom-objects)
 1. [Update and FixedUpdate Events](#update-and-fixedupdate-events)
 1. [KeyPressed and KeyReleased States](#keypressed-and-keyreleased-states)
@@ -36,7 +36,7 @@ auto main() -> int
 1. [Loading Fonts and Rendering Text](#loading-fonts-and-rendering-text)
 1. [Display FPS](#display-fps)
 
-### Adding Native Objects
+### Rendering Rectangle Object
 
 ```cpp
 #include "Handcrank/Handcrank.hpp"
