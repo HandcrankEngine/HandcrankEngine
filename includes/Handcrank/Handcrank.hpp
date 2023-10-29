@@ -129,6 +129,8 @@ class RenderObject
 
     bool hasStarted = false;
 
+    bool isEnabled = true;
+
     bool isMarkedForDestroy = false;
 
     bool isInputActive = false;
@@ -152,6 +154,10 @@ class RenderObject
     RenderObject(SDL_FRect *_rect) : rect(_rect){};
 
     ~RenderObject();
+
+    void Enable();
+    void Disable();
+    [[nodiscard]] const bool IsEnabled() const;
 
     void AddChildObject(std::unique_ptr<RenderObject> child);
 
@@ -392,7 +398,10 @@ void Game::Update()
 
         if (child != nullptr)
         {
-            child->InternalUpdate(deltaTime);
+            if (child->IsEnabled())
+            {
+                child->InternalUpdate(deltaTime);
+            }
         }
     }
 }
@@ -409,7 +418,10 @@ void Game::FixedUpdate()
 
             if (child != nullptr)
             {
-                child->InternalFixedUpdate(fixedUpdateDeltaTime);
+                if (child->IsEnabled())
+                {
+                    child->InternalFixedUpdate(fixedUpdateDeltaTime);
+                }
             }
         }
 
@@ -440,7 +452,10 @@ void Game::Render()
 
             if (child != nullptr)
             {
-                child->Render(renderer);
+                if (child->IsEnabled())
+                {
+                    child->Render(renderer);
+                }
             }
         }
 
@@ -509,6 +524,12 @@ RenderObject::RenderObject()
 }
 
 inline RenderObject::~RenderObject() = default;
+
+void RenderObject::Enable() { isEnabled = true; }
+
+void RenderObject::Disable() { isEnabled = false; }
+
+const bool RenderObject::IsEnabled() const { return isEnabled; }
 
 void RenderObject::AddChildObject(std::unique_ptr<RenderObject> child)
 {
@@ -667,7 +688,10 @@ void RenderObject::Render(SDL_Renderer *_renderer)
 
         if (child != nullptr)
         {
-            child->Render(_renderer);
+            if (child->IsEnabled())
+            {
+                child->Render(_renderer);
+            }
         }
     }
 }
