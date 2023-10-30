@@ -38,7 +38,7 @@ else
     exit 1
 fi
 
-g++ -std=c++17 -o build/handcrank-engine src/*.cpp -Ifonts -Iimages -Iincludes -Isrc \
+g++ -std=c++17 -o build/handcrank-engine src/*.cpp -Ifonts -Iimages -Iincludes -Iexamples -Isrc \
     -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
     -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
     -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
