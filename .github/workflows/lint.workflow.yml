@@ -32,3 +32,8 @@ jobs:
       - name: Lint library files
         run: |
           cppcheck includes/Handcrank/**/*.hpp
+
+      - name: Lint example files
+        run: |
+          cppcheck examples/**/*.hpp
+          cppcheck src/main.cpp
