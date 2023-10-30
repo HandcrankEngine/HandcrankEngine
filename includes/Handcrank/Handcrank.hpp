@@ -518,7 +518,6 @@ void Game::Quit() { quit = true; }
 
 RenderObject::RenderObject()
 {
-    rect = new SDL_FRect;
     rect->x = 0;
     rect->y = 0;
     rect->w = 100;
