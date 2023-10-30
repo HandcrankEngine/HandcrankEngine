@@ -8,6 +8,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "sdl/SDL_TTF_Utilities.hpp"
+
 #include "Handcrank.hpp"
 
 namespace Handcrank
@@ -47,6 +49,15 @@ class TextRenderObject : public RenderObject
      * @param font Font value to set.
      */
     void SetFont(TTF_Font *_font) { font = _font; }
+
+    /**
+     * Set text font.
+     * @param font Font value to set.
+     */
+    void SetFontRW(const void *mem, int size, int ptSize = 24)
+    {
+        font = SDL_LoadFontRW(mem, size, ptSize);
+    }
 
     /**
      * Set text color.
