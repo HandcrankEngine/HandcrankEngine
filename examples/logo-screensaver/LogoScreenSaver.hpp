@@ -12,7 +12,7 @@ int randomNumberRange(int min, int max)
     return rand() % (max - min + 1) + min;
 }
 
-class LoadScreenSaver : public ImageRenderObject
+class LogoScreenSaver : public ImageRenderObject
 {
   protected:
     int xDirection = rand() % 1 ? -1 : 1;

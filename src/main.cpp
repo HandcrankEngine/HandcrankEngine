@@ -1,7 +1,7 @@
 #include "Handcrank/Handcrank.hpp"
 
 #include "../examples/fps/FPS.hpp"
-#include "../examples/logo-screensaver/LoadScreenSaver.hpp"
+#include "../examples/logo-screensaver/LogoScreenSaver.hpp"
 
 using namespace Handcrank;
 
@@ -13,7 +13,7 @@ auto main() -> int
 
     game->AddChildObject(std::move(std::make_unique<FPS>()));
 
-    game->AddChildObject(std::move(std::make_unique<LoadScreenSaver>()));
+    game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
 
     return game->Run();
 }
