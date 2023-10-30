@@ -641,6 +641,19 @@ void RenderObject::InternalUpdate(double deltaTime)
     {
         updateFunction(this, deltaTime);
     }
+
+    for (auto &iter : children)
+    {
+        auto child = iter.get();
+
+        if (child != nullptr)
+        {
+            if (child->IsEnabled())
+            {
+                child->InternalUpdate(deltaTime);
+            }
+        }
+    }
 }
 
 void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
@@ -650,6 +663,19 @@ void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
     if (fixedUpdateFunction)
     {
         fixedUpdateFunction(this, fixedDeltaTime);
+    }
+
+    for (auto &iter : children)
+    {
+        auto child = iter.get();
+
+        if (child != nullptr)
+        {
+            if (child->IsEnabled())
+            {
+                child->InternalFixedUpdate(fixedDeltaTime);
+            }
+        }
     }
 }
 
