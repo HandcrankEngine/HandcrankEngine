@@ -25,16 +25,18 @@ class ImageRenderObject : public RenderObject
 
   public:
     explicit ImageRenderObject() : RenderObject() {}
-    explicit ImageRenderObject(SDL_FRect *_rect) : RenderObject(_rect) {}
+    explicit ImageRenderObject(SDL_FRect *rect) : RenderObject(rect) {}
 
     ~ImageRenderObject() { SDL_DestroyTexture(texture); }
 
     /**
-     * Load textures by path.
-     * @param path Path to a local texture.
+     * Load texture from a path.
+     *
+     * @param renderer A structure representing rendering state.
+     * @param path File path to texture file.
      *
      * @deprecated DEVELOPMENT USE ONLY! Use LoadTextureRW to load textures in a
-     * final build.
+     * release build.
      */
     void LoadTexture(SDL_Renderer *renderer, const char *path)
     {
@@ -44,10 +46,11 @@ class ImageRenderObject : public RenderObject
     }
 
     /**
-     * Load textures from memory buffer.
-     * @param mem Pointer to a read-only buffer. (texture loaded in via header
-     * file)
-     * @param size Length of a buffer in bytes.
+     * Load texture from a read-only buffer.
+     *
+     * @param renderer A structure representing rendering state.
+     * @param mem A pointer to a read-only buffer.
+     * @param size The buffer size, in bytes.
      */
     void LoadTextureRW(SDL_Renderer *renderer, const void *mem, int size)
     {
@@ -68,7 +71,7 @@ class ImageRenderObject : public RenderObject
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(SDL_Rect *_srcRect) { srcRect = _srcRect; }
+    void SetSrcRect(SDL_Rect *srcRect) { this->srcRect = srcRect; }
 
     void SetSrcRect(int x, int y, int w, int h)
     {
@@ -85,10 +88,12 @@ class ImageRenderObject : public RenderObject
         this->srcRect->h = h;
     }
 
-    void SetFlip(SDL_RendererFlip _flip) { flip = _flip; }
+    void SetFlip(SDL_RendererFlip flip) { this->flip = flip; }
 
     /**
      * Render image to the scene.
+     *
+     * @param renderer A structure representing rendering state.
      */
     void Render(SDL_Renderer *renderer) override
     {
@@ -99,7 +104,7 @@ class ImageRenderObject : public RenderObject
     }
 
     /**
-     * Cleanup function to run after the RenderObject is unloaded.
+     * Cleanup function to run after the ImageRenderObject is unloaded.
      */
     void Clean() override { SDL_DestroyTexture(texture); }
 };

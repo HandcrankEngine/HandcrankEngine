@@ -11,6 +11,9 @@
  *
  * @param renderer A structure representing rendering state.
  * @param path File path to texture file.
+ *
+ * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in a
+ * release build.
  */
 extern SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
 {
