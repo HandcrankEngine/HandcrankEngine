@@ -3,6 +3,10 @@
 
 #pragma once
 
+#define HANDCRANK_VERSION_MAJOR 1
+#define HANDCRANK_VERSION_MINOR 0
+#define HANDCRANK_VERSION_PATCH 0
+
 #include <chrono>
 #include <iostream>
 #include <list>
