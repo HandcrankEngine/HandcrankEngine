@@ -8,10 +8,10 @@ printf "Running Unit Tests\n"
 
 SDL2_PATH=""
 
-if [ -d "/opt/homebrew/Cellar/sdl2/2.28.4" ]; then
-    SDL2_PATH="/opt/homebrew/Cellar/sdl2/2.28.4"
-elif [ -d "/tmp/.sdl/SDL2-2.28.4" ]; then
-    SDL2_PATH="/tmp/.sdl/SDL2-2.28.4"
+if [ -d "/opt/homebrew/Cellar/sdl2/2.28.5" ]; then
+    SDL2_PATH="/opt/homebrew/Cellar/sdl2/2.28.5"
+elif [ -d "/tmp/.sdl/SDL2-2.28.5" ]; then
+    SDL2_PATH="/tmp/.sdl/SDL2-2.28.5"
 else
     echo "SDL2 not found!"
 
