@@ -11,6 +11,9 @@
  *
  * @param path File path to font file.
  * @param ptSize The size of the font.
+ *
+ * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load
+ * fonts in a release build.
  */
 extern TTF_Font *SDL_LoadFont(const char *path, int ptSize = 24)
 {
