@@ -100,7 +100,7 @@ class TextRenderObject : public RenderObject
             return;
         }
 
-        textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font, this->text.c_str(), color);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
