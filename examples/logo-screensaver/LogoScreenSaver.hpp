@@ -29,22 +29,22 @@ class LogoScreenSaver : public ImageRenderObject
         SetRect(randomNumberRange(0, game->GetWidth() - 200),
                 randomNumberRange(0, game->GetWidth() - 200));
     }
-    void Update(double deltaTime) override
+    void Update(const double deltaTime) override
     {
         if (!game->HasFocus())
         {
             return;
         }
 
-        auto transformedRect = GetTransformedRect();
+        const auto transformedRect = GetTransformedRect();
 
-        auto rect = GetRect();
+        const auto rect = GetRect();
 
-        auto minX = 0;
-        auto minY = 0;
+        const auto minX = 0;
+        const auto minY = 0;
 
-        auto maxX = game->GetWidth() - transformedRect->w;
-        auto maxY = game->GetHeight() - transformedRect->h;
+        const auto maxX = game->GetWidth() - transformedRect->w;
+        const auto maxY = game->GetHeight() - transformedRect->h;
 
         rect->x += movementSpeed * xDirection * deltaTime;
         rect->y += movementSpeed * yDirection * deltaTime;

@@ -29,7 +29,7 @@ class TextRenderObject : public RenderObject
     SDL_Texture *textTexture;
 
   public:
-    explicit TextRenderObject() : RenderObject()
+    explicit TextRenderObject()
     {
         if (!TTF_WasInit())
         {
@@ -60,7 +60,7 @@ class TextRenderObject : public RenderObject
      * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load
      * fonts in a release build.
      */
-    void LoadFont(const char *path, int ptSize = 24)
+    void LoadFont(const char *path, const int ptSize = 24)
     {
         font = SDL_LoadFont(path, ptSize);
     }
@@ -72,7 +72,7 @@ class TextRenderObject : public RenderObject
      * @param size The buffer size, in bytes.
      * @param ptSize The size of the font.
      */
-    void LoadFontRW(const void *mem, int size, int ptSize = 24)
+    void LoadFontRW(const void *mem, const int size, const int ptSize = 24)
     {
         font = SDL_LoadFontRW(mem, size, ptSize);
     }
@@ -82,7 +82,7 @@ class TextRenderObject : public RenderObject
      *
      * @param color Color value to set.
      */
-    void SetColor(SDL_Color color) { this->color = color; }
+    void SetColor(const SDL_Color color) { this->color = color; }
 
     /**
      * Set text content.
