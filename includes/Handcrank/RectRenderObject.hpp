@@ -19,7 +19,7 @@ class RectRenderObject : public RenderObject
     SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
   public:
-    explicit RectRenderObject() : RenderObject() {}
+    explicit RectRenderObject() {}
     explicit RectRenderObject(SDL_FRect *rect) : RenderObject(rect) {}
 
     ~RectRenderObject() = default;
@@ -29,7 +29,7 @@ class RectRenderObject : public RenderObject
      *
      * @param borderColor Color value to set.
      */
-    void SetBorderColor(SDL_Color borderColor)
+    void SetBorderColor(const SDL_Color borderColor)
     {
         if (this->borderColor == nullptr)
         {
@@ -42,7 +42,7 @@ class RectRenderObject : public RenderObject
         this->borderColor->a = borderColor.a;
     }
 
-    void SetBorderColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    void SetBorderColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
     {
         if (borderColor == nullptr)
         {
@@ -55,7 +55,7 @@ class RectRenderObject : public RenderObject
         borderColor->a = a;
     }
 
-    SDL_Color *GetBorderColor()
+    SDL_Color *GetBorderColor() const
     {
         if (borderColor == nullptr)
         {
@@ -70,7 +70,7 @@ class RectRenderObject : public RenderObject
      *
      * @param fillColor Color value to set.
      */
-    void SetFillColor(SDL_Color fillColor)
+    void SetFillColor(const SDL_Color fillColor)
     {
         if (this->fillColor == nullptr)
         {
@@ -83,7 +83,7 @@ class RectRenderObject : public RenderObject
         this->fillColor->a = fillColor.a;
     }
 
-    void SetFillColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    void SetFillColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
     {
         if (fillColor == nullptr)
         {
@@ -96,7 +96,7 @@ class RectRenderObject : public RenderObject
         fillColor->a = a;
     }
 
-    SDL_Color *GetFillColor()
+    SDL_Color *GetFillColor() const
     {
         if (fillColor == nullptr)
         {

@@ -24,7 +24,7 @@ class ImageRenderObject : public RenderObject
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   public:
-    explicit ImageRenderObject() : RenderObject() {}
+    explicit ImageRenderObject() {}
     explicit ImageRenderObject(SDL_FRect *rect) : RenderObject(rect) {}
 
     ~ImageRenderObject() { SDL_DestroyTexture(texture); }
@@ -52,14 +52,14 @@ class ImageRenderObject : public RenderObject
      * @param mem A pointer to a read-only buffer.
      * @param size The buffer size, in bytes.
      */
-    void LoadTextureRW(SDL_Renderer *renderer, const void *mem, int size)
+    void LoadTextureRW(SDL_Renderer *renderer, const void *mem, const int size)
     {
         texture = SDL_LoadTextureRW(renderer, mem, size);
 
         UpdateRectSizeFromTexture();
     }
 
-    void UpdateRectSizeFromTexture()
+    void UpdateRectSizeFromTexture() const
     {
         int textureWidth;
         int textureHeight;
@@ -73,7 +73,7 @@ class ImageRenderObject : public RenderObject
 
     void SetSrcRect(SDL_Rect *srcRect) { this->srcRect = srcRect; }
 
-    void SetSrcRect(int x, int y, int w, int h)
+    void SetSrcRect(const int x, const int y, const int w, const int h)
     {
         if (srcRect == nullptr)
         {
@@ -88,7 +88,7 @@ class ImageRenderObject : public RenderObject
         this->srcRect->h = h;
     }
 
-    void SetFlip(SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
 
     /**
      * Render image to the scene.

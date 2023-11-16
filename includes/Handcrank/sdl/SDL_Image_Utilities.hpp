@@ -44,7 +44,7 @@ extern SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
  * @param size The buffer size, in bytes.
  */
 extern SDL_Texture *SDL_LoadTextureRW(SDL_Renderer *renderer, const void *mem,
-                                      int size)
+                                      const int size)
 {
     SDL_RWops *rw = SDL_RWFromConstMem(mem, size);
 

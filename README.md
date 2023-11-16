@@ -104,11 +104,11 @@ class LoopDebugger : public RenderObject
 {
 
   public:
-    void Update(double deltaTime) override
+    void Update(const double deltaTime) override
     {
         std::cout << "Update" << std::endl;
     }
-    void FixedUpdate(double deltaTime) override
+    void FixedUpdate(const double deltaTime) override
     {
         std::cout << "Fixed Update" << std::endl;
     }
@@ -141,10 +141,10 @@ auto main() -> int
 
     auto loopDebugger = std::make_unique<RenderObject>();
 
-    loopDebugger->SetUpdate([](RenderObject *ref, double deltaTime)
+    loopDebugger->SetUpdate([](RenderObject *ref, const double deltaTime)
                             { std::cout << "Update" << std::endl; });
 
-    loopDebugger->SetFixedUpdate([](RenderObject *ref, double deltaTime)
+    loopDebugger->SetFixedUpdate([](RenderObject *ref, const double deltaTime)
                                  { std::cout << "Fixed Update" << std::endl; });
 
     game->AddChildObject(std::move(loopDebugger));
@@ -168,7 +168,7 @@ class Button : public RectRenderObject
 
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
-    void Update(double deltaTime) override
+    void Update(const double deltaTime) override
     {
         if (game->keyPressedState[SDLK_SPACE])
         {
@@ -206,7 +206,7 @@ class Cursor : public RectRenderObject
 
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
-    void Update(double deltaTime) override
+    void Update(const double deltaTime) override
     {
         SetRect(game->mousePosition->x - 50, game->mousePosition->y - 50);
     }
@@ -337,7 +337,7 @@ class FPS : public TextRenderObject
 {
   public:
     void Start() override { SetFont(robotoFont); }
-    void Update(double deltaTime) override
+    void Update(const double deltaTime) override
     {
         SetText(std::to_string(game->GetFPS()));
     }
