@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -15,6 +16,8 @@ int main()
         assert(a.x == 1);
         assert(a.y == 2);
         assert(a.z == 3);
+
+        std::cout << ".";
     }
     {
         // Copy a Vector3
@@ -24,6 +27,8 @@ int main()
         assert(b.x == 1);
         assert(b.y == 2);
         assert(b.z == 3);
+
+        std::cout << ".";
     }
 
     {
@@ -35,6 +40,8 @@ int main()
         assert(c.x == 4);
         assert(c.y == 6);
         assert(c.z == 8);
+
+        std::cout << ".";
     }
 
     {
@@ -46,6 +53,8 @@ int main()
         assert(c.x == -2);
         assert(c.y == -2);
         assert(c.z == -2);
+
+        std::cout << ".";
     }
 
     {
@@ -56,6 +65,8 @@ int main()
         assert(b.x == 0.5f);
         assert(b.y == 1);
         assert(b.z == 1.5f);
+
+        std::cout << ".";
     }
 
     {
@@ -72,6 +83,8 @@ int main()
 
             assert(message.find("divide by zero") != std::string::npos);
         }
+
+        std::cout << ".";
     }
 
     {
@@ -82,6 +95,8 @@ int main()
         assert(b.x == 2);
         assert(b.y == 4);
         assert(b.z == 6);
+
+        std::cout << ".";
     }
 
     {
@@ -93,6 +108,8 @@ int main()
         assert(c.x == 1);
         assert(c.y == 2);
         assert(c.z == 3);
+
+        std::cout << ".";
     }
 
     {
@@ -104,6 +121,8 @@ int main()
         assert(c.x == 2);
         assert(c.y == 3);
         assert(c.z == 4);
+
+        std::cout << ".";
     }
 
     {
@@ -115,6 +134,8 @@ int main()
         assert(c.x == 3);
         assert(c.y == 4);
         assert(c.z == 5);
+
+        std::cout << ".";
     }
 
     {
@@ -126,6 +147,8 @@ int main()
         assert(c.x == 4);
         assert(c.y == 5);
         assert(c.z == 6);
+
+        std::cout << ".";
     }
 
     {
@@ -137,6 +160,8 @@ int main()
 
         assert(b.x == a.x);
         assert(b.y == a.y);
+
+        std::cout << ".";
     }
 
     {
@@ -148,6 +173,8 @@ int main()
 
         assert(b.x == a.x);
         assert(b.y == a.y);
+
+        std::cout << ".";
     }
 
     {
@@ -159,6 +186,8 @@ int main()
 
         assert(b.x == a.x);
         assert(b.y == a.y);
+
+        std::cout << ".";
     }
 
     {
@@ -170,6 +199,8 @@ int main()
 
         assert(b.x == a.x);
         assert(b.y == a.y);
+
+        std::cout << ".";
     }
 
     return 0;

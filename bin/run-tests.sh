@@ -18,18 +18,21 @@ COLOROFF=$(tput sgr0)
 
     find ./tests -type f -name "*.cpp" | while read -r FILE; do
 
-        printf "Running tests in %s ... " "${FILE}"
+        printf " - Running %s " "${FILE}"
 
-        g++ -std=c++17 -o test "${FILE}" -Iincludes \
+        if ! g++ -std=c++17 -o test "${FILE}" -Iincludes \
             -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
             -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
             -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
-            -lSDL2
+            -lSDL2; then
+            printf "%sCOMPILATION FAILED%s\n" "${REDON}" "${COLOROFF}"
+            exit 1
+        fi
 
         if ./test; then
-            printf "%sPASS%s\n" "${GREENON}" "${COLOROFF}"
+            printf "%s PASS%s\n" "${GREENON}" "${COLOROFF}"
         else
-            printf "%FAIL%s\n" "${REDON}" "${COLOROFF}"
+            printf "%s FAIL%s\n" "${REDON}" "${COLOROFF}"
         fi
 
         rm test
