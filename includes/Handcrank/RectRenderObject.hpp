@@ -42,7 +42,8 @@ class RectRenderObject : public RenderObject
         this->borderColor->a = borderColor.a;
     }
 
-    void SetBorderColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
+    void SetBorderColor(const Uint8 r, const Uint8 g, const Uint8 b,
+                        const Uint8 a)
     {
         if (borderColor == nullptr)
         {
@@ -83,7 +84,8 @@ class RectRenderObject : public RenderObject
         this->fillColor->a = fillColor.a;
     }
 
-    void SetFillColor(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a)
+    void SetFillColor(const Uint8 r, const Uint8 g, const Uint8 b,
+                      const Uint8 a)
     {
         if (fillColor == nullptr)
         {

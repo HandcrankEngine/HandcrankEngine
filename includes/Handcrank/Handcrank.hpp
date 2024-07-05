@@ -156,7 +156,7 @@ class RenderObject
     float z;
 
     RenderObject();
-    explicit RenderObject(SDL_FRect *rect) : rect(rect){}
+    explicit RenderObject(SDL_FRect *rect) : rect(rect) {}
 
     ~RenderObject();
 
@@ -168,7 +168,8 @@ class RenderObject
 
     void SetStart(const std::function<void(RenderObject *)> &_func);
     void SetUpdate(const std::function<void(RenderObject *, double)> &_func);
-    void SetFixedUpdate(const std::function<void(RenderObject *, double)> &_func);
+    void
+    SetFixedUpdate(const std::function<void(RenderObject *, double)> &_func);
 
     virtual void Start();
     virtual void Update(double deltaTime);
@@ -264,7 +265,10 @@ void Game::SetScreenSize(const int _width, const int _height)
     dpiScaleY = height / _height;
 }
 
-inline void Game::SetTitle(const char *name) const { SDL_SetWindowTitle(window, name); }
+inline void Game::SetTitle(const char *name) const
+{
+    SDL_SetWindowTitle(window, name);
+}
 
 void Game::SetClearColor(const SDL_Color color) { this->clearColor = color; }
 
@@ -539,7 +543,8 @@ void RenderObject::AddChildObject(std::unique_ptr<RenderObject> child)
     children.push_back(std::move(child));
 }
 
-void RenderObject::SetStart(const std::function<void(RenderObject *)> &_func = nullptr)
+void RenderObject::SetStart(
+    const std::function<void(RenderObject *)> &_func = nullptr)
 {
     if (startFunction)
     {
@@ -676,7 +681,8 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
 
 void RenderObject::SetRect(SDL_FRect *_rect) { rect = _rect; }
 
-inline void RenderObject::SetRect(const float x, const float y, const float w, const float h) const
+inline void RenderObject::SetRect(const float x, const float y, const float w,
+                                  const float h) const
 {
     rect->x = x;
     rect->y = y;
@@ -742,7 +748,8 @@ template <typename T> std::vector<T *> RenderObject::GetChildrenByType()
 
     for (auto &iter : children)
     {
-        if (auto child = iter.get(); child != nullptr && typeid(*child) == typeid(T))
+        if (auto child = iter.get();
+            child != nullptr && typeid(*child) == typeid(T))
         {
             auto castedChild = dynamic_cast<T *>(child);
 

@@ -39,7 +39,8 @@ extern TTF_Font *SDL_LoadFont(const char *path, const int ptSize = 24)
  * @param size The buffer size, in bytes.
  * @param ptSize The size of the font.
  */
-extern TTF_Font *SDL_LoadFontRW(const void *mem, const int size, const int ptSize = 24)
+extern TTF_Font *SDL_LoadFontRW(const void *mem, const int size,
+                                const int ptSize = 24)
 {
     if (!TTF_WasInit())
     {
