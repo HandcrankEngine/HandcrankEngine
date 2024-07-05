@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ -d "/opt/homebrew/Cellar/sdl2/2.30.2" ]; then
-    export SDL2_PATH="/opt/homebrew/Cellar/sdl2/2.30.2"
-elif [ -d "/tmp/.sdl/SDL2-2.30.2" ]; then
-    export SDL2_PATH="/tmp/.sdl/SDL2-2.30.2"
+if [ -d "/opt/homebrew/Cellar/sdl2/2.30.4" ]; then
+    export SDL2_PATH="/opt/homebrew/Cellar/sdl2/2.30.4"
+elif [ -d "/tmp/.sdl/SDL2-2.30.4" ]; then
+    export SDL2_PATH="/tmp/.sdl/SDL2-2.30.4"
 else
     echo "SDL2 not found!"
 
