@@ -389,3 +389,36 @@ auto main() -> int
     return game->Run();
 }
 ```
+
+## Dependencies
+
+```bash
+brew install cmake
+brew install clang-format
+brew install SDL2
+brew install SDL2_image
+brew install SDL2_ttf
+```
+
+## Build
+
+### Native
+
+Using CMake
+
+```bash
+cmake .
+make
+```
+
+or using g++
+
+```bash
+./bin/build.sh
+```
+
+## Format
+
+```bash
+clang-format -i src/*.cpp includes/**/*.hpp tests/**/*.cpp
+```
