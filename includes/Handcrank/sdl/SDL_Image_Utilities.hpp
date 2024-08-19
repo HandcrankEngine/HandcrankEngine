@@ -15,7 +15,7 @@
  * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in a
  * release build.
  */
-extern SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
+SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
 {
     SDL_Surface *surface = IMG_Load(path);
 
@@ -43,8 +43,8 @@ extern SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
  * @param mem A pointer to a read-only buffer.
  * @param size The buffer size, in bytes.
  */
-extern SDL_Texture *SDL_LoadTextureRW(SDL_Renderer *renderer, const void *mem,
-                                      const int size)
+SDL_Texture *SDL_LoadTextureRW(SDL_Renderer *renderer, const void *mem,
+                               const int size)
 {
     SDL_RWops *rw = SDL_RWFromConstMem(mem, size);
 

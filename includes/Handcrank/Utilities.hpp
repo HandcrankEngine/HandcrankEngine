@@ -5,14 +5,12 @@
 
 #include <string>
 
-extern std::string LeftPad(const std::string &content, const char pad,
-                           int length)
+std::string LeftPad(const std::string &content, const char pad, int length)
 {
     return std::string(length - content.size(), pad) + content;
 }
 
-extern std::string RightPad(const std::string &content, const char pad,
-                            int length)
+std::string RightPad(const std::string &content, const char pad, int length)
 {
     return content + std::string(length - content.size(), pad);
 }
