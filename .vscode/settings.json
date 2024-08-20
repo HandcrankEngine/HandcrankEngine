@@ -3,10 +3,5 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "xaver.clang-format"
   },
-  "files.associations": {
-    "*.h": "c",
-    "*.c": "c",
-    "*.hpp": "cpp",
-    "*.cpp": "cpp"
-  }
+  "C_Cpp.autoAddFileAssociations": false
 }
