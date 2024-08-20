@@ -51,6 +51,12 @@ or using g++
 ./bin/build.sh
 ```
 
+## Documentation
+
+```bash
+$ doxygen
+```
+
 ## Format
 
 ```bash
