@@ -5,13 +5,13 @@
 
 #include <SDL.h>
 
-extern SDL_FRect *PositionRect(const SDL_FRect *rect, const SDL_FRect *parent)
+SDL_FRect *PositionRect(const SDL_FRect *rect, const SDL_FRect *parent)
 {
     return new SDL_FRect{rect->x + parent->x, rect->y + parent->y, rect->w,
                          rect->h};
 }
 
-extern SDL_FRect *ScaleRect(const SDL_FRect *rect, const float scale)
+SDL_FRect *ScaleRect(const SDL_FRect *rect, const float scale)
 {
     return new SDL_FRect{rect->x, rect->y, rect->w * scale, rect->h * scale};
 }
