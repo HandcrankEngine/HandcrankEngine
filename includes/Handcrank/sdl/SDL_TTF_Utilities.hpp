@@ -6,6 +6,9 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+namespace Handcrank
+{
+
 /**
  * Load font from a path.
  *
@@ -55,3 +58,5 @@ TTF_Font *SDL_LoadFontRW(const void *mem, const int size, const int ptSize = 24)
 
     return font;
 }
+
+} // namespace Handcrank

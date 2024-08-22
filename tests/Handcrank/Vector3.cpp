@@ -6,6 +6,8 @@
 
 #include "Handcrank/Vector3.hpp"
 
+using namespace Handcrank;
+
 int main()
 {
 

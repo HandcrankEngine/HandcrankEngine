@@ -6,6 +6,9 @@
 #include <algorithm>
 #include <string>
 
+namespace Handcrank
+{
+
 std::string LeftPad(const std::string &content, const char pad, int length)
 {
     return std::string(length - content.size(), pad) + content;
@@ -22,3 +25,5 @@ float InverseLerp(float a, float b, float v)
 {
     return std::clamp(((v - a) / (b - a)), 0.0f, 1.0f);
 }
+
+} // namespace Handcrank
