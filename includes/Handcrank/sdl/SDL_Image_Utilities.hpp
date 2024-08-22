@@ -6,6 +6,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+namespace Handcrank
+{
+
 /**
  * Load texture from a path.
  *
@@ -66,3 +69,5 @@ SDL_Texture *SDL_LoadTextureRW(SDL_Renderer *renderer, const void *mem,
 
     return texture;
 }
+
+} // namespace Handcrank
