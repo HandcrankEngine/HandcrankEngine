@@ -4,6 +4,8 @@
 
 #include "Handcrank/Utilities.hpp"
 
+using namespace Handcrank;
+
 int main()
 {
 
