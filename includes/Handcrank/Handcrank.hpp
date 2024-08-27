@@ -75,8 +75,6 @@ class Game
 
     std::list<std::shared_ptr<RenderObject>> children;
 
-    Game();
-
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
     [[nodiscard]] SDL_Window *GetWindow() const;
@@ -209,18 +207,6 @@ class RenderObject
     void Destroy();
 };
 
-Game::Game()
-{
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, width, height,
-                              SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-
-    renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-    SetScreenSize(width, height);
-}
-
 void Game::AddChildObject(std::shared_ptr<RenderObject> child)
 {
     child->parent = nullptr;
@@ -242,6 +228,27 @@ inline bool Game::Setup()
     {
         return false;
     }
+
+    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED, width, height,
+                              SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+
+    if (window == NULL)
+    {
+        SDL_Log("SDL_CreateWindow %s", SDL_GetError());
+        return false;
+    }
+
+    renderer = SDL_CreateRenderer(
+        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+    if (renderer == NULL)
+    {
+        SDL_Log("SDL_CreateRenderer %s", SDL_GetError());
+        return false;
+    }
+
+    SetScreenSize(width, height);
 
     return true;
 }
