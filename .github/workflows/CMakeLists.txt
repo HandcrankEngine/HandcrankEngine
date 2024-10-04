@@ -28,10 +28,10 @@ include_directories(
 
 include_directories("../../fonts")
 include_directories("../../images")
-include_directories("../../includes")
+include_directories("../../include")
 
 file(GLOB_RECURSE SOURCES "../../src/*.cpp")
-file(GLOB_RECURSE INCLUDES "../../includes/*.hpp")
+file(GLOB_RECURSE INCLUDES "../../include/*.hpp")
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES})
 

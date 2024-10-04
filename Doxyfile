@@ -3,7 +3,7 @@ OUTPUT_DIRECTORY = docs
 PROJECT_NAME = "Handcrank Engine"
 PROJECT_NUMBER = 1.0
 
-INPUT = includes/Handcrank
+INPUT = include/Handcrank
 
 FILE_PATTERNS = *.hpp *.h
 
