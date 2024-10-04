@@ -20,7 +20,7 @@ COLOROFF=$(tput sgr0)
 
         printf " - Running %s " "${FILE}"
 
-        if ! g++ -std=c++17 -o test "${FILE}" -Iincludes \
+        if ! g++ -std=c++17 -o test "${FILE}" -Iinclude \
             -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
             -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
             -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \

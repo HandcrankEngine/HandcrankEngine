@@ -60,7 +60,7 @@ $ doxygen
 ## Format
 
 ```bash
-clang-format -i src/*.cpp includes/**/*.hpp tests/**/*.cpp
+clang-format -i src/*.cpp include/**/*.hpp tests/**/*.cpp
 ```
 
 ## Examples
