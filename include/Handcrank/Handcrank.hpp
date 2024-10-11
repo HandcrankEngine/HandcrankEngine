@@ -8,6 +8,7 @@
 #define HANDCRANK_VERSION_PATCH 0
 
 #include <chrono>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <memory>
