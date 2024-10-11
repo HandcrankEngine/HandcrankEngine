@@ -16,6 +16,20 @@
       "cStandard": "c17",
       "cppStandard": "c++17",
       "intelliSenseMode": "macos-clang-arm64"
+    },
+    {
+      "name": "Win32",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "C:/sdl/SDL2-2.30.8/include",
+        "C:/sdl/SDL2_image-2.8.2/include",
+        "C:/sdl/SDL2_ttf-2.22.0"
+      ],
+      "defines": [],
+      "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.42.34321/bin/Hostx64/x64/cl.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "windows-msvc-x64"
     }
   ],
   "version": 4
