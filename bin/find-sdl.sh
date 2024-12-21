@@ -1,19 +1,19 @@
 #!/bin/bash
 
-if [ -d "/opt/homebrew/Cellar/sdl2/2.30.8" ]; then
-    export SDL2_PATH="/opt/homebrew/Cellar/sdl2/2.30.8"
-elif [ -d "/tmp/.sdl/SDL2-2.30.8" ]; then
-    export SDL2_PATH="/tmp/.sdl/SDL2-2.30.8"
+if [ -d "/opt/homebrew/Cellar/sdl2/2.30.10" ]; then
+    export SDL2_PATH="/opt/homebrew/Cellar/sdl2/2.30.10"
+elif [ -d "/tmp/.sdl/SDL2-2.30.10" ]; then
+    export SDL2_PATH="/tmp/.sdl/SDL2-2.30.10"
 else
     echo "SDL2 not found!"
 
     exit 1
 fi
 
-if [ -d "/opt/homebrew/Cellar/sdl2_image/2.8.2_2" ]; then
-    export SDL2_IMAGE_PATH="/opt/homebrew/Cellar/sdl2_image/2.8.2_2"
-elif [ -d "/tmp/.sdl/SDL2_image-2.8.2" ]; then
-    export SDL2_IMAGE_PATH="/tmp/.sdl/SDL2_image-2.8.2"
+if [ -d "/opt/homebrew/Cellar/sdl2_image/2.8.3" ]; then
+    export SDL2_IMAGE_PATH="/opt/homebrew/Cellar/sdl2_image/2.8.3"
+elif [ -d "/tmp/.sdl/SDL2_image-2.8.3" ]; then
+    export SDL2_IMAGE_PATH="/tmp/.sdl/SDL2_image-2.8.3"
 else
     echo "SDL2_image not found!"
 
