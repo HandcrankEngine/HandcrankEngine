@@ -7,6 +7,10 @@
 [![Lint](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/lint.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/lint.workflow.yml)
 [![Tests](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/test.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/test.workflow.yml)
 
+## Demo
+
+https://github.com/user-attachments/assets/8b862681-2d82-4766-b0bf-b3084795bf17
+
 ## Quick Start
 
 ```cpp
