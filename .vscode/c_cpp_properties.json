@@ -4,9 +4,9 @@
       "name": "Mac",
       "includePath": [
         "${workspaceFolder}/**",
-        "/opt/homebrew/Cellar/sdl2/2.30.10/include/SDL2",
-        "/opt/homebrew/Cellar/sdl2_image/2.8.3/include/SDL2",
-        "/opt/homebrew/Cellar/sdl2_ttf/2.22.0/include/SDL2"
+        "/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2",
+        "/opt/homebrew/Cellar/sdl2_image/2.8.4/include/SDL2",
+        "/opt/homebrew/Cellar/sdl2_ttf/2.24.0/include/SDL2"
       ],
       "defines": [],
       "macFrameworkPath": [
@@ -21,9 +21,9 @@
       "name": "Win32",
       "includePath": [
         "${workspaceFolder}/**",
-        "C:/sdl/SDL2-2.30.10/include",
-        "C:/sdl/SDL2_image-2.8.3/include",
-        "C:/sdl/SDL2_ttf-2.22.0"
+        "C:/sdl/SDL2-2.30.11/include",
+        "C:/sdl/SDL2_image-2.8.4/include",
+        "C:/sdl/SDL2_ttf-2.24.0"
       ],
       "defines": [],
       "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.42.34321/bin/Hostx64/x64/cl.exe",
