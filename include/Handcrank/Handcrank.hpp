@@ -337,9 +337,9 @@ void Game::HandleInput()
 
     while (SDL_PollEvent(&event) != 0)
     {
-        SDL_Keycode keyCode = event.key.keysym.sym;
+        auto keyCode = event.key.keysym.sym;
 
-        Uint8 mouseButtonIndex = event.button.button;
+        auto mouseButtonIndex = event.button.button;
 
         switch (event.type)
         {
@@ -513,7 +513,7 @@ void Game::Clean()
         }
     }
 
-    for (int i = 0; i < TTF_WasInit(); i += 1)
+    for (auto i = 0; i < TTF_WasInit(); i += 1)
     {
         TTF_Quit();
     }
