@@ -76,6 +76,9 @@ class Game
 
     std::list<std::shared_ptr<RenderObject>> children;
 
+    Game();
+    ~Game();
+
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
     [[nodiscard]] SDL_Window *GetWindow() const;
@@ -208,6 +211,10 @@ class RenderObject
     void Destroy();
 };
 
+Game::Game() { Setup(); }
+
+inline Game::~Game() = default;
+
 void Game::AddChildObject(std::shared_ptr<RenderObject> child)
 {
     child->parent = nullptr;
@@ -230,6 +237,11 @@ inline bool Game::Setup()
         return false;
     }
 
+    if (window != NULL)
+    {
+        SDL_DestroyWindow(window);
+    }
+
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED, width, height,
                               SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
@@ -238,6 +250,11 @@ inline bool Game::Setup()
     {
         SDL_Log("SDL_CreateWindow %s", SDL_GetError());
         return false;
+    }
+
+    if (renderer != NULL)
+    {
+        SDL_DestroyRenderer(renderer);
     }
 
     renderer = SDL_CreateRenderer(
@@ -296,11 +313,6 @@ void Game::SetFrameRate(double _frameRate) { frameRate = _frameRate; }
 
 int Game::Run()
 {
-    if (!Setup())
-    {
-        return 1;
-    }
-
     while (!GetQuit())
     {
         Loop();
