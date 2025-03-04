@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 namespace Handcrank
 {
@@ -29,7 +29,7 @@ SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
 
     auto texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (!texture)
     {
@@ -49,9 +49,9 @@ SDL_Texture *SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
 SDL_Texture *SDL_LoadTextureRW(SDL_Renderer *renderer, const void *mem,
                                const int size)
 {
-    auto rw = SDL_RWFromConstMem(mem, size);
+    auto rw = SDL_IOFromConstMem(mem, size);
 
-    auto surface = IMG_Load_RW(rw, 1);
+    auto surface = IMG_Load_IO(rw, 1);
 
     if (!surface)
     {
@@ -60,7 +60,7 @@ SDL_Texture *SDL_LoadTextureRW(SDL_Renderer *renderer, const void *mem,
 
     auto texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (!texture)
     {

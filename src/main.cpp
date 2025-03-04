@@ -9,7 +9,7 @@ auto game = new Game();
 
 auto main() -> int
 {
-    game->SetTitle("Handcrank Engine");
+    game->SetTitle("Handcrank Engine / SDL3");
 
     game->AddChildObject(std::move(std::make_unique<FPS>()));
 

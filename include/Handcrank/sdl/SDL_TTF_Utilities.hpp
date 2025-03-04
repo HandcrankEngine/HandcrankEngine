@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 namespace Handcrank
 {
@@ -49,7 +49,7 @@ TTF_Font *SDL_LoadFontRW(const void *mem, const int size, const int ptSize = 24)
         TTF_Init();
     }
 
-    auto font = TTF_OpenFontRW(SDL_RWFromConstMem(mem, size), 1, ptSize);
+    auto font = TTF_OpenFontIO(SDL_IOFromConstMem(mem, size), 1, ptSize);
 
     if (!font)
     {
