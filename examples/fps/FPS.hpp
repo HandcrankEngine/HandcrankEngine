@@ -17,6 +17,11 @@ class FPS : public TextRenderObject
 
     void Update(const double deltaTime) override
     {
+        if (!game->HasFocus())
+        {
+            return;
+        }
+
         SetText(std::to_string(game->GetFPS()));
     }
 };

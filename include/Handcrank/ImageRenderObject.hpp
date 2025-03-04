@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "sdl/SDL_Image_Utilities.hpp"
 
@@ -17,11 +17,11 @@ class ImageRenderObject : public RenderObject
   private:
     SDL_Texture *texture;
 
-    const SDL_Rect *srcRect;
+    const SDL_FRect *srcRect;
 
     SDL_FPoint *centerPoint;
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
 
   public:
     explicit ImageRenderObject() {}
@@ -61,24 +61,23 @@ class ImageRenderObject : public RenderObject
 
     void UpdateRectSizeFromTexture() const
     {
-        int textureWidth;
-        int textureHeight;
+        float textureWidth;
+        float textureHeight;
 
-        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture, &textureWidth, &textureHeight);
 
         rect->w = textureWidth;
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(SDL_Rect *srcRect) { this->srcRect = srcRect; }
+    void SetSrcRect(SDL_FRect *srcRect) { this->srcRect = srcRect; }
 
-    void SetSrcRect(const int x, const int y, const int w, const int h)
+    void SetSrcRect(const float x, const float y, const float w, const float h)
     {
-        srcRect = new SDL_Rect{x, y, w, h};
+        srcRect = new SDL_FRect{x, y, w, h};
     }
 
-    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_FlipMode flip) { this->flip = flip; }
 
     /**
      * Render image to the scene.
@@ -87,8 +86,8 @@ class ImageRenderObject : public RenderObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        SDL_RenderCopyExF(renderer, texture, srcRect, GetTransformedRect(), 0,
-                          centerPoint, flip);
+        SDL_RenderTextureRotated(renderer, texture, srcRect,
+                                 GetTransformedRect(), 0, centerPoint, flip);
 
         RenderObject::Render(renderer);
     }

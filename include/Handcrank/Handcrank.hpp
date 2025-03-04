@@ -13,8 +13,8 @@
 #include <list>
 #include <memory>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "Vector2.hpp"
 
@@ -55,8 +55,8 @@ class Game
 
     const double fixedFrameTime = 0.02;
 
-    int width = 800;
-    int height = 600;
+    int width = 1600;
+    int height = 1200;
 
     float dpiScaleX;
     float dpiScaleY;
@@ -89,7 +89,7 @@ class Game
 
     void SetScreenSize(int _width, int _height);
 
-    void SetTitle(const char *name) const;
+    bool SetTitle(const char *name) const;
 
     void SetClearColor(SDL_Color color);
 
@@ -232,7 +232,7 @@ void Game::AddChildObject(std::shared_ptr<RenderObject> child)
 
 inline bool Game::Setup()
 {
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    if (!SDL_Init(SDL_INIT_VIDEO))
     {
         return false;
     }
@@ -242,9 +242,10 @@ inline bool Game::Setup()
         SDL_DestroyWindow(window);
     }
 
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, width, height,
-                              SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+    window = SDL_CreateWindow(
+        "", width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_HIGH_PIXEL_DENSITY);
+
+    SDL_WINDOWPOS_CENTERED_DISPLAY(0);
 
     if (window == NULL)
     {
@@ -257,8 +258,7 @@ inline bool Game::Setup()
         SDL_DestroyRenderer(renderer);
     }
 
-    renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, NULL);
 
     if (renderer == NULL)
     {
@@ -273,9 +273,11 @@ inline bool Game::Setup()
 
 void Game::SetScreenSize(const int _width, const int _height)
 {
-    SDL_SetWindowSize(window, _width, _height);
+    auto scale = SDL_GetWindowDisplayScale(window);
 
-    SDL_GL_GetDrawableSize(window, &width, &height);
+    SDL_SetWindowSize(window, _width / scale, _height / scale);
+
+    SDL_GetWindowSizeInPixels(window, &width, &height);
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
@@ -290,9 +292,9 @@ void Game::SetScreenSize(const int _width, const int _height)
     dpiScaleY = height / _height;
 }
 
-inline void Game::SetTitle(const char *name) const
+inline bool Game::SetTitle(const char *name) const
 {
-    SDL_SetWindowTitle(window, name);
+    return SDL_SetWindowTitle(window, name);
 }
 
 void Game::SetClearColor(const SDL_Color color) { this->clearColor = color; }
@@ -349,56 +351,53 @@ void Game::HandleInput()
 
     while (SDL_PollEvent(&event) != 0)
     {
-        auto keyCode = event.key.keysym.sym;
+        auto keyCode = event.key.key;
 
         auto mouseButtonIndex = event.button.button;
 
         switch (event.type)
         {
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
             Quit();
             break;
 
-        case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_RESIZED ||
-                event.window.event == SDL_WINDOWEVENT_RESTORED ||
-                event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
-                event.window.event == SDL_WINDOWEVENT_MINIMIZED)
-            {
-                SDL_GL_GetDrawableSize(window, &width, &height);
-            }
-            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-            {
-                focused = false;
-            }
-            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-            {
-                focused = true;
-            }
+        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_RESTORED:
+        case SDL_EVENT_WINDOW_MAXIMIZED:
+        case SDL_EVENT_WINDOW_MINIMIZED:
+            SDL_GetWindowSizeInPixels(window, &width, &height);
             break;
 
-        case SDL_KEYDOWN:
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            focused = false;
+            break;
+
+        case SDL_EVENT_WINDOW_FOCUS_GAINED:
+            focused = true;
+            break;
+
+        case SDL_EVENT_KEY_DOWN:
             keyPressedState[keyCode] = !keyState[keyCode];
             keyState[keyCode] = true;
             break;
 
-        case SDL_KEYUP:
+        case SDL_EVENT_KEY_UP:
             keyState[keyCode] = false;
             keyPressedState[keyCode] = false;
             keyReleasedState[keyCode] = true;
             break;
 
-        case SDL_MOUSEMOTION:
+        case SDL_EVENT_MOUSE_MOTION:
             mousePosition->x = event.motion.x * dpiScaleX;
             mousePosition->y = event.motion.y * dpiScaleY;
             break;
 
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
             mousePressedState[mouseButtonIndex] = !mouseState[mouseButtonIndex];
             mouseState[mouseButtonIndex] = true;
             break;
 
-        case SDL_MOUSEBUTTONUP:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
             mouseState[mouseButtonIndex] = false;
             mousePressedState[mouseButtonIndex] = false;
             mouseReleasedState[mouseButtonIndex] = true;
@@ -468,7 +467,7 @@ void Game::Render()
 
         SDL_RenderClear(renderer);
 
-        SDL_RenderSetViewport(renderer, viewport);
+        SDL_SetRenderViewport(renderer, viewport);
 
         children.sort([](const std::shared_ptr<RenderObject> &a,
                          const std::shared_ptr<RenderObject> &b)
@@ -627,7 +626,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
         hasStarted = true;
     }
 
-    if (SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
+    if (SDL_PointInRectFloat(game->mousePosition, GetTransformedRect()))
     {
         if (game->mousePressedState[SDL_BUTTON_LEFT])
         {
@@ -742,7 +741,7 @@ void RenderObject::Render(SDL_Renderer *_renderer)
 
     auto boundingBox = CalculateBoundingBox();
 
-    if (!SDL_HasIntersectionF(boundingBox, game->GetViewport()))
+    if (!SDL_HasRectIntersectionFloat(boundingBox, game->GetViewport()))
     {
         return;
     }

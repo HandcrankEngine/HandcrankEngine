@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "sdl/SDL_TTF_Utilities.hpp"
 
@@ -40,7 +40,7 @@ class TextRenderObject : public RenderObject
 
     ~TextRenderObject()
     {
-        SDL_FreeSurface(textSurface);
+        SDL_DestroySurface(textSurface);
         SDL_DestroyTexture(textTexture);
     }
 
@@ -100,7 +100,8 @@ class TextRenderObject : public RenderObject
             return;
         }
 
-        textSurface = TTF_RenderText_Blended(font, this->text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font, this->text.c_str(),
+                                             this->text.length(), color);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -117,8 +118,8 @@ class TextRenderObject : public RenderObject
     {
         this->text = std::move(text);
 
-        textSurface =
-            TTF_RenderText_Blended_Wrapped(font, text.c_str(), color, rect->w);
+        textSurface = TTF_RenderText_Blended_Wrapped(
+            font, text.c_str(), text.length(), color, rect->w);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -140,7 +141,7 @@ class TextRenderObject : public RenderObject
             textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         }
 
-        SDL_RenderCopyF(renderer, textTexture, nullptr, GetTransformedRect());
+        SDL_RenderTexture(renderer, textTexture, nullptr, GetTransformedRect());
 
         RenderObject::Render(renderer);
     }
@@ -150,7 +151,7 @@ class TextRenderObject : public RenderObject
      */
     void Clean() override
     {
-        SDL_FreeSurface(textSurface);
+        SDL_DestroySurface(textSurface);
         SDL_DestroyTexture(textTexture);
     }
 };
