@@ -24,7 +24,7 @@ jobs:
         uses: HandcrankEngine/install-sdl-packages@v0.1.1
         with:
           SDL2_VERSION: '2.32.2'
-          SDL2_IMAGE_VERSION: '2.8.6'
+          SDL2_IMAGE_VERSION: '2.8.8'
           SDL2_TTF_VERSION: '2.24.0'
 
       - name: Install dependencies
