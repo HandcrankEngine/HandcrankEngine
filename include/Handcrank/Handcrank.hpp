@@ -823,14 +823,7 @@ SDL_FRect *RenderObject::CalculateBoundingBox() const
 
 bool RenderObject::CheckCollisionAABB(RenderObject *otherRenderObject)
 {
-    auto otherRect = otherRenderObject->GetRect();
-
-    auto test = !(otherRect->x > rect->x + rect->w ||
-                  otherRect->x + otherRect->w < rect->x ||
-                  otherRect->y > rect->y + rect->h ||
-                  otherRect->y + otherRect->h < rect->y);
-
-    return test;
+    return SDL_HasIntersectionF(rect, otherRenderObject->GetRect());
 }
 
 void RenderObject::DestroyChildObjects()
