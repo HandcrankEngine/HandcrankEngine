@@ -18,8 +18,6 @@
 
 #include "Vector2.hpp"
 
-#include "sdl/SDL_Utilities.hpp"
-
 namespace Handcrank
 {
 
@@ -724,13 +722,18 @@ void RenderObject::SetScale(double _scale) { scale = _scale; }
 
 [[nodiscard]] SDL_FRect *RenderObject::GetTransformedRect() const
 {
-    SDL_FRect *transformedRect = ScaleRect(rect, scale);
+    auto transformedRect = new SDL_FRect{rect->x, rect->y, rect->w, rect->h};
+
+    transformedRect->w *= scale;
+    transformedRect->h *= scale;
 
     if (parent != nullptr)
     {
-        transformedRect = PositionRect(transformedRect, parent->rect);
+        transformedRect->x += parent->GetRect()->x;
+        transformedRect->y += parent->GetRect()->y;
 
-        transformedRect = ScaleRect(transformedRect, parent->scale);
+        transformedRect->w *= parent->scale;
+        transformedRect->h *= parent->scale;
     }
 
     return transformedRect;
