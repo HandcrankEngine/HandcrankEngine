@@ -237,7 +237,7 @@ inline bool Game::Setup()
         return false;
     }
 
-    if (window != NULL)
+    if (window != nullptr)
     {
         SDL_DestroyWindow(window);
     }
@@ -246,13 +246,13 @@ inline bool Game::Setup()
                               SDL_WINDOWPOS_CENTERED, width, height,
                               SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 
-    if (window == NULL)
+    if (window == nullptr)
     {
         SDL_Log("SDL_CreateWindow %s", SDL_GetError());
         return false;
     }
 
-    if (renderer != NULL)
+    if (renderer != nullptr)
     {
         SDL_DestroyRenderer(renderer);
     }
@@ -260,7 +260,7 @@ inline bool Game::Setup()
     renderer = SDL_CreateRenderer(
         window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    if (renderer == NULL)
+    if (renderer == nullptr)
     {
         SDL_Log("SDL_CreateRenderer %s", SDL_GetError());
         return false;
