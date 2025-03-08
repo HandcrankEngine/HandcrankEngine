@@ -13,14 +13,17 @@ namespace Handcrank
 class RectRenderObject : public RenderObject
 {
   protected:
-    SDL_Color *borderColor;
-    SDL_Color *fillColor;
+    std::shared_ptr<SDL_Color> borderColor = std::make_shared<SDL_Color>();
+    std::shared_ptr<SDL_Color> fillColor = std::make_shared<SDL_Color>();
 
     SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
   public:
     explicit RectRenderObject() {}
-    explicit RectRenderObject(SDL_FRect *rect) : RenderObject(rect) {}
+    explicit RectRenderObject(std::shared_ptr<SDL_FRect> rect)
+        : RenderObject(rect)
+    {
+    }
 
     ~RectRenderObject() = default;
 
@@ -31,11 +34,6 @@ class RectRenderObject : public RenderObject
      */
     void SetBorderColor(const SDL_Color borderColor)
     {
-        if (this->borderColor == nullptr)
-        {
-            this->borderColor = new SDL_Color();
-        }
-
         this->borderColor->r = borderColor.r;
         this->borderColor->g = borderColor.g;
         this->borderColor->b = borderColor.b;
@@ -45,26 +43,13 @@ class RectRenderObject : public RenderObject
     void SetBorderColor(const Uint8 r, const Uint8 g, const Uint8 b,
                         const Uint8 a)
     {
-        if (borderColor == nullptr)
-        {
-            borderColor = new SDL_Color();
-        }
-
         borderColor->r = r;
         borderColor->g = g;
         borderColor->b = b;
         borderColor->a = a;
     }
 
-    SDL_Color *GetBorderColor() const
-    {
-        if (borderColor == nullptr)
-        {
-            return nullptr;
-        }
-
-        return borderColor;
-    }
+    std::shared_ptr<SDL_Color> GetBorderColor() const { return borderColor; }
 
     /**
      * Set rect fill color.
@@ -73,11 +58,6 @@ class RectRenderObject : public RenderObject
      */
     void SetFillColor(const SDL_Color fillColor)
     {
-        if (this->fillColor == nullptr)
-        {
-            this->fillColor = new SDL_Color();
-        }
-
         this->fillColor->r = fillColor.r;
         this->fillColor->g = fillColor.g;
         this->fillColor->b = fillColor.b;
@@ -87,59 +67,44 @@ class RectRenderObject : public RenderObject
     void SetFillColor(const Uint8 r, const Uint8 g, const Uint8 b,
                       const Uint8 a)
     {
-        if (fillColor == nullptr)
-        {
-            fillColor = new SDL_Color();
-        }
-
         fillColor->r = r;
         fillColor->g = g;
         fillColor->b = b;
         fillColor->a = a;
     }
 
-    SDL_Color *GetFillColor() const
-    {
-        if (fillColor == nullptr)
-        {
-            return nullptr;
-        }
-
-        return fillColor;
-    }
+    std::shared_ptr<SDL_Color> GetFillColor() const { return fillColor; }
 
     /**
      * Render rect to the scene.
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(SDL_Renderer *renderer) override
+    void Render(std::shared_ptr<SDL_Renderer> renderer) override
     {
-        SDL_SetRenderDrawBlendMode(renderer, blendMode);
+        SDL_SetRenderDrawBlendMode(renderer.get(), blendMode);
+
+        auto transformedRect = GetTransformedRect();
 
         if (fillColor != nullptr)
         {
-            SDL_SetRenderDrawColor(renderer, fillColor->r, fillColor->g,
+            SDL_SetRenderDrawColor(renderer.get(), fillColor->r, fillColor->g,
                                    fillColor->b, fillColor->a);
 
-            SDL_RenderFillRectF(renderer, GetTransformedRect());
+            SDL_RenderFillRectF(renderer.get(), &transformedRect);
         }
 
         if (borderColor != nullptr)
         {
-            SDL_SetRenderDrawColor(renderer, borderColor->r, borderColor->g,
-                                   borderColor->b, borderColor->a);
+            SDL_SetRenderDrawColor(renderer.get(), borderColor->r,
+                                   borderColor->g, borderColor->b,
+                                   borderColor->a);
 
-            SDL_RenderDrawRectF(renderer, GetTransformedRect());
+            SDL_RenderDrawRectF(renderer.get(), &transformedRect);
         }
 
         RenderObject::Render(renderer);
     }
-
-    /**
-     * Cleanup function to run after the RectRenderObject is unloaded.
-     */
-    void Clean() override {}
 };
 
 } // namespace Handcrank

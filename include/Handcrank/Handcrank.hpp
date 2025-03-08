@@ -27,11 +27,11 @@ class RenderObject;
 class Game
 {
   private:
-    SDL_Window *window;
-    SDL_Renderer *renderer;
+    std::shared_ptr<SDL_Window> window;
+    std::shared_ptr<SDL_Renderer> renderer;
 
-    SDL_Rect *viewport = new SDL_Rect;
-    SDL_FRect *viewportf = new SDL_FRect;
+    std::shared_ptr<SDL_Rect> viewport = std::make_shared<SDL_Rect>();
+    std::shared_ptr<SDL_FRect> viewportf = std::make_shared<SDL_FRect>();
 
     SDL_Color clearColor{0, 0, 0, 255};
 
@@ -66,7 +66,7 @@ class Game
     std::unordered_map<SDL_Keycode, bool> keyPressedState;
     std::unordered_map<SDL_Keycode, bool> keyReleasedState;
 
-    SDL_FPoint *mousePosition = new SDL_FPoint;
+    std::shared_ptr<SDL_FPoint> mousePosition = std::make_shared<SDL_FPoint>();
 
     std::unordered_map<Uint8, bool> mouseState;
     std::unordered_map<Uint8, bool> mousePressedState;
@@ -79,9 +79,9 @@ class Game
 
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
-    [[nodiscard]] SDL_Window *GetWindow() const;
-    [[nodiscard]] SDL_Renderer *GetRenderer() const;
-    [[nodiscard]] SDL_FRect *GetViewport() const;
+    [[nodiscard]] std::shared_ptr<SDL_Window> GetWindow() const;
+    [[nodiscard]] std::shared_ptr<SDL_Renderer> GetRenderer() const;
+    [[nodiscard]] std::shared_ptr<SDL_FRect> GetViewport() const;
 
     bool Setup();
 
@@ -127,7 +127,7 @@ class Game
 class RenderObject
 {
   protected:
-    SDL_FRect *rect = new SDL_FRect;
+    std::shared_ptr<SDL_FRect> rect = std::make_shared<SDL_FRect>();
 
     double scale = 1;
 
@@ -156,7 +156,7 @@ class RenderObject
     float z;
 
     RenderObject();
-    explicit RenderObject(SDL_FRect *rect) : rect(rect) {}
+    explicit RenderObject(std::shared_ptr<SDL_FRect> rect) : rect(rect) {}
 
     ~RenderObject();
 
@@ -183,24 +183,24 @@ class RenderObject
     void InternalUpdate(double deltaTime);
     void InternalFixedUpdate(double fixedDeltaTime);
 
-    [[nodiscard]] SDL_FRect *GetRect() const;
-    void SetRect(SDL_FRect *_rect);
+    [[nodiscard]] std::shared_ptr<SDL_FRect> GetRect() const;
+    void SetRect(std::shared_ptr<SDL_FRect> _rect);
     void SetRect(float x, float y, float w, float h) const;
     void SetRect(float x, float y) const;
 
     [[nodiscard]] double GetScale() const;
     void SetScale(double _scale);
 
-    [[nodiscard]] SDL_FRect *GetTransformedRect() const;
+    [[nodiscard]] const SDL_FRect GetTransformedRect();
 
-    virtual void Render(SDL_Renderer *_renderer);
+    virtual void Render(std::shared_ptr<SDL_Renderer> renderer);
 
-    template <typename T> std::vector<T *> GetChildrenByType();
-    template <typename T> T *GetChildByType();
+    template <typename T> std::vector<std::shared_ptr<T>> GetChildrenByType();
+    template <typename T> std::shared_ptr<T> GetChildByType();
 
-    bool CheckCollisionAABB(RenderObject *otherRenderObject);
+    bool CheckCollisionAABB(std::shared_ptr<RenderObject> otherRenderObject);
 
-    SDL_FRect *CalculateBoundingBox() const;
+    [[nodiscard]] const SDL_FRect CalculateBoundingBox();
 
     void DestroyChildObjects();
 
@@ -224,11 +224,20 @@ void Game::AddChildObject(std::shared_ptr<RenderObject> child)
     children.push_back(child);
 }
 
-[[nodiscard]] SDL_Window *Game::GetWindow() const { return window; }
+[[nodiscard]] std::shared_ptr<SDL_Window> Game::GetWindow() const
+{
+    return window;
+}
 
-[[nodiscard]] SDL_Renderer *Game::GetRenderer() const { return renderer; }
+[[nodiscard]] std::shared_ptr<SDL_Renderer> Game::GetRenderer() const
+{
+    return renderer;
+}
 
-[[nodiscard]] SDL_FRect *Game::GetViewport() const { return viewportf; }
+[[nodiscard]] std::shared_ptr<SDL_FRect> Game::GetViewport() const
+{
+    return viewportf;
+}
 
 inline bool Game::Setup()
 {
@@ -239,12 +248,14 @@ inline bool Game::Setup()
 
     if (window != nullptr)
     {
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(window.get());
     }
 
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, width, height,
-                              SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+    window = std::shared_ptr<SDL_Window>(
+        SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                         width, height,
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
+        SDL_DestroyWindow);
 
     if (window == nullptr)
     {
@@ -254,11 +265,14 @@ inline bool Game::Setup()
 
     if (renderer != nullptr)
     {
-        SDL_DestroyRenderer(renderer);
+        SDL_DestroyRenderer(renderer.get());
     }
 
-    renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = std::shared_ptr<SDL_Renderer>(
+        SDL_CreateRenderer(window.get(), -1,
+                           SDL_RENDERER_ACCELERATED |
+                               SDL_RENDERER_PRESENTVSYNC),
+        SDL_DestroyRenderer);
 
     if (renderer == nullptr)
     {
@@ -273,11 +287,11 @@ inline bool Game::Setup()
 
 void Game::SetScreenSize(const int _width, const int _height)
 {
-    SDL_SetWindowSize(window, _width, _height);
+    SDL_SetWindowSize(window.get(), _width, _height);
 
-    SDL_GL_GetDrawableSize(window, &width, &height);
+    SDL_GL_GetDrawableSize(window.get(), &width, &height);
 
-    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
+    SDL_SetWindowPosition(window.get(), SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
 
     viewport->w = width;
@@ -292,7 +306,7 @@ void Game::SetScreenSize(const int _width, const int _height)
 
 inline void Game::SetTitle(const char *name) const
 {
-    SDL_SetWindowTitle(window, name);
+    SDL_SetWindowTitle(window.get(), name);
 }
 
 void Game::SetClearColor(const SDL_Color color) { this->clearColor = color; }
@@ -365,7 +379,7 @@ void Game::HandleInput()
                 event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
                 event.window.event == SDL_WINDOWEVENT_MINIMIZED)
             {
-                SDL_GL_GetDrawableSize(window, &width, &height);
+                SDL_GL_GetDrawableSize(window.get(), &width, &height);
             }
             else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
             {
@@ -463,12 +477,12 @@ void Game::Render()
 
     if (renderDeltaTime > targetFrameTime)
     {
-        SDL_SetRenderDrawColor(renderer, clearColor.r, clearColor.g,
+        SDL_SetRenderDrawColor(renderer.get(), clearColor.r, clearColor.g,
                                clearColor.b, clearColor.a);
 
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(renderer.get());
 
-        SDL_RenderSetViewport(renderer, viewport);
+        SDL_RenderSetViewport(renderer.get(), viewport.get());
 
         children.sort([](const std::shared_ptr<RenderObject> &a,
                          const std::shared_ptr<RenderObject> &b)
@@ -485,7 +499,7 @@ void Game::Render()
             }
         }
 
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(renderer.get());
 
         fps = 1.0 / renderDeltaTime;
 
@@ -530,8 +544,8 @@ void Game::Clean()
         TTF_Quit();
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer.get());
+    SDL_DestroyWindow(window.get());
 
     SDL_Quit();
 }
@@ -627,7 +641,9 @@ void RenderObject::InternalUpdate(const double deltaTime)
         hasStarted = true;
     }
 
-    if (SDL_PointInFRect(game->mousePosition, GetTransformedRect()))
+    auto transformedRect = GetTransformedRect();
+
+    if (SDL_PointInFRect(game->mousePosition.get(), &transformedRect))
     {
         if (game->mousePressedState[SDL_BUTTON_LEFT])
         {
@@ -697,9 +713,12 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
     }
 }
 
-[[nodiscard]] inline SDL_FRect *RenderObject::GetRect() const { return rect; }
+[[nodiscard]] inline std::shared_ptr<SDL_FRect> RenderObject::GetRect() const
+{
+    return rect;
+}
 
-void RenderObject::SetRect(SDL_FRect *_rect) { rect = _rect; }
+void RenderObject::SetRect(std::shared_ptr<SDL_FRect> _rect) { rect = _rect; }
 
 inline void RenderObject::SetRect(const float x, const float y, const float w,
                                   const float h) const
@@ -720,26 +739,26 @@ inline void RenderObject::SetRect(const float x, const float y) const
 
 void RenderObject::SetScale(double _scale) { scale = _scale; }
 
-[[nodiscard]] SDL_FRect *RenderObject::GetTransformedRect() const
+[[nodiscard]] const SDL_FRect RenderObject::GetTransformedRect()
 {
-    auto transformedRect = new SDL_FRect{rect->x, rect->y, rect->w, rect->h};
+    SDL_FRect transformedRect = {rect->x, rect->y, rect->w, rect->h};
 
-    transformedRect->w *= scale;
-    transformedRect->h *= scale;
+    transformedRect.w *= scale;
+    transformedRect.h *= scale;
 
     if (parent != nullptr)
     {
-        transformedRect->x += parent->GetRect()->x;
-        transformedRect->y += parent->GetRect()->y;
+        transformedRect.x += parent->GetRect()->x;
+        transformedRect.y += parent->GetRect()->y;
 
-        transformedRect->w *= parent->scale;
-        transformedRect->h *= parent->scale;
+        transformedRect.w *= parent->scale;
+        transformedRect.h *= parent->scale;
     }
 
     return transformedRect;
 }
 
-void RenderObject::Render(SDL_Renderer *_renderer)
+void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
 {
     children.sort([](const std::shared_ptr<RenderObject> &a,
                      const std::shared_ptr<RenderObject> &b)
@@ -747,7 +766,7 @@ void RenderObject::Render(SDL_Renderer *_renderer)
 
     auto boundingBox = CalculateBoundingBox();
 
-    if (!SDL_HasIntersectionF(boundingBox, game->GetViewport()))
+    if (!SDL_HasIntersectionF(&boundingBox, game->GetViewport().get()))
     {
         return;
     }
@@ -758,25 +777,26 @@ void RenderObject::Render(SDL_Renderer *_renderer)
         {
             if (child->IsEnabled())
             {
-                child->Render(_renderer);
+                child->Render(renderer);
             }
         }
     }
 }
 
-template <typename T> std::vector<T *> RenderObject::GetChildrenByType()
+template <typename T>
+std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType()
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
 
-    std::vector<T *> results;
+    std::vector<std::shared_ptr<T>> results;
 
     for (auto &iter : children)
     {
         if (auto child = iter.get();
             child != nullptr && typeid(*child) == typeid(T))
         {
-            auto castedChild = dynamic_cast<T *>(child);
+            auto castedChild = dynamic_cast<std::shared_ptr<T>>(child);
 
             if (castedChild != nullptr)
             {
@@ -788,7 +808,7 @@ template <typename T> std::vector<T *> RenderObject::GetChildrenByType()
     return results;
 }
 
-template <typename T> T *RenderObject::GetChildByType()
+template <typename T> std::shared_ptr<T> RenderObject::GetChildByType()
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -801,9 +821,9 @@ template <typename T> T *RenderObject::GetChildByType()
     return nullptr;
 }
 
-SDL_FRect *RenderObject::CalculateBoundingBox() const
+[[nodiscard]] const SDL_FRect RenderObject::CalculateBoundingBox()
 {
-    const auto boundingBox = GetTransformedRect();
+    auto boundingBox = GetTransformedRect();
 
     for (auto &iter : children)
     {
@@ -811,19 +831,20 @@ SDL_FRect *RenderObject::CalculateBoundingBox() const
         {
             const auto childBoundingBox = child->CalculateBoundingBox();
 
-            boundingBox->x = fminf(boundingBox->x, childBoundingBox->x);
-            boundingBox->y = fminf(boundingBox->y, childBoundingBox->y);
-            boundingBox->w = fmaxf(boundingBox->w, childBoundingBox->w);
-            boundingBox->h = fmaxf(boundingBox->h, childBoundingBox->h);
+            boundingBox.x = fminf(boundingBox.x, childBoundingBox.x);
+            boundingBox.y = fminf(boundingBox.y, childBoundingBox.y);
+            boundingBox.w = fmaxf(boundingBox.w, childBoundingBox.w);
+            boundingBox.h = fmaxf(boundingBox.h, childBoundingBox.h);
         }
     }
 
     return boundingBox;
 }
 
-bool RenderObject::CheckCollisionAABB(RenderObject *otherRenderObject)
+bool RenderObject::CheckCollisionAABB(
+    std::shared_ptr<RenderObject> otherRenderObject)
 {
-    return SDL_HasIntersectionF(rect, otherRenderObject->GetRect());
+    return SDL_HasIntersectionF(rect.get(), otherRenderObject->GetRect().get());
 }
 
 void RenderObject::DestroyChildObjects()

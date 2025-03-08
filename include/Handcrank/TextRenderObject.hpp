@@ -18,15 +18,15 @@ namespace Handcrank
 class TextRenderObject : public RenderObject
 {
   private:
-    TTF_Font *font;
+    std::shared_ptr<TTF_Font> font;
 
     SDL_Color color{255, 255, 255, 255};
 
     std::string text;
 
-    SDL_Surface *textSurface;
+    std::shared_ptr<SDL_Surface> textSurface;
 
-    SDL_Texture *textTexture;
+    std::shared_ptr<SDL_Texture> textTexture;
 
   public:
     explicit TextRenderObject()
@@ -36,12 +36,9 @@ class TextRenderObject : public RenderObject
             TTF_Init();
         }
     }
-    explicit TextRenderObject(SDL_FRect *rect) : RenderObject(rect) {}
-
-    ~TextRenderObject()
+    explicit TextRenderObject(std::shared_ptr<SDL_FRect> rect)
+        : RenderObject(rect)
     {
-        SDL_FreeSurface(textSurface);
-        SDL_DestroyTexture(textTexture);
     }
 
     /**
@@ -49,7 +46,7 @@ class TextRenderObject : public RenderObject
      *
      * @param font Font value to set.
      */
-    void SetFont(TTF_Font *font) { this->font = font; }
+    void SetFont(std::shared_ptr<TTF_Font> font) { this->font = font; }
 
     /**
      * Load font from a path.
@@ -100,7 +97,9 @@ class TextRenderObject : public RenderObject
             return;
         }
 
-        textSurface = TTF_RenderText_Blended(font, this->text.c_str(), color);
+        textSurface = std::shared_ptr<SDL_Surface>(
+            TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
+            SDL_FreeSurface);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -115,10 +114,12 @@ class TextRenderObject : public RenderObject
      */
     void SetWrappedText(std::string text)
     {
-        this->text = std::move(text);
+        this->text = text;
 
-        textSurface =
-            TTF_RenderText_Blended_Wrapped(font, text.c_str(), color, rect->w);
+        textSurface = std::shared_ptr<SDL_Surface>(
+            TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color,
+                                           rect->w),
+            SDL_FreeSurface);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -133,25 +134,21 @@ class TextRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(SDL_Renderer *renderer) override
+    void Render(std::shared_ptr<SDL_Renderer> renderer) override
     {
         if (textTexture == nullptr)
         {
-            textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+            textTexture = std::shared_ptr<SDL_Texture>(
+                SDL_CreateTextureFromSurface(renderer.get(), textSurface.get()),
+                SDL_DestroyTexture);
         }
 
-        SDL_RenderCopyF(renderer, textTexture, nullptr, GetTransformedRect());
+        auto transformedRect = GetTransformedRect();
+
+        SDL_RenderCopyF(renderer.get(), textTexture.get(), nullptr,
+                        &transformedRect);
 
         RenderObject::Render(renderer);
-    }
-
-    /**
-     * Cleanup function to run after the TextRenderObject is unloaded.
-     */
-    void Clean() override
-    {
-        SDL_FreeSurface(textSurface);
-        SDL_DestroyTexture(textTexture);
     }
 };
 
