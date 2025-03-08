@@ -87,7 +87,7 @@ class Game
 
     void SetScreenSize(int _width, int _height);
 
-    void SetTitle(const char *name) const;
+    void SetTitle(const char *name);
 
     void SetClearColor(SDL_Color color);
 
@@ -112,7 +112,7 @@ class Game
 
     void CalculateDeltaTime();
 
-    void Update() const;
+    void Update();
     void FixedUpdate();
 
     void Render();
@@ -185,8 +185,8 @@ class RenderObject
 
     [[nodiscard]] std::shared_ptr<SDL_FRect> GetRect() const;
     void SetRect(std::shared_ptr<SDL_FRect> _rect);
-    void SetRect(float x, float y, float w, float h) const;
-    void SetRect(float x, float y) const;
+    void SetRect(float x, float y, float w, float h);
+    void SetRect(float x, float y);
 
     [[nodiscard]] double GetScale() const;
     void SetScale(double _scale);
@@ -304,7 +304,7 @@ void Game::SetScreenSize(const int _width, const int _height)
     dpiScaleY = height / _height;
 }
 
-inline void Game::SetTitle(const char *name) const
+inline void Game::SetTitle(const char *name)
 {
     SDL_SetWindowTitle(window.get(), name);
 }
@@ -434,7 +434,7 @@ void Game::CalculateDeltaTime()
     previousTime = currentTime;
 }
 
-inline void Game::Update() const
+inline void Game::Update()
 {
     for (auto &iter : children)
     {
@@ -721,7 +721,7 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
 void RenderObject::SetRect(std::shared_ptr<SDL_FRect> _rect) { rect = _rect; }
 
 inline void RenderObject::SetRect(const float x, const float y, const float w,
-                                  const float h) const
+                                  const float h)
 {
     rect->x = x;
     rect->y = y;
@@ -729,7 +729,7 @@ inline void RenderObject::SetRect(const float x, const float y, const float w,
     rect->h = h;
 }
 
-inline void RenderObject::SetRect(const float x, const float y) const
+inline void RenderObject::SetRect(const float x, const float y)
 {
     rect->x = x;
     rect->y = y;
