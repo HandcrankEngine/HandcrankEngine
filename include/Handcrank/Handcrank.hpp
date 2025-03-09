@@ -30,8 +30,8 @@ class Game
     std::shared_ptr<SDL_Window> window;
     std::shared_ptr<SDL_Renderer> renderer;
 
-    std::shared_ptr<SDL_Rect> viewport = std::make_shared<SDL_Rect>();
-    std::shared_ptr<SDL_FRect> viewportf = std::make_shared<SDL_FRect>();
+    SDL_Rect viewport{};
+    SDL_FRect viewportf{};
 
     SDL_Color clearColor{0, 0, 0, 255};
 
@@ -81,7 +81,7 @@ class Game
 
     [[nodiscard]] std::shared_ptr<SDL_Window> GetWindow() const;
     [[nodiscard]] std::shared_ptr<SDL_Renderer> GetRenderer() const;
-    [[nodiscard]] std::shared_ptr<SDL_FRect> GetViewport() const;
+    [[nodiscard]] SDL_FRect GetViewport() const;
 
     bool Setup();
 
@@ -234,10 +234,7 @@ void Game::AddChildObject(std::shared_ptr<RenderObject> child)
     return renderer;
 }
 
-[[nodiscard]] std::shared_ptr<SDL_FRect> Game::GetViewport() const
-{
-    return viewportf;
-}
+[[nodiscard]] SDL_FRect Game::GetViewport() const { return viewportf; }
 
 inline bool Game::Setup()
 {
@@ -294,11 +291,11 @@ void Game::SetScreenSize(const int _width, const int _height)
     SDL_SetWindowPosition(window.get(), SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
 
-    viewport->w = width;
-    viewport->h = height;
+    viewport.w = width;
+    viewport.h = height;
 
-    viewportf->w = static_cast<float>(width);
-    viewportf->h = static_cast<float>(height);
+    viewportf.w = static_cast<float>(width);
+    viewportf.h = static_cast<float>(height);
 
     dpiScaleX = width / _width;
     dpiScaleY = height / _height;
@@ -482,7 +479,7 @@ void Game::Render()
 
         SDL_RenderClear(renderer.get());
 
-        SDL_RenderSetViewport(renderer.get(), viewport.get());
+        SDL_RenderSetViewport(renderer.get(), &viewport);
 
         children.sort([](const std::shared_ptr<RenderObject> &a,
                          const std::shared_ptr<RenderObject> &b)
@@ -766,7 +763,9 @@ void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
 
     auto boundingBox = CalculateBoundingBox();
 
-    if (!SDL_HasIntersectionF(&boundingBox, game->GetViewport().get()))
+    auto viewport = game->GetViewport();
+
+    if (!SDL_HasIntersectionF(&boundingBox, &viewport))
     {
         return;
     }
