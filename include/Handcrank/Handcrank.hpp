@@ -156,7 +156,7 @@ class RenderObject
     float z;
 
     RenderObject();
-    explicit RenderObject(std::shared_ptr<SDL_FRect> rect) : rect(rect) {}
+    explicit RenderObject(const SDL_FRect _rect) { SetRect(_rect); }
 
     ~RenderObject();
 
@@ -184,7 +184,7 @@ class RenderObject
     void InternalFixedUpdate(double fixedDeltaTime);
 
     [[nodiscard]] std::shared_ptr<SDL_FRect> GetRect() const;
-    void SetRect(std::shared_ptr<SDL_FRect> _rect);
+    void SetRect(const SDL_FRect _rect);
     void SetRect(float x, float y, float w, float h);
     void SetRect(float x, float y);
 
@@ -715,7 +715,13 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
     return rect;
 }
 
-void RenderObject::SetRect(std::shared_ptr<SDL_FRect> _rect) { rect = _rect; }
+void RenderObject::SetRect(const SDL_FRect _rect)
+{
+    rect->x = _rect.x;
+    rect->y = _rect.y;
+    rect->w = _rect.w;
+    rect->h = _rect.h;
+}
 
 inline void RenderObject::SetRect(const float x, const float y, const float w,
                                   const float h)

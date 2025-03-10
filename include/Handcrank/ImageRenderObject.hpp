@@ -25,10 +25,7 @@ class ImageRenderObject : public RenderObject
 
   public:
     explicit ImageRenderObject() {}
-    explicit ImageRenderObject(std::shared_ptr<SDL_FRect> rect)
-        : RenderObject(rect)
-    {
-    }
+    explicit ImageRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
 
     /**
      * Load texture from a path.
