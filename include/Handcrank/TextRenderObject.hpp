@@ -38,6 +38,8 @@ class TextRenderObject : public RenderObject
     }
     explicit TextRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
 
+    ~TextRenderObject() = default;
+
     /**
      * Set text font.
      *
