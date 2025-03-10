@@ -36,10 +36,7 @@ class TextRenderObject : public RenderObject
             TTF_Init();
         }
     }
-    explicit TextRenderObject(std::shared_ptr<SDL_FRect> rect)
-        : RenderObject(rect)
-    {
-    }
+    explicit TextRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
 
     /**
      * Set text font.

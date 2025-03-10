@@ -20,10 +20,7 @@ class RectRenderObject : public RenderObject
 
   public:
     explicit RectRenderObject() {}
-    explicit RectRenderObject(std::shared_ptr<SDL_FRect> rect)
-        : RenderObject(rect)
-    {
-    }
+    explicit RectRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
 
     ~RectRenderObject() = default;
 
