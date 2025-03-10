@@ -1,3 +1,5 @@
+#pragma once
+
 #include <algorithm>
 
 #include "../images/sdl_logo.h"
@@ -12,11 +14,13 @@ int randomNumberRange(int min, int max)
     return rand() % (max - min + 1) + min;
 }
 
+int randomBoolean() { return rand() > (RAND_MAX / 2); }
+
 class LogoScreenSaver : public ImageRenderObject
 {
   protected:
-    int xDirection = rand() % 1 ? -1 : 1;
-    int yDirection = rand() % 1 ? -1 : 1;
+    int xDirection = randomBoolean() ? -1 : 1;
+    int yDirection = randomBoolean() % 1 ? -1 : 1;
 
     int movementSpeed = rand() % 400 + 100;
 
@@ -26,9 +30,13 @@ class LogoScreenSaver : public ImageRenderObject
         LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
                       images_sdl_logo_png_len);
 
-        SetRect(randomNumberRange(0, game->GetWidth() - 200),
-                randomNumberRange(0, game->GetWidth() - 200));
+        if (rect->x == 0 && rect->y == 0)
+        {
+            SetRect(randomNumberRange(0, game->GetWidth() - 200),
+                    randomNumberRange(0, game->GetWidth() - 200));
+        }
     }
+
     void Update(const double deltaTime) override
     {
         if (!game->HasFocus())

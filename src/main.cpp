@@ -1,12 +1,12 @@
 #include "Handcrank/Handcrank.hpp"
 
-#include "../examples/box/Box.hpp"
 #include "../examples/fps/FPS.hpp"
 #include "../examples/logo-screensaver/LogoScreenSaver.hpp"
+#include "../examples/spawner/Spawner.hpp"
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class InputManager : public RenderObject
 {
@@ -24,10 +24,10 @@ auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<Box>()));
-    game->AddChildObject(std::move(std::make_unique<FPS>()));
     game->AddChildObject(std::move(std::make_unique<InputManager>()));
+    game->AddChildObject(std::move(std::make_unique<Spawner>()));
     game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
+    game->AddChildObject(std::move(std::make_unique<FPS>()));
 
     return game->Run();
 }
