@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "sdl/SDL_Image_Utilities.hpp"
 
@@ -17,11 +17,11 @@ class ImageRenderObject : public RenderObject
   private:
     std::shared_ptr<SDL_Texture> texture;
 
-    const std::unique_ptr<SDL_Rect> srcRect;
+    const std::unique_ptr<SDL_FRect> srcRect;
 
     std::unique_ptr<SDL_FPoint> centerPoint = std::make_unique<SDL_FPoint>();
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
 
   public:
     explicit ImageRenderObject() {}
@@ -62,11 +62,10 @@ class ImageRenderObject : public RenderObject
 
     void UpdateRectSizeFromTexture() const
     {
-        int textureWidth;
-        int textureHeight;
+        float textureWidth;
+        float textureHeight;
 
-        SDL_QueryTexture(texture.get(), nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture.get(), &textureWidth, &textureHeight);
 
         rect->w = textureWidth;
         rect->h = textureHeight;
@@ -88,7 +87,7 @@ class ImageRenderObject : public RenderObject
         this->srcRect->h = h;
     }
 
-    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_FlipMode flip) { this->flip = flip; }
 
     /**
      * Render image to the scene.
@@ -99,8 +98,8 @@ class ImageRenderObject : public RenderObject
     {
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyExF(renderer.get(), texture.get(), srcRect.get(),
-                          &transformedRect, 0, centerPoint.get(), flip);
+        SDL_RenderTextureRotated(renderer.get(), texture.get(), srcRect.get(),
+                                 &transformedRect, 0, centerPoint.get(), flip);
 
         RenderObject::Render(renderer);
     }

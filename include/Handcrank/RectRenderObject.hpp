@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "Handcrank.hpp"
 
@@ -88,7 +88,7 @@ class RectRenderObject : public RenderObject
             SDL_SetRenderDrawColor(renderer.get(), fillColor->r, fillColor->g,
                                    fillColor->b, fillColor->a);
 
-            SDL_RenderFillRectF(renderer.get(), &transformedRect);
+            SDL_RenderFillRect(renderer.get(), &transformedRect);
         }
 
         if (borderColor != nullptr)
@@ -97,7 +97,7 @@ class RectRenderObject : public RenderObject
                                    borderColor->g, borderColor->b,
                                    borderColor->a);
 
-            SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+            SDL_RenderFillRect(renderer.get(), &transformedRect);
         }
 
         RenderObject::Render(renderer);
