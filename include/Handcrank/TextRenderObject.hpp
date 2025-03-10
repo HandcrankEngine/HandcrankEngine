@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "sdl/SDL_TTF_Utilities.hpp"
 
@@ -97,8 +97,9 @@ class TextRenderObject : public RenderObject
         }
 
         textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
-            SDL_FreeSurface);
+            TTF_RenderText_Blended(font.get(), this->text.c_str(),
+                                   this->text.length(), color),
+            SDL_DestroySurface);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -116,9 +117,9 @@ class TextRenderObject : public RenderObject
         this->text = text;
 
         textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color,
-                                           rect->w),
-            SDL_FreeSurface);
+            TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(),
+                                           text.length(), color, rect->w),
+            SDL_DestroySurface);
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -144,8 +145,8 @@ class TextRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyF(renderer.get(), textTexture.get(), nullptr,
-                        &transformedRect);
+        SDL_RenderTexture(renderer.get(), textTexture.get(), nullptr,
+                          &transformedRect);
 
         RenderObject::Render(renderer);
     }
