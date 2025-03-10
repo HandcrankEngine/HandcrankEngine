@@ -27,6 +27,8 @@ class ImageRenderObject : public RenderObject
     explicit ImageRenderObject() {}
     explicit ImageRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
 
+    ~ImageRenderObject() = default;
+
     /**
      * Load texture from a path.
      *
