@@ -87,14 +87,17 @@ class TextRenderObject : public RenderObject
      */
     void SetText(std::string text)
     {
-        this->text = std::move(text);
-
         if (font == nullptr)
         {
             std::cerr << "ERROR! Missing font reference." << std::endl;
 
             return;
         }
+
+        this->text = std::move(text);
+
+        textSurface.reset();
+        textTexture.reset();
 
         textSurface = std::shared_ptr<SDL_Surface>(
             TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
@@ -120,6 +123,13 @@ class TextRenderObject : public RenderObject
      */
     void SetWrappedText(std::string text)
     {
+        if (font == nullptr)
+        {
+            std::cerr << "ERROR! Missing font reference." << std::endl;
+
+            return;
+        }
+
         this->text = std::move(text);
 
         textSurface.reset();
