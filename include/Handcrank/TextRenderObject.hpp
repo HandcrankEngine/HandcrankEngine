@@ -100,6 +100,13 @@ class TextRenderObject : public RenderObject
             TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
             SDL_FreeSurface);
 
+        if (!textSurface)
+        {
+            std::cerr << "ERROR! Failed to generate text surface." << std::endl;
+
+            return;
+        }
+
         rect->w = textSurface->w;
         rect->h = textSurface->h;
 
@@ -122,6 +129,13 @@ class TextRenderObject : public RenderObject
             TTF_RenderText_Blended_Wrapped(font.get(), this->text.c_str(),
                                            color, rect->w),
             SDL_FreeSurface);
+
+        if (!textSurface)
+        {
+            std::cerr << "ERROR! Failed to generate text surface." << std::endl;
+
+            return;
+        }
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
