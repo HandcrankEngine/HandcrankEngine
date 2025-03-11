@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/8b862681-2d82-4766-b0bf-b3084795bf17
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 auto main() -> int
 {
@@ -89,7 +89,7 @@ clang-format -i src/*.cpp include/**/*.hpp tests/**/*.cpp
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 auto main() -> int
 {
@@ -113,12 +113,12 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class RedSquare : public RectRenderObject
 {
 
-  public:
+public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
 };
 
@@ -141,7 +141,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class LoopDebugger : public RenderObject
 {
@@ -176,7 +176,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 auto main() -> int
 {
@@ -204,7 +204,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class Button : public RectRenderObject
 {
@@ -242,7 +242,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class Cursor : public RectRenderObject
 {
@@ -273,7 +273,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class Button : public RectRenderObject
 {
@@ -302,7 +302,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class Button : public RectRenderObject
 {
@@ -338,10 +338,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
-
-auto font = SDL_LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
-                           fonts_Roboto_Roboto_Regular_ttf_len, 30);
+auto game = std::make_unique<Game>();
 
 auto main() -> int
 {
@@ -349,7 +346,8 @@ auto main() -> int
 
     auto label = std::make_unique<TextRenderObject>();
 
-    label->SetFont(font);
+    label->LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                      fonts_Roboto_Roboto_Regular_ttf_len, 30);
 
     label->SetText("Hello, World");
 
@@ -371,15 +369,16 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
-
-auto robotoFont = SDL_LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
-                                 fonts_Roboto_Roboto_Regular_ttf_len, 30);
+auto game = std::make_unique<Game>();
 
 class FPS : public TextRenderObject
 {
   public:
-    void Start() override { SetFont(robotoFont); }
+    void Start() override
+    {
+        LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                   fonts_Roboto_Roboto_Regular_ttf_len, 30);
+    }
     void Update(const double deltaTime) override
     {
         SetText(std::to_string(game->GetFPS()));
@@ -411,7 +410,7 @@ auto main() -> int
 
 using namespace Handcrank;
 
-auto game = new Game();
+auto game = std::make_unique<Game>();
 
 class SDL_Logo : public ImageRenderObject
 {
