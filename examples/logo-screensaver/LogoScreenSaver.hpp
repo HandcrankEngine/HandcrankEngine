@@ -20,7 +20,7 @@ class LogoScreenSaver : public ImageRenderObject
 {
   protected:
     int xDirection = randomBoolean() ? -1 : 1;
-    int yDirection = randomBoolean() % 1 ? -1 : 1;
+    int yDirection = randomBoolean() ? -1 : 1;
 
     int movementSpeed = rand() % 400 + 100;
 
