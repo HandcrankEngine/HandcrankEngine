@@ -795,17 +795,11 @@ std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType()
 
     std::vector<std::shared_ptr<T>> results;
 
-    for (auto &iter : children)
+    for (auto child : children)
     {
-        if (auto child = iter.get();
-            child != nullptr && typeid(*child) == typeid(T))
+        if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
-            auto castedChild = dynamic_cast<std::shared_ptr<T>>(child);
-
-            if (castedChild != nullptr)
-            {
-                results.push_back(castedChild);
-            }
+            results.push_back(castedChild);
         }
     }
 
