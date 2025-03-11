@@ -65,7 +65,7 @@ class Spawner : public RenderObject
 
         auto spawnedLogos = GetChildrenByType<LogoScreenSaver>();
 
-        if (game->keyPressedState[SDLK_c])
+        if (game->keyPressedState[SDLK_C])
         {
             for (auto child : spawnedLogos)
             {

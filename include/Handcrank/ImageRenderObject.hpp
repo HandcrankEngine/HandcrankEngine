@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "sdl/SDL_Image_Utilities.hpp"
 
@@ -17,13 +17,13 @@ class ImageRenderObject : public RenderObject
   protected:
     std::shared_ptr<SDL_Texture> texture;
 
-    std::unique_ptr<SDL_Rect> srcRect = std::make_unique<SDL_Rect>();
+    std::unique_ptr<SDL_FRect> srcRect = std::make_unique<SDL_FRect>();
 
     bool srcRectSet = false;
 
     std::unique_ptr<SDL_FPoint> centerPoint = std::make_unique<SDL_FPoint>();
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
 
   public:
     explicit ImageRenderObject() {}
@@ -79,17 +79,16 @@ class ImageRenderObject : public RenderObject
 
     void UpdateRectSizeFromTexture() const
     {
-        int textureWidth;
-        int textureHeight;
+        float textureWidth;
+        float textureHeight;
 
-        SDL_QueryTexture(texture.get(), nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture.get(), &textureWidth, &textureHeight);
 
         rect->w = textureWidth;
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(const SDL_Rect srcRect)
+    void SetSrcRect(const SDL_FRect srcRect)
     {
         this->srcRect->x = srcRect.x;
         this->srcRect->y = srcRect.y;
@@ -109,7 +108,7 @@ class ImageRenderObject : public RenderObject
         srcRectSet = true;
     }
 
-    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_FlipMode flip) { this->flip = flip; }
 
     /**
      * Render image to the scene.
@@ -120,9 +119,9 @@ class ImageRenderObject : public RenderObject
     {
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyExF(renderer.get(), texture.get(),
-                          srcRectSet ? srcRect.get() : nullptr,
-                          &transformedRect, 0, centerPoint.get(), flip);
+        SDL_RenderTextureRotated(renderer.get(), texture.get(),
+                                 srcRectSet ? srcRect.get() : nullptr,
+                                 &transformedRect, 0, centerPoint.get(), flip);
 
         RenderObject::Render(renderer);
     }
