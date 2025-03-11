@@ -19,6 +19,8 @@ class ImageRenderObject : public RenderObject
 
     std::unique_ptr<SDL_Rect> srcRect = std::make_unique<SDL_Rect>();
 
+    bool srcRectSet = false;
+
     std::unique_ptr<SDL_FPoint> centerPoint = std::make_unique<SDL_FPoint>();
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
@@ -80,6 +82,8 @@ class ImageRenderObject : public RenderObject
         this->srcRect->y = srcRect.y;
         this->srcRect->w = srcRect.w;
         this->srcRect->h = srcRect.h;
+
+        srcRectSet = true;
     }
 
     void SetSrcRect(const int x, const int y, const int w, const int h)
@@ -88,6 +92,8 @@ class ImageRenderObject : public RenderObject
         this->srcRect->y = y;
         this->srcRect->w = w;
         this->srcRect->h = h;
+
+        srcRectSet = true;
     }
 
     void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
@@ -101,7 +107,8 @@ class ImageRenderObject : public RenderObject
     {
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyExF(renderer.get(), texture.get(), srcRect.get(),
+        SDL_RenderCopyExF(renderer.get(), texture.get(),
+                          srcRectSet ? srcRect.get() : nullptr,
                           &transformedRect, 0, centerPoint.get(), flip);
 
         RenderObject::Render(renderer);
