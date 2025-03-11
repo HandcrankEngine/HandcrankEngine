@@ -79,6 +79,9 @@ class Game
 
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
+    template <typename T> std::vector<std::shared_ptr<T>> GetChildrenByType();
+    template <typename T> std::shared_ptr<T> GetChildByType();
+
     [[nodiscard]] std::shared_ptr<SDL_Window> GetWindow() const;
     [[nodiscard]] std::shared_ptr<SDL_Renderer> GetRenderer() const;
     [[nodiscard]] SDL_FRect GetViewport() const;
@@ -164,6 +167,9 @@ class RenderObject
 
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
+    template <typename T> std::vector<std::shared_ptr<T>> GetChildrenByType();
+    template <typename T> std::shared_ptr<T> GetChildByType();
+
     void SetStart(const std::function<void(RenderObject *)> &_func);
     void SetUpdate(const std::function<void(RenderObject *, double)> &_func);
     void
@@ -192,9 +198,6 @@ class RenderObject
     [[nodiscard]] const SDL_FRect GetTransformedRect();
 
     virtual void Render(std::shared_ptr<SDL_Renderer> renderer);
-
-    template <typename T> std::vector<std::shared_ptr<T>> GetChildrenByType();
-    template <typename T> std::shared_ptr<T> GetChildByType();
 
     bool CheckCollisionAABB(std::shared_ptr<RenderObject> otherRenderObject);
 
@@ -236,6 +239,37 @@ void Game::AddChildObject(std::shared_ptr<RenderObject> child)
     child->game = this;
 
     children.push_back(child);
+}
+
+template <typename T> std::vector<std::shared_ptr<T>> Game::GetChildrenByType()
+{
+    static_assert(std::is_base_of_v<RenderObject, T>,
+                  "T must be derived from RenderObject");
+
+    std::vector<std::shared_ptr<T>> results;
+
+    for (auto child : children)
+    {
+        if (auto castedChild = std::dynamic_pointer_cast<T>(child))
+        {
+            results.push_back(castedChild);
+        }
+    }
+
+    return results;
+}
+
+template <typename T> std::shared_ptr<T> Game::GetChildByType()
+{
+    static_assert(std::is_base_of_v<RenderObject, T>,
+                  "T must be derived from RenderObject");
+
+    if (auto children = GetChildrenByType<T>(); !children.empty())
+    {
+        return children.front();
+    }
+
+    return nullptr;
 }
 
 [[nodiscard]] std::shared_ptr<SDL_Window> Game::GetWindow() const
@@ -573,6 +607,38 @@ void RenderObject::AddChildObject(std::shared_ptr<RenderObject> child)
     children.push_back(child);
 }
 
+template <typename T>
+std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType()
+{
+    static_assert(std::is_base_of_v<RenderObject, T>,
+                  "T must be derived from RenderObject");
+
+    std::vector<std::shared_ptr<T>> results;
+
+    for (auto child : children)
+    {
+        if (auto castedChild = std::dynamic_pointer_cast<T>(child))
+        {
+            results.push_back(castedChild);
+        }
+    }
+
+    return results;
+}
+
+template <typename T> std::shared_ptr<T> RenderObject::GetChildByType()
+{
+    static_assert(std::is_base_of_v<RenderObject, T>,
+                  "T must be derived from RenderObject");
+
+    if (auto children = GetChildrenByType<T>(); !children.empty())
+    {
+        return children.front();
+    }
+
+    return nullptr;
+}
+
 void RenderObject::SetStart(
     const std::function<void(RenderObject *)> &_func = nullptr)
 {
@@ -785,38 +851,6 @@ void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
             }
         }
     }
-}
-
-template <typename T>
-std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType()
-{
-    static_assert(std::is_base_of_v<RenderObject, T>,
-                  "T must be derived from RenderObject");
-
-    std::vector<std::shared_ptr<T>> results;
-
-    for (auto child : children)
-    {
-        if (auto castedChild = std::dynamic_pointer_cast<T>(child))
-        {
-            results.push_back(castedChild);
-        }
-    }
-
-    return results;
-}
-
-template <typename T> std::shared_ptr<T> RenderObject::GetChildByType()
-{
-    static_assert(std::is_base_of_v<RenderObject, T>,
-                  "T must be derived from RenderObject");
-
-    if (auto children = GetChildrenByType<T>(); !children.empty())
-    {
-        return children.front();
-    }
-
-    return nullptr;
 }
 
 [[nodiscard]] const SDL_FRect RenderObject::CalculateBoundingBox()
