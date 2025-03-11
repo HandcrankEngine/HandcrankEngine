@@ -6,15 +6,9 @@
 
 #include "Handcrank/Handcrank.hpp"
 #include "Handcrank/ImageRenderObject.hpp"
+#include "Handcrank/Utilities.hpp"
 
 using namespace Handcrank;
-
-int randomNumberRange(int min, int max)
-{
-    return rand() % (max - min + 1) + min;
-}
-
-int randomBoolean() { return rand() > (RAND_MAX / 2); }
 
 class LogoScreenSaver : public ImageRenderObject
 {

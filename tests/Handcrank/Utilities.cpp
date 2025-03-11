@@ -35,5 +35,22 @@ int main()
         std::cout << ".";
     }
 
+    {
+        auto value = randomNumberRange(-1, 1);
+
+        assert(value >= -1);
+        assert(value <= 1);
+
+        std::cout << ".";
+    }
+
+    {
+        auto value = randomBoolean();
+
+        assert(value == true || value == false);
+
+        std::cout << ".";
+    }
+
     return 0;
 }
