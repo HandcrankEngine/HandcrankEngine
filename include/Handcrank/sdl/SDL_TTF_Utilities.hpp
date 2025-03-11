@@ -50,10 +50,18 @@ std::shared_ptr<TTF_Font> SDL_LoadFontRW(const void *mem, const int size,
         TTF_Init();
     }
 
-    auto font = TTF_OpenFontRW(SDL_RWFromConstMem(mem, size), 1, ptSize);
+    auto rw = SDL_RWFromConstMem(mem, size);
+
+    if (!rw)
+    {
+        return nullptr;
+    }
+
+    auto font = TTF_OpenFontRW(rw, 1, ptSize);
 
     if (!font)
     {
+        SDL_RWclose(rw);
         return nullptr;
     }
 

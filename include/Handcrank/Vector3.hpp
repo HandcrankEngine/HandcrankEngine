@@ -15,8 +15,8 @@ struct Vector3
 
     Vector3() : x(0), y(0), z(0) {}
     Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
-    explicit Vector3(const SDL_FPoint point) : x(point.x), y(point.y) {}
-    explicit Vector3(const SDL_FRect rect) : x(rect.x), y(rect.y) {}
+    explicit Vector3(const SDL_FPoint point) : x(point.x), y(point.y), z(0) {}
+    explicit Vector3(const SDL_FRect rect) : x(rect.x), y(rect.y), z(0) {}
 
     Vector3 operator+(const Vector3 &other) const
     {

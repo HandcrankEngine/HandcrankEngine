@@ -17,12 +17,12 @@ namespace Handcrank
 
 class TextRenderObject : public RenderObject
 {
-  private:
+  protected:
     std::shared_ptr<TTF_Font> font;
 
     SDL_Color color{255, 255, 255, 255};
 
-    std::string text;
+    std::string text = "";
 
     std::shared_ptr<SDL_Surface> textSurface;
 
@@ -87,8 +87,6 @@ class TextRenderObject : public RenderObject
      */
     void SetText(std::string text)
     {
-        this->text = std::move(text);
-
         if (font == nullptr)
         {
             std::cerr << "ERROR! Missing font reference." << std::endl;
@@ -96,9 +94,21 @@ class TextRenderObject : public RenderObject
             return;
         }
 
+        this->text = std::move(text);
+
+        textSurface.reset();
+        textTexture.reset();
+
         textSurface = std::shared_ptr<SDL_Surface>(
             TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
             SDL_FreeSurface);
+
+        if (!textSurface)
+        {
+            std::cerr << "ERROR! Failed to generate text surface." << std::endl;
+
+            return;
+        }
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;
@@ -113,12 +123,29 @@ class TextRenderObject : public RenderObject
      */
     void SetWrappedText(std::string text)
     {
-        this->text = text;
+        if (font == nullptr)
+        {
+            std::cerr << "ERROR! Missing font reference." << std::endl;
+
+            return;
+        }
+
+        this->text = std::move(text);
+
+        textSurface.reset();
+        textTexture.reset();
 
         textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color,
-                                           rect->w),
+            TTF_RenderText_Blended_Wrapped(font.get(), this->text.c_str(),
+                                           color, rect->w),
             SDL_FreeSurface);
+
+        if (!textSurface)
+        {
+            std::cerr << "ERROR! Failed to generate text surface." << std::endl;
+
+            return;
+        }
 
         rect->w = textSurface->w;
         rect->h = textSurface->h;

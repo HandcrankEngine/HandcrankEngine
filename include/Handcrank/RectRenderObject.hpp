@@ -14,7 +14,12 @@ class RectRenderObject : public RenderObject
 {
   protected:
     std::shared_ptr<SDL_Color> borderColor = std::make_shared<SDL_Color>();
+
+    bool borderColorSet = false;
+
     std::shared_ptr<SDL_Color> fillColor = std::make_shared<SDL_Color>();
+
+    bool fillColorSet = false;
 
     SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
@@ -35,6 +40,8 @@ class RectRenderObject : public RenderObject
         this->borderColor->g = borderColor.g;
         this->borderColor->b = borderColor.b;
         this->borderColor->a = borderColor.a;
+
+        borderColorSet = true;
     }
 
     void SetBorderColor(const Uint8 r, const Uint8 g, const Uint8 b,
@@ -44,9 +51,14 @@ class RectRenderObject : public RenderObject
         borderColor->g = g;
         borderColor->b = b;
         borderColor->a = a;
+
+        borderColorSet = true;
     }
 
-    std::shared_ptr<SDL_Color> GetBorderColor() const { return borderColor; }
+    std::shared_ptr<SDL_Color> GetBorderColor() const
+    {
+        return borderColorSet ? borderColor : nullptr;
+    }
 
     /**
      * Set rect fill color.
@@ -59,6 +71,8 @@ class RectRenderObject : public RenderObject
         this->fillColor->g = fillColor.g;
         this->fillColor->b = fillColor.b;
         this->fillColor->a = fillColor.a;
+
+        fillColorSet = true;
     }
 
     void SetFillColor(const Uint8 r, const Uint8 g, const Uint8 b,
@@ -68,9 +82,14 @@ class RectRenderObject : public RenderObject
         fillColor->g = g;
         fillColor->b = b;
         fillColor->a = a;
+
+        fillColorSet = true;
     }
 
-    std::shared_ptr<SDL_Color> GetFillColor() const { return fillColor; }
+    std::shared_ptr<SDL_Color> GetFillColor() const
+    {
+        return fillColorSet ? fillColor : nullptr;
+    }
 
     /**
      * Render rect to the scene.
@@ -83,7 +102,7 @@ class RectRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        if (fillColor != nullptr)
+        if (fillColorSet)
         {
             SDL_SetRenderDrawColor(renderer.get(), fillColor->r, fillColor->g,
                                    fillColor->b, fillColor->a);
@@ -91,7 +110,7 @@ class RectRenderObject : public RenderObject
             SDL_RenderFillRectF(renderer.get(), &transformedRect);
         }
 
-        if (borderColor != nullptr)
+        if (borderColorSet)
         {
             SDL_SetRenderDrawColor(renderer.get(), borderColor->r,
                                    borderColor->g, borderColor->b,
