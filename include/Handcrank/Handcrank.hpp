@@ -16,8 +16,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "Vector2.hpp"
-
 namespace Handcrank
 {
 
