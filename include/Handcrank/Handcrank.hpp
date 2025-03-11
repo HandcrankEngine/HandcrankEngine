@@ -119,8 +119,6 @@ class Game
 
     void DestroyChildObjects();
 
-    void Clean();
-
     void Quit();
 };
 
@@ -204,8 +202,6 @@ class RenderObject
 
     void DestroyChildObjects();
 
-    virtual void Clean();
-
     [[nodiscard]] bool HasBeenMarkedForDestroy() const;
 
     void Destroy();
@@ -213,7 +209,25 @@ class RenderObject
 
 Game::Game() { Setup(); }
 
-inline Game::~Game() = default;
+inline Game::~Game()
+{
+    for (auto &child : children)
+    {
+        child.reset();
+    }
+
+    children.clear();
+
+    for (auto i = 0; i < TTF_WasInit(); i += 1)
+    {
+        TTF_Quit();
+    }
+
+    renderer.reset();
+    window.reset();
+
+    SDL_Quit();
+};
 
 void Game::AddChildObject(std::shared_ptr<RenderObject> child)
 {
@@ -328,8 +342,6 @@ int Game::Run()
     {
         Loop();
     }
-
-    Clean();
 
     return 0;
 }
@@ -524,27 +536,6 @@ void Game::DestroyChildObjects()
             }
         }
     }
-}
-
-void Game::Clean()
-{
-    for (auto &iter : children)
-    {
-        if (const auto child = iter.get(); child != nullptr)
-        {
-            child->Clean();
-        }
-    }
-
-    for (auto i = 0; i < TTF_WasInit(); i += 1)
-    {
-        TTF_Quit();
-    }
-
-    SDL_DestroyRenderer(renderer.get());
-    SDL_DestroyWindow(window.get());
-
-    SDL_Quit();
 }
 
 void Game::Quit() { quit = true; }
@@ -871,8 +862,6 @@ void RenderObject::DestroyChildObjects()
         }
     }
 }
-
-void RenderObject::Clean() {}
 
 [[nodiscard]] bool RenderObject::HasBeenMarkedForDestroy() const
 {
