@@ -115,9 +115,12 @@ class TextRenderObject : public RenderObject
     {
         this->text = std::move(text);
 
+        textSurface.reset();
+        textTexture.reset();
+
         textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color,
-                                           rect->w),
+            TTF_RenderText_Blended_Wrapped(font.get(), this->text.c_str(),
+                                           color, rect->w),
             SDL_FreeSurface);
 
         rect->w = textSurface->w;
