@@ -22,7 +22,7 @@ class TextRenderObject : public RenderObject
 
     SDL_Color color{255, 255, 255, 255};
 
-    std::string text;
+    std::string text = "";
 
     std::shared_ptr<SDL_Surface> textSurface;
 

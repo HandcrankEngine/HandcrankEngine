@@ -47,7 +47,7 @@ class Game
 
     double frameRate = 60;
 
-    double fps;
+    double fps = 0;
 
     const double targetFrameTime = 1.0 / frameRate;
 
@@ -56,8 +56,8 @@ class Game
     int width = 800;
     int height = 600;
 
-    float dpiScaleX;
-    float dpiScaleY;
+    float dpiScaleX = 1;
+    float dpiScaleY = 1;
 
     bool focused = false;
 
