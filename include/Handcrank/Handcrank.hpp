@@ -211,7 +211,7 @@ Game::Game() { Setup(); }
 
 inline Game::~Game()
 {
-    for (auto &child : children)
+    for (auto child : children)
     {
         child.reset();
     }
