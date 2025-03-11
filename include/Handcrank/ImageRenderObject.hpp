@@ -17,7 +17,7 @@ class ImageRenderObject : public RenderObject
   private:
     std::shared_ptr<SDL_Texture> texture;
 
-    const std::unique_ptr<SDL_Rect> srcRect;
+    std::unique_ptr<SDL_Rect> srcRect = std::make_unique<SDL_Rect>();
 
     std::unique_ptr<SDL_FPoint> centerPoint = std::make_unique<SDL_FPoint>();
 
