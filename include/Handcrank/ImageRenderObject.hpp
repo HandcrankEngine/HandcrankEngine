@@ -76,7 +76,7 @@ class ImageRenderObject : public RenderObject
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(const SDL_FRect srcRect)
+    void SetSrcRect(const SDL_Rect srcRect)
     {
         this->srcRect->x = srcRect.x;
         this->srcRect->y = srcRect.y;
