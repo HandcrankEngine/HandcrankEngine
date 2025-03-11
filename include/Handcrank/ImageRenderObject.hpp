@@ -40,6 +40,7 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(std::shared_ptr<SDL_Renderer> renderer, const char *path)
     {
+        texture.reset();
         texture = SDL_LoadTexture(renderer, path);
 
         UpdateRectSizeFromTexture();
@@ -55,6 +56,7 @@ class ImageRenderObject : public RenderObject
     void LoadTextureRW(std::shared_ptr<SDL_Renderer> renderer, const void *mem,
                        const int size)
     {
+        texture.reset();
         texture = SDL_LoadTextureRW(renderer, mem, size);
 
         UpdateRectSizeFromTexture();
