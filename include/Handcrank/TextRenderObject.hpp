@@ -113,7 +113,7 @@ class TextRenderObject : public RenderObject
      */
     void SetWrappedText(std::string text)
     {
-        this->text = text;
+        this->text = std::move(text);
 
         textSurface = std::shared_ptr<SDL_Surface>(
             TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color,
