@@ -79,8 +79,10 @@ class Game
 
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
-    template <typename T> std::vector<std::shared_ptr<T>> GetChildrenByType();
-    template <typename T> std::shared_ptr<T> GetChildByType();
+    template <typename T>
+    std::vector<std::shared_ptr<T>> GetChildrenByType(bool nested = false);
+    template <typename T>
+    std::shared_ptr<T> GetChildByType(bool nested = false);
 
     [[nodiscard]] std::shared_ptr<SDL_Window> GetWindow() const;
     [[nodiscard]] std::shared_ptr<SDL_Renderer> GetRenderer() const;
@@ -167,8 +169,10 @@ class RenderObject
 
     void AddChildObject(std::shared_ptr<RenderObject> child);
 
-    template <typename T> std::vector<std::shared_ptr<T>> GetChildrenByType();
-    template <typename T> std::shared_ptr<T> GetChildByType();
+    template <typename T>
+    std::vector<std::shared_ptr<T>> GetChildrenByType(bool nested = false);
+    template <typename T>
+    std::shared_ptr<T> GetChildByType(bool nested = false);
 
     void SetStart(const std::function<void(RenderObject *)> &_func);
     void SetUpdate(const std::function<void(RenderObject *, double)> &_func);
@@ -241,7 +245,8 @@ void Game::AddChildObject(std::shared_ptr<RenderObject> child)
     children.push_back(child);
 }
 
-template <typename T> std::vector<std::shared_ptr<T>> Game::GetChildrenByType()
+template <typename T>
+std::vector<std::shared_ptr<T>> Game::GetChildrenByType(bool nested)
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -254,17 +259,25 @@ template <typename T> std::vector<std::shared_ptr<T>> Game::GetChildrenByType()
         {
             results.push_back(castedChild);
         }
+
+        if (nested)
+        {
+            auto childResults = child->GetChildrenByType<T>(nested);
+
+            results.insert(results.end(), childResults.begin(),
+                           childResults.end());
+        }
     }
 
     return results;
 }
 
-template <typename T> std::shared_ptr<T> Game::GetChildByType()
+template <typename T> std::shared_ptr<T> Game::GetChildByType(bool nested)
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
 
-    if (auto children = GetChildrenByType<T>(); !children.empty())
+    if (auto children = GetChildrenByType<T>(nested); !children.empty())
     {
         return children.front();
     }
@@ -608,7 +621,7 @@ void RenderObject::AddChildObject(std::shared_ptr<RenderObject> child)
 }
 
 template <typename T>
-std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType()
+std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType(bool nested)
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -621,17 +634,26 @@ std::vector<std::shared_ptr<T>> RenderObject::GetChildrenByType()
         {
             results.push_back(castedChild);
         }
+
+        if (nested)
+        {
+            auto childResults = child->GetChildrenByType<T>(nested);
+
+            results.insert(results.end(), childResults.begin(),
+                           childResults.end());
+        }
     }
 
     return results;
 }
 
-template <typename T> std::shared_ptr<T> RenderObject::GetChildByType()
+template <typename T>
+std::shared_ptr<T> RenderObject::GetChildByType(bool nested)
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
 
-    if (auto children = GetChildrenByType<T>(); !children.empty())
+    if (auto children = GetChildrenByType<T>(nested); !children.empty())
     {
         return children.front();
     }
