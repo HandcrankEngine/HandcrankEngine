@@ -548,7 +548,15 @@ RenderObject::RenderObject()
     rect->h = 100;
 }
 
-inline RenderObject::~RenderObject() = default;
+inline RenderObject::~RenderObject()
+{
+    for (auto child : children)
+    {
+        child.reset();
+    }
+
+    children.clear();
+}
 
 void RenderObject::Enable() { isEnabled = true; }
 
