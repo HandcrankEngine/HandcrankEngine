@@ -14,7 +14,7 @@ namespace Handcrank
 
 class ImageRenderObject : public RenderObject
 {
-  private:
+  protected:
     std::shared_ptr<SDL_Texture> texture;
 
     std::unique_ptr<SDL_Rect> srcRect = std::make_unique<SDL_Rect>();

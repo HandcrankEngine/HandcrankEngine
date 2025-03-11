@@ -17,7 +17,7 @@ namespace Handcrank
 
 class TextRenderObject : public RenderObject
 {
-  private:
+  protected:
     std::shared_ptr<TTF_Font> font;
 
     SDL_Color color{255, 255, 255, 255};
