@@ -21,8 +21,11 @@ class LogoScreenSaver : public ImageRenderObject
   public:
     void Start() override
     {
-        LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
-                      images_sdl_logo_png_len);
+        if (texture == nullptr)
+        {
+            LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
+                          images_sdl_logo_png_len);
+        }
 
         if (rect->x == 0 && rect->y == 0)
         {
