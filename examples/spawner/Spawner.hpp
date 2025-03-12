@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../fonts/Roboto/Roboto-Regular.h"
 #include "../images/sdl_logo.h"
 
 #include "Handcrank/Handcrank.hpp"
@@ -13,11 +14,32 @@ class Spawner : public RenderObject
   private:
     std::shared_ptr<SDL_Texture> texture;
 
+    std::shared_ptr<TextRenderObject> label =
+        std::make_shared<TextRenderObject>();
+    std::shared_ptr<RectRenderObject> background =
+        std::make_shared<RectRenderObject>();
+
   public:
     void Start() override
     {
         texture = SDL_LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
                                     images_sdl_logo_png_len);
+
+        AddChildObject(background);
+
+        background->SetRect({(float)game->GetWidth() - 200,
+                             (float)game->GetHeight() - 70, 200, 70});
+        background->SetFillColor({255, 255, 255, 255});
+
+        background->z = 1;
+
+        label->SetRect({10, 10});
+        label->LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
+                          fonts_Roboto_Roboto_Regular_ttf_len, 40);
+
+        label->SetColor({0, 0, 0, 255});
+
+        background->AddChildObject(label);
     }
     void Update(const double deltaTime) override
     {
@@ -26,7 +48,7 @@ class Spawner : public RenderObject
             return;
         }
 
-        if (game->mousePressedState[SDL_BUTTON_LEFT])
+        if (game->mouseState[SDL_BUTTON_LEFT])
         {
             auto logoScreenSaver = std::make_shared<LogoScreenSaver>();
 
@@ -37,5 +59,9 @@ class Spawner : public RenderObject
 
             AddChildObject(logoScreenSaver);
         }
+
+        auto logoCount = GetChildrenByType<LogoScreenSaver>().size();
+
+        label->SetText(std::to_string(logoCount));
     }
 };

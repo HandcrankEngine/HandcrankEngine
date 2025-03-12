@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../fonts/loader.h"
+#include "../fonts/Roboto/Roboto-Regular.h"
 
 #include "Handcrank/Handcrank.hpp"
 #include "Handcrank/RectRenderObject.hpp"
@@ -31,7 +31,7 @@ class FPS : public RenderObject
 
         label->SetColor({0, 0, 0, 255});
 
-        AddChildObject(label);
+        background->AddChildObject(label);
     }
 
     void Update(const double deltaTime) override
