@@ -54,8 +54,11 @@ class Spawner : public RenderObject
 
             logoScreenSaver->SetTexture(texture);
 
-            logoScreenSaver->SetRect(game->mousePosition->x,
-                                     game->mousePosition->y);
+            auto transformedRect = logoScreenSaver->GetTransformedRect();
+
+            logoScreenSaver->SetRect(
+                game->mousePosition->x - transformedRect.w / 2,
+                game->mousePosition->y - transformedRect.h / 2);
 
             AddChildObject(logoScreenSaver);
         }
