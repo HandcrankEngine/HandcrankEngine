@@ -429,3 +429,29 @@ auto main() -> int
     return game->Run();
 }
 ```
+
+### Drawing Circles
+
+```cpp
+#include "Handcrank/CircleRenderObject.hpp"
+#include "Handcrank/Handcrank.hpp"
+
+using namespace Handcrank;
+
+auto game = std::make_unique<Game>();
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    auto circle = std::make_shared<CircleRenderObject>();
+
+    circle->SetBorderColor(255, 0, 0, 255);
+    circle->SetRect(100, 100);
+    circle->SetRadius(50);
+
+    game->AddChildObject(circle);
+
+    return game->Run();
+}
+```
