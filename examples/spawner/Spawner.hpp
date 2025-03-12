@@ -60,7 +60,17 @@ class Spawner : public RenderObject
             AddChildObject(logoScreenSaver);
         }
 
-        auto logoCount = GetChildrenByType<LogoScreenSaver>().size();
+        auto spawnedLogos = GetChildrenByType<LogoScreenSaver>();
+
+        if (game->keyPressedState[SDLK_c])
+        {
+            for (auto child : spawnedLogos)
+            {
+                child->Destroy();
+            }
+        }
+
+        auto logoCount = spawnedLogos.size();
 
         label->SetText(std::to_string(logoCount));
     }
