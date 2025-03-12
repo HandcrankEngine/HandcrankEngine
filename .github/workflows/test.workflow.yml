@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '*.md'
+    paths:
+      - include/**
+      - tests/**
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
