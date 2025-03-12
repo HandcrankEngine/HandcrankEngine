@@ -9,7 +9,7 @@
 
 ## Demo
 
-https://github.com/user-attachments/assets/8b862681-2d82-4766-b0bf-b3084795bf17
+https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 
 ## Quick Start
 
