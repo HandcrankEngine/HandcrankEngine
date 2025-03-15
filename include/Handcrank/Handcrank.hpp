@@ -849,7 +849,6 @@ void RenderObject::SetScale(double _scale) { scale = _scale; }
 
 bool RenderObject::CanRender()
 {
-
     auto boundingBox = CalculateBoundingBox();
 
     auto viewport = game->GetViewport();
