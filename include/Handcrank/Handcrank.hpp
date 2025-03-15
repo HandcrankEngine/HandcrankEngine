@@ -186,8 +186,8 @@ class RenderObject
     virtual void OnMouseDown();
     virtual void OnMouseUp();
 
-    void InternalUpdate(double deltaTime);
-    void InternalFixedUpdate(double fixedDeltaTime);
+    virtual void InternalUpdate(double deltaTime);
+    virtual void InternalFixedUpdate(double fixedDeltaTime);
 
     [[nodiscard]] std::shared_ptr<SDL_FRect> GetRect() const;
     void SetRect(const SDL_FRect _rect);
