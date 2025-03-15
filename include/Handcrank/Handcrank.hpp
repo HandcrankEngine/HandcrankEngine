@@ -491,7 +491,7 @@ void Game::CalculateDeltaTime()
 
 inline void Game::Update()
 {
-    for (auto &iter : children)
+    for (auto iter : children)
     {
         auto child = iter.get();
 
@@ -511,7 +511,7 @@ void Game::FixedUpdate()
 
     if (fixedUpdateDeltaTime > fixedFrameTime)
     {
-        for (auto &iter : children)
+        for (auto iter : children)
         {
             if (const auto child = iter.get(); child != nullptr)
             {
@@ -543,7 +543,7 @@ void Game::Render()
                          const std::shared_ptr<RenderObject> b)
                       { return a->z < b->z; });
 
-        for (auto &iter : children)
+        for (auto iter : children)
         {
             if (const auto child = iter.get(); child != nullptr)
             {
@@ -763,7 +763,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
         updateFunction(this, deltaTime);
     }
 
-    for (auto &iter : children)
+    for (auto iter : children)
     {
         if (const auto child = iter.get(); child != nullptr)
         {
@@ -784,7 +784,7 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
         fixedUpdateFunction(this, fixedDeltaTime);
     }
 
-    for (auto &iter : children)
+    for (auto iter : children)
     {
         if (const auto child = iter.get(); child != nullptr)
         {
@@ -864,11 +864,11 @@ void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
         return;
     }
 
-    children.sort([](const std::shared_ptr<RenderObject> &a,
-                     const std::shared_ptr<RenderObject> &b)
+    children.sort([](const std::shared_ptr<RenderObject> a,
+                     const std::shared_ptr<RenderObject> b)
                   { return a->z < b->z; });
 
-    for (auto &iter : children)
+    for (auto iter : children)
     {
         if (const auto child = iter.get(); child != nullptr)
         {
@@ -884,7 +884,7 @@ void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
 {
     auto boundingBox = GetTransformedRect();
 
-    for (auto &iter : children)
+    for (auto iter : children)
     {
         if (const auto child = iter.get(); child != nullptr)
         {
