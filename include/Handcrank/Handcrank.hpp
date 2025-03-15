@@ -199,6 +199,7 @@ class RenderObject
 
     [[nodiscard]] const SDL_FRect GetTransformedRect();
 
+    bool CanRender();
     virtual void Render(std::shared_ptr<SDL_Renderer> renderer);
 
     bool CheckCollisionAABB(std::shared_ptr<RenderObject> otherRenderObject);
@@ -846,20 +847,26 @@ void RenderObject::SetScale(double _scale) { scale = _scale; }
     return transformedRect;
 }
 
-void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
+bool RenderObject::CanRender()
 {
-    children.sort([](const std::shared_ptr<RenderObject> &a,
-                     const std::shared_ptr<RenderObject> &b)
-                  { return a->z < b->z; });
 
     auto boundingBox = CalculateBoundingBox();
 
     auto viewport = game->GetViewport();
 
-    if (!SDL_HasIntersectionF(&boundingBox, &viewport))
+    return SDL_HasIntersectionF(&boundingBox, &viewport);
+}
+
+void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
+{
+    if (!CanRender())
     {
         return;
     }
+
+    children.sort([](const std::shared_ptr<RenderObject> &a,
+                     const std::shared_ptr<RenderObject> &b)
+                  { return a->z < b->z; });
 
     for (auto &iter : children)
     {
