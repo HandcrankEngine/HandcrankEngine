@@ -47,7 +47,7 @@ class Game
 
     double fps = 0;
 
-    const double targetFrameTime = 1.0 / frameRate;
+    double targetFrameTime = 1.0 / frameRate;
 
     const double fixedFrameTime = 0.02;
 
