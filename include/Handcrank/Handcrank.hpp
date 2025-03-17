@@ -357,8 +357,8 @@ void Game::SetScreenSize(const int _width, const int _height)
     viewportf.w = static_cast<float>(width);
     viewportf.h = static_cast<float>(height);
 
-    dpiScaleX = width / _width;
-    dpiScaleY = height / _height;
+    dpiScaleX = (float)width / _width;
+    dpiScaleY = (float)height / _height;
 }
 
 inline void Game::SetTitle(const char *name)
