@@ -5,7 +5,6 @@
 
 #include <SDL.h>
 
-#include "Handcrank.hpp"
 #include "ImageRenderObject.hpp"
 #include "Vector2.hpp"
 
