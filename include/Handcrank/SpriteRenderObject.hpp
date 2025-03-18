@@ -6,8 +6,8 @@
 #include <SDL.h>
 
 #include "Handcrank.hpp"
-#include "Handcrank/ImageRenderObject.hpp"
-#include "Handcrank/Vector2.hpp"
+#include "ImageRenderObject.hpp"
+#include "Vector2.hpp"
 
 namespace Handcrank
 {
