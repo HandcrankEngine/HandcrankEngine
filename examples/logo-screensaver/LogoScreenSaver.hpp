@@ -13,8 +13,8 @@ using namespace Handcrank;
 class LogoScreenSaver : public ImageRenderObject
 {
   protected:
-    int xDirection = randomBoolean() ? -1 : 1;
-    int yDirection = randomBoolean() ? -1 : 1;
+    int xDirection = RandomBoolean() ? -1 : 1;
+    int yDirection = RandomBoolean() ? -1 : 1;
 
     int movementSpeed = rand() % 400 + 100;
 
@@ -29,8 +29,8 @@ class LogoScreenSaver : public ImageRenderObject
 
         if (rect->x == 0 && rect->y == 0)
         {
-            SetRect(randomNumberRange(0, game->GetWidth() - 200),
-                    randomNumberRange(0, game->GetWidth() - 200));
+            SetRect(RandomNumberRange(0, game->GetWidth() - 200),
+                    RandomNumberRange(0, game->GetWidth() - 200));
         }
     }
 

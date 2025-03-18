@@ -36,7 +36,7 @@ int main()
     }
 
     {
-        auto value = randomNumberRange(-1, 1);
+        auto value = RandomNumberRange(-1, 1);
 
         assert(value >= -1);
         assert(value <= 1);
@@ -45,7 +45,7 @@ int main()
     }
 
     {
-        auto value = randomBoolean();
+        auto value = RandomBoolean();
 
         assert(value == true || value == false);
 
