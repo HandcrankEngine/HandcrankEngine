@@ -334,8 +334,6 @@ auto main() -> int
 #include "Handcrank/Handcrank.hpp"
 #include "Handcrank/TextRenderObject.hpp"
 
-#include "Handcrank/sdl/SDL_TTF_Utilities.hpp"
-
 using namespace Handcrank;
 
 auto game = std::make_unique<Game>();
@@ -364,8 +362,6 @@ auto main() -> int
 
 #include "Handcrank/Handcrank.hpp"
 #include "Handcrank/TextRenderObject.hpp"
-
-#include "Handcrank/sdl/SDL_TTF_Utilities.hpp"
 
 using namespace Handcrank;
 
