@@ -81,7 +81,7 @@ class Game
     inline Game();
     inline ~Game();
 
-    inline void AddChildObject(std::shared_ptr<RenderObject> child);
+    inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
     template <typename T>
     inline auto GetChildrenByType(bool nested = false)
@@ -173,7 +173,7 @@ class RenderObject
     inline void Disable();
     [[nodiscard]] inline auto IsEnabled() const -> bool;
 
-    inline void AddChildObject(std::shared_ptr<RenderObject> child);
+    inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
     template <typename T>
     inline auto GetChildrenByType(bool nested = false)
@@ -181,10 +181,11 @@ class RenderObject
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
 
-    inline void SetStart(std::function<void(RenderObject *)> _func);
-    inline void SetUpdate(std::function<void(RenderObject *, double)> _func);
+    inline void SetStart(const std::function<void(RenderObject *)> &_func);
     inline void
-    SetFixedUpdate(std::function<void(RenderObject *, double)> _func);
+    SetUpdate(const std::function<void(RenderObject *, double)> &_func);
+    inline void
+    SetFixedUpdate(const std::function<void(RenderObject *, double)> &_func);
 
     virtual inline void Start();
     virtual inline void Update(double deltaTime);
@@ -209,10 +210,11 @@ class RenderObject
     inline auto GetTransformedRect() -> SDL_FRect;
 
     inline auto CanRender() -> bool;
-    virtual inline void Render(std::shared_ptr<SDL_Renderer> renderer);
+    virtual inline void Render(const std::shared_ptr<SDL_Renderer> &renderer);
 
     inline auto
-    CheckCollisionAABB(std::shared_ptr<RenderObject> otherRenderObject) -> bool;
+    CheckCollisionAABB(const std::shared_ptr<RenderObject> &otherRenderObject)
+        -> bool;
 
     inline auto CalculateBoundingBox() -> SDL_FRect;
 
@@ -245,7 +247,7 @@ Game::~Game()
     SDL_Quit();
 };
 
-void Game::AddChildObject(std::shared_ptr<RenderObject> child)
+void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
     child->parent = nullptr;
 
@@ -547,8 +549,8 @@ void Game::Render()
 
         SDL_RenderSetViewport(renderer.get(), &viewport);
 
-        children.sort([](const std::shared_ptr<RenderObject> a,
-                         const std::shared_ptr<RenderObject> b)
+        children.sort([](const std::shared_ptr<RenderObject> &a,
+                         const std::shared_ptr<RenderObject> &b)
                       { return a->z < b->z; });
 
         for (const auto &iter : children)
@@ -618,7 +620,7 @@ void RenderObject::Disable() { isEnabled = false; }
 
 auto RenderObject::IsEnabled() const -> bool { return isEnabled; }
 
-void RenderObject::AddChildObject(std::shared_ptr<RenderObject> child)
+void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
     child->parent = this;
 
@@ -670,7 +672,7 @@ auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
 }
 
 void RenderObject::SetStart(
-    const std::function<void(RenderObject *)> _func = nullptr)
+    const std::function<void(RenderObject *)> &_func = nullptr)
 {
     if (startFunction)
     {
@@ -682,7 +684,7 @@ void RenderObject::SetStart(
 }
 
 void RenderObject::SetUpdate(
-    const std::function<void(RenderObject *, double)> _func = nullptr)
+    const std::function<void(RenderObject *, double)> &_func = nullptr)
 {
     if (updateFunction)
     {
@@ -694,7 +696,7 @@ void RenderObject::SetUpdate(
 }
 
 void RenderObject::SetFixedUpdate(
-    const std::function<void(RenderObject *, double)> _func = nullptr)
+    const std::function<void(RenderObject *, double)> &_func = nullptr)
 {
     if (fixedUpdateFunction)
     {
@@ -866,15 +868,15 @@ auto RenderObject::CanRender() -> bool
     return SDL_HasIntersectionF(&boundingBox, &viewport) == SDL_TRUE;
 }
 
-void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
+void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
 {
     if (!CanRender())
     {
         return;
     }
 
-    children.sort([](const std::shared_ptr<RenderObject> a,
-                     const std::shared_ptr<RenderObject> b)
+    children.sort([](const std::shared_ptr<RenderObject> &a,
+                     const std::shared_ptr<RenderObject> &b)
                   { return a->z < b->z; });
 
     for (const auto &iter : children)
@@ -910,7 +912,7 @@ void RenderObject::Render(std::shared_ptr<SDL_Renderer> renderer)
 }
 
 auto RenderObject::CheckCollisionAABB(
-    std::shared_ptr<RenderObject> otherRenderObject) -> bool
+    const std::shared_ptr<RenderObject> &otherRenderObject) -> bool
 {
     return SDL_HasIntersectionF(rect.get(),
                                 otherRenderObject->GetRect().get()) == SDL_TRUE;
