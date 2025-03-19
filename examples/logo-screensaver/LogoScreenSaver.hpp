@@ -16,7 +16,7 @@ class LogoScreenSaver : public ImageRenderObject
     int xDirection = RandomBoolean() ? -1 : 1;
     int yDirection = RandomBoolean() ? -1 : 1;
 
-    int movementSpeed = rand() % 400 + 100;
+    int movementSpeed = (rand() % 400) + 100;
 
   public:
     void Start() override

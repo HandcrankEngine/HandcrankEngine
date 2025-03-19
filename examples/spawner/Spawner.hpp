@@ -59,8 +59,8 @@ class Spawner : public RenderObject
             auto transformedRect = logoScreenSaver->GetTransformedRect();
 
             logoScreenSaver->SetRect(
-                game->mousePosition->x - transformedRect.w / 2,
-                game->mousePosition->y - transformedRect.h / 2);
+                game->mousePosition->x - (transformedRect.w / 2),
+                game->mousePosition->y - (transformedRect.h / 2));
 
             AddChildObject(logoScreenSaver);
         }
@@ -69,7 +69,7 @@ class Spawner : public RenderObject
 
         if (game->keyPressedState[SDLK_c])
         {
-            for (auto child : spawnedLogos)
+            for (const auto &child : spawnedLogos)
             {
                 child->Destroy();
             }
