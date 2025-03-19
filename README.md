@@ -85,6 +85,12 @@ $ doxygen
 clang-format -i src/*.cpp include/**/*.hpp tests/**/*.cpp
 ```
 
+## Tidy
+
+```bash
+clang-tidy include/**/*.hpp
+```
+
 ## Examples
 
 1. [Rendering Rectangle Object](#rendering-rectangle-object)

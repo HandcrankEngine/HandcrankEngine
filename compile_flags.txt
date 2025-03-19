@@ -1,1 +1,4 @@
-# https://github.com/clangd/clangd/issues/1038#issuecomment-2614169354
+-std=c++17
+-I/opt/homebrew/Cellar/sdl2/2.32.2/include/SDL2
+-I/opt/homebrew/Cellar/sdl2_image/2.8.8/include/SDL2
+-I/opt/homebrew/Cellar/sdl2_ttf/2.24.0/include/SDL2
