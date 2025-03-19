@@ -96,7 +96,7 @@ class RectRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(std::shared_ptr<SDL_Renderer> renderer) override
+    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
     {
         if (!CanRender())
         {

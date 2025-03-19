@@ -20,7 +20,7 @@ namespace Handcrank
  * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in a
  * release build.
  */
-inline auto SDL_LoadTexture(std::shared_ptr<SDL_Renderer> renderer,
+inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
                             const char *path) -> std::shared_ptr<SDL_Texture>
 {
     auto *surface = IMG_Load(path);
@@ -51,7 +51,7 @@ inline auto SDL_LoadTexture(std::shared_ptr<SDL_Renderer> renderer,
  * @param mem A pointer to a read-only buffer.
  * @param size The buffer size, in bytes.
  */
-inline auto SDL_LoadTextureRW(std::shared_ptr<SDL_Renderer> renderer,
+inline auto SDL_LoadTextureRW(const std::shared_ptr<SDL_Renderer> &renderer,
                               const void *mem, const int size)
     -> std::shared_ptr<SDL_Texture>
 {
@@ -119,7 +119,8 @@ class ImageRenderObject : public RenderObject
      * @deprecated DEVELOPMENT USE ONLY! Use LoadTextureRW to load textures in a
      * release build.
      */
-    void LoadTexture(std::shared_ptr<SDL_Renderer> renderer, const char *path)
+    void LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
+                     const char *path)
     {
         texture.reset();
         texture = SDL_LoadTexture(renderer, path);
@@ -134,8 +135,8 @@ class ImageRenderObject : public RenderObject
      * @param mem A pointer to a read-only buffer.
      * @param size The buffer size, in bytes.
      */
-    void LoadTextureRW(std::shared_ptr<SDL_Renderer> renderer, const void *mem,
-                       const int size)
+    void LoadTextureRW(const std::shared_ptr<SDL_Renderer> &renderer,
+                       const void *mem, const int size)
     {
         texture.reset();
         texture = SDL_LoadTextureRW(renderer, mem, size);
@@ -182,7 +183,7 @@ class ImageRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(std::shared_ptr<SDL_Renderer> renderer) override
+    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
     {
         if (!CanRender())
         {

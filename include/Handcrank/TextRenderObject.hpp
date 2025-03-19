@@ -37,7 +37,7 @@ inline auto SDL_LoadFont(const char *path, const int ptSize = 24)
         return nullptr;
     }
 
-    return std::shared_ptr<TTF_Font>(font, TTF_CloseFont);
+    return {font, TTF_CloseFont};
 }
 
 /**
@@ -70,7 +70,7 @@ inline auto SDL_LoadFontRW(const void *mem, const int size,
         return nullptr;
     }
 
-    return std::shared_ptr<TTF_Font>(font, TTF_CloseFont);
+    return {font, TTF_CloseFont};
 }
 
 class TextRenderObject : public RenderObject
@@ -218,7 +218,7 @@ class TextRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(std::shared_ptr<SDL_Renderer> renderer) override
+    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
     {
         if (!CanRender())
         {
