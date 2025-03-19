@@ -1,28 +1,28 @@
 #!/bin/bash
 
-[[ ! -d "${SDL2_PATH}" && -d "/opt/homebrew/Cellar/sdl2" ]] &&
-    export SDL2_PATH=$(find /opt/homebrew/Cellar/sdl2 -name "2.*" -type d | head -n 1)
-[[ ! -d "${SDL2_PATH}" && -d "/tmp/.sdl/" ]] &&
-    export SDL2_PATH=$(find /tmp/.sdl/ -name "SDL2-2.*" -type d | head -n 1)
+[[ ! -d "${SDL3_PATH}" && -d "/opt/homebrew/Cellar/sdl3" ]] &&
+    export SDL3_PATH=$(find /opt/homebrew/Cellar/sdl3 -name "3.*" -type d | head -n 1)
+[[ ! -d "${SDL3_PATH}" && -d "/tmp/.sdl/" ]] &&
+    export SDL3_PATH=$(find /tmp/.sdl/ -name "SDL3-3.*" -type d | head -n 1)
 
-[ ! -d "${SDL2_PATH}" ] && echo "SDL2 not found!" && exit 1
+[ ! -d "${SDL3_PATH}" ] && echo "SDL3 not found!" && exit 1
 
-echo "SDL2 found at ${SDL2_PATH}"
+echo "SDL3 found at ${SDL3_PATH}"
 
-[[ ! -d "${SDL2_IMAGE_PATH}" && -d "/opt/homebrew/Cellar/sdl2_image" ]] &&
-    export SDL2_IMAGE_PATH=$(find /opt/homebrew/Cellar/sdl2_image -name "2.*" -type d | head -n 1)
-[[ ! -d "${SDL2_IMAGE_PATH}" && -d "/tmp/.sdl/" ]] &&
-    export SDL2_IMAGE_PATH=$(find /tmp/.sdl/ -name "SDL2_image-2.*" -type d | head -n 1)
+[[ ! -d "${SDL3_IMAGE_PATH}" && -d "/opt/homebrew/Cellar/sdl3_image" ]] &&
+    export SDL3_IMAGE_PATH=$(find /opt/homebrew/Cellar/sdl3_image -name "3.*" -type d | head -n 1)
+[[ ! -d "${SDL3_IMAGE_PATH}" && -d "/tmp/.sdl/" ]] &&
+    export SDL3_IMAGE_PATH=$(find /tmp/.sdl/ -name "SDL3_image-3.*" -type d | head -n 1)
 
-[ ! -d "${SDL2_IMAGE_PATH}" ] && echo "SDL2_image not found!" && exit 1
+[ ! -d "${SDL3_IMAGE_PATH}" ] && echo "SDL3_image not found!" && exit 1
 
-echo "SDL2_image found at ${SDL2_IMAGE_PATH}"
+echo "SDL3_image found at ${SDL3_IMAGE_PATH}"
 
-[[ ! -d "${SDL2_TTF_PATH}" && -d "/opt/homebrew/Cellar/sdl2_ttf" ]] &&
-    export SDL2_TTF_PATH=$(find /opt/homebrew/Cellar/sdl2_ttf -name "2.*" -type d | head -n 1)
-[[ ! -d "${SDL2_TTF_PATH}" && -d "/tmp/.sdl/" ]] &&
-    export SDL2_TTF_PATH=$(find /tmp/.sdl/ -name "SDL2_ttf-2.*" -type d | head -n 1)
+[[ ! -d "${SDL3_TTF_PATH}" && -d "/opt/homebrew/Cellar/sdl3_ttf" ]] &&
+    export SDL3_TTF_PATH=$(find /opt/homebrew/Cellar/sdl3_ttf -name "3.*" -type d | head -n 1)
+[[ ! -d "${SDL3_TTF_PATH}" && -d "/tmp/.sdl/" ]] &&
+    export SDL3_TTF_PATH=$(find /tmp/.sdl/ -name "SDL3_ttf-3.*" -type d | head -n 1)
 
-[ ! -d "${SDL2_TTF_PATH}" ] && echo "SDL2_ttf not found!" && exit 1
+[ ! -d "${SDL3_TTF_PATH}" ] && echo "SDL3_ttf not found!" && exit 1
 
-echo "SDL2_ttf found at ${SDL2_TTF_PATH}"
+echo "SDL3_ttf found at ${SDL3_TTF_PATH}"

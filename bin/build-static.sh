@@ -13,10 +13,10 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     cd ..
 
     g++ -std=c++17 -o build/handcrank-engine src/*.cpp -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
-        -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
-        -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
-        -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
-        -lSDL2 -lSDL2_image -lSDL2_ttf \
+        -I"${SDL3_PATH}/include" -L"${SDL3_PATH}/lib" \
+        -I"${SDL3_IMAGE_PATH}/include" -L"${SDL3_IMAGE_PATH}/lib" \
+        -I"${SDL3_TTF_PATH}/include" -L"${SDL3_TTF_PATH}/lib" \
+        -lSDL3 -lSDL3_image -lSDL3_ttf \
         -static
 
 )

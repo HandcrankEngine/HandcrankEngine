@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "Handcrank.hpp"
 
@@ -55,18 +55,18 @@ inline auto SDL_LoadFontRW(const void *mem, const int size,
         TTF_Init();
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
     if (rw == nullptr)
     {
         return nullptr;
     }
 
-    auto *font = TTF_OpenFontRW(rw, 1, ptSize);
+    auto *font = TTF_OpenFontIO(rw, false, ptSize);
 
     if (font == nullptr)
     {
-        SDL_RWclose(rw);
+        SDL_CloseIO(rw);
         return nullptr;
     }
 
@@ -158,8 +158,9 @@ class TextRenderObject : public RenderObject
         textTexture.reset();
 
         textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
-            SDL_FreeSurface);
+            TTF_RenderText_Blended(font.get(), this->text.c_str(),
+                                   this->text.length(), color),
+            SDL_DestroySurface);
 
         if (!textSurface)
         {
@@ -195,8 +196,8 @@ class TextRenderObject : public RenderObject
 
         textSurface = std::shared_ptr<SDL_Surface>(
             TTF_RenderText_Blended_Wrapped(font.get(), this->text.c_str(),
-                                           color, rect->w),
-            SDL_FreeSurface);
+                                           this->text.length(), color, rect->w),
+            SDL_DestroySurface);
 
         if (!textSurface)
         {
@@ -234,8 +235,8 @@ class TextRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyF(renderer.get(), textTexture.get(), nullptr,
-                        &transformedRect);
+        SDL_RenderTexture(renderer.get(), textTexture.get(), nullptr,
+                          &transformedRect);
 
         RenderObject::Render(renderer);
     }
