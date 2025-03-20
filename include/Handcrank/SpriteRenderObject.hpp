@@ -42,7 +42,7 @@ class SpriteRenderObject : public ImageRenderObject
 
     void SetFrameSpeed(const double _frameSpeed) { frameSpeed = _frameSpeed; }
 
-    void SetFrames(std::shared_ptr<std::vector<SDL_Rect>> _spriteFrames)
+    void SetFrames(const std::shared_ptr<std::vector<SDL_Rect>> &_spriteFrames)
     {
         spriteFrames.reset();
 

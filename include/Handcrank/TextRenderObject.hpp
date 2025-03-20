@@ -103,7 +103,7 @@ class TextRenderObject : public RenderObject
      *
      * @param font Font value to set.
      */
-    void SetFont(std::shared_ptr<TTF_Font> font) { this->font = font; }
+    void SetFont(const std::shared_ptr<TTF_Font> &font) { this->font = font; }
 
     /**
      * Load font from a path.
