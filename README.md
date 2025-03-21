@@ -141,7 +141,6 @@ auto game = std::make_unique<Game>();
 
 class RedSquare : public RectRenderObject
 {
-
 public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
 };
