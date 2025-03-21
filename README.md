@@ -28,20 +28,6 @@ auto main() -> int
 }
 ```
 
-## Editor Setup
-
-### VS Code
-
-Make sure the paths are correct in `.vscode/c_cpp_properties.json`.
-
-### zed
-
-Make sure the paths are correct in `.clangd`.
-
-### Sublime Text
-
-Via Package Control, install `LSP` and `LSP-clangd`.
-
 ## Dependencies
 
 ```bash
@@ -90,6 +76,20 @@ clang-format -i src/*.cpp include/**/*.hpp tests/**/*.cpp
 ```bash
 clang-tidy include/**/*.hpp
 ```
+
+## Editor Setup
+
+### VS Code
+
+Make sure the paths are correct in `.vscode/c_cpp_properties.json`.
+
+### zed
+
+Make sure the paths are correct in `.clangd`.
+
+### Sublime Text
+
+Via Package Control, install `LSP` and `LSP-clangd`.
 
 ## Examples
 
