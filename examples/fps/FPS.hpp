@@ -10,7 +10,6 @@ using namespace Handcrank;
 
 class FPS : public RenderObject
 {
-
   private:
     std::shared_ptr<TextRenderObject> label =
         std::make_shared<TextRenderObject>();

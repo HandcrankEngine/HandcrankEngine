@@ -13,7 +13,6 @@ namespace Handcrank
 
 class SpriteRenderObject : public ImageRenderObject
 {
-
   private:
     std::shared_ptr<std::vector<SDL_Rect>> spriteFrames =
         std::make_shared<std::vector<SDL_Rect>>();

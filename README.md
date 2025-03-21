@@ -169,7 +169,6 @@ auto game = std::make_unique<Game>();
 
 class LoopDebugger : public RenderObject
 {
-
   public:
     void Update(const double deltaTime) override
     {
@@ -232,7 +231,6 @@ auto game = std::make_unique<Game>();
 
 class Button : public RectRenderObject
 {
-
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
     void Update(const double deltaTime) override
@@ -270,7 +268,6 @@ auto game = std::make_unique<Game>();
 
 class Cursor : public RectRenderObject
 {
-
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
     void Update(const double deltaTime) override
@@ -301,7 +298,6 @@ auto game = std::make_unique<Game>();
 
 class Button : public RectRenderObject
 {
-
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
     void OnMouseOver() override { SetFillColor(255, 0, 0, 100); }
@@ -330,7 +326,6 @@ auto game = std::make_unique<Game>();
 
 class Button : public RectRenderObject
 {
-
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
     void OnMouseDown() override { SetFillColor(255, 0, 0, 100); }
