@@ -8,7 +8,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     cd ..
 
-    ./bin/build-static.sh
+    ./bin/build-linux.sh
 
     valgrind --leak-check=yes --track-origins=yes build/handcrank-engine
 
