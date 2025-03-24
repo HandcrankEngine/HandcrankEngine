@@ -28,6 +28,28 @@ const double DEFAULT_RECT_HEIGHT = 100;
 class Game;
 class RenderObject;
 
+enum class RectAnchor : uint8_t
+{
+    TOP = 0x01,
+    LEFT = 0x02,
+    BOTTOM = 0x04,
+    RIGHT = 0x08,
+    VCENTER = 0x16,
+    HCENTER = 0x32,
+};
+
+inline RectAnchor operator|(RectAnchor a, RectAnchor b)
+{
+    return static_cast<RectAnchor>(static_cast<uint8_t>(a) |
+                                   static_cast<uint8_t>(b));
+}
+
+inline RectAnchor operator&(RectAnchor a, RectAnchor b)
+{
+    return static_cast<RectAnchor>(static_cast<uint8_t>(a) &
+                                   static_cast<uint8_t>(b));
+}
+
 class Game
 {
   private:
@@ -138,6 +160,8 @@ class RenderObject
   protected:
     std::shared_ptr<SDL_FRect> rect = std::make_shared<SDL_FRect>();
 
+    RectAnchor anchor = RectAnchor::TOP | RectAnchor::LEFT;
+
     double scale = 1;
 
     bool hasStarted = false;
@@ -203,6 +227,9 @@ class RenderObject
     inline void SetRect(SDL_FRect _rect);
     inline void SetRect(float x, float y, float w, float h);
     inline void SetRect(float x, float y);
+
+    [[nodiscard]] inline auto GetAnchor() const -> RectAnchor;
+    inline void SetAnchor(RectAnchor _anchor);
 
     [[nodiscard]] inline auto GetScale() const -> double;
     inline void SetScale(double _scale);
@@ -836,6 +863,9 @@ void RenderObject::SetRect(const float x, const float y)
     rect->y = y;
 }
 
+auto RenderObject::GetAnchor() const -> RectAnchor { return anchor; }
+void RenderObject::SetAnchor(RectAnchor _anchor) { anchor = _anchor; }
+
 auto RenderObject::GetScale() const -> double { return scale; }
 
 void RenderObject::SetScale(double _scale) { scale = _scale; }
@@ -846,6 +876,24 @@ auto RenderObject::GetTransformedRect() -> SDL_FRect
 
     transformedRect.w *= scale;
     transformedRect.h *= scale;
+
+    if ((anchor & RectAnchor::HCENTER) == RectAnchor::HCENTER)
+    {
+        transformedRect.x -= transformedRect.w / 2;
+    }
+    else if ((anchor & RectAnchor::RIGHT) == RectAnchor::RIGHT)
+    {
+        transformedRect.x -= transformedRect.w;
+    }
+
+    if ((anchor & RectAnchor::VCENTER) == RectAnchor::VCENTER)
+    {
+        transformedRect.y -= transformedRect.h / 2;
+    }
+    else if ((anchor & RectAnchor::BOTTOM) == RectAnchor::BOTTOM)
+    {
+        transformedRect.y -= transformedRect.h;
+    }
 
     if (parent != nullptr)
     {

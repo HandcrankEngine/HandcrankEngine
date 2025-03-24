@@ -21,6 +21,8 @@ class LogoScreenSaver : public ImageRenderObject
   public:
     void Start() override
     {
+        SetAnchor(RectAnchor::HCENTER | RectAnchor::VCENTER);
+
         if (texture == nullptr)
         {
             LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
@@ -29,8 +31,8 @@ class LogoScreenSaver : public ImageRenderObject
 
         if (rect->x == 0 && rect->y == 0)
         {
-            SetRect(RandomNumberRange(0, game->GetWidth() - 200),
-                    RandomNumberRange(0, game->GetWidth() - 200));
+            SetRect(RandomNumberRange(0, game->GetWidth()),
+                    RandomNumberRange(0, game->GetHeight()));
         }
     }
 
@@ -45,11 +47,11 @@ class LogoScreenSaver : public ImageRenderObject
 
         const auto rect = GetRect();
 
-        const auto minX = 0;
-        const auto minY = 0;
+        const auto minX = transformedRect.w / 2;
+        const auto minY = transformedRect.h / 2;
 
-        const auto maxX = game->GetWidth() - transformedRect.w;
-        const auto maxY = game->GetHeight() - transformedRect.h;
+        const auto maxX = game->GetWidth() - (transformedRect.w / 2);
+        const auto maxY = game->GetHeight() - (transformedRect.h / 2);
 
         rect->x += movementSpeed * xDirection * deltaTime;
         rect->y += movementSpeed * yDirection * deltaTime;
