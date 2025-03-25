@@ -1,3 +1,5 @@
+#define HANDCRANK_DEBUG 1
+
 #include "Handcrank/Handcrank.hpp"
 
 #include "../examples/fps/FPS.hpp"

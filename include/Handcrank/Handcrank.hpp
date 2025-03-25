@@ -937,6 +937,16 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
             }
         }
     }
+
+#ifdef HANDCRANK_DEBUG
+    auto transformedRect = GetTransformedRect();
+
+    SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 100);
+    SDL_RenderFillRectF(renderer.get(), &transformedRect);
+
+    SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 255);
+    SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+#endif
 }
 
 [[nodiscard]] auto RenderObject::CalculateBoundingBox() -> SDL_FRect
