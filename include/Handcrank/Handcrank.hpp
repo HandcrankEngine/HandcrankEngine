@@ -736,9 +736,9 @@ void RenderObject::SetFixedUpdate(
 
 void RenderObject::Start() {}
 
-void RenderObject::Update(double deltaTime) {}
+void RenderObject::Update(const double deltaTime) {}
 
-void RenderObject::FixedUpdate(double deltaTime) {}
+void RenderObject::FixedUpdate(const double deltaTime) {}
 
 void RenderObject::OnMouseOver() {}
 
