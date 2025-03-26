@@ -18,6 +18,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "Handcrank/Utilities.hpp"
+
 namespace Handcrank
 {
 
@@ -170,6 +172,12 @@ class Game
 class RenderObject
 {
   protected:
+    static int count;
+
+    int index;
+
+    std::string name;
+
     std::shared_ptr<SDL_FRect> rect = std::make_shared<SDL_FRect>();
 
     RectAnchor anchor = RectAnchor::TOP | RectAnchor::LEFT;
@@ -208,6 +216,12 @@ class RenderObject
     inline void Enable();
     inline void Disable();
     [[nodiscard]] inline auto IsEnabled() const -> bool;
+
+    [[nodiscard]] inline auto GetIndex() const -> int;
+
+    [[nodiscard]] inline auto GetName() const -> std::string;
+
+    [[nodiscard]] inline auto GetClassName() const -> std::string;
 
     inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
@@ -641,12 +655,16 @@ void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
 #endif
 
+int RenderObject::count = 0;
+
 RenderObject::RenderObject()
 {
     rect->x = 0;
     rect->y = 0;
     rect->w = DEFAULT_RECT_WIDTH;
     rect->h = DEFAULT_RECT_HEIGHT;
+
+    index = ++RenderObject::count;
 }
 
 RenderObject::~RenderObject()
@@ -664,6 +682,24 @@ void RenderObject::Enable() { isEnabled = true; }
 void RenderObject::Disable() { isEnabled = false; }
 
 auto RenderObject::IsEnabled() const -> bool { return isEnabled; }
+
+auto RenderObject::GetIndex() const -> int { return index; }
+
+auto RenderObject::GetName() const -> std::string
+{
+    if (parent != nullptr)
+    {
+        return parent->GetName() + " > " + GetClassName() + " (" +
+               std::to_string(index) + ")";
+    }
+
+    return GetClassName() + " (" + std::to_string(index) + ")";
+}
+
+auto RenderObject::GetClassName() const -> std::string
+{
+    return GetDemangledClassName(*this);
+}
 
 void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
