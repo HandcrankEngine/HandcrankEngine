@@ -1051,7 +1051,7 @@ void RenderObject::Destroy()
 {
     isMarkedForDestroy = true;
 
-    for (auto &child : children)
+    for (const auto &child : children)
     {
         child->Destroy();
     }
