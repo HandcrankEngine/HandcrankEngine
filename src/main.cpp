@@ -32,8 +32,8 @@ auto main() -> int
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::move(std::make_unique<InputManager>()));
-    game->AddChildObject(std::move(std::make_unique<Spawner>()));
     game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
+    game->AddChildObject(std::move(std::make_unique<Spawner>()));
     game->AddChildObject(std::move(std::make_unique<FPS>()));
     game->AddChildObject(std::move(std::make_unique<PausedScreen>()));
 
