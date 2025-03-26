@@ -1,6 +1,8 @@
 // Copyright (c) Scott Doxey. All Rights Reserved. Licensed under the MIT
 // License. See LICENSE in the project root for license information.
 
+// #define HANDCRANK_DEBUG 1
+
 #pragma once
 
 #define HANDCRANK_VERSION_MAJOR 0
@@ -87,6 +89,10 @@ class Game
 
     bool focused = false;
 
+#ifdef HANDCRANK_DEBUG
+    bool debug = false;
+#endif
+
   public:
     std::unordered_map<SDL_Keycode, bool> keyState;
     std::unordered_map<SDL_Keycode, bool> keyPressedState;
@@ -153,6 +159,12 @@ class Game
     inline void DestroyChildObjects();
 
     inline void Quit();
+
+#ifdef HANDCRANK_DEBUG
+    inline void ToggleDebug(bool state);
+    inline void ToggleDebug();
+    [[nodiscard]] inline auto IsDebug() const -> bool;
+#endif
 };
 
 class RenderObject
@@ -623,6 +635,12 @@ void Game::DestroyChildObjects()
 
 void Game::Quit() { quit = true; }
 
+#ifdef HANDCRANK_DEBUG
+void Game::ToggleDebug(bool state) { debug = state; }
+void Game::ToggleDebug() { debug = !debug; }
+auto Game::IsDebug() const -> bool { return debug; }
+#endif
+
 RenderObject::RenderObject()
 {
     rect->x = 0;
@@ -939,13 +957,16 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
     }
 
 #ifdef HANDCRANK_DEBUG
-    auto transformedRect = GetTransformedRect();
+    if (game->IsDebug())
+    {
+        auto transformedRect = GetTransformedRect();
 
-    SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 100);
-    SDL_RenderFillRectF(renderer.get(), &transformedRect);
+        SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 100);
+        SDL_RenderFillRectF(renderer.get(), &transformedRect);
 
-    SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 255);
-    SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+        SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 255);
+        SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+    }
 #endif
 }
 
