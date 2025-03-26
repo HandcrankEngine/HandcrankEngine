@@ -38,13 +38,13 @@ enum class RectAnchor : uint8_t
     HCENTER = 0x32,
 };
 
-inline RectAnchor operator|(RectAnchor a, RectAnchor b)
+inline auto operator|(RectAnchor a, RectAnchor b) -> RectAnchor
 {
     return static_cast<RectAnchor>(static_cast<uint8_t>(a) |
                                    static_cast<uint8_t>(b));
 }
 
-inline RectAnchor operator&(RectAnchor a, RectAnchor b)
+inline auto operator&(RectAnchor a, RectAnchor b) -> RectAnchor
 {
     return static_cast<RectAnchor>(static_cast<uint8_t>(a) &
                                    static_cast<uint8_t>(b));
