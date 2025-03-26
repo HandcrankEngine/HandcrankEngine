@@ -574,14 +574,11 @@ void Game::FixedUpdate()
 
     if (fixedUpdateDeltaTime > fixedFrameTime)
     {
-        for (const auto &iter : children)
+        for (const auto &child : children)
         {
-            if (const auto &child = iter.get(); child != nullptr)
+            if (child->IsEnabled())
             {
-                if (child->IsEnabled())
-                {
-                    child->InternalFixedUpdate(fixedUpdateDeltaTime);
-                }
+                child->InternalFixedUpdate(fixedUpdateDeltaTime);
             }
         }
 
@@ -606,14 +603,11 @@ void Game::Render()
                          const std::shared_ptr<RenderObject> &b)
                       { return a->z < b->z; });
 
-        for (const auto &iter : children)
+        for (const auto &child : children)
         {
-            if (const auto &child = iter.get(); child != nullptr)
+            if (child->IsEnabled())
             {
-                if (child->IsEnabled())
-                {
-                    child->Render(renderer);
-                }
+                child->Render(renderer);
             }
         }
 
@@ -744,7 +738,9 @@ auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
 
-    if (auto children = GetChildrenByType<T>(nested); !children.empty())
+    auto children = GetChildrenByType<T>(nested);
+
+    if (!children.empty())
     {
         return children.front();
     }
@@ -856,14 +852,11 @@ void RenderObject::InternalUpdate(const double deltaTime)
         updateFunction(this, deltaTime);
     }
 
-    for (const auto &iter : children)
+    for (const auto &child : children)
     {
-        if (const auto &child = iter.get(); child != nullptr)
+        if (child->IsEnabled())
         {
-            if (child->IsEnabled())
-            {
-                child->InternalUpdate(deltaTime);
-            }
+            child->InternalUpdate(deltaTime);
         }
     }
 }
@@ -877,14 +870,11 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
         fixedUpdateFunction(this, fixedDeltaTime);
     }
 
-    for (const auto &iter : children)
+    for (const auto &child : children)
     {
-        if (const auto &child = iter.get(); child != nullptr)
+        if (child->IsEnabled())
         {
-            if (child->IsEnabled())
-            {
-                child->InternalFixedUpdate(fixedDeltaTime);
-            }
+            child->InternalFixedUpdate(fixedDeltaTime);
         }
     }
 }
@@ -981,14 +971,11 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
                      const std::shared_ptr<RenderObject> &b)
                   { return a->z < b->z; });
 
-    for (const auto &iter : children)
+    for (const auto &child : children)
     {
-        if (const auto &child = iter.get(); child != nullptr)
+        if (child->IsEnabled())
         {
-            if (child->IsEnabled())
-            {
-                child->Render(renderer);
-            }
+            child->Render(renderer);
         }
     }
 
@@ -1010,9 +997,9 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
 {
     auto boundingBox = GetTransformedRect();
 
-    for (const auto &iter : children)
+    for (const auto &child : children)
     {
-        if (const auto &child = iter.get(); child != nullptr)
+        if (child->IsEnabled())
         {
             const auto childBoundingBox = child->CalculateBoundingBox();
 
@@ -1037,7 +1024,9 @@ void RenderObject::DestroyChildObjects()
 {
     for (auto iter = children.begin(); iter != children.end();)
     {
-        if (const auto &child = iter->get(); child != nullptr)
+        auto *child = iter->get();
+
+        if (child != nullptr)
         {
             child->DestroyChildObjects();
 
@@ -1058,6 +1047,14 @@ void RenderObject::DestroyChildObjects()
     return isMarkedForDestroy;
 }
 
-void RenderObject::Destroy() { isMarkedForDestroy = true; }
+void RenderObject::Destroy()
+{
+    isMarkedForDestroy = true;
+
+    for (auto &child : children)
+    {
+        child->Destroy();
+    }
+}
 
 } // namespace Handcrank
