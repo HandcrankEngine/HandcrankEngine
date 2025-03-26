@@ -89,6 +89,11 @@ class ImageRenderObject : public RenderObject
 
     std::unique_ptr<SDL_FPoint> centerPoint = std::make_unique<SDL_FPoint>();
 
+    std::shared_ptr<SDL_Color> tintColor =
+        std::make_shared<SDL_Color>(SDL_Color{255, 255, 255, 255});
+
+    Uint8 alpha = 255;
+
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   public:
@@ -178,6 +183,29 @@ class ImageRenderObject : public RenderObject
 
     void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
 
+    void SetTintColor(const SDL_Color tintColor)
+    {
+        this->tintColor->r = tintColor.r;
+        this->tintColor->g = tintColor.g;
+        this->tintColor->b = tintColor.b;
+    }
+
+    void SetTintColor(const Uint8 r, const Uint8 g, const Uint8 b)
+    {
+        this->tintColor->r = r;
+        this->tintColor->g = g;
+        this->tintColor->b = b;
+    }
+
+    [[nodiscard]] auto GetTintColor() const -> std::shared_ptr<SDL_Color>
+    {
+        return tintColor;
+    }
+
+    void SetAlpha(const Uint8 alpha) { this->alpha = alpha; }
+
+    [[nodiscard]] auto GetAlpha() const -> Uint8 { return alpha; }
+
     /**
      * Render image to the scene.
      *
@@ -191,6 +219,11 @@ class ImageRenderObject : public RenderObject
         }
 
         auto transformedRect = GetTransformedRect();
+
+        SDL_SetTextureColorMod(texture.get(), tintColor->r, tintColor->g,
+                               tintColor->b);
+
+        SDL_SetTextureAlphaMod(texture.get(), alpha);
 
         SDL_RenderCopyExF(renderer.get(), texture.get(),
                           srcRectSet ? srcRect.get() : nullptr,
