@@ -278,7 +278,12 @@ class RenderObject
     inline void Destroy();
 };
 
-Game::Game() { Setup(); }
+Game::Game()
+{
+    Setup();
+
+    previousTime = std::chrono::steady_clock::now();
+}
 
 Game::~Game()
 {
