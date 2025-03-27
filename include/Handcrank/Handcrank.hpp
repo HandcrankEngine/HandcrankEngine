@@ -380,6 +380,7 @@ auto Game::Setup() -> bool
     if (window == nullptr)
     {
         SDL_Log("SDL_CreateWindow %s", SDL_GetError());
+
         return false;
     }
 
@@ -397,6 +398,7 @@ auto Game::Setup() -> bool
     if (renderer == nullptr)
     {
         SDL_Log("SDL_CreateRenderer %s", SDL_GetError());
+
         return false;
     }
 
