@@ -1045,6 +1045,7 @@ void RenderObject::DestroyChildObjects()
 
             if (child->HasBeenMarkedForDestroy())
             {
+                iter->reset();
                 iter = children.erase(iter);
             }
             else
