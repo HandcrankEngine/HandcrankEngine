@@ -1003,10 +1003,16 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
         {
             const auto childBoundingBox = child->CalculateBoundingBox();
 
+            float rightExtent = childBoundingBox.x + childBoundingBox.w;
+            float bottomExtent = childBoundingBox.y + childBoundingBox.h;
+            float currentRight = boundingBox.x + boundingBox.w;
+            float currentBottom = boundingBox.y + boundingBox.h;
+
             boundingBox.x = fminf(boundingBox.x, childBoundingBox.x);
             boundingBox.y = fminf(boundingBox.y, childBoundingBox.y);
-            boundingBox.w = fmaxf(boundingBox.w, childBoundingBox.w);
-            boundingBox.h = fmaxf(boundingBox.h, childBoundingBox.h);
+
+            boundingBox.w = fmaxf(currentRight, rightExtent) - boundingBox.x;
+            boundingBox.h = fmaxf(currentBottom, bottomExtent) - boundingBox.y;
         }
     }
 
