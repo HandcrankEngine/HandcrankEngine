@@ -111,10 +111,10 @@ class ImageRenderObject : public RenderObject
      *
      * @param texture A texture.
      */
-    void SetTexture(const std::shared_ptr<SDL_Texture> &_texture)
+    void SetTexture(const std::shared_ptr<SDL_Texture> &texture)
     {
-        texture.reset();
-        texture = _texture;
+        this->texture.reset();
+        this->texture = texture;
 
         UpdateRectSizeFromTexture();
     }

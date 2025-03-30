@@ -141,7 +141,7 @@ class Game
 
     [[nodiscard]] inline auto GetFPS() const -> double;
 
-    inline void SetFrameRate(double _frameRate);
+    inline void SetFrameRate(double frameRate);
 
     [[nodiscard]] inline auto GetQuit() const -> bool;
 
@@ -253,15 +253,15 @@ class RenderObject
     virtual inline void InternalFixedUpdate(double fixedDeltaTime);
 
     [[nodiscard]] inline auto GetRect() const -> std::shared_ptr<SDL_FRect>;
-    inline void SetRect(SDL_FRect _rect);
+    inline void SetRect(SDL_FRect rect);
     inline void SetRect(float x, float y, float w, float h);
     inline void SetRect(float x, float y);
 
     [[nodiscard]] inline auto GetAnchor() const -> RectAnchor;
-    inline void SetAnchor(RectAnchor _anchor);
+    inline void SetAnchor(RectAnchor anchor);
 
     [[nodiscard]] inline auto GetScale() const -> double;
-    inline void SetScale(double _scale);
+    inline void SetScale(double scale);
 
     inline auto GetTransformedRect() -> SDL_FRect;
 
@@ -451,7 +451,7 @@ auto Game::GetFrameRate() const -> double { return frameRate; }
 
 auto Game::GetFPS() const -> double { return fps; }
 
-void Game::SetFrameRate(double _frameRate) { frameRate = _frameRate; }
+void Game::SetFrameRate(double frameRate) { this->frameRate = frameRate; }
 
 auto Game::GetQuit() const -> bool { return quit; }
 
@@ -892,12 +892,12 @@ auto RenderObject::GetRect() const -> std::shared_ptr<SDL_FRect>
     return rect;
 }
 
-void RenderObject::SetRect(const SDL_FRect _rect)
+void RenderObject::SetRect(const SDL_FRect rect)
 {
-    rect->x = _rect.x;
-    rect->y = _rect.y;
-    rect->w = _rect.w;
-    rect->h = _rect.h;
+    this->rect->x = rect.x;
+    this->rect->y = rect.y;
+    this->rect->w = rect.w;
+    this->rect->h = rect.h;
 }
 
 void RenderObject::SetRect(const float x, const float y, const float w,
@@ -916,11 +916,11 @@ void RenderObject::SetRect(const float x, const float y)
 }
 
 auto RenderObject::GetAnchor() const -> RectAnchor { return anchor; }
-void RenderObject::SetAnchor(RectAnchor _anchor) { anchor = _anchor; }
+void RenderObject::SetAnchor(RectAnchor anchor) { this->anchor = anchor; }
 
 auto RenderObject::GetScale() const -> double { return scale; }
 
-void RenderObject::SetScale(double _scale) { scale = _scale; }
+void RenderObject::SetScale(double scale) { this->scale = scale; }
 
 auto RenderObject::GetTransformedRect() -> SDL_FRect
 {
