@@ -93,8 +93,25 @@ class TextRenderObject : public RenderObject
         {
             TTF_Init();
         }
+    };
+    explicit TextRenderObject(float x, float y)
+    {
+        if (TTF_WasInit() == 0)
+        {
+            TTF_Init();
+        }
+
+        SetRect(x, y);
     }
-    explicit TextRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
+    explicit TextRenderObject(float x, float y, float w, float h)
+    {
+        if (TTF_WasInit() == 0)
+        {
+            TTF_Init();
+        }
+
+        SetRect(x, y, w, h);
+    }
 
     ~TextRenderObject() = default;
 

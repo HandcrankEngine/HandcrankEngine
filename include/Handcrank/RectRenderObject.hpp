@@ -25,7 +25,11 @@ class RectRenderObject : public RenderObject
 
   public:
     explicit RectRenderObject() = default;
-    explicit RectRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
+    explicit RectRenderObject(float x, float y) { SetRect(x, y); }
+    explicit RectRenderObject(float x, float y, float w, float h)
+    {
+        SetRect(x, y, w, h);
+    }
 
     ~RectRenderObject() = default;
 

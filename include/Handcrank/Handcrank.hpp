@@ -209,7 +209,11 @@ class RenderObject
     float z;
 
     inline RenderObject();
-    explicit RenderObject(const SDL_FRect _rect) { SetRect(_rect); }
+    explicit RenderObject(float x, float y) { SetRect(x, y); }
+    explicit RenderObject(float x, float y, float w, float h)
+    {
+        SetRect(x, y, w, h);
+    }
 
     inline ~RenderObject();
 

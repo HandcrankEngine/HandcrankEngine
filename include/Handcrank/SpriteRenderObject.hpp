@@ -27,7 +27,11 @@ class SpriteRenderObject : public ImageRenderObject
 
   public:
     explicit SpriteRenderObject() = default;
-    explicit SpriteRenderObject(const SDL_FRect _rect) { SetRect(_rect); }
+    explicit SpriteRenderObject(float x, float y) { SetRect(x, y); }
+    explicit SpriteRenderObject(float x, float y, float w, float h)
+    {
+        SetRect(x, y, w, h);
+    }
 
     ~SpriteRenderObject() = default;
 
