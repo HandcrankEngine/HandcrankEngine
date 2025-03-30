@@ -231,11 +231,10 @@ class RenderObject
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
 
-    inline void SetStart(const std::function<void(RenderObject *)> &_func);
+    inline void SetStart(std::function<void(RenderObject *)> func);
+    inline void SetUpdate(std::function<void(RenderObject *, double)> func);
     inline void
-    SetUpdate(const std::function<void(RenderObject *, double)> &_func);
-    inline void
-    SetFixedUpdate(const std::function<void(RenderObject *, double)> &_func);
+    SetFixedUpdate(std::function<void(RenderObject *, double)> func);
 
     virtual inline void Start();
     virtual inline void Update(double deltaTime);
@@ -755,8 +754,7 @@ auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
     return nullptr;
 }
 
-void RenderObject::SetStart(
-    const std::function<void(RenderObject *)> &_func = nullptr)
+void RenderObject::SetStart(std::function<void(RenderObject *)> func)
 {
     if (startFunction)
     {
@@ -764,11 +762,10 @@ void RenderObject::SetStart(
                      "Overriding with new function.\n";
     }
 
-    startFunction = _func;
+    startFunction = std::move(func);
 }
 
-void RenderObject::SetUpdate(
-    const std::function<void(RenderObject *, double)> &_func = nullptr)
+void RenderObject::SetUpdate(std::function<void(RenderObject *, double)> func)
 {
     if (updateFunction)
     {
@@ -776,11 +773,11 @@ void RenderObject::SetUpdate(
                      "Overriding with new function.\n";
     }
 
-    updateFunction = _func;
+    updateFunction = std::move(func);
 }
 
 void RenderObject::SetFixedUpdate(
-    const std::function<void(RenderObject *, double)> &_func = nullptr)
+    std::function<void(RenderObject *, double)> func)
 {
     if (fixedUpdateFunction)
     {
@@ -788,7 +785,7 @@ void RenderObject::SetFixedUpdate(
                      "Overriding with new function.\n";
     }
 
-    fixedUpdateFunction = _func;
+    fixedUpdateFunction = std::move(func);
 }
 
 void RenderObject::Start() {}
