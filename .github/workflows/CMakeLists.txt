@@ -33,8 +33,8 @@ include_directories("../../examples")
 
 file(GLOB_RECURSE SOURCES "../../src/*.cpp")
 file(GLOB_RECURSE INCLUDES "../../include/*.hpp")
-file(GLOB_RECURSE INCLUDES "../../examples/*.hpp")
+file(GLOB_RECURSE EXAMPLES "../../examples/*.hpp")
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})
