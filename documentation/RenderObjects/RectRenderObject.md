@@ -1,6 +1,6 @@
 # RectRenderObject
 
-### Rendering Rectangle Object
+## Rendering Rectangle Object
 
 ```cpp
 #include "Handcrank/Handcrank.hpp"
