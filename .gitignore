@@ -3,6 +3,7 @@ docs/
 
 # Cmake
 
+_deps/
 CmakeFiles/
 cmake_install.cmake
 CMakeCache.txt
