@@ -37,4 +37,8 @@ file(GLOB_RECURSE EXAMPLES "../../examples/*.hpp")
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
 
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    ${SDL2_LIBRARY}
+    ${SDL2_IMAGE_LIBRARY}
+    ${SDL2_TTF_LIBRARY}
+)
