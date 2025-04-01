@@ -26,7 +26,7 @@
         "C:/sdl/SDL2_ttf-2.24.0/include"
       ],
       "defines": [],
-      "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.42.34321/bin/Hostx64/x64/cl.exe",
+      "compilerPath": "${env:VCINSTALLDIR}/bin/Hostx64/x64/cl.exe",
       "cStandard": "c17",
       "cppStandard": "c++17",
       "intelliSenseMode": "windows-msvc-x64"
