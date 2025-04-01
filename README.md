@@ -28,16 +28,6 @@ auto main() -> int
 }
 ```
 
-## Dependencies
-
-```bash
-brew install cmake
-brew install clang-format
-brew install SDL2
-brew install SDL2_image
-brew install SDL2_ttf
-```
-
 ## Documentation
 
 1. [Basics](/documentation/Basics)
@@ -63,18 +53,44 @@ brew install SDL2_ttf
    1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject.md)
    1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject.md)
 
+## Dependencies
+
+### macOS
+
+#### CMake
+
+```bash
+brew install cmake
+```
+
+#### clang-format
+
+```bash
+brew install llvm
+ln -s "$(brew --prefix llvm)/bin/clang-format" "/usr/local/bin/clang-format"
+```
+
+#### clang-tidy
+
+```bash
+brew install llvm
+ln -s "$(brew --prefix llvm)/bin/clang-tidy" "/usr/local/bin/clang-tidy"
+```
+
+#### Windows
+
+Via installer <https://cmake.org/download/>
+
 ## Build
 
-### Native
-
-Using CMake
+### CMake (Recommended)
 
 ```bash
 cmake .
 make
 ```
 
-or using g++
+### g++
 
 ```bash
 ./bin/build.sh
@@ -83,11 +99,7 @@ or using g++
 ## Documentation
 
 ```bash
-$ brew install doxygen
-```
-
-```bash
-$ doxygen
+doxygen
 ```
 
 ## Format
@@ -106,11 +118,11 @@ clang-tidy include/**/*.hpp
 
 ### VS Code
 
-Make sure the paths are correct in `.vscode/c_cpp_properties.json`.
+Run `cmake .` to generate the `compile_commands.json` file in the root of the project.
 
 ### zed
 
-Make sure the paths are correct in `.clangd`.
+Run `cmake .` to generate the `compile_commands.json` file in the root of the project.
 
 ### Sublime Text
 
