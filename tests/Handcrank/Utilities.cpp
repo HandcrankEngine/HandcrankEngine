@@ -1,22 +1,21 @@
+#include <cassert>
 #include <iostream>
-
-#include <assert.h>
 
 #include "Handcrank/Utilities.hpp"
 
 using namespace Handcrank;
 
-int main()
+auto main() -> int
 {
 
     {
-        assert(LeftPad("1", '0', 5).compare("00001") == 0);
+        assert(LeftPad("1", '0', 5) == "00001");
 
         std::cout << ".";
     }
 
     {
-        assert(RightPad("1", '0', 5).compare("10000") == 0);
+        assert(RightPad("1", '0', 5) == "10000");
 
         std::cout << ".";
     }

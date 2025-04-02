@@ -1,14 +1,13 @@
+#include <cassert>
 #include <iostream>
 #include <stdexcept>
 #include <string>
-
-#include <assert.h>
 
 #include "Handcrank/Vector2.hpp"
 
 using namespace Handcrank;
 
-int main()
+auto main() -> int
 {
 
     {
@@ -61,7 +60,7 @@ int main()
         Vector2 a = Vector2(1, 2);
         auto b = a / 2;
 
-        assert(b.x == 0.5f);
+        assert(b.x == 0.5F);
         assert(b.y == 1);
 
         std::cout << ".";
