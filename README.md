@@ -77,7 +77,9 @@ brew install llvm
 ln -s "$(brew --prefix llvm)/bin/clang-tidy" "/usr/local/bin/clang-tidy"
 ```
 
-#### Windows
+### Windows
+
+#### CMake
 
 Via installer <https://cmake.org/download/>
 
