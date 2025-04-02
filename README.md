@@ -116,13 +116,15 @@ clang-tidy include/**/*.hpp
 
 ## Editor Setup
 
+Note: Make sure to to run `cmake . && make` to generate the `compile_commands.json` and other necessary header files.
+
 ### VS Code
 
-Run `cmake .` to generate the `compile_commands.json` file in the root of the project.
+Install recommended extensions found in `.vscode/extensions.json`.
 
 ### zed
 
-Run `cmake .` to generate the `compile_commands.json` file in the root of the project.
+Install plugins recommended by the editor when opening cpp files.
 
 ### Sublime Text
 
