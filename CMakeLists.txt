@@ -12,28 +12,28 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
 include(FetchContent)
 
 FetchContent_Declare(
-    SDL2
+    SDL3
     GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG release-2.32.2
+    GIT_TAG release-3.2.10
 )
 
 FetchContent_Declare(
-    SDL2_image
+    SDL3_image
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-    GIT_TAG release-2.8.8
+    GIT_TAG release-3.2.4
 )
 
 FetchContent_Declare(
-    SDL2_ttf
+    SDL3_ttf
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-    GIT_TAG release-2.24.0
+    GIT_TAG release-3.2.2
 )
 
-set(SDL2_DISABLE_INSTALL ON)
-set(SDL2IMAGE_INSTALL OFF)
-set(SDL2TTF_INSTALL OFF)
+set(SDL3_DISABLE_INSTALL ON)
+set(SDL3IMAGE_INSTALL OFF)
+set(SDL3TTF_INSTALL OFF)
 
-FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_ttf)
+FetchContent_MakeAvailable(SDL3 SDL3_image SDL3_ttf)
 
 include_directories("fonts")
 include_directories("images")
@@ -47,8 +47,13 @@ file(GLOB_RECURSE EXAMPLES "examples/*.hpp")
 add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    SDL2::SDL2main
-    SDL2::SDL2
-    SDL2_image::SDL2_image
-    SDL2_ttf::SDL2_ttf
+    SDL3::SDL3
+    SDL3_image::SDL3_image
+    SDL3_ttf::SDL3_ttf
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${SDL3_SOURCE_DIR}/include
+    ${SDL3_image_SOURCE_DIR}/include
+    ${SDL3_ttf_SOURCE_DIR}/include
 )
