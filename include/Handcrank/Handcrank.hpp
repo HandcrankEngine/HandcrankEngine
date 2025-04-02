@@ -15,8 +15,8 @@
 #include <list>
 #include <memory>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "Handcrank/Utilities.hpp"
 
@@ -24,8 +24,8 @@ namespace Handcrank
 {
 
 const double DEFAULT_FRAME_RATE = 60;
-const double DEFAULT_WINDOW_WIDTH = 800;
-const double DEFAULT_WINDOW_HEIGHT = 600;
+const double DEFAULT_WINDOW_WIDTH = 1600;
+const double DEFAULT_WINDOW_HEIGHT = 1200;
 const double DEFAULT_RECT_WIDTH = 100;
 const double DEFAULT_RECT_HEIGHT = 100;
 
@@ -369,7 +369,7 @@ auto Game::GetViewport() const -> SDL_FRect { return viewportf; }
 
 auto Game::Setup() -> bool
 {
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    if (!SDL_Init(SDL_INIT_VIDEO))
     {
         return false;
     }
@@ -380,9 +380,8 @@ auto Game::Setup() -> bool
     }
 
     window = std::shared_ptr<SDL_Window>(
-        SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                         width, height,
-                         SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI),
+        SDL_CreateWindow("", width, height,
+                         SDL_WINDOW_OPENGL | SDL_WINDOW_HIGH_PIXEL_DENSITY),
         SDL_DestroyWindow);
 
     if (window == nullptr)
@@ -398,16 +397,18 @@ auto Game::Setup() -> bool
     }
 
     renderer = std::shared_ptr<SDL_Renderer>(
-        SDL_CreateRenderer(window.get(), -1,
-                           SDL_RENDERER_ACCELERATED |
-                               SDL_RENDERER_PRESENTVSYNC),
-        SDL_DestroyRenderer);
+        SDL_CreateRenderer(window.get(), nullptr), SDL_DestroyRenderer);
 
     if (renderer == nullptr)
     {
         SDL_Log("SDL_CreateRenderer %s", SDL_GetError());
 
         return false;
+    }
+
+    if (SDL_SetRenderVSync(renderer.get(), 1))
+    {
+        SDL_Log("SDL_SetRenderVSync %s", SDL_GetError());
     }
 
     SetScreenSize(width, height);
@@ -417,21 +418,21 @@ auto Game::Setup() -> bool
 
 void Game::SetScreenSize(const int _width, const int _height)
 {
-    SDL_SetWindowSize(window.get(), _width, _height);
+    auto scale = SDL_GetWindowDisplayScale(window.get());
 
-    SDL_GL_GetDrawableSize(window.get(), &width, &height);
+    SDL_SetWindowSize(window.get(), _width / scale, _height / scale);
+
+    SDL_GetWindowSizeInPixels(window.get(), &width, &height);
 
     SDL_SetWindowPosition(window.get(), SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
-
     viewport.w = width;
     viewport.h = height;
-
     viewportf.w = static_cast<float>(width);
     viewportf.h = static_cast<float>(height);
 
-    dpiScaleX = (float)width / _width;
-    dpiScaleY = (float)height / _height;
+    dpiScaleX = scale;
+    dpiScaleY = scale;
 }
 
 void Game::SetTitle(const char *name)
@@ -489,58 +490,54 @@ void Game::HandleInput()
     mousePressedState.clear();
     mouseReleasedState.clear();
 
-    while (SDL_PollEvent(&event) != 0)
+    while (SDL_PollEvent(&event))
     {
-        auto keyCode = event.key.keysym.sym;
+        auto keyCode = event.key.key;
 
         auto mouseButtonIndex = event.button.button;
 
         switch (event.type)
         {
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
             Quit();
             break;
 
-        case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_RESIZED ||
-                event.window.event == SDL_WINDOWEVENT_RESTORED ||
-                event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
-                event.window.event == SDL_WINDOWEVENT_MINIMIZED)
-            {
-                SDL_GL_GetDrawableSize(window.get(), &width, &height);
-            }
-            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-            {
-                focused = false;
-            }
-            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-            {
-                focused = true;
-            }
+        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_RESTORED:
+        case SDL_EVENT_WINDOW_MAXIMIZED:
+        case SDL_EVENT_WINDOW_MINIMIZED:
+            SDL_GetWindowSizeInPixels(window.get(), &width, &height);
             break;
 
-        case SDL_KEYDOWN:
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            focused = false;
+            break;
+
+        case SDL_EVENT_WINDOW_FOCUS_GAINED:
+            focused = true;
+
+        case SDL_EVENT_KEY_DOWN:
             keyPressedState[keyCode] = !keyState[keyCode];
             keyState[keyCode] = true;
             break;
 
-        case SDL_KEYUP:
+        case SDL_EVENT_KEY_UP:
             keyState[keyCode] = false;
             keyPressedState[keyCode] = false;
             keyReleasedState[keyCode] = true;
             break;
 
-        case SDL_MOUSEMOTION:
+        case SDL_EVENT_MOUSE_MOTION:
             mousePosition->x = event.motion.x * dpiScaleX;
             mousePosition->y = event.motion.y * dpiScaleY;
             break;
 
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
             mousePressedState[mouseButtonIndex] = !mouseState[mouseButtonIndex];
             mouseState[mouseButtonIndex] = true;
             break;
 
-        case SDL_MOUSEBUTTONUP:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
             mouseState[mouseButtonIndex] = false;
             mousePressedState[mouseButtonIndex] = false;
             mouseReleasedState[mouseButtonIndex] = true;
@@ -607,7 +604,7 @@ void Game::Render()
 
         SDL_RenderClear(renderer.get());
 
-        SDL_RenderSetViewport(renderer.get(), &viewport);
+        SDL_SetRenderViewport(renderer.get(), &viewport);
 
         children.sort([](const std::shared_ptr<RenderObject> &a,
                          const std::shared_ptr<RenderObject> &b)
@@ -822,8 +819,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
 
     auto transformedRect = GetTransformedRect();
 
-    if (SDL_PointInFRect(game->mousePosition.get(), &transformedRect) ==
-        SDL_TRUE)
+    if (SDL_PointInRectFloat(game->mousePosition.get(), &transformedRect))
     {
         if (game->mousePressedState[SDL_BUTTON_LEFT])
         {
@@ -965,7 +961,7 @@ auto RenderObject::CanRender() -> bool
 
     auto viewport = game->GetViewport();
 
-    return SDL_HasIntersectionF(&boundingBox, &viewport) == SDL_TRUE;
+    return SDL_HasRectIntersectionFloat(&boundingBox, &viewport);
 }
 
 void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
@@ -993,10 +989,10 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
         auto transformedRect = GetTransformedRect();
 
         SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 100);
-        SDL_RenderFillRectF(renderer.get(), &transformedRect);
+        SDL_RenderFillRect(renderer.get(), &transformedRect);
 
         SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 255);
-        SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+        SDL_RenderRect(renderer.get(), &transformedRect);
     }
 #endif
 }
@@ -1030,8 +1026,8 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
 auto RenderObject::CheckCollisionAABB(
     const std::shared_ptr<RenderObject> &otherRenderObject) -> bool
 {
-    return SDL_HasIntersectionF(rect.get(),
-                                otherRenderObject->GetRect().get()) == SDL_TRUE;
+    return SDL_HasRectIntersectionFloat(rect.get(),
+                                        otherRenderObject->GetRect().get());
 }
 
 void RenderObject::DestroyChildObjects()
