@@ -118,7 +118,7 @@ clang-tidy include/**/*.hpp
 
 ## Editor Setup
 
-Note: Make sure to to run `cmake . && make` to generate the `compile_commands.json` and other necessary header files.
+> Note: Make sure to to run `cmake . && make` to generate the `compile_commands.json` and other necessary header files.
 
 ### VS Code
 
