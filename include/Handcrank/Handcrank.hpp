@@ -1005,7 +1005,7 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
 
     for (const auto &child : children)
     {
-        if (child->IsEnabled())
+        if (child->IsEnabled() && child->CanRender())
         {
             const auto childBoundingBox = child->CalculateBoundingBox();
 
