@@ -9,7 +9,6 @@
 #define HANDCRANK_VERSION_MINOR 0
 #define HANDCRANK_VERSION_PATCH 0
 
-#include <chrono>
 #include <functional>
 #include <iostream>
 #include <list>
@@ -69,7 +68,7 @@ class Game
 
     SDL_Event event;
 
-    std::chrono::steady_clock::time_point previousTime;
+    Uint64 previousTime;
 
     double deltaTime = 0;
     double renderDeltaTime = 0;
@@ -285,7 +284,7 @@ Game::Game()
 {
     Setup();
 
-    previousTime = std::chrono::steady_clock::now();
+    previousTime = SDL_GetTicks64();
 }
 
 Game::~Game()
@@ -554,10 +553,9 @@ void Game::HandleInput()
 
 void Game::CalculateDeltaTime()
 {
-    auto currentTime = std::chrono::steady_clock::now();
+    auto currentTime = SDL_GetTicks64();
 
-    deltaTime =
-        std::chrono::duration<double>(currentTime - previousTime).count();
+    deltaTime = (currentTime - previousTime) / 1000.0;
 
     previousTime = currentTime;
 }
