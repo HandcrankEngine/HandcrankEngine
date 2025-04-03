@@ -83,11 +83,11 @@ class ImageRenderObject : public RenderObject
   protected:
     std::shared_ptr<SDL_Texture> texture;
 
-    std::unique_ptr<SDL_Rect> srcRect = std::make_unique<SDL_Rect>();
+    std::shared_ptr<SDL_Rect> srcRect = std::make_shared<SDL_Rect>();
 
     bool srcRectSet = false;
 
-    std::unique_ptr<SDL_FPoint> centerPoint = std::make_unique<SDL_FPoint>();
+    std::shared_ptr<SDL_FPoint> centerPoint = std::make_shared<SDL_FPoint>();
 
     std::shared_ptr<SDL_Color> tintColor =
         std::make_shared<SDL_Color>(SDL_Color{255, 255, 255, 255});
