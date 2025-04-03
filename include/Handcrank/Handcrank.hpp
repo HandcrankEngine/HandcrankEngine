@@ -171,7 +171,7 @@ class Game
 class RenderObject
 {
   protected:
-    static int count;
+    static uint count;
 
     int index;
 
@@ -657,7 +657,7 @@ void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
 #endif
 
-int RenderObject::count = 0;
+uint RenderObject::count = 0;
 
 RenderObject::RenderObject()
 {
