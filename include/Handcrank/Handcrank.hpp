@@ -168,7 +168,7 @@ class Game
 #endif
 };
 
-class RenderObject
+class RenderObject : public std::enable_shared_from_this<RenderObject>
 {
   protected:
     static uint count;
@@ -203,7 +203,7 @@ class RenderObject
   public:
     Game *game;
 
-    RenderObject *parent;
+    std::weak_ptr<RenderObject> parent;
 
     float z;
 
@@ -309,7 +309,7 @@ Game::~Game()
 
 void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
-    child->parent = nullptr;
+    child->parent.reset();
 
     child->game = this;
 
@@ -689,10 +689,13 @@ auto RenderObject::GetIndex() const -> int { return index; }
 
 auto RenderObject::GetName() const -> std::string
 {
-    if (parent != nullptr)
+    if (!parent.expired())
     {
-        return parent->GetName() + " > " + GetClassName() + " (" +
-               std::to_string(index) + ")";
+        if (auto parentPtr = parent.lock())
+        {
+            return parentPtr->GetName() + " > " + GetClassName() + " (" +
+                   std::to_string(index) + ")";
+        }
     }
 
     return GetClassName() + " (" + std::to_string(index) + ")";
@@ -705,7 +708,7 @@ auto RenderObject::GetClassName() const -> std::string
 
 void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
-    child->parent = this;
+    child->parent = shared_from_this();
 
     child->game = game;
 
@@ -945,13 +948,16 @@ auto RenderObject::GetTransformedRect() -> SDL_FRect
         transformedRect.y -= transformedRect.h;
     }
 
-    if (parent != nullptr)
+    if (!parent.expired())
     {
-        transformedRect.x += parent->GetRect()->x;
-        transformedRect.y += parent->GetRect()->y;
+        if (auto parentPtr = parent.lock())
+        {
+            transformedRect.x += parentPtr->GetRect()->x;
+            transformedRect.y += parentPtr->GetRect()->y;
 
-        transformedRect.w *= parent->scale;
-        transformedRect.h *= parent->scale;
+            transformedRect.w *= parentPtr->scale;
+            transformedRect.h *= parentPtr->scale;
+        }
     }
 
     return transformedRect;
