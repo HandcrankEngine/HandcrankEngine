@@ -98,11 +98,9 @@ class ImageRenderObject : public RenderObject
 
   public:
     explicit ImageRenderObject() = default;
-    explicit ImageRenderObject(float x, float y) { SetRect(x, y); }
+    explicit ImageRenderObject(float x, float y) : RenderObject(x, y) {};
     explicit ImageRenderObject(float x, float y, float w, float h)
-    {
-        SetRect(x, y, w, h);
-    }
+        : RenderObject(x, y, w, h) {};
 
     ~ImageRenderObject() = default;
 

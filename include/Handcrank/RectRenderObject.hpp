@@ -25,11 +25,9 @@ class RectRenderObject : public RenderObject
 
   public:
     explicit RectRenderObject() = default;
-    explicit RectRenderObject(float x, float y) { SetRect(x, y); }
+    explicit RectRenderObject(float x, float y) : RenderObject(x, y) {};
     explicit RectRenderObject(float x, float y, float w, float h)
-    {
-        SetRect(x, y, w, h);
-    }
+        : RenderObject(x, y, w, h) {};
 
     ~RectRenderObject() = default;
 
