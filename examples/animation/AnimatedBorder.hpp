@@ -10,6 +10,7 @@ class AnimatedBorder : public RenderObject
 {
   private:
     std::shared_ptr<RectRenderObject> cube;
+    std::shared_ptr<Animator> animator;
 
   public:
     void Start() override
@@ -20,10 +21,18 @@ class AnimatedBorder : public RenderObject
 
         AddChildObject(cube);
 
-        auto animator =
-            std::make_shared<Animator>(Animator::Mode::SEQUENCE, true);
+        animator = std::make_shared<Animator>(Animator::Mode::PARALLEL, true);
 
-        // Fade in
+        animator->AddAnimation(std::make_shared<Animation>(
+            [&](const double deltaTime, const double elapsedTime)
+            {
+                cube->SetFillColor(255, 0, 0, 0);
+
+                cube->SetRect(0, 0);
+
+                return 0;
+            }));
+
         animator->AddAnimation(std::make_shared<Animation>(
             [&](const double deltaTime, const double elapsedTime)
             {
@@ -31,38 +40,41 @@ class AnimatedBorder : public RenderObject
 
                 auto alpha = color->a;
 
-                alpha = std::clamp(color->a + 1, 0, 255);
+                alpha = std::clamp(alpha + 1, 0, 255);
 
                 cube->SetFillColor(color->r, color->g, color->b, alpha);
 
                 return alpha == 255 ? 0 : 1;
             }));
 
-        // Pause for 1 second
-        animator->AddAnimation(std::make_shared<Animation>(
-            [&](const double deltaTime, const double elapsedTime)
-            { return elapsedTime > 1 ? 0 : 1; }));
-
-        // Fade out
         animator->AddAnimation(std::make_shared<Animation>(
             [&](const double deltaTime, const double elapsedTime)
             {
-                auto color = cube->GetFillColor();
+                auto rect = cube->GetRect();
 
-                auto alpha = color->a;
+                auto x = rect->x;
 
-                alpha = std::clamp(color->a - 1, 0, 255);
+                auto maxX = game->GetWidth() - rect->w;
 
-                cube->SetFillColor(color->r, color->g, color->b, alpha);
+                x = std::clamp(x + 1, 0.0F, maxX);
 
-                return alpha == 0 ? 0 : 1;
+                cube->SetRect(x, rect->y);
+
+                return x == maxX ? 0 : 1;
             }));
 
-        // Pause for half a second
-        animator->AddAnimation(std::make_shared<Animation>(
-            [&](const double deltaTime, const double elapsedTime)
-            { return elapsedTime > 0.5 ? 0 : 1; }));
-
         game->AddChildObject(animator);
+    }
+
+    void Update(const double deltaTime) override
+    {
+        if (!game->HasFocus())
+        {
+            animator->Pause();
+
+            return;
+        }
+
+        animator->Resume();
     }
 };

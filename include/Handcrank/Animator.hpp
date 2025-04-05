@@ -7,6 +7,14 @@ namespace Handcrank
 class Animator : public RenderObject
 {
   public:
+    enum class State : uint8_t
+    {
+        IDLE,
+        RUNNING,
+        PAUSED,
+        COMPLETE
+    };
+
     enum class Mode : uint8_t
     {
         PARALLEL,
@@ -14,6 +22,8 @@ class Animator : public RenderObject
     };
 
   private:
+    State currentState = State::IDLE;
+
     Mode mode = Mode::SEQUENCE;
 
     bool looping = false;
@@ -42,21 +52,43 @@ class Animator : public RenderObject
 
         if (mode == Mode::PARALLEL)
         {
-            for (auto &animation : animations)
-            {
-                animation->Start();
-            }
+            StartParallel();
         }
         else if (mode == Mode::SEQUENCE)
         {
-            auto animation = animations.front();
-
-            if (animation != nullptr)
-            {
-                animation->Start();
-            }
+            StartSequence();
         }
     }
+
+    void Pause()
+    {
+        if (currentState == State::RUNNING)
+        {
+            for (auto &animation : animations)
+            {
+                animation->Pause();
+            }
+        }
+
+        currentState = State::PAUSED;
+    }
+
+    void Resume()
+    {
+        if (currentState == State::PAUSED)
+        {
+            for (auto &animation : animations)
+            {
+                animation->Resume();
+            }
+        }
+
+        currentState = State::RUNNING;
+    }
+
+    [[nodiscard]] auto GetState() const -> State { return currentState; }
+
+    void SetState(State state) { currentState = state; }
 
     [[nodiscard]] auto GetMode() const -> Mode { return mode; }
 
@@ -80,38 +112,91 @@ class Animator : public RenderObject
 
         if (mode == Mode::PARALLEL)
         {
-            for (auto &animation : animations)
-            {
-                if (animation->GetState() == Animation::State::RUNNING)
-                {
-                    animation->Tick(deltaTime);
-                }
-            }
+            UpdateParallel(deltaTime);
         }
         else if (mode == Mode::SEQUENCE)
         {
-            auto currentAnimation = animations[currentAnimationIndex];
+            UpdateSequence(deltaTime);
+        }
+    }
 
-            if (currentAnimation->GetState() == Animation::State::RUNNING)
+  private:
+    void StartParallel()
+    {
+        for (auto &animation : animations)
+        {
+            animation->Start();
+        }
+
+        currentState = State::RUNNING;
+    }
+
+    void StartSequence()
+    {
+        auto animation = animations.front();
+
+        if (animation != nullptr)
+        {
+            animation->Start();
+        }
+
+        currentState = State::RUNNING;
+    }
+
+    void UpdateParallel(const double deltaTime)
+    {
+        if (currentState != State::RUNNING)
+        {
+            return;
+        }
+
+        auto stillRunning = false;
+
+        for (auto &animation : animations)
+        {
+            if (animation->GetState() == Animation::State::RUNNING)
             {
-                if (currentAnimation->Tick(deltaTime) == 0)
+                if (animation->Tick(deltaTime) != 0)
                 {
-                    currentAnimationIndex++;
-
-                    if (currentAnimationIndex >= animations.size())
-                    {
-                        if (looping)
-                        {
-                            currentAnimationIndex = 0;
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-
-                    animations[currentAnimationIndex]->Start();
+                    stillRunning = true;
                 }
+            }
+        }
+
+        if (!stillRunning)
+        {
+            StartParallel();
+        }
+    }
+
+    void UpdateSequence(const double deltaTime)
+    {
+        if (currentState != State::RUNNING)
+        {
+            return;
+        }
+
+        auto currentAnimation = animations[currentAnimationIndex];
+
+        if (currentAnimation->GetState() == Animation::State::RUNNING)
+        {
+            if (currentAnimation->Tick(deltaTime) == 0)
+            {
+                currentAnimationIndex++;
+
+                if (currentAnimationIndex >= animations.size())
+                {
+                    if (looping)
+                    {
+                        currentAnimationIndex = 0;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                animations[currentAnimationIndex]->Start();
             }
         }
     }

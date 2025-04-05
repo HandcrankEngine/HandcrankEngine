@@ -10,6 +10,7 @@ class Animation
     {
         IDLE,
         RUNNING,
+        PAUSED,
         COMPLETE
     };
 
@@ -40,7 +41,23 @@ class Animation
         if (currentState == State::IDLE || currentState == State::COMPLETE)
         {
             elapsedTime = 0;
+        }
 
+        currentState = State::RUNNING;
+    }
+
+    void Pause()
+    {
+        if (currentState == State::RUNNING)
+        {
+            currentState = State::PAUSED;
+        }
+    }
+
+    void Resume()
+    {
+        if (currentState == State::PAUSED)
+        {
             currentState = State::RUNNING;
         }
     }
