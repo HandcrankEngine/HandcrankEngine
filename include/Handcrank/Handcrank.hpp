@@ -284,7 +284,7 @@ Game::Game()
 {
     Setup();
 
-    previousTime = SDL_GetTicks64();
+    previousTime = 0;
 }
 
 Game::~Game()
@@ -555,7 +555,14 @@ void Game::CalculateDeltaTime()
 {
     auto currentTime = SDL_GetTicks64();
 
-    deltaTime = (currentTime - previousTime) / 1000.0;
+    if (previousTime == 0)
+    {
+        deltaTime = fixedFrameTime;
+    }
+    else
+    {
+        deltaTime = (currentTime - previousTime) / 1000.0;
+    }
 
     previousTime = currentTime;
 }
