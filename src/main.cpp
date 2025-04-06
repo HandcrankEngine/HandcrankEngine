@@ -2,6 +2,7 @@
 
 #include "Handcrank/Handcrank.hpp"
 
+#include "../examples/animation/AnimatedBorder.hpp"
 #include "../examples/fps/FPS.hpp"
 #include "../examples/logo-screensaver/LogoScreenSaver.hpp"
 #include "../examples/paused-screen/PausedScreen.hpp"
@@ -35,6 +36,7 @@ auto main() -> int
     game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
     game->AddChildObject(std::move(std::make_unique<Spawner>()));
     game->AddChildObject(std::move(std::make_unique<FPS>()));
+    game->AddChildObject(std::move(std::make_unique<AnimatedBorder>()));
     game->AddChildObject(std::move(std::make_unique<PausedScreen>()));
 
     return game->Run();

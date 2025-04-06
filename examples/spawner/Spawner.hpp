@@ -30,7 +30,7 @@ class Spawner : public RenderObject
         AddChildObject(background);
 
         background->SetRect({(float)game->GetWidth() - 200,
-                             (float)game->GetHeight() - 70, 200, 70});
+                             (float)game->GetHeight() - 125, 200, 70});
         background->SetFillColor({255, 255, 255, 255});
 
         background->z = 1;
