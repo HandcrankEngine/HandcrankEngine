@@ -9,6 +9,62 @@ auto main() -> int
 {
 
     {
+        auto result = TryParseInt("1");
+
+        assert(result == true);
+
+        std::cout << ".";
+    }
+
+    {
+        int value;
+
+        auto result = TryParseInt("1", value);
+
+        assert(result == true);
+        assert(value == 1);
+
+        std::cout << ".";
+    }
+
+    {
+        int value;
+
+        auto result = TryParseInt("2test", value);
+
+        assert(result == true);
+        assert(value == 2);
+
+        std::cout << ".";
+    }
+
+    {
+        auto result = TryParseInt("2test");
+
+        assert(result == true);
+
+        std::cout << ".";
+    }
+
+    {
+        int value;
+
+        auto result = TryParseInt("test", value);
+
+        assert(result == false);
+
+        std::cout << ".";
+    }
+
+    {
+        auto result = TryParseInt("test");
+
+        assert(result == false);
+
+        std::cout << ".";
+    }
+
+    {
         assert(LeftPad("1", '0', 5) == "00001");
 
         std::cout << ".";
@@ -47,6 +103,20 @@ auto main() -> int
         auto value = RandomBoolean();
 
         assert(value == true || value == false);
+
+        std::cout << ".";
+    }
+
+    {
+        class ThisIsATestForTesting
+        {
+        };
+
+        ThisIsATestForTesting temp;
+
+        auto value = GetClassNameSimple(temp);
+
+        assert(value == "ThisIsATestForTesting");
 
         std::cout << ".";
     }

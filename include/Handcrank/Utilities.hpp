@@ -4,11 +4,45 @@
 #pragma once
 
 #include <algorithm>
-#include <cxxabi.h>
+#include <regex>
 #include <string>
 
 namespace Handcrank
 {
+
+inline auto TryParseInt(const std::string &value, int &result) -> bool
+{
+    try
+    {
+        auto number = std::stoi(value);
+
+        result = number;
+
+        return true;
+    }
+    catch (std::invalid_argument const &ex)
+    {
+        // String failed to parse as an int.
+    }
+
+    return false;
+}
+
+inline auto TryParseInt(const std::string &value) -> bool
+{
+    try
+    {
+        auto number = std::stoi(value);
+
+        return true;
+    }
+    catch (std::invalid_argument const &ex)
+    {
+        // String failed to parse as an int.
+    }
+
+    return false;
+}
 
 inline auto LeftPad(const std::string &content, const char pad, int length)
     -> std::string
@@ -39,29 +73,38 @@ inline auto RandomNumberRange(int min, int max) -> int
 
 inline auto RandomBoolean() -> bool { return rand() > (RAND_MAX / 2); }
 
-template <typename T> auto GetDemangledClassName(const T &obj) -> std::string
+template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
 {
-    const auto &info = typeid(obj);
+    std::string rawName = typeid(obj).name();
 
-    int status;
+    std::regex pattern("([0-9]+)$");
 
-    auto *demangled =
-        abi::__cxa_demangle(info.name(), nullptr, nullptr, &status);
+    std::vector<std::string> characters;
 
-    std::string result;
-
-    if (status == 0 && demangled)
+    for (int i = (int)rawName.length(); i > 0; i -= 1)
     {
-        result = demangled;
+        if (TryParseInt(&rawName[i]))
+        {
+            std::smatch match;
 
-        free(demangled);
-    }
-    else
-    {
-        result = info.name();
+            auto part = rawName.substr(0, i + 1);
+
+            if (std::regex_search(part, match, pattern))
+            {
+                int length;
+
+                if (TryParseInt(match[0], length))
+                {
+                    if (length == (int)rawName.length() - (i + 1))
+                    {
+                        return rawName.substr(i + 1);
+                    }
+                }
+            }
+        }
     }
 
-    return result;
+    return rawName;
 }
 
 } // namespace Handcrank

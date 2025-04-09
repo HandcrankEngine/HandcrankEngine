@@ -710,7 +710,7 @@ auto RenderObject::GetName() const -> std::string
 
 auto RenderObject::GetClassName() const -> std::string
 {
-    return GetDemangledClassName(*this);
+    return GetClassNameSimple(*this);
 }
 
 void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
