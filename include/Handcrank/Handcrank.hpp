@@ -476,8 +476,6 @@ void Game::Loop()
     Render();
 
     DestroyChildObjects();
-
-    SDL_Delay(1);
 }
 
 void Game::HandleInput()
