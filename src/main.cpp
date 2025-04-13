@@ -32,12 +32,18 @@ auto main() -> int
 {
     game->SetTitle("Handcrank Engine");
 
+    auto spawner = std::make_shared<Spawner>();
+
     game->AddChildObject(std::move(std::make_unique<InputManager>()));
-    game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
-    game->AddChildObject(std::move(std::make_unique<Spawner>()));
+    game->AddChildObject(spawner);
     game->AddChildObject(std::move(std::make_unique<FPS>()));
     game->AddChildObject(std::move(std::make_unique<AnimatedBorder>()));
     game->AddChildObject(std::move(std::make_unique<PausedScreen>()));
+
+    for (auto i = 0; i < 1; i += 1)
+    {
+        spawner->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
+    }
 
     return game->Run();
 }
