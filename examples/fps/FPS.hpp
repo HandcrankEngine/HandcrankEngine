@@ -1,5 +1,7 @@
 #pragma once
 
+#include <numeric>
+
 #include "../fonts/Roboto/Roboto-Regular.h"
 
 #include "Handcrank/Handcrank.hpp"
@@ -15,6 +17,9 @@ class FPS : public RenderObject
         std::make_shared<TextRenderObject>();
     std::shared_ptr<RectRenderObject> background =
         std::make_shared<RectRenderObject>();
+
+    std::shared_ptr<std::vector<int>> _frameRates =
+        std::make_shared<std::vector<int>>();
 
   public:
     void Start() override
@@ -40,6 +45,15 @@ class FPS : public RenderObject
             return;
         }
 
-        label->SetText(std::to_string(static_cast<int>(game->GetFPS())));
+        _frameRates->push_back(static_cast<int>(game->GetFPS()));
+
+        if (_frameRates->size() > 100)
+        {
+            _frameRates->erase(_frameRates->begin());
+        }
+
+        label->SetText(std::to_string(
+            std::accumulate(_frameRates->begin(), _frameRates->end(), 1) /
+            _frameRates->size()));
     }
 };
