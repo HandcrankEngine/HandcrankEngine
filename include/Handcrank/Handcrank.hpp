@@ -594,7 +594,7 @@ void Game::FixedUpdate()
             }
         }
 
-        fixedUpdateDeltaTime = 0;
+        fixedUpdateDeltaTime -= fixedFrameTime;
     }
 }
 
