@@ -11,7 +11,6 @@
 
 #include <functional>
 #include <iostream>
-#include <list>
 #include <memory>
 
 #include <SDL.h>
@@ -105,7 +104,7 @@ class Game
     std::unordered_map<Uint8, bool> mousePressedState;
     std::unordered_map<Uint8, bool> mouseReleasedState;
 
-    std::list<std::shared_ptr<RenderObject>> children;
+    std::vector<std::shared_ptr<RenderObject>> children;
 
     inline Game();
     inline ~Game();
@@ -192,7 +191,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     bool isInputHovered = false;
     bool isInputActive = false;
 
-    std::list<std::shared_ptr<RenderObject>> children;
+    std::vector<std::shared_ptr<RenderObject>> children;
 
     std::function<void(RenderObject *)> startFunction;
 
@@ -612,9 +611,10 @@ void Game::Render()
 
         SDL_RenderSetViewport(renderer.get(), &viewport);
 
-        children.sort([](const std::shared_ptr<RenderObject> &a,
-                         const std::shared_ptr<RenderObject> &b)
-                      { return a->z < b->z; });
+        sort(children.begin(), children.end(),
+             [](const std::shared_ptr<RenderObject> &a,
+                const std::shared_ptr<RenderObject> &b)
+             { return a->z < b->z; });
 
         for (const auto &child : children)
         {
@@ -984,9 +984,9 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
         return;
     }
 
-    children.sort([](const std::shared_ptr<RenderObject> &a,
-                     const std::shared_ptr<RenderObject> &b)
-                  { return a->z < b->z; });
+    sort(children.begin(), children.end(),
+         [](const std::shared_ptr<RenderObject> &a,
+            const std::shared_ptr<RenderObject> &b) { return a->z < b->z; });
 
     for (const auto &child : children)
     {
