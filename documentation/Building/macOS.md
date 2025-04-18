@@ -17,6 +17,10 @@ brew install SDL2_ttf
 ## Build
 
 ```bash
-cmake .
-make
+mkdir build/
+cd build/
+cmake ..
+# cmake .. -DCMAKE_BUILD_TYPE=Debug
+# cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build .
 ```
