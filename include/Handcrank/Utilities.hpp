@@ -20,7 +20,7 @@ inline auto TryParseInt(const std::string &value, int &result) -> bool
 
         return true;
     }
-    catch (std::invalid_argument const &ex)
+    catch ([[maybe_unused]] std::invalid_argument const &_)
     {
         // String failed to parse as an int.
     }
@@ -36,7 +36,7 @@ inline auto TryParseInt(const std::string &value) -> bool
 
         return true;
     }
-    catch (std::invalid_argument const &ex)
+    catch ([[maybe_unused]] std::invalid_argument const &_)
     {
         // String failed to parse as an int.
     }
