@@ -22,10 +22,10 @@ namespace Handcrank
 {
 
 const double DEFAULT_FRAME_RATE = 60;
-const double DEFAULT_WINDOW_WIDTH = 800;
-const double DEFAULT_WINDOW_HEIGHT = 600;
-const double DEFAULT_RECT_WIDTH = 100;
-const double DEFAULT_RECT_HEIGHT = 100;
+const int DEFAULT_WINDOW_WIDTH = 800;
+const int DEFAULT_WINDOW_HEIGHT = 600;
+const float DEFAULT_RECT_WIDTH = 100;
+const float DEFAULT_RECT_HEIGHT = 100;
 
 class Game;
 class RenderObject;
@@ -170,7 +170,7 @@ class Game
 class RenderObject : public std::enable_shared_from_this<RenderObject>
 {
   protected:
-    static uint count;
+    static unsigned int count;
 
     int index;
 
@@ -180,7 +180,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
 
     RectAnchor anchor = RectAnchor::TOP | RectAnchor::LEFT;
 
-    double scale = 1;
+    float scale = 1;
 
     bool hasStarted = false;
 
@@ -258,8 +258,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetAnchor() const -> RectAnchor;
     inline void SetAnchor(RectAnchor anchor);
 
-    [[nodiscard]] inline auto GetScale() const -> double;
-    inline void SetScale(double scale);
+    [[nodiscard]] inline auto GetScale() const -> float;
+    inline void SetScale(float scale);
 
     inline auto GetTransformedRect() -> SDL_FRect;
 
@@ -662,7 +662,7 @@ void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
 #endif
 
-uint RenderObject::count = 0;
+unsigned int RenderObject::count = 0;
 
 RenderObject::RenderObject()
 {
@@ -924,9 +924,9 @@ void RenderObject::SetRect(const float x, const float y)
 auto RenderObject::GetAnchor() const -> RectAnchor { return anchor; }
 void RenderObject::SetAnchor(RectAnchor anchor) { this->anchor = anchor; }
 
-auto RenderObject::GetScale() const -> double { return scale; }
+auto RenderObject::GetScale() const -> float { return scale; }
 
-void RenderObject::SetScale(double scale) { this->scale = scale; }
+void RenderObject::SetScale(float scale) { this->scale = scale; }
 
 auto RenderObject::GetTransformedRect() -> SDL_FRect
 {
