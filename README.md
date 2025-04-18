@@ -92,8 +92,10 @@ Via installer <https://cmake.org/download/>
 ### CMake (Recommended)
 
 ```bash
-cmake .
-make
+mkdir build/
+cd build/
+cmake ..
+cmake --build .
 ```
 
 ### g++
