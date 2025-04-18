@@ -88,3 +88,23 @@ if(SDL2_TTF_LIBRARY)
 else()
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2_ttf::SDL2_ttf)
 endif()
+
+if(APPLE AND CMAKE_BUILD_TYPE MATCHES "[Rr]elease")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE TRUE
+        BUNDLE TRUE
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.handcrankengine.demo"
+        MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
+        MACOSX_BUNDLE_BUNDLE_VERSION "1.0"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/resources/Info.plist.in"
+    )
+
+    set(MACOSX_BUNDLE_ICON_FILE icon.icns)
+    set(APP_ICON_MACOSX ${CMAKE_SOURCE_DIR}/resources/icon.icns)
+    set_source_files_properties(${APP_ICON_MACOSX} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+
+    target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON_MACOSX})
+endif()
