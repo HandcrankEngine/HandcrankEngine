@@ -4,6 +4,7 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <regex>
 #include <string>
 
@@ -105,6 +106,13 @@ template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
     }
 
     return rawName;
+}
+
+inline auto MemHash(const void *mem, const int size) -> std::string
+{
+    auto hash = std::hash<std::string_view>{}(
+        std::string_view(static_cast<const char *>(mem), size));
+    return std::to_string(hash);
 }
 
 } // namespace Handcrank

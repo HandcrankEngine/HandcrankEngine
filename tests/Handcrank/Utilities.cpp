@@ -3,6 +3,8 @@
 
 #include "Handcrank/Utilities.hpp"
 
+#include "../images/sdl_logo.h"
+
 using namespace Handcrank;
 
 auto main() -> int
@@ -117,6 +119,20 @@ auto main() -> int
         auto value = GetClassNameSimple(temp);
 
         assert(value == "ThisIsATestForTesting");
+
+        std::cout << ".";
+    }
+
+    {
+        auto value = MemHash(images_sdl_logo_png, images_sdl_logo_png_len);
+
+#ifdef __APPLE__
+        assert(value == "16443477445022879210");
+#elif __linux__
+        assert(value == "7456648896600017335");
+#else
+        assert(("Unknown platform", false));
+#endif
 
         std::cout << ".";
     }
