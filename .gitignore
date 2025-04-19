@@ -3,11 +3,15 @@ docs/
 
 # Cmake
 
+_CPack_Packages/
 _deps/
-CmakeFiles/
 cmake_install.cmake
 CMakeCache.txt
+CmakeFiles/
 compile_commands.json
+CPackConfig.cmake
+CPackSourceConfig.cmake
+install_manifest.txt
 Makefile
 
 # clangd

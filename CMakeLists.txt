@@ -107,4 +107,22 @@ if(APPLE AND CMAKE_BUILD_TYPE MATCHES "[Rr]elease")
     )
 
     target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON_MACOSX})
+
+    install(TARGETS ${PROJECT_NAME}
+        BUNDLE DESTINATION .
+        COMPONENT Runtime
+    )
+
+    set(CPACK_GENERATOR "DragNDrop")
+    set(CPACK_DMG_VOLUME_NAME "${PROJECT_NAME}")
+    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CMAKE_PROJECT_VERSION}")
+    set(CPACK_DMG_FORMAT "UDZO")
+    set(CPACK_SYSTEM_NAME "Darwin")
+    set(CPACK_OUTPUT_FILE_PREFIX "${CMAKE_BINARY_DIR}/build")
+
+    set(CPACK_BINARY_STGZ OFF)
+    set(CPACK_BINARY_TGZ OFF)
+    set(CPACK_BINARY_TZ OFF)
+
+    include(CPack)
 endif()
