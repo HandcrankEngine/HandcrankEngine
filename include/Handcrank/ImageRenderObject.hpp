@@ -7,9 +7,16 @@
 #include <SDL_image.h>
 
 #include "Handcrank.hpp"
+#include "Utilities.hpp"
 
 namespace Handcrank
 {
+
+namespace
+{
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache =
+    std::unordered_map<std::string, std::shared_ptr<SDL_Texture>>();
+}
 
 /**
  * Load texture from a path.
@@ -23,6 +30,11 @@ namespace Handcrank
 inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
                             const char *path) -> std::shared_ptr<SDL_Texture>
 {
+    if (textureCache.find(path) != textureCache.end())
+    {
+        return textureCache.find(path)->second;
+    }
+
     auto *surface = IMG_Load(path);
 
     if (surface == nullptr)
@@ -41,6 +53,8 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
         return nullptr;
     }
 
+    textureCache.insert_or_assign(path, texture);
+
     return texture;
 }
 
@@ -55,6 +69,13 @@ inline auto SDL_LoadTextureRW(const std::shared_ptr<SDL_Renderer> &renderer,
                               const void *mem, const int size)
     -> std::shared_ptr<SDL_Texture>
 {
+    auto hash = MemHash(mem, size);
+
+    if (textureCache.find(hash) != textureCache.end())
+    {
+        return textureCache.find(hash)->second;
+    }
+
     auto *rw = SDL_RWFromConstMem(mem, size);
 
     auto *surface = IMG_Load_RW(rw, 1);
@@ -74,6 +95,8 @@ inline auto SDL_LoadTextureRW(const std::shared_ptr<SDL_Renderer> &renderer,
     {
         return nullptr;
     }
+
+    textureCache.insert_or_assign(hash, texture);
 
     return texture;
 }
