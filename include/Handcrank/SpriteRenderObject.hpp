@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "ImageRenderObject.hpp"
 #include "Vector2.hpp"
@@ -14,8 +14,8 @@ namespace Handcrank
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
-    std::shared_ptr<std::vector<SDL_Rect>> spriteFrames =
-        std::make_shared<std::vector<SDL_Rect>>();
+    std::shared_ptr<std::vector<SDL_FRect>> spriteFrames =
+        std::make_shared<std::vector<SDL_FRect>>();
 
     int frame = 0;
 
@@ -46,7 +46,7 @@ class SpriteRenderObject : public ImageRenderObject
         this->frameSpeed = frameSpeed;
     }
 
-    void SetFrames(const std::shared_ptr<std::vector<SDL_Rect>> &spriteFrames)
+    void SetFrames(const std::shared_ptr<std::vector<SDL_FRect>> &spriteFrames)
     {
         this->spriteFrames.reset();
 
@@ -68,7 +68,7 @@ class SpriteRenderObject : public ImageRenderObject
         {
             for (auto y = 0; y < rows; y++)
             {
-                SDL_Rect rect;
+                SDL_FRect rect;
 
                 rect.x =
                     static_cast<int>((offset.x + x) * (cellWidth + padding.x));
