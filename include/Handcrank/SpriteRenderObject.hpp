@@ -11,6 +11,8 @@
 namespace Handcrank
 {
 
+const double DEFAULT_FRAME_SPEED = 0.1;
+
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
@@ -19,7 +21,7 @@ class SpriteRenderObject : public ImageRenderObject
 
     int frame = 0;
 
-    double frameSpeed = 0.1;
+    double frameSpeed = DEFAULT_FRAME_SPEED;
 
     bool isPlaying = false;
 

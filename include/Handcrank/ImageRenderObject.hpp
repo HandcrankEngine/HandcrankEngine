@@ -113,9 +113,9 @@ class ImageRenderObject : public RenderObject
     std::shared_ptr<SDL_FPoint> centerPoint = std::make_shared<SDL_FPoint>();
 
     std::shared_ptr<SDL_Color> tintColor =
-        std::make_shared<SDL_Color>(SDL_Color{255, 255, 255, 255});
+        std::make_shared<SDL_Color>(SDL_Color{MAX_R, MAX_G, MAX_B, MAX_ALPHA});
 
-    Uint8 alpha = 255;
+    Uint8 alpha = MAX_ALPHA;
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 

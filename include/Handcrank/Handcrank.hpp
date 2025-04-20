@@ -21,6 +21,12 @@
 namespace Handcrank
 {
 
+const int MAX_R = 255;
+const int MAX_G = 255;
+const int MAX_B = 255;
+const int MAX_ALPHA = 255;
+
+const double MILLISECONDS = 1000.0;
 const double DEFAULT_FRAME_RATE = 60;
 const int DEFAULT_WINDOW_WIDTH = 800;
 const int DEFAULT_WINDOW_HEIGHT = 600;
@@ -61,7 +67,7 @@ class Game
     SDL_Rect viewport{};
     SDL_FRect viewportf{};
 
-    SDL_Color clearColor{0, 0, 0, 255};
+    SDL_Color clearColor{0, 0, 0, MAX_ALPHA};
 
     bool quit = false;
 
@@ -558,7 +564,7 @@ void Game::CalculateDeltaTime()
     }
     else
     {
-        deltaTime = (currentTime - previousTime) / 1000.0;
+        deltaTime = (currentTime - previousTime) / MILLISECONDS;
     }
 
     previousTime = currentTime;

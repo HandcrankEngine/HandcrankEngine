@@ -78,7 +78,7 @@ class TextRenderObject : public RenderObject
   protected:
     std::shared_ptr<TTF_Font> font;
 
-    SDL_Color color{255, 255, 255, 255};
+    SDL_Color color{MAX_R, MAX_G, MAX_B, MAX_ALPHA};
 
     std::string text;
 
