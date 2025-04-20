@@ -14,8 +14,6 @@ using namespace Handcrank;
 class Spawner : public RenderObject
 {
   private:
-    std::shared_ptr<SDL_Texture> texture;
-
     std::shared_ptr<TextRenderObject> label =
         std::make_shared<TextRenderObject>();
     std::shared_ptr<RectRenderObject> background =
@@ -24,9 +22,6 @@ class Spawner : public RenderObject
   public:
     void Start() override
     {
-        texture = SDL_LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
-                                    images_sdl_logo_png_len);
-
         AddChildObject(background);
 
         background->SetRect({(float)game->GetWidth() - 200,
@@ -54,7 +49,9 @@ class Spawner : public RenderObject
         {
             auto logoScreenSaver = std::make_shared<LogoScreenSaver>();
 
-            logoScreenSaver->SetTexture(texture);
+            logoScreenSaver->LoadTextureRW(game->GetRenderer(),
+                                           images_sdl_logo_png,
+                                           images_sdl_logo_png_len);
 
             logoScreenSaver->SetRect(game->mousePosition->x,
                                      game->mousePosition->y);
