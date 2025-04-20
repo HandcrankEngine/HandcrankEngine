@@ -16,7 +16,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "Handcrank/Utilities.hpp"
+#include "Utilities.hpp"
 
 namespace Handcrank
 {
