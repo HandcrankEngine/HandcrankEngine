@@ -33,7 +33,7 @@ inline auto TryParseInt(const std::string &value) -> bool
 {
     try
     {
-        auto number = std::stoi(value);
+        std::stoi(value);
 
         return true;
     }
