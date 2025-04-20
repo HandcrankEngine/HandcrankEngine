@@ -158,7 +158,7 @@ class TextRenderObject : public RenderObject
      *
      * @param text Text value to set.
      */
-    void SetText(std::string text)
+    void SetText(const std::string &text)
     {
         if (font == nullptr)
         {
@@ -167,7 +167,7 @@ class TextRenderObject : public RenderObject
             return;
         }
 
-        this->text = std::move(text);
+        this->text = text;
 
         textSurface.reset();
         textTexture.reset();
@@ -194,7 +194,7 @@ class TextRenderObject : public RenderObject
      *
      * @param text Text value to set.
      */
-    void SetWrappedText(std::string text)
+    void SetWrappedText(const std::string &text)
     {
         if (font == nullptr)
         {
@@ -203,7 +203,7 @@ class TextRenderObject : public RenderObject
             return;
         }
 
-        this->text = std::move(text);
+        this->text = text;
 
         textSurface.reset();
         textTexture.reset();
