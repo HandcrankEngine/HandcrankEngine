@@ -373,6 +373,8 @@ auto Game::GetViewport() const -> SDL_FRect { return viewportf; }
 
 auto Game::Setup() -> bool
 {
+    SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
+
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         return false;
