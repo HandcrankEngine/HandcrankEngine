@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.14)
+
 project(handcrank-engine VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -41,6 +43,7 @@ else()
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
         GIT_TAG release-${SDL2_IMAGE_VERSION}
     )
+    set(SDL2IMAGE_AVIF OFF)
     set(SDL2IMAGE_INSTALL OFF)
     FetchContent_MakeAvailable(SDL2_image)
 endif()
@@ -69,7 +72,11 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE INCLUDES "include/*.hpp")
 file(GLOB_RECURSE EXAMPLES "examples/*.hpp")
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
+if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "[Rr]elease")
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${INCLUDES} ${EXAMPLES})
+else()
+    add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
+endif()
 
 if(SDL2_LIBRARY)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY})
