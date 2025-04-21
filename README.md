@@ -99,6 +99,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 ```
 
+> Note: To generate DMG files on macOS, first build with `cmake .. -DCMAKE_BUILD_TYPE=Release` and `cmake --build .`, then run `cpack`.
+
 ### g++
 
 ```bash
@@ -125,7 +127,7 @@ clang-tidy include/**/*.hpp
 
 ## Editor Setup
 
-> Note: Make sure to to run `cmake . && make` to generate the `compile_commands.json` and other necessary header files.
+> Note: Make sure to to run `cmake ..` and `cmake --build .` to generate the `compile_commands.json` and other necessary header files.
 
 ### VS Code
 
