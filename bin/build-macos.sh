@@ -65,7 +65,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2.dylib "${FRAMEWORKS}/libSDL2_image.dylib"
     install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2.dylib "${FRAMEWORKS}/libSDL2_ttf.dylib"
 
-    cat > "${CONTENTS}/Info.plist" << EOF
+    cat >"${CONTENTS}/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -102,6 +102,14 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 </plist>
 EOF
 
-    hdiutil create -volname "${MACOSX_BUNDLE_EXECUTABLE_NAME}" -srcfolder "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}.app" -ov -format UDZO "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}.dmg"
+    rm -rf build/dist
+
+    mkdir -p build/dist
+
+    cp -r "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}.app" "build/dist/"
+
+    ln -s /Applications "build/dist/Applications"
+
+    hdiutil create -volname "${MACOSX_BUNDLE_EXECUTABLE_NAME}" -srcfolder "build/dist" -ov -format UDZO "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}.dmg"
 
 )
