@@ -457,7 +457,12 @@ auto Game::GetFrameRate() const -> double { return frameRate; }
 
 auto Game::GetFPS() const -> double { return fps; }
 
-void Game::SetFrameRate(double frameRate) { this->frameRate = frameRate; }
+void Game::SetFrameRate(double frameRate)
+{
+    this->frameRate = frameRate;
+
+    this->targetFrameTime = 1.0 / frameRate;
+}
 
 auto Game::GetQuit() const -> bool { return quit; }
 
