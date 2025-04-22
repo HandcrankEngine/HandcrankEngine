@@ -49,14 +49,12 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     chmod -R 755 "${CONTENTS}"
 
     cp "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}" "${MACOS}/"
-    # chmod +x "${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
 
     cp "resources/${MACOSX_BUNDLE_ICON_FILE}" "${RESOURCES}"
 
     cp "${SDL2_PATH}/lib/libSDL2.dylib" "${FRAMEWORKS}"
     cp "${SDL2_IMAGE_PATH}/lib/libSDL2_image.dylib" "${FRAMEWORKS}"
     cp "${SDL2_TTF_PATH}/lib/libSDL2_ttf.dylib" "${FRAMEWORKS}"
-    # chmod +x "${FRAMEWORKS}"/*.dylib
 
     install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2.dylib "${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
     install_name_tool -change @rpath/libSDL2_image.dylib @executable_path/../Frameworks/libSDL2_image.dylib "${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
