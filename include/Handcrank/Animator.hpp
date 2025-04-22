@@ -108,6 +108,24 @@ class Animator : public RenderObject
         animations.push_back(animation);
     }
 
+    void AddDelay(const float delay)
+    {
+        AddAnimation(std::make_shared<Animation>(
+            [delay](const double deltaTime, const double elapsedTime)
+            { return elapsedTime > delay ? 0 : 1; }));
+    }
+
+    void AddStep(const std::function<void()> &stepFunction)
+    {
+        AddAnimation(std::make_shared<Animation>(
+            [stepFunction](const double deltaTime, const double elapsedTime)
+            {
+                stepFunction();
+
+                return 0;
+            }));
+    }
+
     void Update(const double deltaTime) override
     {
         if (animations.empty())
