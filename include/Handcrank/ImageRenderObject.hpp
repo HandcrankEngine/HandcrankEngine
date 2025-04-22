@@ -115,7 +115,7 @@ class ImageRenderObject : public RenderObject
     std::shared_ptr<SDL_Color> tintColor =
         std::make_shared<SDL_Color>(SDL_Color{MAX_R, MAX_G, MAX_B, MAX_ALPHA});
 
-    Uint8 alpha = MAX_ALPHA;
+    int alpha = MAX_ALPHA;
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
@@ -227,9 +227,9 @@ class ImageRenderObject : public RenderObject
         return tintColor;
     }
 
-    void SetAlpha(const Uint8 alpha) { this->alpha = alpha; }
+    void SetAlpha(const int alpha) { this->alpha = alpha; }
 
-    [[nodiscard]] auto GetAlpha() const -> Uint8 { return alpha; }
+    [[nodiscard]] auto GetAlpha() const -> int { return alpha; }
 
     /**
      * Render image to the scene.
