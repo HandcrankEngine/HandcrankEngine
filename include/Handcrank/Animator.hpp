@@ -197,6 +197,8 @@ class Animator : public RenderObject
                     }
                     else
                     {
+                        currentState = State::COMPLETE;
+
                         return;
                     }
                 }
