@@ -47,11 +47,13 @@ auto main() -> int
 
     auto cube = std::make_shared<RectRenderObject>(0, 0, 250, 250);
 
-    cube->SetFillColor(255, 0, 0, 0);
+    cube->SetFillColor(MAX_R, 0, 0, 0);
 
     game->AddChildObject(cube);
 
     auto animator = std::make_shared<Animator>(Animator::Mode::SEQUENCE, true);
+
+    float internalAlpha = 0;
 
     // Fade in
     animator->AddAnimation(std::make_shared<Animation>(
@@ -59,9 +61,9 @@ auto main() -> int
         {
             auto color = cube->GetFillColor();
 
-            auto alpha = color->a;
+            internalAlpha += 500 * deltaTime;
 
-            alpha = std::clamp(alpha + (500 * (float)deltaTime), 0.0F, 255.0F);
+            auto alpha = std::clamp(internalAlpha, 0.0F, (float)MAX_ALPHA);
 
             cube->SetFillColor(color->r, color->g, color->b, alpha);
 
@@ -79,9 +81,9 @@ auto main() -> int
         {
             auto color = cube->GetFillColor();
 
-            auto alpha = color->a;
+            internalAlpha -= 500 * deltaTime;
 
-            alpha = std::clamp(alpha - (500 * (float)deltaTime), 0.0F, 255.0F);
+            auto alpha = std::clamp(internalAlpha, 0.0F, (float)MAX_ALPHA);
 
             cube->SetFillColor(color->r, color->g, color->b, alpha);
 

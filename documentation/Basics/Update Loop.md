@@ -16,11 +16,11 @@ class LoopDebugger : public RenderObject
   public:
     void Update(const double deltaTime) override
     {
-        std::cout << "Update" << std::endl;
+        std::cout << "Update " << deltaTime << std::endl;
     }
     void FixedUpdate(const double fixedDeltaTime) override
     {
-        std::cout << "Fixed Update" << std::endl;
+        std::cout << "Fixed Update" << fixedDeltaTime << std::endl;
     }
 };
 
@@ -51,11 +51,13 @@ auto main() -> int
 
     auto loopDebugger = std::make_unique<RenderObject>();
 
-    loopDebugger->SetUpdate([](RenderObject *ref, const double deltaTime)
-                            { std::cout << "Update" << std::endl; });
+    loopDebugger->SetUpdate(
+        [](RenderObject *ref, const double deltaTime)
+        { std::cout << "Update " << deltaTime << std::endl; });
 
-    loopDebugger->SetFixedUpdate([](RenderObject *ref, const double fixedDeltaTime)
-                                 { std::cout << "Fixed Update" << std::endl; });
+    loopDebugger->SetFixedUpdate(
+        [](RenderObject *ref, const double fixedDeltaTime)
+        { std::cout << "Fixed Update" << fixedDeltaTime << std::endl; });
 
     game->AddChildObject(std::move(loopDebugger));
 
