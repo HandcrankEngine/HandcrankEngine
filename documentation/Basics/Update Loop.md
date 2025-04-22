@@ -16,11 +16,12 @@ class LoopDebugger : public RenderObject
   public:
     void Update(const double deltaTime) override
     {
-        std::cout << "Update " << deltaTime << std::endl;
+        std::cout << "Update " << std::to_string(deltaTime) << std::endl;
     }
     void FixedUpdate(const double fixedDeltaTime) override
     {
-        std::cout << "Fixed Update" << fixedDeltaTime << std::endl;
+        std::cout << "Fixed Update " << std::to_string(fixedDeltaTime)
+                  << std::endl;
     }
 };
 
@@ -53,11 +54,14 @@ auto main() -> int
 
     loopDebugger->SetUpdate(
         [](RenderObject *ref, const double deltaTime)
-        { std::cout << "Update " << deltaTime << std::endl; });
+        { std::cout << "Update " << std::to_string(deltaTime) << std::endl; });
 
     loopDebugger->SetFixedUpdate(
         [](RenderObject *ref, const double fixedDeltaTime)
-        { std::cout << "Fixed Update" << fixedDeltaTime << std::endl; });
+        {
+            std::cout << "Fixed Update " << std::to_string(fixedDeltaTime)
+                      << std::endl;
+        });
 
     game->AddChildObject(std::move(loopDebugger));
 
