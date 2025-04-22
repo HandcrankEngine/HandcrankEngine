@@ -28,9 +28,10 @@ class Animation
 
   public:
     Animation() = default;
-    Animation(std::function<int(const double, const double)> tickFunction)
+    Animation(
+        const std::function<int(const double, const double)> &tickFunction)
     {
-        this->tickFunction = std::move(tickFunction);
+        this->tickFunction = tickFunction;
     }
 
     ~Animation() = default;
@@ -81,9 +82,10 @@ class Animation
         return result;
     }
 
-    void SetTick(std::function<int(const double, const double)> tickFunction)
+    void
+    SetTick(const std::function<int(const double, const double)> &tickFunction)
     {
-        this->tickFunction = std::move(tickFunction);
+        this->tickFunction = tickFunction;
     }
 };
 
