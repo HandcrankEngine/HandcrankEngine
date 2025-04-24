@@ -35,12 +35,14 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     MACOS="${CONTENTS}/MacOS"
     FRAMEWORKS="${CONTENTS}/Frameworks"
     RESOURCES="${CONTENTS}/Resources"
+    EXECUTABLE="${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
 
     g++ -std=c++17 -o "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}" src/*.cpp -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
         -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
         -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
         -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
-        -lSDL2 -lSDL2_image -lSDL2_ttf
+        -lSDL2 -lSDL2_image -lSDL2_ttf \
+        -rpath @loader_path/../Frameworks
 
     mkdir -p "${MACOS}"
     mkdir -p "${FRAMEWORKS}"
@@ -52,16 +54,30 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     cp "resources/${MACOSX_BUNDLE_ICON_FILE}" "${RESOURCES}"
 
-    cp "${SDL2_PATH}/lib/libSDL2.dylib" "${FRAMEWORKS}"
-    cp "${SDL2_IMAGE_PATH}/lib/libSDL2_image.dylib" "${FRAMEWORKS}"
-    cp "${SDL2_TTF_PATH}/lib/libSDL2_ttf.dylib" "${FRAMEWORKS}"
+    cp "${SDL2_PATH}/lib/libSDL2-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL2_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL2_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib" "${FRAMEWORKS}"
 
-    install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2.dylib "${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
-    install_name_tool -change @rpath/libSDL2_image.dylib @executable_path/../Frameworks/libSDL2_image.dylib "${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
-    install_name_tool -change @rpath/libSDL2_ttf.dylib @executable_path/../Frameworks/libSDL2_ttf.dylib "${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
+    find_dependencies() {
+        local LIBRARY="${1}"
+        otool -L "${LIBRARY}" | grep -E '\.dylib' | awk '{print $1}' | while read DEPENDENCY; do
+            if [[ -f "${DEPENDENCY}" && "${DEPENDENCY}" != *"/usr/lib/"* && ! -f "${FRAMEWORKS}/$(basename "${DEPENDENCY}")" ]]; then
+                cp "${DEPENDENCY}" "${FRAMEWORKS}/"
+                find_dependencies "${DEPENDENCY}"
+            fi
+        done
+    }
 
-    install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2.dylib "${FRAMEWORKS}/libSDL2_image.dylib"
-    install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2.dylib "${FRAMEWORKS}/libSDL2_ttf.dylib"
+    find_dependencies "${SDL2_PATH}/lib/libSDL2-2.0.0.dylib"
+    find_dependencies "${SDL2_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib"
+    find_dependencies "${SDL2_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib"
+
+    install_name_tool -change /opt/homebrew/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${EXECUTABLE}"
+    install_name_tool -change /opt/homebrew/opt/sdl2_image/lib/libSDL2_image-2.0.0.dylib @executable_path/../Frameworks/libSDL2_image-2.0.0.dylib "${EXECUTABLE}"
+    install_name_tool -change /opt/homebrew/opt/sdl2_ttf/lib/libSDL2_ttf-2.0.0.dylib @executable_path/../Frameworks/libSDL2_ttf-2.0.0.dylib "${EXECUTABLE}"
+
+    install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${FRAMEWORKS}/libSDL2_image-2.0.0.dylib"
+    install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${FRAMEWORKS}/libSDL2_ttf-2.0.0.dylib"
 
     cat >"${CONTENTS}/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
