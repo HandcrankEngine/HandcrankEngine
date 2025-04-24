@@ -92,6 +92,8 @@ Via installer <https://cmake.org/download/>
 
 ### CMake (Recommended)
 
+> Note: Builds on Windows require [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170) to run.
+
 #### Debug Build
 
 ```bash
