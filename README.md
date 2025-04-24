@@ -92,14 +92,25 @@ Via installer <https://cmake.org/download/>
 
 ### CMake (Recommended)
 
+#### Debug Build
+
+```bash
+mkdir build/
+cd build/
+cmake ..
+cmake --build .
+```
+
+#### Release Build
+
+> Note: To generate DMG files on macOS, first build with cmake, then run `cpack`.
+
 ```bash
 mkdir build/
 cd build/
 cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build .
+cmake --build . --config Release
 ```
-
-> Note: To generate DMG files on macOS, first build with `cmake .. -DCMAKE_BUILD_TYPE=Release` and `cmake --build .`, then run `cpack`.
 
 ### g++
 
