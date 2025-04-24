@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.15)
 
-set(CMAKE_POLICY_VERSION_MINIMUM 3.14)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.15)
 
 project(handcrank-engine VERSION 1.0 LANGUAGES CXX)
 
@@ -13,55 +13,41 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 include(FetchContent)
 
-set(SDL2_VERSION "2.32.4")
-set(SDL2_IMAGE_VERSION "2.8.8")
-set(SDL2_TTF_VERSION "2.24.0")
+function(INSTALL_SDL_LIBRARY NAME VERSION REPO_NAME REPO_URL)
+    string(TOUPPER "${NAME}" NAME_LIBRARY)
 
-if(EXISTS "/opt/homebrew/Cellar/sdl2/${SDL2_VERSION}/")
-    set(SDL_LIBRARY_DIR "/opt/homebrew/Cellar/sdl2/${SDL2_VERSION}/lib")
-    set(SDL_INCLUDE_DIR "/opt/homebrew/Cellar/sdl2/${SDL2_VERSION}/include/SDL2")
-    find_library(SDL2_LIBRARY NAMES SDL2 HINTS ${SDL_LIBRARY_DIR})
-    include_directories(${SDL_INCLUDE_DIR})
-else()
-    FetchContent_Declare(
-        SDL2
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-        GIT_TAG release-${SDL2_VERSION}
-    )
-    set(SDL2_DISABLE_INSTALL ON)
-    FetchContent_MakeAvailable(SDL2)
-endif()
+    if(EXISTS "/opt/homebrew/Cellar/${NAME}/${VERSION}/")
+        set(${NAME_LIBRARY}_LIBRARY_DIR "/opt/homebrew/Cellar/${NAME}/${VERSION}/lib")
+        set(${NAME_LIBRARY}_INCLUDE_DIR "/opt/homebrew/Cellar/${NAME}/${VERSION}/include/SDL2")
 
-if(EXISTS "/opt/homebrew/Cellar/sdl2_image/${SDL2_IMAGE_VERSION}/")
-    set(SDL_IMAGE_LIBRARY_DIR "/opt/homebrew/Cellar/sdl2_image/${SDL2_IMAGE_VERSION}/lib")
-    set(SDL_IMAGE_INCLUDE_DIR "/opt/homebrew/Cellar/sdl2_image/${SDL2_IMAGE_VERSION}/include/SDL2")
-    find_library(SDL2_IMAGE_LIBRARY NAMES SDL2_image HINTS ${SDL_IMAGE_LIBRARY_DIR})
-    include_directories(${SDL_IMAGE_INCLUDE_DIR})
-else()
-    FetchContent_Declare(
-        SDL2_image
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-        GIT_TAG release-${SDL2_IMAGE_VERSION}
-    )
-    set(SDL2IMAGE_AVIF OFF)
-    set(SDL2IMAGE_INSTALL OFF)
-    FetchContent_MakeAvailable(SDL2_image)
-endif()
+        find_library(${NAME_LIBRARY}_LIBRARY NAMES ${NAME_LIBRARY} HINTS ${${NAME_LIBRARY}_LIBRARY_DIR})
 
-if(EXISTS "/opt/homebrew/Cellar/sdl2_ttf/${SDL2_TTF_VERSION}/")
-    set(SDL_TTF_LIBRARY_DIR "/opt/homebrew/Cellar/sdl2_ttf/${SDL2_TTF_VERSION}/lib")
-    set(SDL_TTF_INCLUDE_DIR "/opt/homebrew/Cellar/sdl2_ttf/${SDL2_TTF_VERSION}/include/SDL2")
-    find_library(SDL2_TTF_LIBRARY NAMES SDL2_ttf HINTS ${SDL_TTF_LIBRARY_DIR})
-    include_directories(${SDL_TTF_INCLUDE_DIR})
-else()
-    FetchContent_Declare(
-        SDL2_ttf
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-        GIT_TAG release-${SDL2_TTF_VERSION}
-    )
-    set(SDL2TTF_INSTALL OFF)
-    FetchContent_MakeAvailable(SDL2_ttf)
-endif()
+        include_directories(${${NAME_LIBRARY}_INCLUDE_DIR})
+
+        message(STATUS "Found ${NAME} ${VERSION} installed via brew ${${NAME_LIBRARY}_LIBRARY_DIR}")
+    else()
+        message(STATUS "Installing ${NAME} ${VERSION} via FetchContent")
+
+        FetchContent_Declare(
+            ${REPO_NAME}
+            GIT_REPOSITORY "${REPO_URL}"
+            GIT_TAG release-${VERSION}
+        )
+
+        set(${NAME_LIBRARY}_LIBRARY ${REPO_NAME}::${REPO_NAME} PARENT_SCOPE)
+
+        FetchContent_MakeAvailable(${NAME_LIBRARY})
+    endif()
+endfunction()
+
+set(SDL2_DISABLE_INSTALL ON)
+set(SDL2IMAGE_AVIF OFF)
+set(SDL2IMAGE_INSTALL OFF)
+set(SDL2TTF_INSTALL OFF)
+
+INSTALL_SDL_LIBRARY("sdl2" "2.32.4" "SDL2" "https://github.com/libsdl-org/SDL.git")
+INSTALL_SDL_LIBRARY("sdl2_image" "2.8.8" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
+INSTALL_SDL_LIBRARY("sdl2_ttf" "2.24.0" "SDL2_ttf" "https://github.com/libsdl-org/SDL_ttf.git")
 
 include_directories("fonts")
 include_directories("images")
@@ -78,23 +64,9 @@ else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
 endif()
 
-if(SDL2_LIBRARY)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY})
-else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2)
-endif()
-
-if(SDL2_IMAGE_LIBRARY)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIBRARY})
-else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2_image::SDL2_image)
-endif()
-
-if(SDL2_TTF_LIBRARY)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_TTF_LIBRARY})
-else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2_ttf::SDL2_ttf)
-endif()
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_TTF_LIBRARY})
 
 if(APPLE AND CMAKE_BUILD_TYPE MATCHES "[Rr]elease")
     set_target_properties(${PROJECT_NAME} PROPERTIES
