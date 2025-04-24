@@ -1,4 +1,5 @@
 #define SDL_MAIN_HANDLED
+
 #define HANDCRANK_DEBUG 1
 
 #include "Handcrank/Handcrank.hpp"
