@@ -43,3 +43,11 @@ cmake --build . --config Release
 ```bash
 ./bin/build-macos.sh
 ```
+
+## Distribution
+
+If you send the app to anyone before you [sign it](https://developer.apple.com/developer-id/), they will need to allow it via macOS Gatekeeper:
+
+```bash
+xattr -d com.apple.quarantine /Applications/handcrank-engine.app
+```
