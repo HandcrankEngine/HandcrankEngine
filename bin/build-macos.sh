@@ -12,6 +12,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     cd ..
 
+    MACOSX_DEPLOYMENT_TARGET="11"
+
     # CFBundleExecutable
     MACOSX_BUNDLE_EXECUTABLE_NAME="handcrank-engine"
     # CFBundleGetInfoString
@@ -37,7 +39,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     RESOURCES="${CONTENTS}/Resources"
     EXECUTABLE="${MACOS}/${MACOSX_BUNDLE_EXECUTABLE_NAME}"
 
-    g++ -std=c++17 -o "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}" src/*.cpp -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
+    g++ -std=c++17 -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET} \
+        -o "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}" src/*.cpp -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
         -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
         -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
         -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
@@ -61,7 +64,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     find_dependencies() {
         local LIBRARY="${1}"
         otool -L "${LIBRARY}" | grep -E '\.dylib' | awk '{print $1}' | while read DEPENDENCY; do
-            if [[ -f "${DEPENDENCY}" && "${DEPENDENCY}" != *"/usr/lib/"* && ! -f "${FRAMEWORKS}/$(basename "${DEPENDENCY}")" ]]; then
+            if [[ -f "${DEPENDENCY}" && "${DEPENDENCY}" != *"/usr/lib/"* && "${DEPENDENCY}" != *"/System/"* && ! -f "${FRAMEWORKS}/$(basename "${DEPENDENCY}")" ]]; then
                 cp "${DEPENDENCY}" "${FRAMEWORKS}/"
                 find_dependencies "${DEPENDENCY}"
             fi
@@ -112,6 +115,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     <string>${MACOSX_BUNDLE_COPYRIGHT}</string>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>LSMinimumSystemVersion</key>
+    <string>${MACOSX_DEPLOYMENT_TARGET}</string>
 </dict>
 </plist>
 EOF
