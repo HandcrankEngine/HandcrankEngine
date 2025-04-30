@@ -67,6 +67,7 @@ inline auto SDL_LoadFontRW(const void *mem, const int size,
     if (font == nullptr)
     {
         SDL_RWclose(rw);
+
         return nullptr;
     }
 
