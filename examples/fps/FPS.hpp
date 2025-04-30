@@ -55,5 +55,10 @@ class FPS : public RenderObject
         label->SetText(std::to_string(
             std::accumulate(_frameRates->begin(), _frameRates->end(), 1) /
             _frameRates->size()));
+
+        auto backgroundRect = background->GetRect();
+
+        background->SetRect(backgroundRect->x, backgroundRect->y,
+                            label->GetRect()->w + 25, backgroundRect->h);
     }
 };
