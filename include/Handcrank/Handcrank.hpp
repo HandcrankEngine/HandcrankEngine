@@ -479,6 +479,8 @@ auto Game::Run() -> int
 
 void Game::Loop()
 {
+    auto start = SDL_GetPerformanceCounter();
+
     HandleInput();
 
     CalculateDeltaTime();
@@ -489,6 +491,23 @@ void Game::Loop()
     Render();
 
     DestroyChildObjects();
+
+    auto end = SDL_GetPerformanceCounter();
+
+    auto elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+
+    float elapsedMS = elapsed * MILLISECONDS;
+
+    float targetMS = MILLISECONDS / frameRate;
+
+    fps = 1.0F / elapsed;
+
+    float delayMS = targetMS - elapsedMS;
+
+    if (delayMS > 0)
+    {
+        SDL_Delay(floor(delayMS));
+    }
 }
 
 void Game::HandleInput()
@@ -616,7 +635,7 @@ void Game::Render()
 {
     renderDeltaTime += deltaTime;
 
-    if (renderDeltaTime > targetFrameTime)
+    if (renderDeltaTime >= targetFrameTime)
     {
         SDL_SetRenderDrawColor(renderer.get(), clearColor.r, clearColor.g,
                                clearColor.b, clearColor.a);
@@ -640,9 +659,7 @@ void Game::Render()
 
         SDL_RenderPresent(renderer.get());
 
-        fps = 1.0 / renderDeltaTime;
-
-        renderDeltaTime = 0;
+        renderDeltaTime -= targetFrameTime;
     }
 }
 
