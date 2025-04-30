@@ -27,6 +27,9 @@ std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache =
  * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in a
  * release build.
  */
+
+[[deprecated("DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in "
+             "a release build.")]]
 inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
                             const char *path) -> std::shared_ptr<SDL_Texture>
 {

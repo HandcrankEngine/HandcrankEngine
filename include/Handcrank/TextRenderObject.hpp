@@ -22,6 +22,8 @@ namespace Handcrank
  * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load
  * fonts in a release build.
  */
+[[deprecated("DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load fonts in a "
+             "release build.")]]
 inline auto SDL_LoadFont(const char *path, const int ptSize = 24)
     -> std::shared_ptr<TTF_Font>
 {
