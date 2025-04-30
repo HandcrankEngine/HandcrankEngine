@@ -510,13 +510,14 @@ auto Game::Run() -> int
 
 void Game::Loop()
 {
-
 #ifdef __EMSCRIPTEN__
     if (GetQuit())
     {
         emscripten_cancel_main_loop();
     }
 #endif
+
+    auto start = SDL_GetPerformanceCounter();
 
     HandleInput();
 
@@ -528,6 +529,23 @@ void Game::Loop()
     Render();
 
     DestroyChildObjects();
+
+    auto end = SDL_GetPerformanceCounter();
+
+    auto elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+
+    float elapsedMS = elapsed * MILLISECONDS;
+
+    float targetMS = MILLISECONDS / frameRate;
+
+    fps = 1.0F / elapsed;
+
+    float delayMS = targetMS - elapsedMS;
+
+    if (delayMS > 0)
+    {
+        SDL_Delay(floor(delayMS));
+    }
 }
 
 void Game::HandleInput()
@@ -652,7 +670,7 @@ void Game::Render()
 {
     renderDeltaTime += deltaTime;
 
-    if (renderDeltaTime > targetFrameTime || !capFrameRate)
+    if (renderDeltaTime >= targetFrameTime || !capFrameRate)
     {
         SDL_SetRenderDrawColor(renderer.get(), clearColor.r, clearColor.g,
                                clearColor.b, clearColor.a);
@@ -676,9 +694,7 @@ void Game::Render()
 
         SDL_RenderPresent(renderer.get());
 
-        fps = 1.0 / renderDeltaTime;
-
-        renderDeltaTime = 0;
+        renderDeltaTime -= targetFrameTime;
     }
 }
 
