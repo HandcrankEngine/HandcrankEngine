@@ -214,7 +214,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     float z;
 
     inline RenderObject();
-    explicit RenderObject(float x, float y) { SetRect(x, y); }
+    explicit RenderObject(float x, float y) { SetPosition(x, y); }
     explicit RenderObject(float x, float y, float w, float h)
     {
         SetRect(x, y, w, h);
@@ -260,7 +260,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetRect() const -> std::shared_ptr<SDL_FRect>;
     inline void SetRect(SDL_FRect rect);
     inline void SetRect(float x, float y, float w, float h);
-    inline void SetRect(float x, float y);
+    inline void SetPosition(float x, float y);
+    inline void SetDimension(float w, float h);
 
     [[nodiscard]] inline auto GetAnchor() const -> RectAnchor;
     inline void SetAnchor(RectAnchor anchor);
@@ -680,10 +681,8 @@ unsigned int RenderObject::count = 0;
 
 RenderObject::RenderObject()
 {
-    rect->x = 0;
-    rect->y = 0;
-    rect->w = DEFAULT_RECT_WIDTH;
-    rect->h = DEFAULT_RECT_HEIGHT;
+    SetPosition(0, 0);
+    SetDimension(DEFAULT_RECT_WIDTH, DEFAULT_RECT_HEIGHT);
 
     index = ++RenderObject::count;
 }
@@ -914,25 +913,27 @@ auto RenderObject::GetRect() const -> std::shared_ptr<SDL_FRect>
 
 void RenderObject::SetRect(const SDL_FRect rect)
 {
-    this->rect->x = rect.x;
-    this->rect->y = rect.y;
-    this->rect->w = rect.w;
-    this->rect->h = rect.h;
+    SetPosition(rect.x, rect.y);
+    SetDimension(rect.w, rect.h);
 }
 
 void RenderObject::SetRect(const float x, const float y, const float w,
                            const float h)
 {
-    rect->x = x;
-    rect->y = y;
-    rect->w = w;
-    rect->h = h;
+    SetPosition(x, y);
+    SetDimension(w, h);
 }
 
-void RenderObject::SetRect(const float x, const float y)
+void RenderObject::SetPosition(const float x, const float y)
 {
     rect->x = x;
     rect->y = y;
+}
+
+void RenderObject::SetDimension(const float w, const float h)
+{
+    rect->w = w;
+    rect->h = h;
 }
 
 auto RenderObject::GetAnchor() const -> RectAnchor { return anchor; }

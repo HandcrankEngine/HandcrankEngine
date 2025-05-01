@@ -31,8 +31,8 @@ class LogoScreenSaver : public ImageRenderObject
 
         if (rect->x == 0 && rect->y == 0)
         {
-            SetRect(RandomNumberRange(0, game->GetWidth()),
-                    RandomNumberRange(0, game->GetHeight()));
+            SetPosition(RandomNumberRange(0, game->GetWidth()),
+                        RandomNumberRange(0, game->GetHeight()));
         }
     }
 

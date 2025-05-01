@@ -53,8 +53,8 @@ class Spawner : public RenderObject
                                            images_sdl_logo_png,
                                            images_sdl_logo_png_len);
 
-            logoScreenSaver->SetRect(game->mousePosition->x,
-                                     game->mousePosition->y);
+            logoScreenSaver->SetPosition(game->mousePosition->x,
+                                         game->mousePosition->y);
 
             AddChildObject(logoScreenSaver);
         }
