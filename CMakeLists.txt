@@ -64,7 +64,7 @@ set(SDL2IMAGE_INSTALL OFF)
 # SDL2_ttf Flags
 set(SDL2TTF_INSTALL OFF)
 
-INSTALL_SDL_LIBRARY("sdl2" "2.32.4" "SDL2" "https://github.com/libsdl-org/SDL.git")
+INSTALL_SDL_LIBRARY("sdl2" "2.32.6" "SDL2" "https://github.com/libsdl-org/SDL.git")
 INSTALL_SDL_LIBRARY("sdl2_image" "2.8.8" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
 INSTALL_SDL_LIBRARY("sdl2_ttf" "2.24.0" "SDL2_ttf" "https://github.com/libsdl-org/SDL_ttf.git")
 
