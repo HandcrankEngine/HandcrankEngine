@@ -21,10 +21,10 @@ COLOROFF=$(tput sgr0)
         printf " - Running %s " "${FILE}"
 
         if ! g++ -std=c++17 -o test "${FILE}" -Iinclude \
-            -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
-            -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
-            -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
-            -lSDL2; then
+            -I"${SDL3_PATH}/include" -L"${SDL3_PATH}/lib" \
+            -I"${SDL3_IMAGE_PATH}/include" -L"${SDL3_IMAGE_PATH}/lib" \
+            -I"${SDL3_TTF_PATH}/include" -L"${SDL3_TTF_PATH}/lib" \
+            -lSDL3; then
             printf "%sCOMPILATION FAILED%s\n" "${REDON}" "${COLOROFF}"
             exit 1
         fi

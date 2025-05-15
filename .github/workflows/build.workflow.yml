@@ -13,18 +13,18 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      SDL2_VERSION:
-        description: "SDL2 version"
+      SDL3_VERSION:
+        description: "SDL3 version"
         required: false
-        default: "2.32.6"
-      SDL2_IMAGE_VERSION:
-        description: "SDL2_image version"
+        default: "3.2.12"
+      SDL3_IMAGE_VERSION:
+        description: "SDL3_image version"
         required: false
-        default: "2.8.8"
-      SDL2_TTF_VERSION:
-        description: "SDL2_ttf version"
+        default: "3.2.4"
+      SDL3_TTF_VERSION:
+        description: "SDL3_ttf version"
         required: false
-        default: "2.24.0"
+        default: "3.2.2"
 
 jobs:
   build:
@@ -38,9 +38,9 @@ jobs:
       - name: Install SDL dependencies
         uses: HandcrankEngine/install-sdl-packages@v0.1.2
         with:
-          SDL2_VERSION: ${{ inputs.SDL2_VERSION || '2.32.6' }}
-          SDL2_IMAGE_VERSION: ${{ inputs.SDL2_IMAGE_VERSION || '2.8.8' }}
-          SDL2_TTF_VERSION: ${{ inputs.SDL2_TTF_VERSION || '2.24.0' }}
+          SDL3_VERSION: ${{ inputs.SDL3_VERSION || '3.2.12' }}
+          SDL3_IMAGE_VERSION: ${{ inputs.SDL3_IMAGE_VERSION || '3.2.4' }}
+          SDL3_TTF_VERSION: ${{ inputs.SDL3_TTF_VERSION || '3.2.2' }}
 
       - name: Install dependencies
         run: |

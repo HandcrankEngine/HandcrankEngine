@@ -4,9 +4,9 @@ services:
     build:
       context: .
       args:
-        SDL2_VERSION: 2.32.6
-        SDL2_IMAGE_VERSION: 2.8.8
-        SDL2_TTF_VERSION: 2.24.0
+        SDL3_VERSION: 3.2.12
+        SDL3_IMAGE_VERSION: 3.2.4
+        SDL3_TTF_VERSION: 3.2.2
     volumes:
       - ./bin:/app/bin
       - ./examples:/app/examples

@@ -3,7 +3,7 @@
 
 # Handcrank Engine
 
-[![Made With SDL2](https://img.shields.io/badge/Made_With-SDL2-blue)](https://www.libsdl.org/)
+[![Made With SDL3](https://img.shields.io/badge/Made_With-SDL3-blue)](https://www.libsdl.org/)
 [![Build](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/build.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/build.workflow.yml)
 [![Lint](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/lint.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/lint.workflow.yml)
 [![Tests](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/test.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/test.workflow.yml)
@@ -63,9 +63,9 @@ auto main() -> int
 
 ```bash
 brew install cmake
-brew install SDL2
-brew install SDL2_image
-brew install SDL2_ttf
+brew install SDL3
+brew install SDL3_image
+brew install SDL3_ttf
 ```
 
 #### clang-format
