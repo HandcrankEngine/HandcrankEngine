@@ -59,6 +59,8 @@ inline auto operator&(RectAnchor a, RectAnchor b) -> RectAnchor
                                    static_cast<uint8_t>(b));
 }
 
+std::shared_ptr<SDL_Texture> debugRectTexture;
+
 class Game
 {
   private:
@@ -1016,11 +1018,26 @@ void RenderObject::Render(const std::shared_ptr<SDL_Renderer> &renderer)
     {
         auto transformedRect = GetTransformedRect();
 
-        SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 100);
-        SDL_RenderFillRectF(renderer.get(), &transformedRect);
+        if (debugRectTexture == nullptr)
+        {
+            auto *tempSurface = SDL_CreateRGBSurfaceWithFormat(
+                0, 1, 1, 32, SDL_PIXELFORMAT_RGBA32);
 
-        SDL_SetRenderDrawColor(renderer.get(), 0, 255, 0, 255);
-        SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+            if (tempSurface != nullptr)
+            {
+                SDL_FillRect(tempSurface, nullptr,
+                             SDL_MapRGBA(tempSurface->format, 0, 255, 0, 100));
+
+                debugRectTexture = std::shared_ptr<SDL_Texture>(
+                    SDL_CreateTextureFromSurface(renderer.get(), tempSurface),
+                    SDL_DestroyTexture);
+
+                SDL_FreeSurface(tempSurface);
+            }
+        }
+
+        SDL_RenderCopyF(renderer.get(), debugRectTexture.get(), nullptr,
+                        &transformedRect);
     }
 #endif
 }
