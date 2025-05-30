@@ -25,6 +25,8 @@ class SpriteRenderObject : public ImageRenderObject
 
     bool isPlaying = false;
 
+    bool isLooping = true;
+
     double nextTick;
 
   public:
@@ -38,12 +40,22 @@ class SpriteRenderObject : public ImageRenderObject
     ~SpriteRenderObject() = default;
 
     void Play() { isPlaying = true; }
+    void PlayOnce()
+    {
+        frame = 0;
+        isPlaying = true;
+        isLooping = false;
+    }
     void Pause() { isPlaying = false; }
+    void Resume() { isPlaying = true; }
     void Stop()
     {
         frame = 0;
         isPlaying = false;
     }
+    auto IsPlaying() const -> bool { return isPlaying; }
+
+    auto GetFrame() const -> int { return frame; }
 
     void SetFrameSpeed(const double frameSpeed)
     {
@@ -55,6 +67,16 @@ class SpriteRenderObject : public ImageRenderObject
         this->spriteFrames.reset();
 
         this->spriteFrames = spriteFrames;
+    }
+
+    void SetFrameIndex(const int frameIndex)
+    {
+        auto spriteFramesSize = spriteFrames->size();
+
+        if (frameIndex < spriteFramesSize)
+        {
+            frame = frameIndex;
+        }
     }
 
     void CalculateFrames(const float width, const float height,
@@ -109,7 +131,14 @@ class SpriteRenderObject : public ImageRenderObject
 
         if (frame == spriteFramesSize)
         {
-            frame = 0;
+            if (!isLooping)
+            {
+                isPlaying = false;
+            }
+            else
+            {
+                frame = 0;
+            }
         }
 
         nextTick = 0;
