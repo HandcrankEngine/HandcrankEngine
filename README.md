@@ -12,6 +12,13 @@
 
 https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 
+## Social
+
+- Star [this repo on GitHub](https://github.com/HandcrankEngine/HandcrankEngine) for updates
+- Follow me on [Bluesky](https://bsky.app/profile/scottdoxey.com)
+- Join the [Discord](https://discord.gg/nNtFsfd)
+- Follow me on [GitHub](https://github.com/neogeek/)
+
 ## Platforms
 
 | Platform                                  | SDL Version | Tested | Stable |
@@ -20,7 +27,7 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 | [macOS](documentation/Build/macOS.md)     |   2.32.6    |   ✅   |   ❌   |
 | [Web](documentation/Build/Web.md)         |   2.32.6    |   ✅   |   ❌   |
 
-## Quick Start
+## Quick Start Guide
 
 ```cpp
 #include "Handcrank/Handcrank.hpp"
@@ -64,38 +71,59 @@ auto main() -> int
    1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject.md)
    1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject.md)
 
-## Dependencies
+## Getting Started
 
-### macOS
+### Draw Rectangle
 
-#### CMake
+```cpp
+#include "Handcrank/Handcrank.hpp"
+#include "Handcrank/RectRenderObject.hpp"
 
-```bash
-brew install cmake
-brew install SDL2
-brew install SDL2_image
-brew install SDL2_ttf
+using namespace Handcrank;
+
+auto game = std::make_unique<Game>();
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    auto rect = std::make_shared<RectRenderObject>();
+
+    rect->SetRect(0, 0, 250, 250);
+    rect->SetFillColor(255, 0, 0, 255);
+
+    game->AddChildObject(rect);
+
+    return game->Run();
+}
 ```
 
-#### clang-format
+### Draw Image
 
-```bash
-brew install llvm
-ln -s "$(brew --prefix llvm)/bin/clang-format" "/usr/local/bin/clang-format"
+```cpp
+#include "../images/sdl_logo.h"
+
+#include "Handcrank/Handcrank.hpp"
+#include "Handcrank/ImageRenderObject.hpp"
+
+using namespace Handcrank;
+
+auto game = std::make_unique<Game>();
+
+auto main() -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    auto image = std::make_shared<ImageRenderObject>();
+
+    image->LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
+                         images_sdl_logo_png_len);
+
+    game->AddChildObject(image);
+
+    return game->Run();
+}
 ```
-
-#### clang-tidy
-
-```bash
-brew install llvm
-ln -s "$(brew --prefix llvm)/bin/clang-tidy" "/usr/local/bin/clang-tidy"
-```
-
-### Windows
-
-#### CMake
-
-Via installer <https://cmake.org/download/>
 
 ## Build
 
@@ -129,36 +157,24 @@ cmake --build . --config Release
 ./bin/build.sh
 ```
 
-## Documentation
+## Demos
 
-```bash
-doxygen
-```
+| Name      | Link                                           | Source Included? |
+| --------- | ---------------------------------------------- | :--------------: |
+| Template  | <https://github.com/HandcrankEngine/template>  |        ✅        |
+| Pong Demo | <https://github.com/HandcrankEngine/pong-demo> |        ✅        |
 
-## Format
+## Contributing
 
-```bash
-clang-format -i src/*.cpp include/**/*.hpp tests/**/*.cpp
-```
+Be sure to review the [Contributing Guidelines](./CONTRIBUTING.md) before logging an issue or making a pull request.
 
-## Tidy
+## Community Roadmap
 
-```bash
-clang-tidy include/**/*.hpp
-```
+The goal of this project is to keep the features it offers to a minimum, allowing you, the developer, to forge your own path. If you have feature requests or bugs, please create an issue and tag them with the appropriate tag. If an issue already exists, vote for it with 👍.
 
-## Editor Setup
+- [Feature Requests](https://github.com/HandcrankEngine/HandcrankEngine/labels/enhancement)
+- [Bugs](https://github.com/HandcrankEngine/HandcrankEngine/labels/bug)
 
-> Note: Make sure to to run `cmake ..` and `cmake --build .` to generate the `compile_commands.json` and other necessary header files.
+## License
 
-### VS Code
-
-Install recommended extensions found in `.vscode/extensions.json`.
-
-### zed
-
-Install plugins recommended by the editor when opening cpp files.
-
-### Sublime Text
-
-Via Package Control, install `LSP` and `LSP-clangd`.
+[The MIT License (MIT)](./LICENSE)
