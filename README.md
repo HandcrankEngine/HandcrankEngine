@@ -12,6 +12,14 @@
 
 https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 
+## Platforms
+
+| Platform                                  | SDL Version | Tested | Stable |
+| ----------------------------------------- | :---------: | :----: | :----: |
+| [Windows](documentation/Build/Windows.md) |   2.32.6    |   ✅   |   ❌   |
+| [macOS](documentation/Build/macOS.md)     |   2.32.6    |   ✅   |   ❌   |
+| [Web](documentation/Build/Web.md)         |   2.32.6    |   ✅   |   ❌   |
+
 ## Quick Start
 
 ```cpp
