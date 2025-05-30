@@ -238,8 +238,9 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     float z;
 
     inline RenderObject();
-    explicit RenderObject(float x, float y) { SetPosition(x, y); }
-    explicit RenderObject(float x, float y, float w, float h)
+    explicit RenderObject(const float x, const float y) { SetPosition(x, y); }
+    explicit RenderObject(const float x, const float y, const float w,
+                          const float h)
     {
         SetRect(x, y, w, h);
     }
@@ -348,7 +349,8 @@ void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 }
 
 template <typename T>
-auto Game::GetChildrenByType(bool nested) -> std::vector<std::shared_ptr<T>>
+auto Game::GetChildrenByType(const bool nested)
+    -> std::vector<std::shared_ptr<T>>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -375,7 +377,7 @@ auto Game::GetChildrenByType(bool nested) -> std::vector<std::shared_ptr<T>>
 }
 
 template <typename T>
-auto Game::GetChildByType(bool nested) -> std::shared_ptr<T>
+auto Game::GetChildByType(const bool nested) -> std::shared_ptr<T>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -483,7 +485,7 @@ auto Game::GetFrameRate() const -> double { return frameRate; }
 
 auto Game::GetFPS() const -> double { return fps; }
 
-void Game::SetFrameRate(double frameRate)
+void Game::SetFrameRate(const double frameRate)
 {
     this->frameRate = frameRate;
 
@@ -708,7 +710,7 @@ void Game::DestroyChildObjects()
 void Game::Quit() { quit = true; }
 
 #ifdef HANDCRANK_DEBUG
-void Game::ToggleDebug(bool state) { debug = state; }
+void Game::ToggleDebug(const bool state) { debug = state; }
 void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
 #endif
@@ -770,7 +772,7 @@ void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 }
 
 template <typename T>
-auto RenderObject::GetChildrenByType(bool nested)
+auto RenderObject::GetChildrenByType(const bool nested)
     -> std::vector<std::shared_ptr<T>>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
@@ -798,7 +800,7 @@ auto RenderObject::GetChildrenByType(bool nested)
 }
 
 template <typename T>
-auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
+auto RenderObject::GetChildByType(const bool nested) -> std::shared_ptr<T>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -973,11 +975,11 @@ void RenderObject::SetDimension(const float w, const float h)
 }
 
 auto RenderObject::GetAnchor() const -> RectAnchor { return anchor; }
-void RenderObject::SetAnchor(RectAnchor anchor) { this->anchor = anchor; }
+void RenderObject::SetAnchor(const RectAnchor anchor) { this->anchor = anchor; }
 
 auto RenderObject::GetScale() const -> float { return scale; }
 
-void RenderObject::SetScale(float scale) { this->scale = scale; }
+void RenderObject::SetScale(const float scale) { this->scale = scale; }
 
 auto RenderObject::GetTransformedRect() -> SDL_FRect
 {

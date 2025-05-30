@@ -29,8 +29,10 @@ class SpriteRenderObject : public ImageRenderObject
 
   public:
     explicit SpriteRenderObject() = default;
-    explicit SpriteRenderObject(float x, float y) : ImageRenderObject(x, y) {};
-    explicit SpriteRenderObject(float x, float y, float w, float h)
+    explicit SpriteRenderObject(const float x, const float y)
+        : ImageRenderObject(x, y) {};
+    explicit SpriteRenderObject(const float x, const float y, const float w,
+                                const float h)
         : ImageRenderObject(x, y, w, h) {};
 
     ~SpriteRenderObject() = default;
@@ -55,8 +57,9 @@ class SpriteRenderObject : public ImageRenderObject
         this->spriteFrames = spriteFrames;
     }
 
-    void CalculateFrames(float width, float height, int columns, int rows,
-                         Vector2 padding, Vector2 offset)
+    void CalculateFrames(const float width, const float height,
+                         const int columns, const int rows,
+                         const Vector2 &padding, const Vector2 &offset)
     {
         spriteFrames->clear();
 

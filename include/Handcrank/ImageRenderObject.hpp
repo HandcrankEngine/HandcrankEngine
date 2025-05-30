@@ -124,8 +124,10 @@ class ImageRenderObject : public RenderObject
 
   public:
     explicit ImageRenderObject() = default;
-    explicit ImageRenderObject(float x, float y) : RenderObject(x, y) {};
-    explicit ImageRenderObject(float x, float y, float w, float h)
+    explicit ImageRenderObject(const float x, const float y)
+        : RenderObject(x, y) {};
+    explicit ImageRenderObject(const float x, const float y, const float w,
+                               const float h)
         : RenderObject(x, y, w, h) {};
 
     ~ImageRenderObject() = default;

@@ -39,8 +39,8 @@ class Animator : public RenderObject
 
   public:
     explicit Animator() = default;
-    explicit Animator(Mode mode) { this->mode = mode; }
-    explicit Animator(Mode mode, bool looping)
+    explicit Animator(const Mode mode) { this->mode = mode; }
+    explicit Animator(const Mode mode, const bool looping)
     {
         this->mode = mode;
         this->looping = looping;

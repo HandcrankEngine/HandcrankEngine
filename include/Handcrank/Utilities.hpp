@@ -45,29 +45,29 @@ inline auto TryParseInt(const std::string &value) -> bool
     return false;
 }
 
-inline auto LeftPad(const std::string &content, const char pad, int length)
-    -> std::string
+inline auto LeftPad(const std::string &content, const char pad,
+                    const int length) -> std::string
 {
     return std::string(length - content.size(), pad) + content;
 }
 
-inline auto RightPad(const std::string &content, const char pad, int length)
-    -> std::string
+inline auto RightPad(const std::string &content, const char pad,
+                     const int length) -> std::string
 {
     return content + std::string(length - content.size(), pad);
 }
 
-inline auto Lerp(float a, float b, float t) -> float
+inline auto Lerp(const float a, const float b, const float t) -> float
 {
     return ((1 - t) * a) + (b * t);
 }
 
-inline auto InverseLerp(float a, float b, float v) -> float
+inline auto InverseLerp(const float a, const float b, const float v) -> float
 {
     return std::clamp(((v - a) / (b - a)), 0.0F, 1.0F);
 }
 
-inline auto RandomNumberRange(int min, int max) -> int
+inline auto RandomNumberRange(const int min, const int max) -> int
 {
     return (rand() % (max - min + 1)) + min;
 }

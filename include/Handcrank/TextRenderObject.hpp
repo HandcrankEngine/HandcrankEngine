@@ -98,14 +98,15 @@ class TextRenderObject : public RenderObject
         }
     };
 
-    explicit TextRenderObject(float x, float y) : RenderObject(x, y)
+    explicit TextRenderObject(const float x, const float y) : RenderObject(x, y)
     {
         if (TTF_WasInit() == 0)
         {
             TTF_Init();
         }
     };
-    explicit TextRenderObject(float x, float y, float w, float h)
+    explicit TextRenderObject(const float x, const float y, const float w,
+                              const float h)
         : RenderObject(x, y, w, h)
     {
         if (TTF_WasInit() == 0)
