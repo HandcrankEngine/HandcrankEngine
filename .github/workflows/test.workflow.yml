@@ -47,10 +47,5 @@ jobs:
           SDL2_TTF_VERSION: ${{ inputs.SDL2_TTF_VERSION || '2.24.0' }}
           SDL2_MIXER_VERSION: ${{ inputs.SDL2_MIXER_VERSION || '2.8.1' }}
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y g++
-
       - name: Run tests
         run: ./bin/run-tests.sh
