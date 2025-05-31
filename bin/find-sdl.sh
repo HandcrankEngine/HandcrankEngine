@@ -26,3 +26,12 @@ echo "SDL2_image found at ${SDL2_IMAGE_PATH}"
 [ ! -d "${SDL2_TTF_PATH}" ] && echo "SDL2_ttf not found!" && exit 1
 
 echo "SDL2_ttf found at ${SDL2_TTF_PATH}"
+
+[[ ! -d "${SDL2_MIXER_PATH}" && -d "/opt/homebrew/Cellar/sdl2_mixer" ]] &&
+    export SDL2_MIXER_PATH=$(find /opt/homebrew/Cellar/sdl2_mixer -name "2.*" -type d | head -n 1)
+[[ ! -d "${SDL2_MIXER_PATH}" && -d "/tmp/.sdl/" ]] &&
+    export SDL2_MIXER_PATH=$(find /tmp/.sdl/ -name "SDL2_mixer-2.*" -type d | head -n 1)
+
+[ ! -d "${SDL2_MIXER_PATH}" ] && echo "SDL2_mixer not found!" && exit 1
+
+echo "SDL2_mixer found at ${SDL2_MIXER_PATH}"
