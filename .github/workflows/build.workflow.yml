@@ -25,6 +25,10 @@ on:
         description: "SDL2_ttf version"
         required: false
         default: "2.24.0"
+      SDL2_MIXER_VERSION:
+        description: "SDL2_mixer version"
+        required: false
+        default: "2.8.1"
 
 jobs:
   build:
@@ -36,11 +40,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install SDL dependencies
-        uses: HandcrankEngine/install-sdl-packages@v0.1.2
+        uses: HandcrankEngine/install-sdl-packages@v0.2.0
         with:
           SDL2_VERSION: ${{ inputs.SDL2_VERSION || '2.32.6' }}
           SDL2_IMAGE_VERSION: ${{ inputs.SDL2_IMAGE_VERSION || '2.8.8' }}
           SDL2_TTF_VERSION: ${{ inputs.SDL2_TTF_VERSION || '2.24.0' }}
+          SDL2_MIXER_VERSION: ${{ inputs.SDL2_MIXER_VERSION || '2.8.1' }}
 
       - name: Install dependencies
         run: |
