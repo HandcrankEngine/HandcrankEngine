@@ -17,6 +17,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 -I${SDL2_PATH}/include/SDL2
 -I${SDL2_IMAGE_PATH}/include/SDL2
 -I${SDL2_TTF_PATH}/include/SDL2
+-I${SDL2_MIXER_PATH}/include/SDL2
 EOF
 
 )
