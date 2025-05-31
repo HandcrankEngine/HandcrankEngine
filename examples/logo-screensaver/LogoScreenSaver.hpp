@@ -25,8 +25,8 @@ class LogoScreenSaver : public ImageRenderObject
 
         if (texture == nullptr)
         {
-            LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
-                          images_sdl_logo_png_len);
+            LoadTexture(game->GetRenderer(), images_sdl_logo_png,
+                        images_sdl_logo_png_len);
         }
 
         if (rect->x == 0 && rect->y == 0)

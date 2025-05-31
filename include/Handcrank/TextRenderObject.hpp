@@ -18,12 +18,7 @@ namespace Handcrank
  *
  * @param path File path to font file.
  * @param ptSize The size of the font.
- *
- * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load
- * fonts in a release build.
  */
-[[deprecated("DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load fonts in a "
-             "release build.")]]
 inline auto SDL_LoadFont(const char *path, const int ptSize = 24)
     -> std::shared_ptr<TTF_Font>
 {
@@ -49,8 +44,8 @@ inline auto SDL_LoadFont(const char *path, const int ptSize = 24)
  * @param size The buffer size, in bytes.
  * @param ptSize The size of the font.
  */
-inline auto SDL_LoadFontRW(const void *mem, const int size,
-                           const int ptSize = 24) -> std::shared_ptr<TTF_Font>
+inline auto SDL_LoadFont(const void *mem, const int size, const int ptSize = 24)
+    -> std::shared_ptr<TTF_Font>
 {
     if (TTF_WasInit() == 0)
     {
@@ -130,7 +125,7 @@ class TextRenderObject : public RenderObject
      * @param path File path to font file.
      * @param ptSize The size of the font.
      *
-     * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFontRW to load
+     * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFont to load
      * fonts in a release build.
      */
     void LoadFont(const char *path, const int ptSize = 24)
@@ -147,7 +142,7 @@ class TextRenderObject : public RenderObject
      */
     void LoadFontRW(const void *mem, const int size, const int ptSize = 24)
     {
-        font = SDL_LoadFontRW(mem, size, ptSize);
+        font = SDL_LoadFont(mem, size, ptSize);
     }
 
     /**

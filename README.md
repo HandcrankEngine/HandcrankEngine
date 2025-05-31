@@ -116,7 +116,7 @@ auto main() -> int
 
     auto image = std::make_shared<ImageRenderObject>();
 
-    image->LoadTextureRW(game->GetRenderer(), images_sdl_logo_png,
+    image->LoadTexture(game->GetRenderer(), images_sdl_logo_png,
                          images_sdl_logo_png_len);
 
     game->AddChildObject(image);

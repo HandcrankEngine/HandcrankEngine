@@ -49,9 +49,9 @@ class Spawner : public RenderObject
         {
             auto logoScreenSaver = std::make_shared<LogoScreenSaver>();
 
-            logoScreenSaver->LoadTextureRW(game->GetRenderer(),
-                                           images_sdl_logo_png,
-                                           images_sdl_logo_png_len);
+            logoScreenSaver->LoadTexture(game->GetRenderer(),
+                                         images_sdl_logo_png,
+                                         images_sdl_logo_png_len);
 
             logoScreenSaver->SetPosition(game->mousePosition->x,
                                          game->mousePosition->y);

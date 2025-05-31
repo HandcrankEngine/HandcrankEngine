@@ -17,7 +17,7 @@ class Character : public SpriteRenderObject
   public:
     void Start() override
     {
-        LoadTextureRW(game->GetRenderer(), images_character_idle_png,
+        LoadTexture(game->GetRenderer(), images_character_idle_png,
                       images_character_idle_png_len);
 
         SetFrameSpeed(0.1);

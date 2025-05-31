@@ -23,13 +23,8 @@ std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache =
  *
  * @param renderer A structure representing rendering state.
  * @param path File path to texture file.
- *
- * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in a
- * release build.
  */
 
-[[deprecated("DEVELOPMENT USE ONLY! Use SDL_LoadTextureRW to load textures in "
-             "a release build.")]]
 inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
                             const char *path) -> std::shared_ptr<SDL_Texture>
 {
@@ -68,8 +63,8 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
  * @param mem A pointer to a read-only buffer.
  * @param size The buffer size, in bytes.
  */
-inline auto SDL_LoadTextureRW(const std::shared_ptr<SDL_Renderer> &renderer,
-                              const void *mem, const int size)
+inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
+                            const void *mem, const int size)
     -> std::shared_ptr<SDL_Texture>
 {
     auto hash = MemHash(mem, size);
@@ -151,7 +146,7 @@ class ImageRenderObject : public RenderObject
      * @param renderer A structure representing rendering state.
      * @param path File path to texture file.
      *
-     * @deprecated DEVELOPMENT USE ONLY! Use LoadTextureRW to load textures in a
+     * @deprecated DEVELOPMENT USE ONLY! Use LoadTexture to load textures in a
      * release build.
      */
     void LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
@@ -170,11 +165,11 @@ class ImageRenderObject : public RenderObject
      * @param mem A pointer to a read-only buffer.
      * @param size The buffer size, in bytes.
      */
-    void LoadTextureRW(const std::shared_ptr<SDL_Renderer> &renderer,
-                       const void *mem, const int size)
+    void LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
+                     const void *mem, const int size)
     {
         texture.reset();
-        texture = SDL_LoadTextureRW(renderer, mem, size);
+        texture = SDL_LoadTexture(renderer, mem, size);
 
         UpdateRectSizeFromTexture();
     }
