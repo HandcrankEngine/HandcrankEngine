@@ -3,6 +3,7 @@ FROM ubuntu:latest
 ARG SDL2_VERSION=2.32.6
 ARG SDL2_IMAGE_VERSION=2.8.8
 ARG SDL2_TTF_VERSION=2.24.0
+ARG SDL2_MIXER_VERSION=2.8.1
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -45,6 +46,16 @@ RUN mkdir -p /tmp/.sdl && \
     tar -xzvf SDL2_ttf-${SDL2_TTF_VERSION}.tar.gz && \
     cd SDL2_ttf-${SDL2_TTF_VERSION} && \
     ./configure --prefix=/tmp/.sdl/SDL2_ttf-${SDL2_TTF_VERSION} && \
+    make && \
+    make install
+
+# Install SDL2_mixer
+RUN mkdir -p /tmp/.sdl && \
+    cd /tmp/.sdl && \
+    curl -LO https://github.com/libsdl-org/SDL_mixer/releases/download/release-${SDL2_MIXER_VERSION}/SDL2_mixer-${SDL2_MIXER_VERSION}.tar.gz && \
+    tar -xzvf SDL2_mixer-${SDL2_MIXER_VERSION}.tar.gz && \
+    cd SDL2_mixer-${SDL2_MIXER_VERSION} && \
+    ./configure --prefix=/tmp/.sdl/SDL2_mixer-${SDL2_MIXER_VERSION} && \
     make && \
     make install
 
