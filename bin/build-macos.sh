@@ -44,7 +44,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
         -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
         -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
         -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
-        -lSDL2 -lSDL2_image -lSDL2_ttf \
+        -I"${SDL2_MIXER_PATH}/include/SDL2" -L"${SDL2_MIXER_PATH}/lib" \
+        -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer \
         -rpath @loader_path/../Frameworks
 
     mkdir -p "${MACOS}"
@@ -60,6 +61,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     cp "${SDL2_PATH}/lib/libSDL2-2.0.0.dylib" "${FRAMEWORKS}"
     cp "${SDL2_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib" "${FRAMEWORKS}"
     cp "${SDL2_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL2_MIXER_PATH}/lib/libSDL2_mixer-2.0.0.dylib" "${FRAMEWORKS}"
 
     find_dependencies() {
         local LIBRARY="${1}"
@@ -74,13 +76,16 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     find_dependencies "${SDL2_PATH}/lib/libSDL2-2.0.0.dylib"
     find_dependencies "${SDL2_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib"
     find_dependencies "${SDL2_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib"
+    find_dependencies "${SDL2_MIXER_PATH}/lib/libSDL2_mixer-2.0.0.dylib"
 
     install_name_tool -change /opt/homebrew/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${EXECUTABLE}"
     install_name_tool -change /opt/homebrew/opt/sdl2_image/lib/libSDL2_image-2.0.0.dylib @executable_path/../Frameworks/libSDL2_image-2.0.0.dylib "${EXECUTABLE}"
     install_name_tool -change /opt/homebrew/opt/sdl2_ttf/lib/libSDL2_ttf-2.0.0.dylib @executable_path/../Frameworks/libSDL2_ttf-2.0.0.dylib "${EXECUTABLE}"
+    install_name_tool -change /opt/homebrew/opt/sdl2_mixer/lib/libSDL2_mixer-2.0.0.dylib @executable_path/../Frameworks/libSDL2_mixer-2.0.0.dylib "${EXECUTABLE}"
 
     install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${FRAMEWORKS}/libSDL2_image-2.0.0.dylib"
     install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${FRAMEWORKS}/libSDL2_ttf-2.0.0.dylib"
+    install_name_tool -change @rpath/libSDL2.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${FRAMEWORKS}/libSDL2_mixer-2.0.0.dylib"
 
     cat >"${CONTENTS}/Info.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>

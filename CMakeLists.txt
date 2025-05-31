@@ -67,6 +67,7 @@ set(SDL2TTF_INSTALL OFF)
 INSTALL_SDL_LIBRARY("sdl2" "2.32.6" "SDL2" "https://github.com/libsdl-org/SDL.git")
 INSTALL_SDL_LIBRARY("sdl2_image" "2.8.8" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
 INSTALL_SDL_LIBRARY("sdl2_ttf" "2.24.0" "SDL2_ttf" "https://github.com/libsdl-org/SDL_ttf.git")
+INSTALL_SDL_LIBRARY("sdl2_mixer" "2.8.1" "SDL2_mixer" "https://github.com/libsdl-org/SDL_mixer.git")
 
 include_directories("fonts")
 include_directories("images")
@@ -86,6 +87,7 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIBRARY})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_TTF_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_MIXER_LIBRARY})
 
 if(APPLE AND CMAKE_BUILD_TYPE MATCHES "[Rr]elease")
     set_target_properties(${PROJECT_NAME} PROPERTIES
