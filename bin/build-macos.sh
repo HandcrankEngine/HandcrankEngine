@@ -41,10 +41,10 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     g++ -std=c++17 -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET} \
         -o "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}" src/*.cpp -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
-        -I"${SDL2_PATH}/include/SDL2" -L"${SDL2_PATH}/lib" \
-        -I"${SDL2_IMAGE_PATH}/include/SDL2" -L"${SDL2_IMAGE_PATH}/lib" \
-        -I"${SDL2_TTF_PATH}/include/SDL2" -L"${SDL2_TTF_PATH}/lib" \
-        -I"${SDL2_MIXER_PATH}/include/SDL2" -L"${SDL2_MIXER_PATH}/lib" \
+        -I"${SDL_PATH}/include/SDL2" -L"${SDL_PATH}/lib" \
+        -I"${SDL_IMAGE_PATH}/include/SDL2" -L"${SDL_IMAGE_PATH}/lib" \
+        -I"${SDL_TTF_PATH}/include/SDL2" -L"${SDL_TTF_PATH}/lib" \
+        -I"${SDL_MIXER_PATH}/include/SDL2" -L"${SDL_MIXER_PATH}/lib" \
         -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer \
         -rpath @loader_path/../Frameworks
 
@@ -58,10 +58,10 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     cp "resources/${MACOSX_BUNDLE_ICON_FILE}" "${RESOURCES}"
 
-    cp "${SDL2_PATH}/lib/libSDL2-2.0.0.dylib" "${FRAMEWORKS}"
-    cp "${SDL2_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib" "${FRAMEWORKS}"
-    cp "${SDL2_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib" "${FRAMEWORKS}"
-    cp "${SDL2_MIXER_PATH}/lib/libSDL2_mixer-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL_PATH}/lib/libSDL2-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib" "${FRAMEWORKS}"
+    cp "${SDL_MIXER_PATH}/lib/libSDL2_mixer-2.0.0.dylib" "${FRAMEWORKS}"
 
     find_dependencies() {
         local LIBRARY="${1}"
@@ -73,10 +73,10 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
         done
     }
 
-    find_dependencies "${SDL2_PATH}/lib/libSDL2-2.0.0.dylib"
-    find_dependencies "${SDL2_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib"
-    find_dependencies "${SDL2_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib"
-    find_dependencies "${SDL2_MIXER_PATH}/lib/libSDL2_mixer-2.0.0.dylib"
+    find_dependencies "${SDL_PATH}/lib/libSDL2-2.0.0.dylib"
+    find_dependencies "${SDL_IMAGE_PATH}/lib/libSDL2_image-2.0.0.dylib"
+    find_dependencies "${SDL_TTF_PATH}/lib/libSDL2_ttf-2.0.0.dylib"
+    find_dependencies "${SDL_MIXER_PATH}/lib/libSDL2_mixer-2.0.0.dylib"
 
     install_name_tool -change /opt/homebrew/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Frameworks/libSDL2-2.0.0.dylib "${EXECUTABLE}"
     install_name_tool -change /opt/homebrew/opt/sdl2_image/lib/libSDL2_image-2.0.0.dylib @executable_path/../Frameworks/libSDL2_image-2.0.0.dylib "${EXECUTABLE}"
