@@ -13,20 +13,20 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      SDL2_VERSION:
+      SDL_VERSION:
         description: "SDL2 version"
         required: false
-        default: "2.32.6"
-      SDL2_IMAGE_VERSION:
-        description: "SDL2_image version"
+        default: "2.32.8"
+      SDL_IMAGE_VERSION:
+        description: "SDL_image version"
         required: false
         default: "2.8.8"
-      SDL2_TTF_VERSION:
-        description: "SDL2_ttf version"
+      SDL_TTF_VERSION:
+        description: "SDL_ttf version"
         required: false
         default: "2.24.0"
-      SDL2_MIXER_VERSION:
-        description: "SDL2_mixer version"
+      SDL_MIXER_VERSION:
+        description: "SDL_mixer version"
         required: false
         default: "2.8.1"
 
@@ -40,12 +40,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install SDL dependencies
-        uses: HandcrankEngine/install-sdl-packages@v0.2.0
+        uses: HandcrankEngine/install-sdl-packages@v0.3.0
         with:
-          SDL2_VERSION: ${{ inputs.SDL2_VERSION || '2.32.6' }}
-          SDL2_IMAGE_VERSION: ${{ inputs.SDL2_IMAGE_VERSION || '2.8.8' }}
-          SDL2_TTF_VERSION: ${{ inputs.SDL2_TTF_VERSION || '2.24.0' }}
-          SDL2_MIXER_VERSION: ${{ inputs.SDL2_MIXER_VERSION || '2.8.1' }}
+          SDL_VERSION: ${{ inputs.SDL_VERSION || '2.32.8' }}
+          SDL_IMAGE_VERSION: ${{ inputs.SDL_IMAGE_VERSION || '2.8.8' }}
+          SDL_TTF_VERSION: ${{ inputs.SDL_TTF_VERSION || '2.24.0' }}
+          SDL_MIXER_VERSION: ${{ inputs.SDL_MIXER_VERSION || '2.8.1' }}
 
       - name: Run tests
         run: ./bin/run-tests.sh
