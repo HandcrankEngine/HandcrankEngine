@@ -71,6 +71,10 @@ auto main() -> int
    1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject.md)
    1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject.md)
 
+1. [Testing](/documentation/Testing)
+
+   1. [Valgrind](/documentation/Testing/Valgrind.md)
+
 ## Getting Started
 
 ### Draw Rectangle
