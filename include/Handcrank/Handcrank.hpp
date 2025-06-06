@@ -623,12 +623,9 @@ void Game::Update()
     {
         auto *child = iter.get();
 
-        if (child != nullptr)
+        if (child != nullptr && child->IsEnabled())
         {
-            if (child->IsEnabled())
-            {
-                child->InternalUpdate(deltaTime);
-            }
+            child->InternalUpdate(deltaTime);
         }
     }
 }
