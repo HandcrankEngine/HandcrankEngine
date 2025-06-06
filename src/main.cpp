@@ -20,7 +20,7 @@ class InputManager : public RenderObject
         {
             game->Quit();
         }
-        else if (game->IsKeyPressed(SDLK_d))
+        else if (game->IsKeyPressed(SDLK_D))
         {
             game->ToggleDebug();
         }
