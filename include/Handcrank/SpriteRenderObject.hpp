@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "ImageRenderObject.hpp"
 #include "Vector2.hpp"
@@ -16,7 +16,7 @@ const double DEFAULT_FRAME_SPEED = 0.1;
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
-    std::vector<SDL_Rect> spriteFrames = std::vector<SDL_Rect>();
+    std::vector<SDL_FRect> spriteFrames = std::vector<SDL_FRect>();
 
     int frame = 0;
 
@@ -61,7 +61,7 @@ class SpriteRenderObject : public ImageRenderObject
         this->frameSpeed = frameSpeed;
     }
 
-    void SetFrames(const std::vector<SDL_Rect> &spriteFrames)
+    void SetFrames(const std::vector<SDL_FRect> &spriteFrames)
     {
         this->spriteFrames = spriteFrames;
     }
@@ -93,18 +93,18 @@ class SpriteRenderObject : public ImageRenderObject
             for (auto y = 0; y < rows; y++)
             {
                 AddFrame(
-                    {static_cast<int>((offset.x + x) * (cellWidth + padding.x)),
-                     static_cast<int>((offset.y + y) *
+                    {static_cast<float>((offset.x + x) * (cellWidth + padding.x)),
+                     static_cast<float>((offset.y + y) *
                                       (cellHeight + padding.y)),
-                     static_cast<int>(cellWidth),
-                     static_cast<int>(cellHeight)});
+                     static_cast<float>(cellWidth),
+                     static_cast<float>(cellHeight)});
             }
         }
 
         CalculateRect();
     }
 
-    void AddFrame(const SDL_Rect &rect) { spriteFrames.push_back(rect); }
+    void AddFrame(const SDL_FRect &rect) { spriteFrames.push_back(rect); }
 
     void ClearFrames() { spriteFrames.clear(); }
 
