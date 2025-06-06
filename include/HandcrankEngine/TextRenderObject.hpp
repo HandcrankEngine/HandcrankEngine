@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "FontCache.hpp"
 #include "HandcrankEngine.hpp"
@@ -45,7 +45,7 @@ class TextRenderObject : public RenderObject
 
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
         }
     };
 
@@ -113,11 +113,12 @@ class TextRenderObject : public RenderObject
 
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
             textSurface = nullptr;
         }
 
-        textSurface = TTF_RenderText_Blended(font, this->text, color);
+        textSurface =
+            TTF_RenderText_Blended(font, this->text, strlen(this->text), color);
 
         if (textSurface == nullptr)
         {
@@ -163,12 +164,12 @@ class TextRenderObject : public RenderObject
 
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
             textSurface = nullptr;
         }
 
-        textSurface =
-            TTF_RenderText_Blended_Wrapped(font, this->text, color, rect.w);
+        textSurface = TTF_RenderText_Blended_Wrapped(
+            font, this->text, strlen(this->text), color, rect.w);
 
         if (textSurface == nullptr)
         {
@@ -214,7 +215,7 @@ class TextRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyF(renderer, textTexture, nullptr, &transformedRect);
+        SDL_RenderTexture(renderer, textTexture, nullptr, &transformedRect);
 
         RenderObject::Render(renderer);
     }
