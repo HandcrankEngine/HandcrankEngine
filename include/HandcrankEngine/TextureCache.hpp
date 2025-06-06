@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include "Utilities.hpp"
 
@@ -54,7 +54,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
 
     auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
@@ -83,10 +83,9 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
         return textureCache.find(hash)->second;
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
-    auto *surface =
-        IMG_isSVG(rw) == SDL_TRUE ? IMG_LoadSVG_RW(rw) : IMG_Load_RW(rw, 1);
+    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, 1);
 
     if (surface == nullptr)
     {
@@ -95,7 +94,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
 
     auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
