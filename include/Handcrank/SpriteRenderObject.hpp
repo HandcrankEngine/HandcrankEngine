@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "ImageRenderObject.hpp"
 #include "Vector2.hpp"
@@ -16,7 +16,7 @@ const double DEFAULT_FRAME_SPEED = 0.1;
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
-    std::vector<SDL_Rect> spriteFrames = std::vector<SDL_Rect>();
+    std::vector<SDL_FRect> spriteFrames = std::vector<SDL_FRect>();
 
     int frame = 0;
 
@@ -61,7 +61,7 @@ class SpriteRenderObject : public ImageRenderObject
         this->frameSpeed = frameSpeed;
     }
 
-    void SetFrames(const std::vector<SDL_Rect> &spriteFrames)
+    void SetFrames(const std::vector<SDL_FRect> &spriteFrames)
     {
         this->spriteFrames = spriteFrames;
     }
@@ -92,7 +92,7 @@ class SpriteRenderObject : public ImageRenderObject
         {
             for (auto y = 0; y < rows; y++)
             {
-                SDL_Rect rect;
+                SDL_FRect rect;
 
                 rect.x =
                     static_cast<int>((offset.x + x) * (cellWidth + padding.x));
