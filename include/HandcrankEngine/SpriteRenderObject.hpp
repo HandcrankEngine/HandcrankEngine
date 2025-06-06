@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "ImageRenderObject.hpp"
 #include "Vector2.hpp"
@@ -16,7 +16,7 @@ const double DEFAULT_FRAME_SPEED = 0.1;
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
-    std::vector<SDL_Rect> spriteFrames;
+    std::vector<SDL_FRect> spriteFrames;
 
     size_t frame = 0;
 
@@ -54,7 +54,7 @@ class SpriteRenderObject : public ImageRenderObject
 
     void SetFrameSpeed(double frameSpeed) { this->frameSpeed = frameSpeed; }
 
-    void SetFrames(const std::vector<SDL_Rect> &spriteFrames)
+    void SetFrames(const std::vector<SDL_FRect> &spriteFrames)
     {
         this->spriteFrames = spriteFrames;
     }
@@ -89,7 +89,7 @@ class SpriteRenderObject : public ImageRenderObject
         CalculateRect();
     }
 
-    void AddFrame(const SDL_Rect &rect) { spriteFrames.emplace_back(rect); }
+    void AddFrame(const SDL_FRect &rect) { spriteFrames.emplace_back(rect); }
 
     void ClearFrames() { spriteFrames.clear(); }
 
