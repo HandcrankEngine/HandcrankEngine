@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include "Handcrank.hpp"
 #include "Utilities.hpp"
@@ -44,7 +44,7 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
         SDL_CreateTextureFromSurface(renderer.get(), surface),
         SDL_DestroyTexture);
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
@@ -74,10 +74,9 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
         return textureCache.find(hash)->second;
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
-    auto *surface =
-        IMG_isSVG(rw) == SDL_TRUE ? IMG_LoadSVG_RW(rw) : IMG_Load_RW(rw, 1);
+    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, true);
 
     if (surface == nullptr)
     {
@@ -88,7 +87,7 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
         SDL_CreateTextureFromSurface(renderer.get(), surface),
         SDL_DestroyTexture);
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
@@ -105,7 +104,7 @@ class ImageRenderObject : public RenderObject
   protected:
     std::shared_ptr<SDL_Texture> texture;
 
-    std::shared_ptr<SDL_Rect> srcRect = std::make_shared<SDL_Rect>();
+    std::shared_ptr<SDL_FRect> srcRect = std::make_shared<SDL_FRect>();
 
     bool srcRectSet = false;
 
@@ -116,7 +115,7 @@ class ImageRenderObject : public RenderObject
 
     int alpha = MAX_ALPHA;
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
 
   public:
     explicit ImageRenderObject() = default;
@@ -192,17 +191,16 @@ class ImageRenderObject : public RenderObject
 
     void UpdateRectSizeFromTexture() const
     {
-        int textureWidth;
-        int textureHeight;
+        float textureWidth;
+        float textureHeight;
 
-        SDL_QueryTexture(texture.get(), nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture.get(), &textureWidth, &textureHeight);
 
         rect->w = textureWidth;
         rect->h = textureHeight;
     }
 
-    void SetSrcRect(const SDL_Rect srcRect)
+    void SetSrcRect(const SDL_FRect srcRect)
     {
         this->srcRect->x = srcRect.x;
         this->srcRect->y = srcRect.y;
@@ -222,7 +220,7 @@ class ImageRenderObject : public RenderObject
         srcRectSet = true;
     }
 
-    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_FlipMode flip) { this->flip = flip; }
 
     void SetTintColor(const SDL_Color tintColor)
     {
@@ -266,9 +264,9 @@ class ImageRenderObject : public RenderObject
 
         SDL_SetTextureAlphaMod(texture.get(), alpha);
 
-        SDL_RenderCopyExF(renderer.get(), texture.get(),
-                          srcRectSet ? srcRect.get() : nullptr,
-                          &transformedRect, 0, centerPoint.get(), flip);
+        SDL_RenderTextureRotated(renderer.get(), texture.get(),
+                                 srcRectSet ? srcRect.get() : nullptr,
+                                 &transformedRect, 0, centerPoint.get(), flip);
 
         RenderObject::Render(renderer);
     }
