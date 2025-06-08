@@ -107,6 +107,18 @@ class SpriteRenderObject : public ImageRenderObject
                 spriteFrames->push_back(rect);
             }
         }
+
+        CalculateRect();
+    }
+
+    void CalculateRect()
+    {
+        auto srcRect = spriteFrames->at(frame);
+
+        SetSrcRect(srcRect);
+
+        rect->w = srcRect.w;
+        rect->h = srcRect.h;
     }
 
     void InternalUpdate(const double deltaTime) override
@@ -158,12 +170,7 @@ class SpriteRenderObject : public ImageRenderObject
             return;
         }
 
-        auto srcRect = spriteFrames->at(frame);
-
-        SetSrcRect(srcRect);
-
-        rect->w = srcRect.w;
-        rect->h = srcRect.h;
+        CalculateRect();
 
         ImageRenderObject::Render(renderer);
     }
