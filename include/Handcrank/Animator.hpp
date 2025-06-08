@@ -69,7 +69,7 @@ class Animator : public RenderObject
     {
         if (currentState == State::RUNNING)
         {
-            for (auto &animation : animations)
+            for (const auto &animation : animations)
             {
                 animation->Pause();
             }
@@ -82,7 +82,7 @@ class Animator : public RenderObject
     {
         if (currentState == State::PAUSED)
         {
-            for (auto &animation : animations)
+            for (const auto &animation : animations)
             {
                 animation->Resume();
             }
@@ -146,7 +146,7 @@ class Animator : public RenderObject
   private:
     void StartParallel()
     {
-        for (auto &animation : animations)
+        for (const auto &animation : animations)
         {
             animation->Start();
         }
@@ -175,7 +175,7 @@ class Animator : public RenderObject
 
         auto stillRunning = false;
 
-        for (auto &animation : animations)
+        for (const auto &animation : animations)
         {
             if (animation->GetState() == Animation::State::RUNNING)
             {

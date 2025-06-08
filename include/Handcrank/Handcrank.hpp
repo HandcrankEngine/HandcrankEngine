@@ -357,7 +357,7 @@ auto Game::GetChildrenByType(const bool nested)
 
     std::vector<std::shared_ptr<T>> results;
 
-    for (auto child : children)
+    for (const auto &child : children)
     {
         if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
@@ -777,7 +777,7 @@ auto RenderObject::GetChildrenByType(const bool nested)
 
     std::vector<std::shared_ptr<T>> results;
 
-    for (auto child : children)
+    for (const auto &child : children)
     {
         if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
