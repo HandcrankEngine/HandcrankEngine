@@ -76,7 +76,8 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
 
     auto *rw = SDL_RWFromConstMem(mem, size);
 
-    auto *surface = IMG_Load_RW(rw, 1);
+    auto *surface =
+        IMG_isSVG(rw) == SDL_TRUE ? IMG_LoadSVG_RW(rw) : IMG_Load_RW(rw, 1);
 
     if (surface == nullptr)
     {
