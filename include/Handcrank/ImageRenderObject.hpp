@@ -175,6 +175,21 @@ class ImageRenderObject : public RenderObject
         UpdateRectSizeFromTexture();
     }
 
+    /**
+     * Load SVG texture from a string.
+     *
+     * @param renderer A structure representing rendering state.
+     * @param content Full SVG string including <svg></svg> tags.
+     */
+    void LoadSVGString(const std::shared_ptr<SDL_Renderer> &renderer,
+                       const std::string &content)
+    {
+        texture.reset();
+        texture = SDL_LoadTexture(renderer, content.c_str(), content.size());
+
+        UpdateRectSizeFromTexture();
+    }
+
     void UpdateRectSizeFromTexture() const
     {
         int textureWidth;
