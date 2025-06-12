@@ -64,6 +64,9 @@ set(SDL2IMAGE_INSTALL OFF)
 # SDL2_ttf Flags
 set(SDL2TTF_INSTALL OFF)
 
+# SDL2_mixer Flags
+set(SDL2MIXER_OPUS OFF)
+
 INSTALL_SDL_LIBRARY("sdl2" "2.32.8" "SDL2" "https://github.com/libsdl-org/SDL.git")
 INSTALL_SDL_LIBRARY("sdl2_image" "2.8.8" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
 INSTALL_SDL_LIBRARY("sdl2_ttf" "2.24.0" "SDL2_ttf" "https://github.com/libsdl-org/SDL_ttf.git")
@@ -84,7 +87,11 @@ else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${INCLUDES} ${EXAMPLES})
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY})
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY} SDL2main)
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARY})
+endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIBRARY})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_TTF_LIBRARY})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_MIXER_LIBRARY})
