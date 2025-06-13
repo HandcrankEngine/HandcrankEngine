@@ -63,6 +63,7 @@ set(SDL2TTF_INSTALL OFF)
 
 # SDL2_mixer Flags
 set(SDL2MIXER_OPUS OFF)
+set(SDL2MIXER_INSTALL OFF)
 
 INSTALL_SDL_LIBRARY("sdl2" "2.32.8" "SDL2" "https://github.com/libsdl-org/SDL.git")
 INSTALL_SDL_LIBRARY("sdl2_image" "2.8.8" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
