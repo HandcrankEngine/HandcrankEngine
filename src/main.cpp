@@ -21,7 +21,7 @@ class InputManager : public RenderObject
         {
             game->Quit();
         }
-        else if (game->keyPressedState[SDLK_d])
+        else if (game->keyPressedState[SDLK_D])
         {
             game->ToggleDebug();
         }
