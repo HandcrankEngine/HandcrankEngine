@@ -7,7 +7,7 @@
 
 using namespace Handcrank;
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
 
     {

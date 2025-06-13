@@ -22,7 +22,7 @@ class SDL_Logo : public ImageRenderObject
     }
 };
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 

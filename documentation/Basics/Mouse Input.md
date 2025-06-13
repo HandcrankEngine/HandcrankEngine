@@ -20,7 +20,7 @@ class Cursor : public RectRenderObject
     }
 };
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
@@ -48,7 +48,7 @@ class Button : public RectRenderObject
     void OnMouseOut() override { SetFillColor(255, 0, 0, 255); }
 };
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
@@ -76,7 +76,7 @@ class Button : public RectRenderObject
     void OnMouseUp() override { SetFillColor(255, 0, 0, 255); }
 };
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 

@@ -36,7 +36,7 @@ using namespace Handcrank;
 
 auto game = std::make_unique<Game>();
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
@@ -87,7 +87,7 @@ using namespace Handcrank;
 
 auto game = std::make_unique<Game>();
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
@@ -114,7 +114,7 @@ using namespace Handcrank;
 
 auto game = std::make_unique<Game>();
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 

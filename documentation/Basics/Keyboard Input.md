@@ -27,7 +27,7 @@ class Button : public RectRenderObject
     }
 };
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 

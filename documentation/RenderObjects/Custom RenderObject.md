@@ -16,7 +16,7 @@ public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
 };
 
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
