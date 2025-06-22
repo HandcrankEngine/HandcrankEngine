@@ -603,7 +603,7 @@ void Game::HandleInput()
 
 void Game::CalculateDeltaTime()
 {
-    auto currentTime = SDL_GetTicks64();
+    auto currentTime = SDL_GetPerformanceCounter();
 
     if (previousTime == 0)
     {
@@ -611,7 +611,8 @@ void Game::CalculateDeltaTime()
     }
     else
     {
-        deltaTime = (currentTime - previousTime) / MILLISECONDS;
+        deltaTime = (currentTime - previousTime) /
+                    static_cast<double>(SDL_GetPerformanceFrequency());
     }
 
     previousTime = currentTime;
