@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../fonts/Roboto/Roboto-Regular.h"
-#include "../images/sdl_logo.h"
 
 #include "Handcrank/Handcrank.hpp"
 #include "Handcrank/RectRenderObject.hpp"
@@ -48,10 +47,6 @@ class Spawner : public RenderObject
         if (game->mouseState[SDL_BUTTON_LEFT])
         {
             auto logoScreenSaver = std::make_shared<LogoScreenSaver>();
-
-            logoScreenSaver->LoadTexture(game->GetRenderer(),
-                                         images_sdl_logo_png,
-                                         images_sdl_logo_png_len);
 
             logoScreenSaver->SetPosition(game->mousePosition->x,
                                          game->mousePosition->y);
