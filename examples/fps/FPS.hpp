@@ -18,8 +18,8 @@ class FPS : public RenderObject
     std::shared_ptr<RectRenderObject> background =
         std::make_shared<RectRenderObject>();
 
-    std::shared_ptr<std::vector<int>> _frameRates =
-        std::make_shared<std::vector<int>>();
+    std::shared_ptr<std::deque<int>> _frameRates =
+        std::make_shared<std::deque<int>>();
 
   public:
     void Start() override
@@ -49,11 +49,11 @@ class FPS : public RenderObject
 
         if (_frameRates->size() > 100)
         {
-            _frameRates->erase(_frameRates->begin());
+            _frameRates->pop_front();
         }
 
         label->SetText(std::to_string(
-            std::accumulate(_frameRates->begin(), _frameRates->end(), 1) /
+            std::accumulate(_frameRates->begin(), _frameRates->end(), 0) /
             _frameRates->size()));
 
         auto backgroundRect = background->GetRect();
