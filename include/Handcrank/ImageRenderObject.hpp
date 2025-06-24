@@ -14,8 +14,8 @@ namespace Handcrank
 
 namespace
 {
-std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache =
-    std::unordered_map<std::string, std::shared_ptr<SDL_Texture>>();
+std::unordered_map<std::string, SDL_Texture *> textureCache =
+    std::unordered_map<std::string, SDL_Texture *>();
 }
 
 /**
@@ -26,7 +26,7 @@ std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache =
  */
 
 inline auto SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
-    -> std::shared_ptr<SDL_Texture>
+    -> SDL_Texture *
 {
     if (textureCache.find(path) != textureCache.end())
     {
@@ -40,8 +40,7 @@ inline auto SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
         return nullptr;
     }
 
-    auto texture = std::shared_ptr<SDL_Texture>(
-        SDL_CreateTextureFromSurface(renderer, surface), SDL_DestroyTexture);
+    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_FreeSurface(surface);
 
@@ -63,7 +62,7 @@ inline auto SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
  * @param size The buffer size, in bytes.
  */
 inline auto SDL_LoadTexture(SDL_Renderer *renderer, const void *mem,
-                            const int size) -> std::shared_ptr<SDL_Texture>
+                            const int size) -> SDL_Texture *
 {
     auto hash = MemHash(mem, size);
 
@@ -82,8 +81,7 @@ inline auto SDL_LoadTexture(SDL_Renderer *renderer, const void *mem,
         return nullptr;
     }
 
-    auto texture = std::shared_ptr<SDL_Texture>(
-        SDL_CreateTextureFromSurface(renderer, surface), SDL_DestroyTexture);
+    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_FreeSurface(surface);
 
@@ -100,7 +98,7 @@ inline auto SDL_LoadTexture(SDL_Renderer *renderer, const void *mem,
 class ImageRenderObject : public RenderObject
 {
   protected:
-    std::shared_ptr<SDL_Texture> texture;
+    SDL_Texture *texture;
 
     SDL_Rect srcRect = SDL_Rect();
 
@@ -122,16 +120,28 @@ class ImageRenderObject : public RenderObject
                                const float h)
         : RenderObject(x, y, w, h) {};
 
-    ~ImageRenderObject() = default;
+    ~ImageRenderObject()
+    {
+        if (texture != nullptr)
+        {
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
+        }
+    };
 
     /**
      * Set texture from an existing texture reference.
      *
      * @param texture A texture.
      */
-    void SetTexture(const std::shared_ptr<SDL_Texture> &texture)
+    void SetTexture(SDL_Texture *texture)
     {
-        this->texture.reset();
+        if (this->texture != nullptr)
+        {
+            SDL_DestroyTexture(this->texture);
+            this->texture = nullptr;
+        }
+
         this->texture = texture;
 
         UpdateRectSizeFromTexture();
@@ -148,7 +158,12 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(SDL_Renderer *renderer, const char *path)
     {
-        texture.reset();
+        if (texture != nullptr)
+        {
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
+        }
+
         texture = SDL_LoadTexture(renderer, path);
 
         UpdateRectSizeFromTexture();
@@ -163,7 +178,12 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(SDL_Renderer *renderer, const void *mem, const int size)
     {
-        texture.reset();
+        if (texture != nullptr)
+        {
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
+        }
+
         texture = SDL_LoadTexture(renderer, mem, size);
 
         UpdateRectSizeFromTexture();
@@ -177,7 +197,12 @@ class ImageRenderObject : public RenderObject
      */
     void LoadSVGString(SDL_Renderer *renderer, const std::string &content)
     {
-        texture.reset();
+        if (texture != nullptr)
+        {
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
+        }
+
         texture = SDL_LoadTexture(renderer, content.c_str(), content.size());
 
         UpdateRectSizeFromTexture();
@@ -188,7 +213,7 @@ class ImageRenderObject : public RenderObject
         int textureWidth;
         int textureHeight;
 
-        SDL_QueryTexture(texture.get(), nullptr, nullptr, &textureWidth,
+        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
                          &textureHeight);
 
         rect.w = textureWidth;
@@ -254,14 +279,12 @@ class ImageRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_SetTextureColorMod(texture.get(), tintColor.r, tintColor.g,
-                               tintColor.b);
+        SDL_SetTextureColorMod(texture, tintColor.r, tintColor.g, tintColor.b);
 
-        SDL_SetTextureAlphaMod(texture.get(), alpha);
+        SDL_SetTextureAlphaMod(texture, alpha);
 
-        SDL_RenderCopyExF(renderer, texture.get(),
-                          srcRectSet ? &srcRect : nullptr, &transformedRect, 0,
-                          &centerPoint, flip);
+        SDL_RenderCopyExF(renderer, texture, srcRectSet ? &srcRect : nullptr,
+                          &transformedRect, 0, &centerPoint, flip);
 
         RenderObject::Render(renderer);
     }
