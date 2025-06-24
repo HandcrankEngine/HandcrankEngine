@@ -80,9 +80,9 @@ class TextRenderObject : public RenderObject
 
     std::string text;
 
-    std::shared_ptr<SDL_Surface> textSurface;
+    SDL_Surface *textSurface = nullptr;
 
-    std::shared_ptr<SDL_Texture> textTexture;
+    SDL_Texture *textTexture = nullptr;
 
   public:
     explicit TextRenderObject()
@@ -110,7 +110,17 @@ class TextRenderObject : public RenderObject
         }
     };
 
-    ~TextRenderObject() = default;
+    ~TextRenderObject()
+    {
+        if (textTexture != nullptr)
+        {
+            SDL_DestroyTexture(textTexture);
+        }
+        if (textSurface != nullptr)
+        {
+            SDL_FreeSurface(textSurface);
+        }
+    };
 
     /**
      * Set text font.
@@ -168,22 +178,29 @@ class TextRenderObject : public RenderObject
 
         this->text = text;
 
-        textSurface.reset();
-        textTexture.reset();
+        if (textTexture != nullptr)
+        {
+            SDL_DestroyTexture(textTexture);
+            textTexture = nullptr;
+        }
+        if (textSurface != nullptr)
+        {
+            SDL_FreeSurface(textSurface);
+            textSurface = nullptr;
+        }
 
-        textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended(font.get(), this->text.c_str(), color),
-            SDL_FreeSurface);
+        textSurface =
+            TTF_RenderText_Blended(font.get(), this->text.c_str(), color);
 
-        if (!textSurface)
+        if (textSurface == nullptr)
         {
             std::cerr << "ERROR! Failed to generate text surface.\n";
 
             return;
         }
 
-        rect->w = textSurface->w;
-        rect->h = textSurface->h;
+        rect.w = textSurface->w;
+        rect.h = textSurface->h;
 
         textTexture = nullptr;
     }
@@ -204,23 +221,29 @@ class TextRenderObject : public RenderObject
 
         this->text = text;
 
-        textSurface.reset();
-        textTexture.reset();
+        if (textTexture != nullptr)
+        {
+            SDL_DestroyTexture(textTexture);
+            textTexture = nullptr;
+        }
+        if (textSurface != nullptr)
+        {
+            SDL_FreeSurface(textSurface);
+            textSurface = nullptr;
+        }
 
-        textSurface = std::shared_ptr<SDL_Surface>(
-            TTF_RenderText_Blended_Wrapped(font.get(), this->text.c_str(),
-                                           color, rect->w),
-            SDL_FreeSurface);
+        textSurface = TTF_RenderText_Blended_Wrapped(
+            font.get(), this->text.c_str(), color, rect.w);
 
-        if (!textSurface)
+        if (textSurface == nullptr)
         {
             std::cerr << "ERROR! Failed to generate text surface.\n";
 
             return;
         }
 
-        rect->w = textSurface->w;
-        rect->h = textSurface->h;
+        rect.w = textSurface->w;
+        rect.h = textSurface->h;
 
         textTexture = nullptr;
     }
@@ -232,24 +255,21 @@ class TextRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
+    void Render(SDL_Renderer *renderer) override
     {
         if (!CanRender())
         {
             return;
         }
 
-        if (textTexture == nullptr)
+        if (textTexture == nullptr && textSurface != nullptr)
         {
-            textTexture = std::shared_ptr<SDL_Texture>(
-                SDL_CreateTextureFromSurface(renderer.get(), textSurface.get()),
-                SDL_DestroyTexture);
+            textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         }
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyF(renderer.get(), textTexture.get(), nullptr,
-                        &transformedRect);
+        SDL_RenderCopyF(renderer, textTexture, nullptr, &transformedRect);
 
         RenderObject::Render(renderer);
     }

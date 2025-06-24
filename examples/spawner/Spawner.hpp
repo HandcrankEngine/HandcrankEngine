@@ -48,8 +48,8 @@ class Spawner : public RenderObject
         {
             auto logoScreenSaver = std::make_shared<LogoScreenSaver>();
 
-            logoScreenSaver->SetPosition(game->mousePosition->x,
-                                         game->mousePosition->y);
+            logoScreenSaver->SetPosition(game->mousePosition.x,
+                                         game->mousePosition.y);
 
             AddChildObject(logoScreenSaver);
         }

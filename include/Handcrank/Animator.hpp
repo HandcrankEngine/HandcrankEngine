@@ -91,15 +91,18 @@ class Animator : public RenderObject
         currentState = State::RUNNING;
     }
 
-    [[nodiscard]] auto GetState() const -> State { return currentState; }
+    [[nodiscard]] auto GetState() const -> const State &
+    {
+        return currentState;
+    }
 
     void SetState(State state) { currentState = state; }
 
-    [[nodiscard]] auto GetMode() const -> Mode { return mode; }
+    [[nodiscard]] auto GetMode() const -> const Mode & { return mode; }
 
     void SetMode(Mode mode) { this->mode = mode; }
 
-    [[nodiscard]] auto IsLooping() const -> Mode { return mode; }
+    [[nodiscard]] auto IsLooping() const -> const Mode & { return mode; }
 
     void SetIsLooping(bool looping) { this->looping = looping; }
 

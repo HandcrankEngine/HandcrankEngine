@@ -25,8 +25,8 @@ std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textureCache =
  * @param path File path to texture file.
  */
 
-inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
-                            const char *path) -> std::shared_ptr<SDL_Texture>
+inline auto SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
+    -> std::shared_ptr<SDL_Texture>
 {
     if (textureCache.find(path) != textureCache.end())
     {
@@ -41,8 +41,7 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
     }
 
     auto texture = std::shared_ptr<SDL_Texture>(
-        SDL_CreateTextureFromSurface(renderer.get(), surface),
-        SDL_DestroyTexture);
+        SDL_CreateTextureFromSurface(renderer, surface), SDL_DestroyTexture);
 
     SDL_FreeSurface(surface);
 
@@ -63,9 +62,8 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
  * @param mem A pointer to a read-only buffer.
  * @param size The buffer size, in bytes.
  */
-inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
-                            const void *mem, const int size)
-    -> std::shared_ptr<SDL_Texture>
+inline auto SDL_LoadTexture(SDL_Renderer *renderer, const void *mem,
+                            const int size) -> std::shared_ptr<SDL_Texture>
 {
     auto hash = MemHash(mem, size);
 
@@ -85,8 +83,7 @@ inline auto SDL_LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
     }
 
     auto texture = std::shared_ptr<SDL_Texture>(
-        SDL_CreateTextureFromSurface(renderer.get(), surface),
-        SDL_DestroyTexture);
+        SDL_CreateTextureFromSurface(renderer, surface), SDL_DestroyTexture);
 
     SDL_FreeSurface(surface);
 
@@ -105,14 +102,13 @@ class ImageRenderObject : public RenderObject
   protected:
     std::shared_ptr<SDL_Texture> texture;
 
-    std::shared_ptr<SDL_Rect> srcRect = std::make_shared<SDL_Rect>();
+    SDL_Rect srcRect = SDL_Rect();
 
     bool srcRectSet = false;
 
-    std::shared_ptr<SDL_FPoint> centerPoint = std::make_shared<SDL_FPoint>();
+    SDL_FPoint centerPoint = SDL_FPoint();
 
-    std::shared_ptr<SDL_Color> tintColor =
-        std::make_shared<SDL_Color>(SDL_Color{MAX_R, MAX_G, MAX_B, MAX_ALPHA});
+    SDL_Color tintColor = SDL_Color{MAX_R, MAX_G, MAX_B, MAX_ALPHA};
 
     int alpha = MAX_ALPHA;
 
@@ -150,8 +146,7 @@ class ImageRenderObject : public RenderObject
      * @deprecated DEVELOPMENT USE ONLY! Use LoadTexture to load textures in a
      * release build.
      */
-    void LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
-                     const char *path)
+    void LoadTexture(SDL_Renderer *renderer, const char *path)
     {
         texture.reset();
         texture = SDL_LoadTexture(renderer, path);
@@ -166,8 +161,7 @@ class ImageRenderObject : public RenderObject
      * @param mem A pointer to a read-only buffer.
      * @param size The buffer size, in bytes.
      */
-    void LoadTexture(const std::shared_ptr<SDL_Renderer> &renderer,
-                     const void *mem, const int size)
+    void LoadTexture(SDL_Renderer *renderer, const void *mem, const int size)
     {
         texture.reset();
         texture = SDL_LoadTexture(renderer, mem, size);
@@ -181,8 +175,7 @@ class ImageRenderObject : public RenderObject
      * @param renderer A structure representing rendering state.
      * @param content Full SVG string including <svg></svg> tags.
      */
-    void LoadSVGString(const std::shared_ptr<SDL_Renderer> &renderer,
-                       const std::string &content)
+    void LoadSVGString(SDL_Renderer *renderer, const std::string &content)
     {
         texture.reset();
         texture = SDL_LoadTexture(renderer, content.c_str(), content.size());
@@ -190,7 +183,7 @@ class ImageRenderObject : public RenderObject
         UpdateRectSizeFromTexture();
     }
 
-    void UpdateRectSizeFromTexture() const
+    void UpdateRectSizeFromTexture()
     {
         int textureWidth;
         int textureHeight;
@@ -198,26 +191,26 @@ class ImageRenderObject : public RenderObject
         SDL_QueryTexture(texture.get(), nullptr, nullptr, &textureWidth,
                          &textureHeight);
 
-        rect->w = textureWidth;
-        rect->h = textureHeight;
+        rect.w = textureWidth;
+        rect.h = textureHeight;
     }
 
     void SetSrcRect(const SDL_Rect srcRect)
     {
-        this->srcRect->x = srcRect.x;
-        this->srcRect->y = srcRect.y;
-        this->srcRect->w = srcRect.w;
-        this->srcRect->h = srcRect.h;
+        this->srcRect.x = srcRect.x;
+        this->srcRect.y = srcRect.y;
+        this->srcRect.w = srcRect.w;
+        this->srcRect.h = srcRect.h;
 
         srcRectSet = true;
     }
 
     void SetSrcRect(const int x, const int y, const int w, const int h)
     {
-        this->srcRect->x = x;
-        this->srcRect->y = y;
-        this->srcRect->w = w;
-        this->srcRect->h = h;
+        this->srcRect.x = x;
+        this->srcRect.y = y;
+        this->srcRect.w = w;
+        this->srcRect.h = h;
 
         srcRectSet = true;
     }
@@ -226,19 +219,19 @@ class ImageRenderObject : public RenderObject
 
     void SetTintColor(const SDL_Color tintColor)
     {
-        this->tintColor->r = tintColor.r;
-        this->tintColor->g = tintColor.g;
-        this->tintColor->b = tintColor.b;
+        this->tintColor.r = tintColor.r;
+        this->tintColor.g = tintColor.g;
+        this->tintColor.b = tintColor.b;
     }
 
     void SetTintColor(const Uint8 r, const Uint8 g, const Uint8 b)
     {
-        this->tintColor->r = r;
-        this->tintColor->g = g;
-        this->tintColor->b = b;
+        this->tintColor.r = r;
+        this->tintColor.g = g;
+        this->tintColor.b = b;
     }
 
-    [[nodiscard]] auto GetTintColor() const -> std::shared_ptr<SDL_Color>
+    [[nodiscard]] auto GetTintColor() const -> const SDL_Color &
     {
         return tintColor;
     }
@@ -252,7 +245,7 @@ class ImageRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
+    void Render(SDL_Renderer *renderer) override
     {
         if (!CanRender())
         {
@@ -261,14 +254,14 @@ class ImageRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_SetTextureColorMod(texture.get(), tintColor->r, tintColor->g,
-                               tintColor->b);
+        SDL_SetTextureColorMod(texture.get(), tintColor.r, tintColor.g,
+                               tintColor.b);
 
         SDL_SetTextureAlphaMod(texture.get(), alpha);
 
-        SDL_RenderCopyExF(renderer.get(), texture.get(),
-                          srcRectSet ? srcRect.get() : nullptr,
-                          &transformedRect, 0, centerPoint.get(), flip);
+        SDL_RenderCopyExF(renderer, texture.get(),
+                          srcRectSet ? &srcRect : nullptr, &transformedRect, 0,
+                          &centerPoint, flip);
 
         RenderObject::Render(renderer);
     }

@@ -36,14 +36,14 @@ class AnimatedBorder : public RenderObject
             {
                 auto rect = cube->GetRect();
 
-                auto width = rect->w;
+                auto width = rect.w;
 
                 auto maxWidth = game->GetWidth();
 
                 width = std::clamp(width + (500 * (float)deltaTime), 0.0F,
                                    (float)maxWidth);
 
-                cube->SetRect(rect->x, rect->y, width, rect->h);
+                cube->SetRect(rect.x, rect.y, width, rect.h);
 
                 return width == maxWidth ? 0 : 1;
             }));

@@ -13,11 +13,11 @@ namespace Handcrank
 class RectRenderObject : public RenderObject
 {
   protected:
-    std::shared_ptr<SDL_Color> borderColor = std::make_shared<SDL_Color>();
+    SDL_Color borderColor = SDL_Color();
 
     bool borderColorSet = false;
 
-    std::shared_ptr<SDL_Color> fillColor = std::make_shared<SDL_Color>();
+    SDL_Color fillColor = SDL_Color();
 
     bool fillColorSet = false;
 
@@ -40,10 +40,10 @@ class RectRenderObject : public RenderObject
      */
     void SetBorderColor(const SDL_Color borderColor)
     {
-        this->borderColor->r = borderColor.r;
-        this->borderColor->g = borderColor.g;
-        this->borderColor->b = borderColor.b;
-        this->borderColor->a = borderColor.a;
+        this->borderColor.r = borderColor.r;
+        this->borderColor.g = borderColor.g;
+        this->borderColor.b = borderColor.b;
+        this->borderColor.a = borderColor.a;
 
         borderColorSet = true;
     }
@@ -51,17 +51,17 @@ class RectRenderObject : public RenderObject
     void SetBorderColor(const Uint8 r, const Uint8 g, const Uint8 b,
                         const Uint8 a)
     {
-        borderColor->r = r;
-        borderColor->g = g;
-        borderColor->b = b;
-        borderColor->a = a;
+        borderColor.r = r;
+        borderColor.g = g;
+        borderColor.b = b;
+        borderColor.a = a;
 
         borderColorSet = true;
     }
 
-    [[nodiscard]] auto GetBorderColor() const -> std::shared_ptr<SDL_Color>
+    [[nodiscard]] auto GetBorderColor() const -> const SDL_Color &
     {
-        return borderColorSet ? borderColor : nullptr;
+        return borderColor;
     }
 
     /**
@@ -71,10 +71,10 @@ class RectRenderObject : public RenderObject
      */
     void SetFillColor(const SDL_Color fillColor)
     {
-        this->fillColor->r = fillColor.r;
-        this->fillColor->g = fillColor.g;
-        this->fillColor->b = fillColor.b;
-        this->fillColor->a = fillColor.a;
+        this->fillColor.r = fillColor.r;
+        this->fillColor.g = fillColor.g;
+        this->fillColor.b = fillColor.b;
+        this->fillColor.a = fillColor.a;
 
         fillColorSet = true;
     }
@@ -82,17 +82,17 @@ class RectRenderObject : public RenderObject
     void SetFillColor(const Uint8 r, const Uint8 g, const Uint8 b,
                       const Uint8 a)
     {
-        fillColor->r = r;
-        fillColor->g = g;
-        fillColor->b = b;
-        fillColor->a = a;
+        fillColor.r = r;
+        fillColor.g = g;
+        fillColor.b = b;
+        fillColor.a = a;
 
         fillColorSet = true;
     }
 
-    [[nodiscard]] auto GetFillColor() const -> std::shared_ptr<SDL_Color>
+    [[nodiscard]] auto GetFillColor() const -> const SDL_Color &
     {
-        return fillColorSet ? fillColor : nullptr;
+        return fillColor;
     }
 
     /**
@@ -100,32 +100,31 @@ class RectRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      */
-    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
+    void Render(SDL_Renderer *renderer) override
     {
         if (!CanRender())
         {
             return;
         }
 
-        SDL_SetRenderDrawBlendMode(renderer.get(), blendMode);
+        SDL_SetRenderDrawBlendMode(renderer, blendMode);
 
         auto transformedRect = GetTransformedRect();
 
         if (fillColorSet)
         {
-            SDL_SetRenderDrawColor(renderer.get(), fillColor->r, fillColor->g,
-                                   fillColor->b, fillColor->a);
+            SDL_SetRenderDrawColor(renderer, fillColor.r, fillColor.g,
+                                   fillColor.b, fillColor.a);
 
-            SDL_RenderFillRectF(renderer.get(), &transformedRect);
+            SDL_RenderFillRectF(renderer, &transformedRect);
         }
 
         if (borderColorSet)
         {
-            SDL_SetRenderDrawColor(renderer.get(), borderColor->r,
-                                   borderColor->g, borderColor->b,
-                                   borderColor->a);
+            SDL_SetRenderDrawColor(renderer, borderColor.r, borderColor.g,
+                                   borderColor.b, borderColor.a);
 
-            SDL_RenderDrawRectF(renderer.get(), &transformedRect);
+            SDL_RenderDrawRectF(renderer, &transformedRect);
         }
 
         RenderObject::Render(renderer);

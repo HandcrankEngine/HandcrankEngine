@@ -16,8 +16,7 @@ const double DEFAULT_FRAME_SPEED = 0.1;
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
-    std::shared_ptr<std::vector<SDL_Rect>> spriteFrames =
-        std::make_shared<std::vector<SDL_Rect>>();
+    std::vector<SDL_Rect> spriteFrames = std::vector<SDL_Rect>();
 
     int frame = 0;
 
@@ -62,16 +61,14 @@ class SpriteRenderObject : public ImageRenderObject
         this->frameSpeed = frameSpeed;
     }
 
-    void SetFrames(const std::shared_ptr<std::vector<SDL_Rect>> &spriteFrames)
+    void SetFrames(const std::vector<SDL_Rect> &spriteFrames)
     {
-        this->spriteFrames.reset();
-
         this->spriteFrames = spriteFrames;
     }
 
     void SetFrameIndex(const int frameIndex)
     {
-        auto spriteFramesSize = spriteFrames->size();
+        auto spriteFramesSize = size(spriteFrames);
 
         if (frameIndex < spriteFramesSize)
         {
@@ -83,7 +80,7 @@ class SpriteRenderObject : public ImageRenderObject
                          const int columns, const int rows,
                          const Vector2 &padding, const Vector2 &offset)
     {
-        spriteFrames->clear();
+        spriteFrames.clear();
 
         auto availableWidth = width - (padding.x * (columns - 1));
         auto availableHeight = height - (padding.y * (rows - 1));
@@ -104,7 +101,7 @@ class SpriteRenderObject : public ImageRenderObject
                 rect.w = static_cast<int>(cellWidth);
                 rect.h = static_cast<int>(cellHeight);
 
-                spriteFrames->push_back(rect);
+                spriteFrames.push_back(rect);
             }
         }
 
@@ -113,12 +110,12 @@ class SpriteRenderObject : public ImageRenderObject
 
     void CalculateRect()
     {
-        auto srcRect = spriteFrames->at(frame);
+        auto srcRect = spriteFrames.at(frame);
 
         SetSrcRect(srcRect);
 
-        rect->w = srcRect.w;
-        rect->h = srcRect.h;
+        rect.w = srcRect.w;
+        rect.h = srcRect.h;
     }
 
     void InternalUpdate(const double deltaTime) override
@@ -130,7 +127,7 @@ class SpriteRenderObject : public ImageRenderObject
             return;
         }
 
-        auto spriteFramesSize = spriteFrames->size();
+        auto spriteFramesSize = size(spriteFrames);
 
         nextTick += deltaTime;
 
@@ -156,14 +153,14 @@ class SpriteRenderObject : public ImageRenderObject
         nextTick = 0;
     }
 
-    void Render(const std::shared_ptr<SDL_Renderer> &renderer) override
+    void Render(SDL_Renderer *renderer) override
     {
         if (!CanRender())
         {
             return;
         }
 
-        auto spriteFramesSize = spriteFrames->size();
+        auto spriteFramesSize = size(spriteFrames);
 
         if (spriteFramesSize <= frame)
         {

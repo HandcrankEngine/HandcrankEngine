@@ -29,7 +29,7 @@ class LogoScreenSaver : public ImageRenderObject
                         images_sdl_logo_png_len);
         }
 
-        if (rect->x == 0 && rect->y == 0)
+        if (rect.x == 0 && rect.y == 0)
         {
             SetPosition(RandomNumberRange(0, game->GetWidth()),
                         RandomNumberRange(0, game->GetHeight()));
@@ -45,28 +45,28 @@ class LogoScreenSaver : public ImageRenderObject
 
         const auto transformedRect = GetTransformedRect();
 
-        const auto rect = GetRect();
-
         const auto minX = transformedRect.w / 2;
         const auto minY = transformedRect.h / 2;
 
         const auto maxX = game->GetWidth() - (transformedRect.w / 2);
         const auto maxY = game->GetHeight() - (transformedRect.h / 2);
 
-        rect->x += movementSpeed * xDirection * deltaTime;
-        rect->y += movementSpeed * yDirection * deltaTime;
+        float x = rect.x + (movementSpeed * xDirection * deltaTime);
+        float y = rect.y + (movementSpeed * yDirection * deltaTime);
 
-        if (rect->x > maxX || rect->x < minX)
+        if (x > maxX || x < minX)
         {
             xDirection = -xDirection;
         }
 
-        if (rect->y > maxY || rect->y < minY)
+        if (y > maxY || y < minY)
         {
             yDirection = -yDirection;
         }
 
-        rect->x = std::clamp<float>(rect->x, minX, maxX);
-        rect->y = std::clamp<float>(rect->y, minY, maxY);
+        x = std::clamp<float>(x, minX, maxX);
+        y = std::clamp<float>(y, minY, maxY);
+
+        SetPosition(x, y);
     }
 };

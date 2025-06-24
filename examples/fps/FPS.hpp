@@ -58,7 +58,7 @@ class FPS : public RenderObject
 
         auto backgroundRect = background->GetRect();
 
-        background->SetRect(backgroundRect->x, backgroundRect->y,
-                            label->GetRect()->w + 25, backgroundRect->h);
+        background->SetRect(backgroundRect.x, backgroundRect.y,
+                            label->GetRect().w + 25, backgroundRect.h);
     }
 };
