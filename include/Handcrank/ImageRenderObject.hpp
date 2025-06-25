@@ -18,6 +18,16 @@ std::unordered_map<std::string, SDL_Texture *> textureCache =
     std::unordered_map<std::string, SDL_Texture *>();
 }
 
+inline auto ClearTextureCache() -> void
+{
+    for (const auto &texture : textureCache)
+    {
+        SDL_DestroyTexture(texture.second);
+    }
+
+    textureCache.clear();
+}
+
 /**
  * Load texture from a path.
  *
@@ -120,14 +130,7 @@ class ImageRenderObject : public RenderObject
                                const float h)
         : RenderObject(x, y, w, h) {};
 
-    ~ImageRenderObject()
-    {
-        if (texture != nullptr)
-        {
-            SDL_DestroyTexture(texture);
-            texture = nullptr;
-        }
-    };
+    ~ImageRenderObject() = default;
 
     /**
      * Set texture from an existing texture reference.
