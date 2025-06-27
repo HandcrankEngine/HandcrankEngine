@@ -6,7 +6,6 @@
 #include "../examples/fps/FPS.hpp"
 #include "../examples/logo-screensaver/LogoScreenSaver.hpp"
 #include "../examples/paused-screen/PausedScreen.hpp"
-#include "../examples/spawner/Spawner.hpp"
 
 using namespace Handcrank;
 
@@ -32,18 +31,11 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    auto spawner = std::make_shared<Spawner>();
-
     game->AddChildObject(std::move(std::make_unique<InputManager>()));
-    game->AddChildObject(spawner);
+    game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
     game->AddChildObject(std::move(std::make_unique<FPS>()));
     game->AddChildObject(std::move(std::make_unique<AnimatedBorder>()));
     game->AddChildObject(std::move(std::make_unique<PausedScreen>()));
-
-    for (auto i = 0; i < 1; i += 1)
-    {
-        spawner->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
-    }
 
     return game->Run();
 }
