@@ -496,6 +496,7 @@ auto Game::Run() -> int
 
 void Game::Loop()
 {
+    auto frameStart = SDL_GetPerformanceCounter();
 
 #ifdef __EMSCRIPTEN__
     if (GetQuit())
@@ -506,14 +507,17 @@ void Game::Loop()
 
     HandleInput();
 
-    CalculateDeltaTime();
-
     Update();
     FixedUpdate();
 
     Render();
 
     DestroyChildObjects();
+
+    auto frameEnd = SDL_GetPerformanceCounter();
+
+    deltaTime = (frameEnd - frameStart) /
+                static_cast<double>(SDL_GetPerformanceFrequency());
 }
 
 void Game::HandleInput()
@@ -587,23 +591,6 @@ void Game::HandleInput()
     }
 }
 
-void Game::CalculateDeltaTime()
-{
-    auto currentTime = SDL_GetPerformanceCounter();
-
-    if (previousTime == 0)
-    {
-        deltaTime = fixedFrameTime;
-    }
-    else
-    {
-        deltaTime = (currentTime - previousTime) /
-                    static_cast<double>(SDL_GetPerformanceFrequency());
-    }
-
-    previousTime = currentTime;
-}
-
 void Game::Update()
 {
     for (const auto &iter : children)
@@ -663,7 +650,7 @@ void Game::Render()
 
         SDL_RenderPresent(renderer);
 
-        fps = 1.0 / renderDeltaTime;
+        fps = 1.0F / renderDeltaTime;
 
         renderDeltaTime = 0;
     }
