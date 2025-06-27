@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <SDL.h>
+
 #include <algorithm>
 #include <functional>
 #include <regex>
@@ -113,6 +115,62 @@ inline auto MemHash(const void *mem, const int size) -> std::string
     auto hash = std::hash<std::string_view>{}(
         std::string_view(static_cast<const char *>(mem), size));
     return std::to_string(hash);
+}
+
+inline auto ToString(const SDL_FRect &rect) -> std::string
+{
+    return "SDL_FRect(" + std::to_string(rect.x) + ", " +
+           std::to_string(rect.y) + ", " + std::to_string(rect.w) + ", " +
+           std::to_string(rect.h) + ")";
+}
+
+inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
+                                std::vector<int> &indices,
+                                const SDL_FRect &destRect,
+                                const SDL_FRect &srcRect,
+                                const SDL_Color &color) -> void
+{
+    auto index = vertices.size();
+
+    vertices.push_back({{destRect.x, destRect.y},
+                        color,
+                        {srcRect.x / srcRect.w, srcRect.y / srcRect.h}});
+    vertices.push_back(
+        {{destRect.x + destRect.w, destRect.y},
+         color,
+         {(srcRect.x + srcRect.w) / srcRect.w, srcRect.y / srcRect.h}});
+    vertices.push_back({{destRect.x + destRect.w, destRect.y + destRect.h},
+                        color,
+                        {(srcRect.x + srcRect.w) / srcRect.w,
+                         (srcRect.y + srcRect.h) / srcRect.h}});
+    vertices.push_back(
+        {{destRect.x, destRect.y + destRect.h},
+         color,
+         {srcRect.x / srcRect.w, (srcRect.y + srcRect.h) / srcRect.h}});
+
+    indices.push_back(index);
+    indices.push_back(index + 1);
+    indices.push_back(index + 2);
+
+    indices.push_back(index);
+    indices.push_back(index + 2);
+    indices.push_back(index + 3);
+}
+
+inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr, const int index,
+                              const SDL_FRect &destRect) -> void
+{
+    vertices_ptr[0].position.x = destRect.x;
+    vertices_ptr[0].position.y = destRect.y;
+
+    vertices_ptr[1].position.x = destRect.x + destRect.w;
+    vertices_ptr[1].position.y = destRect.y;
+
+    vertices_ptr[2].position.x = destRect.x + destRect.w;
+    vertices_ptr[2].position.y = destRect.y + destRect.h;
+
+    vertices_ptr[3].position.x = destRect.x;
+    vertices_ptr[3].position.y = destRect.y + destRect.h;
 }
 
 } // namespace Handcrank
