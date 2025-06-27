@@ -282,7 +282,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     virtual inline void InternalFixedUpdate(double fixedDeltaTime);
 
     [[nodiscard]] inline auto GetRect() const -> const SDL_FRect &;
-    inline void SetRect(SDL_FRect rect);
+    inline void SetRect(const SDL_FRect &rect);
     inline void SetRect(float x, float y, float w, float h);
     inline void SetPosition(float x, float y);
     inline void SetDimension(float w, float h);
@@ -926,7 +926,7 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
 
 auto RenderObject::GetRect() const -> const SDL_FRect & { return rect; }
 
-void RenderObject::SetRect(const SDL_FRect rect)
+void RenderObject::SetRect(const SDL_FRect &rect)
 {
     SetPosition(rect.x, rect.y);
     SetDimension(rect.w, rect.h);

@@ -223,7 +223,7 @@ class ImageRenderObject : public RenderObject
         rect.h = textureHeight;
     }
 
-    void SetSrcRect(const SDL_Rect srcRect)
+    void SetSrcRect(const SDL_Rect &srcRect)
     {
         this->srcRect.x = srcRect.x;
         this->srcRect.y = srcRect.y;
@@ -245,7 +245,7 @@ class ImageRenderObject : public RenderObject
 
     void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
 
-    void SetTintColor(const SDL_Color tintColor)
+    void SetTintColor(const SDL_Color &tintColor)
     {
         this->tintColor.r = tintColor.r;
         this->tintColor.g = tintColor.g;

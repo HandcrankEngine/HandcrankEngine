@@ -17,8 +17,8 @@ struct Vector2
 
     Vector2() : x(0), y(0) {}
     Vector2(const float x, const float y) : x(x), y(y) {}
-    explicit Vector2(const SDL_FPoint point) : x(point.x), y(point.y) {}
-    explicit Vector2(const SDL_FRect rect) : x(rect.x), y(rect.y) {}
+    explicit Vector2(const SDL_FPoint &point) : x(point.x), y(point.y) {}
+    explicit Vector2(const SDL_FRect &rect) : x(rect.x), y(rect.y) {}
 
     auto operator+(const Vector2 &other) const -> Vector2
     {
