@@ -80,8 +80,6 @@ class Game
 
     SDL_Event event;
 
-    Uint64 previousTime;
-
     double deltaTime = 0;
     double renderDeltaTime = 0;
     double fixedUpdateDeltaTime = 0;
@@ -311,12 +309,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void Destroy();
 };
 
-Game::Game()
-{
-    Setup();
-
-    previousTime = 0;
-}
+Game::Game() { Setup(); }
 
 Game::~Game()
 {
