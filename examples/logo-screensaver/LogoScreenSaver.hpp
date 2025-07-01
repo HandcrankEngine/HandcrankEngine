@@ -150,7 +150,8 @@ class LogoScreenSaver : public VertexRenderObject
              (rand() % 400) + 100});
 
         GenerateTextureQuad(vertices, indices, items.back().rect,
-                            items.back().srcRect, items.back().color);
+                            items.back().srcRect, items.back().color,
+                            textureWidth, textureHeight);
 
         label->SetText(std::to_string(items.size()));
     }

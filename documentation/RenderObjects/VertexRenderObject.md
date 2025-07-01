@@ -37,7 +37,7 @@ class LogoGrid : public VertexRenderObject
                     {(float)x, (float)y, (float)textureWidth,
                      (float)textureHeight},
                     {0, 0, (float)textureWidth, (float)textureHeight},
-                    {255, 255, 255, 255});
+                    {255, 255, 255, 255}, textureWidth, textureHeight);
             }
         }
     }

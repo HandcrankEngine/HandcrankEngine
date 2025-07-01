@@ -128,25 +128,27 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
                                 std::vector<int> &indices,
                                 const SDL_FRect &destRect,
                                 const SDL_FRect &srcRect,
-                                const SDL_Color &color) -> void
+                                const SDL_Color &color, float textureWidth,
+                                float textureHeight) -> void
 {
+
     auto index = vertices.size();
 
     vertices.push_back({{destRect.x, destRect.y},
                         color,
-                        {srcRect.x / srcRect.w, srcRect.y / srcRect.h}});
+                        {srcRect.x / textureWidth, srcRect.y / textureHeight}});
     vertices.push_back(
         {{destRect.x + destRect.w, destRect.y},
          color,
-         {(srcRect.x + srcRect.w) / srcRect.w, srcRect.y / srcRect.h}});
+         {(srcRect.x + srcRect.w) / textureWidth, srcRect.y / textureHeight}});
     vertices.push_back({{destRect.x + destRect.w, destRect.y + destRect.h},
                         color,
-                        {(srcRect.x + srcRect.w) / srcRect.w,
-                         (srcRect.y + srcRect.h) / srcRect.h}});
+                        {(srcRect.x + srcRect.w) / textureWidth,
+                         (srcRect.y + srcRect.h) / textureHeight}});
     vertices.push_back(
         {{destRect.x, destRect.y + destRect.h},
          color,
-         {srcRect.x / srcRect.w, (srcRect.y + srcRect.h) / srcRect.h}});
+         {srcRect.x / textureWidth, (srcRect.y + srcRect.h) / textureHeight}});
 
     indices.push_back(index);
     indices.push_back(index + 1);
