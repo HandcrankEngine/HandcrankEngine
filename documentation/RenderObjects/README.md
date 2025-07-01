@@ -5,3 +5,4 @@
 1.  [RectRenderObject](/documentation/RenderObjects/RectRenderObject.md)
 1.  [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject.md)
 1.  [TextRenderObject](/documentation/RenderObjects/TextRenderObject.md)
+1.  [VertexRenderObject](/documentation/RenderObjects/VertexRenderObject.md)
