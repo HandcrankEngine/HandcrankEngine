@@ -1,6 +1,6 @@
 # VertexRenderObject
 
-## Render a Single Texture Multuiple Times
+## Render a Single Texture Multiple Times
 
 ```cpp
 #pragma once
