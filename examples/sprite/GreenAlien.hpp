@@ -12,8 +12,6 @@ class GreenAlien : public SpriteRenderObject
   public:
     void Start() override
     {
-        game->SetScreenSize(800, 300);
-
         LoadTexture(game->GetRenderer(), images_alienGreen_png,
                     images_alienGreen_png_len);
 
