@@ -92,21 +92,21 @@ class SpriteRenderObject : public ImageRenderObject
         {
             for (auto y = 0; y < rows; y++)
             {
-                SDL_Rect rect;
-
-                rect.x =
-                    static_cast<int>((offset.x + x) * (cellWidth + padding.x));
-                rect.y =
-                    static_cast<int>((offset.y + y) * (cellHeight + padding.y));
-                rect.w = static_cast<int>(cellWidth);
-                rect.h = static_cast<int>(cellHeight);
-
-                spriteFrames.push_back(rect);
+                AddFrame(
+                    {static_cast<int>((offset.x + x) * (cellWidth + padding.x)),
+                     static_cast<int>((offset.y + y) *
+                                      (cellHeight + padding.y)),
+                     static_cast<int>(cellWidth),
+                     static_cast<int>(cellHeight)});
             }
         }
 
         CalculateRect();
     }
+
+    void AddFrame(const SDL_Rect &rect) { spriteFrames.push_back(rect); }
+
+    void ClearFrames() { spriteFrames.clear(); }
 
     void CalculateRect()
     {
