@@ -65,7 +65,7 @@ auto main(int argc, char *argv[]) -> int
 
             auto alpha = std::clamp(internalAlpha, 0.0F, (float)MAX_ALPHA);
 
-            cube->SetFillColor(color->r, color->g, color->b, alpha);
+            cube->SetFillColor(color.r, color.g, color.b, alpha);
 
             return alpha == 255 ? 0 : 1;
         }));
@@ -85,7 +85,7 @@ auto main(int argc, char *argv[]) -> int
 
             auto alpha = std::clamp(internalAlpha, 0.0F, (float)MAX_ALPHA);
 
-            cube->SetFillColor(color->r, color->g, color->b, alpha);
+            cube->SetFillColor(color.r, color.g, color.b, alpha);
 
             return alpha == 0 ? 0 : 1;
         }));
