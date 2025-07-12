@@ -18,7 +18,7 @@ class LogoScreenSaver : public VertexRenderObject
     {
         SDL_FRect rect;
         SDL_FRect srcRect;
-        SDL_Color color;
+        SDL_FColor color;
         int xDirection;
         int yDirection;
         int speed;
@@ -32,10 +32,10 @@ class LogoScreenSaver : public VertexRenderObject
 
     std::vector<Item> items;
 
-    SDL_Color currentColor = {255, 255, 255, 255};
+    SDL_FColor currentColor = {1.0, 1.0, 1.0, 1.0};
 
-    int textureWidth;
-    int textureHeight;
+    float textureWidth;
+    float textureHeight;
 
   public:
     void Start() override
@@ -66,8 +66,7 @@ class LogoScreenSaver : public VertexRenderObject
         vertices.reserve(length * 4);
         indices.reserve(length * 6);
 
-        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture, &textureWidth, &textureHeight);
 
         for (auto i = 0; i < length; i += 1)
         {
@@ -82,9 +81,9 @@ class LogoScreenSaver : public VertexRenderObject
     {
         if (game->mousePressedState[SDL_BUTTON_LEFT])
         {
-            currentColor.r = RandomBoolean() ? 255 : 100;
-            currentColor.g = RandomBoolean() ? 255 : 100;
-            currentColor.b = RandomBoolean() ? 255 : 100;
+            currentColor.r = RandomBoolean() ? 1.0F : 0.5F;
+            currentColor.g = RandomBoolean() ? 1.0F : 0.5F;
+            currentColor.b = RandomBoolean() ? 1.0F : 0.5F;
         }
 
         if (game->mouseState[SDL_BUTTON_LEFT])
@@ -93,7 +92,7 @@ class LogoScreenSaver : public VertexRenderObject
                           game->mousePosition.y - (textureHeight / 2));
         }
 
-        if (game->keyPressedState[SDLK_c])
+        if (game->keyPressedState[SDLK_C])
         {
             items.clear();
 

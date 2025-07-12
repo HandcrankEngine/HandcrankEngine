@@ -5,10 +5,11 @@
 
 #include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "Handcrank.hpp"
+#include "SDL3/SDL_surface.h"
 
 namespace Handcrank
 {
@@ -52,18 +53,18 @@ inline auto SDL_LoadFont(const void *mem, const int size, const int ptSize = 24)
         TTF_Init();
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
     if (rw == nullptr)
     {
         return nullptr;
     }
 
-    auto *font = TTF_OpenFontRW(rw, 1, ptSize);
+    auto *font = TTF_OpenFontIO(rw, false, ptSize);
 
     if (font == nullptr)
     {
-        SDL_RWclose(rw);
+        SDL_CloseIO(rw);
 
         return nullptr;
     }
@@ -118,7 +119,7 @@ class TextRenderObject : public RenderObject
         }
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
         }
     };
 
@@ -185,12 +186,12 @@ class TextRenderObject : public RenderObject
         }
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
             textSurface = nullptr;
         }
 
-        textSurface =
-            TTF_RenderText_Blended(font.get(), this->text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font.get(), this->text.c_str(),
+                                             this->text.length(), color);
 
         if (textSurface == nullptr)
         {
@@ -228,12 +229,12 @@ class TextRenderObject : public RenderObject
         }
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
             textSurface = nullptr;
         }
 
         textSurface = TTF_RenderText_Blended_Wrapped(
-            font.get(), this->text.c_str(), color, rect.w);
+            font.get(), this->text.c_str(), this->text.length(), color, rect.w);
 
         if (textSurface == nullptr)
         {
@@ -269,7 +270,7 @@ class TextRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyF(renderer, textTexture, nullptr, &transformedRect);
+        SDL_RenderTexture(renderer, textTexture, nullptr, &transformedRect);
 
         RenderObject::Render(renderer);
     }
