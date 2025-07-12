@@ -116,6 +116,7 @@ class TextRenderObject : public RenderObject
         {
             SDL_DestroyTexture(textTexture);
         }
+
         if (textSurface != nullptr)
         {
             SDL_FreeSurface(textSurface);
@@ -183,6 +184,7 @@ class TextRenderObject : public RenderObject
             SDL_DestroyTexture(textTexture);
             textTexture = nullptr;
         }
+
         if (textSurface != nullptr)
         {
             SDL_FreeSurface(textSurface);
@@ -226,6 +228,7 @@ class TextRenderObject : public RenderObject
             SDL_DestroyTexture(textTexture);
             textTexture = nullptr;
         }
+
         if (textSurface != nullptr)
         {
             SDL_FreeSurface(textSurface);
