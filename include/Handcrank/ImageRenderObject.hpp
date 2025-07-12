@@ -189,6 +189,10 @@ class ImageRenderObject : public RenderObject
 
     void UpdateRectSizeFromTexture()
     {
+        if (texture == nullptr) {
+            return;
+        }
+
         int textureWidth;
         int textureHeight;
 
@@ -251,7 +255,7 @@ class ImageRenderObject : public RenderObject
      */
     void Render(SDL_Renderer *renderer) override
     {
-        if (!CanRender())
+        if (!CanRender() || texture == nullptr)
         {
             return;
         }
