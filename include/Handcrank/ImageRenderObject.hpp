@@ -139,12 +139,6 @@ class ImageRenderObject : public RenderObject
      */
     void SetTexture(SDL_Texture *texture)
     {
-        if (this->texture != nullptr)
-        {
-            SDL_DestroyTexture(this->texture);
-            this->texture = nullptr;
-        }
-
         this->texture = texture;
 
         UpdateRectSizeFromTexture();
@@ -161,12 +155,6 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(SDL_Renderer *renderer, const char *path)
     {
-        if (texture != nullptr)
-        {
-            SDL_DestroyTexture(texture);
-            texture = nullptr;
-        }
-
         texture = SDL_LoadTexture(renderer, path);
 
         UpdateRectSizeFromTexture();
@@ -181,12 +169,6 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(SDL_Renderer *renderer, const void *mem, const int size)
     {
-        if (texture != nullptr)
-        {
-            SDL_DestroyTexture(texture);
-            texture = nullptr;
-        }
-
         texture = SDL_LoadTexture(renderer, mem, size);
 
         UpdateRectSizeFromTexture();
@@ -200,12 +182,6 @@ class ImageRenderObject : public RenderObject
      */
     void LoadSVGString(SDL_Renderer *renderer, const std::string &content)
     {
-        if (texture != nullptr)
-        {
-            SDL_DestroyTexture(texture);
-            texture = nullptr;
-        }
-
         texture = SDL_LoadTexture(renderer, content.c_str(), content.size());
 
         UpdateRectSizeFromTexture();
