@@ -81,20 +81,13 @@ class Game
     SDL_Event event;
 
     double deltaTime = 0;
-    double renderDeltaTime = 0;
     double fixedUpdateDeltaTime = 0;
 
     double frameRate = DEFAULT_FRAME_RATE;
 
-#ifdef __EMSCRIPTEN__
-    bool capFrameRate = false;
-#else
-    bool capFrameRate = true;
-#endif
-
+    Uint64 previousFrameStart = 0;
     double fps = 0;
-
-    double targetFrameTime = 1.0 / frameRate;
+    int framesThisSecond = 0;
 
     const double fixedFrameTime = 0.02;
 
@@ -470,12 +463,7 @@ auto Game::GetFrameRate() const -> double { return frameRate; }
 
 auto Game::GetFPS() const -> double { return fps; }
 
-void Game::SetFrameRate(const double frameRate)
-{
-    this->frameRate = frameRate;
-
-    this->targetFrameTime = 1.0 / frameRate;
-}
+void Game::SetFrameRate(const double frameRate) { this->frameRate = frameRate; }
 
 auto Game::GetQuit() const -> bool { return quit; }
 
@@ -495,6 +483,8 @@ auto Game::Run() -> int
 
 void Game::Loop()
 {
+    framesThisSecond++;
+
     auto frameStart = SDL_GetPerformanceCounter();
 
 #ifdef __EMSCRIPTEN__
@@ -517,6 +507,22 @@ void Game::Loop()
 
     deltaTime = (frameEnd - frameStart) /
                 static_cast<double>(SDL_GetPerformanceFrequency());
+
+#ifdef __EMSCRIPTEN__
+    deltaTime = std::max(deltaTime, 0.01);
+#endif
+
+    float elapsedSeconds = (frameStart - previousFrameStart) /
+                           (float)SDL_GetPerformanceFrequency();
+
+    if (elapsedSeconds >= 1)
+    {
+        fps = (int)(framesThisSecond / elapsedSeconds);
+        framesThisSecond = 0;
+        previousFrameStart = frameStart;
+    }
+
+    SDL_Delay(1);
 }
 
 void Game::HandleInput()
@@ -623,36 +629,26 @@ void Game::FixedUpdate()
 
 void Game::Render()
 {
-    renderDeltaTime += deltaTime;
+    SDL_SetRenderDrawColor(renderer, clearColor.r, clearColor.g, clearColor.b,
+                           clearColor.a);
 
-    if (renderDeltaTime > targetFrameTime || !capFrameRate)
+    SDL_RenderClear(renderer);
+
+    SDL_RenderSetViewport(renderer, &viewport);
+
+    sort(children.begin(), children.end(),
+         [](const std::shared_ptr<RenderObject> &a,
+            const std::shared_ptr<RenderObject> &b) { return a->z < b->z; });
+
+    for (const auto &child : children)
     {
-        SDL_SetRenderDrawColor(renderer, clearColor.r, clearColor.g,
-                               clearColor.b, clearColor.a);
-
-        SDL_RenderClear(renderer);
-
-        SDL_RenderSetViewport(renderer, &viewport);
-
-        sort(children.begin(), children.end(),
-             [](const std::shared_ptr<RenderObject> &a,
-                const std::shared_ptr<RenderObject> &b)
-             { return a->z < b->z; });
-
-        for (const auto &child : children)
+        if (child->IsEnabled())
         {
-            if (child->IsEnabled())
-            {
-                child->Render(renderer);
-            }
+            child->Render(renderer);
         }
-
-        SDL_RenderPresent(renderer);
-
-        fps = 1.0F / renderDeltaTime;
-
-        renderDeltaTime = 0;
     }
+
+    SDL_RenderPresent(renderer);
 }
 
 void Game::DestroyChildObjects()
