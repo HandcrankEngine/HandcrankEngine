@@ -61,7 +61,9 @@ class LogoScreenSaver : public VertexRenderObject
         texture = LoadCachedTexture(game->GetRenderer(), images_sdl_logo_png,
                                     images_sdl_logo_png_len);
 
-        int length = 0;
+        int length = 100000;
+
+        items.reserve(length);
 
         vertices.reserve(length * 4);
         indices.reserve(length * 6);
