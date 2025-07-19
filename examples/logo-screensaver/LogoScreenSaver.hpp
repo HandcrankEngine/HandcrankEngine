@@ -4,7 +4,6 @@
 #include "../images/sdl_logo.h"
 
 #include "Handcrank/Handcrank.hpp"
-#include "Handcrank/ImageRenderObject.hpp"
 #include "Handcrank/RectRenderObject.hpp"
 #include "Handcrank/TextRenderObject.hpp"
 #include "Handcrank/Utilities.hpp"
