@@ -136,31 +136,33 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
 
     vertices.reserve(vertices.size() + 4);
 
-    vertices.push_back({{destRect.x, destRect.y},
-                        color,
-                        {srcRect.x / textureWidth, srcRect.y / textureHeight}});
-    vertices.push_back(
-        {{destRect.x + destRect.w, destRect.y},
-         color,
-         {(srcRect.x + srcRect.w) / textureWidth, srcRect.y / textureHeight}});
-    vertices.push_back({{destRect.x + destRect.w, destRect.y + destRect.h},
-                        color,
-                        {(srcRect.x + srcRect.w) / textureWidth,
-                         (srcRect.y + srcRect.h) / textureHeight}});
-    vertices.push_back(
-        {{destRect.x, destRect.y + destRect.h},
-         color,
-         {srcRect.x / textureWidth, (srcRect.y + srcRect.h) / textureHeight}});
+    vertices.emplace_back(
+        SDL_Vertex{{destRect.x, destRect.y},
+                   color,
+                   {srcRect.x / textureWidth, srcRect.y / textureHeight}});
+    vertices.emplace_back(SDL_Vertex{
+        {destRect.x + destRect.w, destRect.y},
+        color,
+        {(srcRect.x + srcRect.w) / textureWidth, srcRect.y / textureHeight}});
+    vertices.emplace_back(
+        SDL_Vertex{{destRect.x + destRect.w, destRect.y + destRect.h},
+                   color,
+                   {(srcRect.x + srcRect.w) / textureWidth,
+                    (srcRect.y + srcRect.h) / textureHeight}});
+    vertices.emplace_back(SDL_Vertex{
+        {destRect.x, destRect.y + destRect.h},
+        color,
+        {srcRect.x / textureWidth, (srcRect.y + srcRect.h) / textureHeight}});
 
     indices.reserve(indices.size() + 6);
 
-    indices.push_back(index);
-    indices.push_back(index + 1);
-    indices.push_back(index + 2);
+    indices.emplace_back(index);
+    indices.emplace_back(index + 1);
+    indices.emplace_back(index + 2);
 
-    indices.push_back(index);
-    indices.push_back(index + 2);
-    indices.push_back(index + 3);
+    indices.emplace_back(index);
+    indices.emplace_back(index + 2);
+    indices.emplace_back(index + 3);
 }
 
 inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr, const int index,

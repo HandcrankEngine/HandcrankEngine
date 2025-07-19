@@ -341,7 +341,7 @@ void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
     child->game = this;
 
-    children.push_back(child);
+    children.emplace_back(child);
 }
 
 template <typename T>
@@ -357,7 +357,7 @@ auto Game::GetChildrenByType(const bool nested)
     {
         if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
-            results.push_back(castedChild);
+            results.emplace_back(castedChild);
         }
 
         if (nested)
@@ -818,7 +818,7 @@ void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 
     child->game = game;
 
-    children.push_back(child);
+    children.emplace_back(child);
 }
 
 template <typename T>
@@ -834,7 +834,7 @@ auto RenderObject::GetChildrenByType(const bool nested)
     {
         if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
-            results.push_back(castedChild);
+            results.emplace_back(castedChild);
         }
 
         if (nested)

@@ -46,7 +46,7 @@ class FPS : public RenderObject
             return;
         }
 
-        _frameRates->push_back(static_cast<int>(game->GetFPS()));
+        _frameRates->emplace_back(static_cast<int>(game->GetFPS()));
 
         if (_frameRates->size() > 100)
         {

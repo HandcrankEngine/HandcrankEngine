@@ -108,7 +108,7 @@ class Animator : public RenderObject
 
     void AddAnimation(const std::shared_ptr<Animation> &animation)
     {
-        animations.push_back(animation);
+        animations.emplace_back(animation);
     }
 
     void AddDelay(const float delay)

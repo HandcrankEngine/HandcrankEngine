@@ -104,7 +104,7 @@ class SpriteRenderObject : public ImageRenderObject
         CalculateRect();
     }
 
-    void AddFrame(const SDL_Rect &rect) { spriteFrames.push_back(rect); }
+    void AddFrame(const SDL_Rect &rect) { spriteFrames.emplace_back(rect); }
 
     void ClearFrames() { spriteFrames.clear(); }
 

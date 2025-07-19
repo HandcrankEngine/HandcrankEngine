@@ -141,13 +141,13 @@ class LogoScreenSaver : public VertexRenderObject
   private:
     void AddLogoToList(float x, float y)
     {
-        items.push_back(
-            {{(float)x, (float)y, (float)textureWidth, (float)textureHeight},
-             {0, 0, (float)textureWidth, (float)textureHeight},
-             currentColor,
-             RandomBoolean() ? -1 : 1,
-             RandomBoolean() ? -1 : 1,
-             (rand() % 400) + 100});
+        items.emplace_back(Item{
+            {(float)x, (float)y, (float)textureWidth, (float)textureHeight},
+            {0, 0, (float)textureWidth, (float)textureHeight},
+            currentColor,
+            RandomBoolean() ? -1 : 1,
+            RandomBoolean() ? -1 : 1,
+            (rand() % 400) + 100});
 
         GenerateTextureQuad(vertices, indices, items.back().rect,
                             items.back().srcRect, items.back().color,
