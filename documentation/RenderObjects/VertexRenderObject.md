@@ -19,7 +19,7 @@ class LogoGrid : public VertexRenderObject
   public:
     void Start() override
     {
-        texture = SDL_LoadTexture(game->GetRenderer(), images_sdl_logo_png,
+        texture = LoadCachedTexture(game->GetRenderer(), images_sdl_logo_png,
                                   images_sdl_logo_png_len);
 
         int textureWidth;

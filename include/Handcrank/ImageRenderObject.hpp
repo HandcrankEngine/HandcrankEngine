@@ -35,7 +35,7 @@ inline auto ClearTextureCache() -> void
  * @param path File path to texture file.
  */
 
-inline auto SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
+inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
     -> SDL_Texture *
 {
     if (textureCache.find(path) != textureCache.end())
@@ -71,8 +71,8 @@ inline auto SDL_LoadTexture(SDL_Renderer *renderer, const char *path)
  * @param mem A pointer to a read-only buffer.
  * @param size The buffer size, in bytes.
  */
-inline auto SDL_LoadTexture(SDL_Renderer *renderer, const void *mem,
-                            const int size) -> SDL_Texture *
+inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
+                              const int size) -> SDL_Texture *
 {
     auto hash = MemHash(mem, size);
 
@@ -155,7 +155,7 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(SDL_Renderer *renderer, const char *path)
     {
-        texture = SDL_LoadTexture(renderer, path);
+        texture = LoadCachedTexture(renderer, path);
 
         UpdateRectSizeFromTexture();
     }
@@ -169,7 +169,7 @@ class ImageRenderObject : public RenderObject
      */
     void LoadTexture(SDL_Renderer *renderer, const void *mem, const int size)
     {
-        texture = SDL_LoadTexture(renderer, mem, size);
+        texture = LoadCachedTexture(renderer, mem, size);
 
         UpdateRectSizeFromTexture();
     }
@@ -182,14 +182,15 @@ class ImageRenderObject : public RenderObject
      */
     void LoadSVGString(SDL_Renderer *renderer, const std::string &content)
     {
-        texture = SDL_LoadTexture(renderer, content.c_str(), content.size());
+        texture = LoadCachedTexture(renderer, content.c_str(), content.size());
 
         UpdateRectSizeFromTexture();
     }
 
     void UpdateRectSizeFromTexture()
     {
-        if (texture == nullptr) {
+        if (texture == nullptr)
+        {
             return;
         }
 

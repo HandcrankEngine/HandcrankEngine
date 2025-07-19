@@ -58,8 +58,8 @@ class LogoScreenSaver : public VertexRenderObject
 
         background->AddChildObject(label);
 
-        texture = SDL_LoadTexture(game->GetRenderer(), images_sdl_logo_png,
-                                  images_sdl_logo_png_len);
+        texture = LoadCachedTexture(game->GetRenderer(), images_sdl_logo_png,
+                                    images_sdl_logo_png_len);
 
         int length = 0;
 
