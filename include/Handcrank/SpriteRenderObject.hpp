@@ -36,7 +36,7 @@ class SpriteRenderObject : public ImageRenderObject
                                 const float h)
         : ImageRenderObject(x, y, w, h) {};
 
-    ~SpriteRenderObject() = default;
+    ~SpriteRenderObject() override = default;
 
     void Play() { isPlaying = true; }
     void PlayOnce()

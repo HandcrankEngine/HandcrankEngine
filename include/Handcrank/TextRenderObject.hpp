@@ -110,7 +110,7 @@ class TextRenderObject : public RenderObject
         }
     };
 
-    ~TextRenderObject()
+    ~TextRenderObject() override
     {
         if (textTexture != nullptr)
         {

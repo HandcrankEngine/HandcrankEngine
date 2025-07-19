@@ -31,7 +31,7 @@ class RectRenderObject : public RenderObject
                               const float h)
         : RenderObject(x, y, w, h) {};
 
-    ~RectRenderObject() = default;
+    ~RectRenderObject() override = default;
 
     /**
      * Set rect border color.

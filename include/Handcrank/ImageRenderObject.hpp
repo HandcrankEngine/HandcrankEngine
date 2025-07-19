@@ -37,7 +37,7 @@ class ImageRenderObject : public RenderObject
                                const float h)
         : RenderObject(x, y, w, h) {};
 
-    ~ImageRenderObject() = default;
+    ~ImageRenderObject() override = default;
 
     /**
      * Set texture from an existing texture reference.
