@@ -249,7 +249,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
         SetRect(x, y, w, h);
     }
 
-    inline ~RenderObject();
+    virtual inline ~RenderObject();
 
     inline void Enable();
     inline void Disable();
