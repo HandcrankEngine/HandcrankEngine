@@ -16,11 +16,11 @@ class Button : public RectRenderObject
     void Start() override { SetFillColor(255, 0, 0, 255); }
     void Update(const double deltaTime) override
     {
-        if (game->keyPressedState[SDLK_SPACE])
+        if (game->IsKeyPressed(SDLK_SPACE))
         {
             SetFillColor(255, 0, 0, 100);
         }
-        else if (game->keyReleasedState[SDLK_SPACE])
+        else if (game->IsKeyPressed(SDLK_SPACE))
         {
             SetFillColor(255, 0, 0, 255);
         }

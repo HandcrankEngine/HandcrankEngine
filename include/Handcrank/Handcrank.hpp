@@ -80,6 +80,16 @@ class Game
 
     SDL_Event event;
 
+    std::unordered_map<SDL_Keycode, bool> keyState;
+    std::unordered_map<SDL_Keycode, bool> keyPressedState;
+    std::unordered_map<SDL_Keycode, bool> keyReleasedState;
+
+    SDL_FPoint mousePosition{};
+
+    std::unordered_map<Uint8, bool> mouseState;
+    std::unordered_map<Uint8, bool> mousePressedState;
+    std::unordered_map<Uint8, bool> mouseReleasedState;
+
     double deltaTime = 0;
     double fixedUpdateDeltaTime = 0;
 
@@ -104,16 +114,6 @@ class Game
 #endif
 
   public:
-    std::unordered_map<SDL_Keycode, bool> keyState;
-    std::unordered_map<SDL_Keycode, bool> keyPressedState;
-    std::unordered_map<SDL_Keycode, bool> keyReleasedState;
-
-    SDL_FPoint mousePosition{};
-
-    std::unordered_map<Uint8, bool> mouseState;
-    std::unordered_map<Uint8, bool> mousePressedState;
-    std::unordered_map<Uint8, bool> mouseReleasedState;
-
     std::vector<std::shared_ptr<RenderObject>> children;
 
     inline Game();
@@ -143,6 +143,19 @@ class Game
     [[nodiscard]] inline auto GetHeight() const -> int;
 
     [[nodiscard]] inline auto HasFocus() const -> bool;
+
+    [[nodiscard]] inline auto IsKeyDown(SDL_Keycode keyCode) const -> bool;
+    [[nodiscard]] inline auto IsKeyPressed(SDL_Keycode keyCode) const -> bool;
+    [[nodiscard]] inline auto IsKeyReleased(SDL_Keycode keyCode) const -> bool;
+
+    [[nodiscard]] inline auto GetMousePosition() const -> SDL_FPoint;
+
+    [[nodiscard]] inline auto IsMouseButtonDown(Uint8 buttonIndex) const
+        -> bool;
+    [[nodiscard]] inline auto IsMouseButtonPressed(Uint8 buttonIndex) const
+        -> bool;
+    [[nodiscard]] inline auto IsMouseButtonReleased(Uint8 buttonIndex) const
+        -> bool;
 
     [[nodiscard]] inline auto GetFrameRate() const -> double;
 
@@ -458,6 +471,80 @@ auto Game::GetWidth() const -> int { return width; }
 auto Game::GetHeight() const -> int { return height; }
 
 auto Game::HasFocus() const -> bool { return focused; }
+
+auto Game::IsKeyDown(const SDL_Keycode keyCode) const -> bool
+{
+    auto result = keyState.find(keyCode);
+
+    if (result != keyState.end())
+    {
+        return result->second;
+    }
+
+    return false;
+};
+
+auto Game::IsKeyPressed(const SDL_Keycode keyCode) const -> bool
+{
+    auto result = keyPressedState.find(keyCode);
+
+    if (result != keyPressedState.end())
+    {
+        return result->second;
+    }
+
+    return false;
+};
+
+auto Game::IsKeyReleased(const SDL_Keycode keyCode) const -> bool
+{
+    auto result = keyReleasedState.find(keyCode);
+
+    if (result != keyReleasedState.end())
+    {
+        return result->second;
+    }
+
+    return false;
+};
+
+auto Game::GetMousePosition() const -> SDL_FPoint { return mousePosition; };
+
+auto Game::IsMouseButtonDown(const Uint8 buttonIndex) const -> bool
+{
+    auto result = mouseState.find(buttonIndex);
+
+    if (result != mouseState.end())
+    {
+        return result->second;
+    }
+
+    return false;
+};
+
+auto Game::IsMouseButtonPressed(const Uint8 buttonIndex) const -> bool
+{
+    auto result = mousePressedState.find(buttonIndex);
+
+    if (result != mousePressedState.end())
+    {
+        return result->second;
+    }
+
+    return false;
+};
+
+auto Game::IsMouseButtonReleased(const Uint8 buttonIndex) const -> bool
+{
+    auto result = mouseReleasedState.find(buttonIndex);
+
+    if (result != mouseReleasedState.end())
+    {
+        return result->second;
+    }
+
+    return false;
+};
 
 auto Game::GetFrameRate() const -> double { return frameRate; }
 
@@ -842,9 +929,11 @@ void RenderObject::InternalUpdate(const double deltaTime)
 
     auto transformedRect = GetTransformedRect();
 
-    if (SDL_PointInFRect(&game->mousePosition, &transformedRect) == SDL_TRUE)
+    auto mousePosition = game->GetMousePosition();
+
+    if (SDL_PointInFRect(&mousePosition, &transformedRect) == SDL_TRUE)
     {
-        if (game->mousePressedState[SDL_BUTTON_LEFT])
+        if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT))
         {
             OnMouseDown();
 
@@ -865,7 +954,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
         isInputHovered = false;
     }
 
-    if (isInputActive && game->mouseReleasedState[SDL_BUTTON_LEFT])
+    if (isInputActive && game->IsMouseButtonReleased(SDL_BUTTON_LEFT))
     {
         OnMouseUp();
 

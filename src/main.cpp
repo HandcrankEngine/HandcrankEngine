@@ -16,11 +16,11 @@ class InputManager : public RenderObject
   public:
     void Update(const double deltaTime) override
     {
-        if (game->keyState[SDLK_ESCAPE])
+        if (game->IsKeyPressed(SDLK_ESCAPE))
         {
             game->Quit();
         }
-        else if (game->keyPressedState[SDLK_d])
+        else if (game->IsKeyPressed(SDLK_d))
         {
             game->ToggleDebug();
         }
