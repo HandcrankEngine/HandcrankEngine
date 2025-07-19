@@ -23,7 +23,10 @@ inline auto ClearFontCache() -> void
 {
     for (const auto &font : fontCache)
     {
-        TTF_CloseFont(font.second);
+        if (font.second != nullptr)
+        {
+            TTF_CloseFont(font.second);
+        }
     }
 
     fontCache.clear();

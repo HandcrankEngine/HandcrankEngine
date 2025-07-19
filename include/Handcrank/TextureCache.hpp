@@ -21,7 +21,10 @@ inline auto ClearTextureCache() -> void
 {
     for (const auto &texture : textureCache)
     {
-        SDL_DestroyTexture(texture.second);
+        if (texture.second != nullptr)
+        {
+            SDL_DestroyTexture(texture.second);
+        }
     }
 
     textureCache.clear();
