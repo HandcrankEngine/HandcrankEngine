@@ -20,6 +20,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "FontCache.hpp"
 #include "TextureCache.hpp"
 #include "Utilities.hpp"
 
@@ -335,6 +336,8 @@ Game::~Game()
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
 
+    ClearFontCache();
+    CleanupFontInits();
     ClearTextureCache();
 
     SDL_Quit();

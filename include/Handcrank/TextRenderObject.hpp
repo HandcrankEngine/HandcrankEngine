@@ -8,73 +8,16 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "FontCache.hpp"
 #include "Handcrank.hpp"
 
 namespace Handcrank
 {
 
-/**
- * Load font from a path.
- *
- * @param path File path to font file.
- * @param ptSize The size of the font.
- */
-inline auto SDL_LoadFont(const char *path, const int ptSize = 24)
-    -> std::shared_ptr<TTF_Font>
-{
-    if (TTF_WasInit() == 0)
-    {
-        TTF_Init();
-    }
-
-    auto *font = TTF_OpenFont(path, ptSize);
-
-    if (font == nullptr)
-    {
-        return nullptr;
-    }
-
-    return {font, TTF_CloseFont};
-}
-
-/**
- * Load font from a read-only buffer.
- *
- * @param mem A pointer to a read-only buffer.
- * @param size The buffer size, in bytes.
- * @param ptSize The size of the font.
- */
-inline auto SDL_LoadFont(const void *mem, const int size, const int ptSize = 24)
-    -> std::shared_ptr<TTF_Font>
-{
-    if (TTF_WasInit() == 0)
-    {
-        TTF_Init();
-    }
-
-    auto *rw = SDL_RWFromConstMem(mem, size);
-
-    if (rw == nullptr)
-    {
-        return nullptr;
-    }
-
-    auto *font = TTF_OpenFontRW(rw, 1, ptSize);
-
-    if (font == nullptr)
-    {
-        SDL_RWclose(rw);
-
-        return nullptr;
-    }
-
-    return {font, TTF_CloseFont};
-}
-
 class TextRenderObject : public RenderObject
 {
   protected:
-    std::shared_ptr<TTF_Font> font;
+    TTF_Font *font;
 
     SDL_Color color{MAX_R, MAX_G, MAX_B, MAX_ALPHA};
 
@@ -85,30 +28,13 @@ class TextRenderObject : public RenderObject
     SDL_Texture *textTexture = nullptr;
 
   public:
-    explicit TextRenderObject()
-    {
-        if (TTF_WasInit() == 0)
-        {
-            TTF_Init();
-        }
-    };
+    explicit TextRenderObject() = default;
 
-    explicit TextRenderObject(const float x, const float y) : RenderObject(x, y)
-    {
-        if (TTF_WasInit() == 0)
-        {
-            TTF_Init();
-        }
-    };
+    explicit TextRenderObject(const float x, const float y)
+        : RenderObject(x, y) {};
     explicit TextRenderObject(const float x, const float y, const float w,
                               const float h)
-        : RenderObject(x, y, w, h)
-    {
-        if (TTF_WasInit() == 0)
-        {
-            TTF_Init();
-        }
-    };
+        : RenderObject(x, y, w, h) {};
 
     ~TextRenderObject() override
     {
@@ -128,7 +54,7 @@ class TextRenderObject : public RenderObject
      *
      * @param font Font value to set.
      */
-    void SetFont(const std::shared_ptr<TTF_Font> &font) { this->font = font; }
+    void SetFont(TTF_Font *font) { this->font = font; }
 
     /**
      * Load font from a path.
@@ -141,7 +67,7 @@ class TextRenderObject : public RenderObject
      */
     void LoadFont(const char *path, const int ptSize = 24)
     {
-        font = SDL_LoadFont(path, ptSize);
+        font = LoadCachedFont(path, ptSize);
     }
 
     /**
@@ -153,7 +79,7 @@ class TextRenderObject : public RenderObject
      */
     void LoadFontRW(const void *mem, const int size, const int ptSize = 24)
     {
-        font = SDL_LoadFont(mem, size, ptSize);
+        font = LoadCachedFont(mem, size, ptSize);
     }
 
     /**
@@ -191,8 +117,7 @@ class TextRenderObject : public RenderObject
             textSurface = nullptr;
         }
 
-        textSurface =
-            TTF_RenderText_Blended(font.get(), this->text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font, this->text.c_str(), color);
 
         if (textSurface == nullptr)
         {
@@ -235,8 +160,8 @@ class TextRenderObject : public RenderObject
             textSurface = nullptr;
         }
 
-        textSurface = TTF_RenderText_Blended_Wrapped(
-            font.get(), this->text.c_str(), color, rect.w);
+        textSurface = TTF_RenderText_Blended_Wrapped(font, this->text.c_str(),
+                                                     color, rect.w);
 
         if (textSurface == nullptr)
         {
