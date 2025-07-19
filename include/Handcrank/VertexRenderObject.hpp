@@ -19,6 +19,10 @@ class VertexRenderObject : public RenderObject
     std::vector<int> indices;
 
   public:
+    explicit VertexRenderObject() = default;
+
+    ~VertexRenderObject() override = default;
+
     void Render(SDL_Renderer *renderer) override
     {
         SDL_RenderGeometry(game->GetRenderer(), texture, vertices.data(),
