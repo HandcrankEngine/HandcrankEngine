@@ -20,6 +20,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "TextureCache.hpp"
 #include "Utilities.hpp"
 
 namespace Handcrank
@@ -333,6 +334,8 @@ Game::~Game()
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+
+    ClearTextureCache();
 
     SDL_Quit();
 };
