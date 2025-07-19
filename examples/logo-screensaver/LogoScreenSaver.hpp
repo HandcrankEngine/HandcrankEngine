@@ -65,9 +65,6 @@ class LogoScreenSaver : public VertexRenderObject
 
         items.reserve(length);
 
-        vertices.reserve(length * 4);
-        indices.reserve(length * 6);
-
         SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
                          &textureHeight);
 
