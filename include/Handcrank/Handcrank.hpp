@@ -328,16 +328,12 @@ Game::~Game()
 
     children.clear();
 
-    for (auto i = 0; i < TTF_WasInit(); i += 1)
-    {
-        TTF_Quit();
-    }
-
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
 
     ClearFontCache();
     CleanupFontInits();
+
     ClearTextureCache();
 
     SDL_Quit();
