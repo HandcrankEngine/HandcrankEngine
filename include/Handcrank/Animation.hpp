@@ -39,7 +39,7 @@ class Animation
     }
     Animation(
         const std::function<int(const double, const double)> &tickFunction,
-        const double &deframeStep)
+        const double deframeStep)
     {
         this->tickFunction = tickFunction;
         this->deframeStep = deframeStep;
@@ -108,7 +108,7 @@ class Animation
         this->tickFunction = tickFunction;
     }
 
-    void SetDeframeStep(const double &deframeStep)
+    void SetDeframeStep(const double deframeStep)
     {
         this->deframeStep = deframeStep;
     }
