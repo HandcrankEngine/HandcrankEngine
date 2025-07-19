@@ -12,6 +12,9 @@
 namespace Handcrank
 {
 
+inline const int DEFAULT_AUDIO_FREQUENCY = 44100;
+inline const int DEFAULT_AUDIO_CHUNK_SIZE = 1024;
+
 namespace
 {
 std::unordered_map<std::string, std::shared_ptr<Mix_Music>> audioMusicCache =
@@ -44,7 +47,8 @@ struct SFXDeleter
 
 inline auto SetupAudio() -> int
 {
-    return Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    return Mix_OpenAudio(DEFAULT_AUDIO_FREQUENCY, MIX_DEFAULT_FORMAT, 2,
+                         DEFAULT_AUDIO_CHUNK_SIZE);
 }
 
 inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
