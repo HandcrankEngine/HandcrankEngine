@@ -48,6 +48,8 @@ jobs:
           SDL_MIXER_VERSION: ${{ inputs.SDL_MIXER_VERSION || '2.8.1' }}
 
       - name: Build and test
+        working-directory: .github/workflows/
         run: |
-          cmake .github/workflows/
-          make
+          mkdir build
+          (cd build/ && cmake ..)
+          (cd build/ && cmake --build .)

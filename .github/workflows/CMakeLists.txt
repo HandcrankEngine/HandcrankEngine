@@ -28,7 +28,7 @@ include_directories(
     ${SDL_INCLUDE_DIR}
     ${SDL_IMAGE_INCLUDE_DIR}
     ${SDL_TTF_INCLUDE_DIR}
-    ${SDL_MIXER_LIBRARY_DIR}
+    ${SDL_MIXER_INCLUDE_DIR}
 )
 
 include_directories("../../fonts")
