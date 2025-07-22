@@ -3,7 +3,7 @@
 
 # ![Handcrank Engine](./logo.svg)
 
-> Handcrank Engine is a cross-platform game engine written in C++ utilizing SDL.
+> Handcrank Engine is an easy-to-use game engine based on simple principles that are quick to understand and build with.
 
 [![Made With SDL2](https://img.shields.io/badge/Made_With-SDL2-blue)](https://www.libsdl.org/)
 [![Build](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/build.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/build.workflow.yml)
