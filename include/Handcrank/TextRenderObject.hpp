@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "FontCache.hpp"
 #include "Handcrank.hpp"
@@ -45,7 +45,7 @@ class TextRenderObject : public RenderObject
 
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
         }
     };
 
@@ -113,11 +113,12 @@ class TextRenderObject : public RenderObject
 
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
             textSurface = nullptr;
         }
 
-        textSurface = TTF_RenderText_Blended(font, this->text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font, this->text.c_str(),
+                                             this->text.length(), color);
 
         if (textSurface == nullptr)
         {
@@ -156,13 +157,12 @@ class TextRenderObject : public RenderObject
 
         if (textSurface != nullptr)
         {
-            SDL_FreeSurface(textSurface);
+            SDL_DestroySurface(textSurface);
             textSurface = nullptr;
         }
 
-        textSurface = TTF_RenderText_Blended_Wrapped(font, this->text.c_str(),
-                                                     color, rect.w);
-
+        textSurface = TTF_RenderText_Blended_Wrapped(
+            font, this->text.c_str(), this->text.length(), color, rect.w);
         if (textSurface == nullptr)
         {
             std::cerr << "ERROR! Failed to generate text surface.\n";
@@ -197,7 +197,7 @@ class TextRenderObject : public RenderObject
 
         auto transformedRect = GetTransformedRect();
 
-        SDL_RenderCopyF(renderer, textTexture, nullptr, &transformedRect);
+        SDL_RenderTexture(renderer, textTexture, nullptr, &transformedRect);
 
         RenderObject::Render(renderer);
     }

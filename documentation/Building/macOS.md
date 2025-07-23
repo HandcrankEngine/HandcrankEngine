@@ -9,9 +9,9 @@ brew install cmake
 ## Install SDL
 
 ```bash
-brew install SDL2
-brew install SDL2_image
-brew install SDL2_ttf
+brew install SDL3
+brew install SDL3_image
+brew install SDL3_ttf
 brew install SDL2_mixer
 ```
 

@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include "Handcrank.hpp"
 #include "TextureCache.hpp"
@@ -17,7 +17,7 @@ class ImageRenderObject : public RenderObject
   protected:
     SDL_Texture *texture;
 
-    SDL_Rect srcRect = SDL_Rect();
+    SDL_FRect srcRect = SDL_FRect();
 
     bool srcRectSet = false;
 
@@ -27,7 +27,7 @@ class ImageRenderObject : public RenderObject
 
     int alpha = MAX_ALPHA;
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
 
   public:
     explicit ImageRenderObject() = default;
@@ -100,18 +100,16 @@ class ImageRenderObject : public RenderObject
         {
             return;
         }
+        float textureWidth;
+        float textureHeight;
 
-        int textureWidth;
-        int textureHeight;
-
-        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture, &textureWidth, &textureHeight);
 
         rect.w = textureWidth;
         rect.h = textureHeight;
     }
 
-    void SetSrcRect(const SDL_Rect &srcRect)
+    void SetSrcRect(const SDL_FRect &srcRect)
     {
         this->srcRect.x = srcRect.x;
         this->srcRect.y = srcRect.y;
@@ -121,7 +119,7 @@ class ImageRenderObject : public RenderObject
         srcRectSet = true;
     }
 
-    void SetSrcRect(const int x, const int y, const int w, const int h)
+    void SetSrcRect(const float x, const float y, const float w, const float h)
     {
         this->srcRect.x = x;
         this->srcRect.y = y;
@@ -131,7 +129,7 @@ class ImageRenderObject : public RenderObject
         srcRectSet = true;
     }
 
-    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_FlipMode flip) { this->flip = flip; }
 
     void SetTintColor(const SDL_Color &tintColor)
     {
@@ -174,8 +172,9 @@ class ImageRenderObject : public RenderObject
 
         SDL_SetTextureAlphaMod(texture, alpha);
 
-        SDL_RenderCopyExF(renderer, texture, srcRectSet ? &srcRect : nullptr,
-                          &transformedRect, 0, &centerPoint, flip);
+        SDL_RenderTextureRotated(renderer, texture,
+                                 srcRectSet ? &srcRect : nullptr,
+                                 &transformedRect, 0, &centerPoint, flip);
 
         RenderObject::Render(renderer);
     }
