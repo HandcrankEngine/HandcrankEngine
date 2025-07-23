@@ -454,8 +454,10 @@ void Game::SetScreenSize(const int _width, const int _height)
 
     SDL_GL_GetDrawableSize(window, &width, &height);
 
+#ifndef __EMSCRIPTEN__
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
+#endif
 
     viewport.w = width;
     viewport.h = height;
