@@ -456,7 +456,6 @@ void Game::SetScreenSize(const int _width, const int _height)
 
     viewport.w = width;
     viewport.h = height;
-
     viewportf.w = static_cast<float>(width);
     viewportf.h = static_cast<float>(height);
 
