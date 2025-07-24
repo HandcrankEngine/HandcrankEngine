@@ -85,7 +85,9 @@ class LogoScreenSaver : public VertexRenderObject
             currentColor.b = RandomBoolean() ? 255 : 100;
         }
 
-        if (game->IsMouseButtonDown(SDL_BUTTON_LEFT))
+        if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
+            game->IsMouseButtonDown(SDL_BUTTON_LEFT) ||
+            game->IsMouseButtonReleased(SDL_BUTTON_LEFT))
         {
             AddLogoToList(game->GetMousePosition().x - (textureWidth / 2),
                           game->GetMousePosition().y - (textureHeight / 2));

@@ -663,7 +663,6 @@ void Game::HandleInput()
 
         case SDL_KEYUP:
             keyState[keyCode] = false;
-            keyPressedState[keyCode] = false;
             keyReleasedState[keyCode] = true;
             break;
 
@@ -679,7 +678,6 @@ void Game::HandleInput()
 
         case SDL_MOUSEBUTTONUP:
             mouseState[mouseButtonIndex] = false;
-            mousePressedState[mouseButtonIndex] = false;
             mouseReleasedState[mouseButtonIndex] = true;
             break;
 
