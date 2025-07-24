@@ -462,6 +462,9 @@ void Game::SetScreenSize(const int _width, const int _height)
     dpiScaleX = (float)width / _width;
     dpiScaleY = (float)height / _height;
 
+    SDL_RenderSetScale(renderer, 1.0F, 1.0F);
+    SDL_RenderSetLogicalSize(renderer, width, height);
+
     SDL_RenderSetViewport(renderer, &viewport);
 }
 
@@ -665,8 +668,8 @@ void Game::HandleInput()
             break;
 
         case SDL_MOUSEMOTION:
-            mousePosition.x = event.motion.x * dpiScaleX;
-            mousePosition.y = event.motion.y * dpiScaleY;
+            mousePosition.x = event.motion.x;
+            mousePosition.y = event.motion.y;
             break;
 
         case SDL_MOUSEBUTTONDOWN:
