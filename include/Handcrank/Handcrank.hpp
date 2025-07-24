@@ -461,6 +461,8 @@ void Game::SetScreenSize(const int _width, const int _height)
 
     dpiScaleX = (float)width / _width;
     dpiScaleY = (float)height / _height;
+
+    SDL_RenderSetViewport(renderer, &viewport);
 }
 
 void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
@@ -721,8 +723,6 @@ void Game::Render()
                            clearColor.a);
 
     SDL_RenderClear(renderer);
-
-    SDL_RenderSetViewport(renderer, &viewport);
 
     sort(children.begin(), children.end(),
          [](const std::shared_ptr<RenderObject> &a,
