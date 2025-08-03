@@ -6,15 +6,14 @@
 #include <SDL.h>
 
 #include "Handcrank.hpp"
+#include "TextureRenderObject.hpp"
 
 namespace Handcrank
 {
 
-class VertexRenderObject : public RenderObject
+class VertexRenderObject : public TextureRenderObject
 {
   protected:
-    SDL_Texture *texture;
-
     std::vector<SDL_Vertex> vertices;
     std::vector<int> indices;
 
