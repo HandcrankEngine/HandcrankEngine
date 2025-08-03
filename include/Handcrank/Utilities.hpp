@@ -117,6 +117,13 @@ inline auto MemHash(const void *mem, const int size) -> std::string
     return std::to_string(hash);
 }
 
+inline auto ToString(const SDL_Rect &rect) -> std::string
+{
+    return "SDL_Rect(" + std::to_string(rect.x) + ", " +
+           std::to_string(rect.y) + ", " + std::to_string(rect.w) + ", " +
+           std::to_string(rect.h) + ")";
+}
+
 inline auto ToString(const SDL_FRect &rect) -> std::string
 {
     return "SDL_FRect(" + std::to_string(rect.x) + ", " +
