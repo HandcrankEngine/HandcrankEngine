@@ -74,6 +74,15 @@ inline auto RandomNumberRange(const int min, const int max) -> int
     return (rand() % (max - min + 1)) + min;
 }
 
+inline auto RandomColorRange(const SDL_Color min, const SDL_Color max)
+    -> SDL_Color
+{
+    return SDL_Color{(Uint8)RandomNumberRange(min.r, max.r),
+                     (Uint8)RandomNumberRange(min.g, max.g),
+                     (Uint8)RandomNumberRange(min.b, max.b),
+                     (Uint8)RandomNumberRange(min.a, max.a)};
+}
+
 inline auto RandomBoolean() -> bool { return rand() > (RAND_MAX / 2); }
 
 template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
