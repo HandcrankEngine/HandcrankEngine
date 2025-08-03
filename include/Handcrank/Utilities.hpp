@@ -131,10 +131,12 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
                                 const SDL_Color &color, float textureWidth,
                                 float textureHeight) -> void
 {
+    const int vertices_size = 4;
+    const int indices_size = 6;
 
     auto index = vertices.size();
 
-    vertices.reserve(vertices.size() + 4);
+    vertices.reserve(vertices.size() + vertices_size);
 
     vertices.emplace_back(
         SDL_Vertex{{destRect.x, destRect.y},
@@ -154,7 +156,7 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
         color,
         {srcRect.x / textureWidth, (srcRect.y + srcRect.h) / textureHeight}});
 
-    indices.reserve(indices.size() + 6);
+    indices.reserve(indices.size() + indices_size);
 
     indices.emplace_back(index);
     indices.emplace_back(index + 1);
