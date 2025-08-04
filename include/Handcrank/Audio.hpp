@@ -6,6 +6,7 @@
 #include <SDL_mixer.h>
 
 #include "AudioCache.hpp"
+#include "Utilities.hpp"
 
 namespace Handcrank
 {
