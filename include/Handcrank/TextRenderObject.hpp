@@ -21,7 +21,7 @@ class TextRenderObject : public RenderObject
 
     SDL_Color color{MAX_R, MAX_G, MAX_B, MAX_ALPHA};
 
-    std::string text;
+    const char *text;
 
     SDL_Surface *textSurface = nullptr;
 
@@ -94,7 +94,7 @@ class TextRenderObject : public RenderObject
      *
      * @param text Text value to set.
      */
-    void SetText(const std::string &text)
+    void SetText(const char *text)
     {
         if (font == nullptr)
         {
@@ -117,7 +117,7 @@ class TextRenderObject : public RenderObject
             textSurface = nullptr;
         }
 
-        textSurface = TTF_RenderText_Blended(font, this->text.c_str(), color);
+        textSurface = TTF_RenderText_Blended(font, this->text, color);
 
         if (textSurface == nullptr)
         {
@@ -137,7 +137,14 @@ class TextRenderObject : public RenderObject
      *
      * @param text Text value to set.
      */
-    void SetWrappedText(const std::string &text)
+    void SetText(const std::string &text) { SetText(text.c_str()); }
+
+    /**
+     * Set text content.
+     *
+     * @param text Text value to set.
+     */
+    void SetWrappedText(const char *text)
     {
         if (font == nullptr)
         {
@@ -160,8 +167,8 @@ class TextRenderObject : public RenderObject
             textSurface = nullptr;
         }
 
-        textSurface = TTF_RenderText_Blended_Wrapped(font, this->text.c_str(),
-                                                     color, rect.w);
+        textSurface =
+            TTF_RenderText_Blended_Wrapped(font, this->text, color, rect.w);
 
         if (textSurface == nullptr)
         {
@@ -175,6 +182,13 @@ class TextRenderObject : public RenderObject
 
         textTexture = nullptr;
     }
+
+    /**
+     * Set text content.
+     *
+     * @param text Text value to set.
+     */
+    void SetWrappedText(const std::string &text) { SetText(text.c_str()); }
 
     auto GetText() -> std::string { return text; }
 
