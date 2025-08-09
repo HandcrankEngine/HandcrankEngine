@@ -16,7 +16,7 @@ class InputManager : public RenderObject
   public:
     void Update(const double deltaTime) override
     {
-        if (game->IsKeyPressed(SDLK_ESCAPE))
+        if (game->IsKeyPressed(SDLK_ESCAPE) || game->IsKeyPressed(SDLK_q))
         {
             game->Quit();
         }
