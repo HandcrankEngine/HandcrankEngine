@@ -13,8 +13,6 @@
 #define HANDCRANK_VERSION_MINOR 0
 #define HANDCRANK_VERSION_PATCH 0
 
-#include <functional>
-#include <iostream>
 #include <memory>
 
 #include <SDL.h>
@@ -230,12 +228,6 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
 
     std::vector<std::shared_ptr<RenderObject>> children;
 
-    std::function<void(RenderObject *)> startFunction;
-
-    std::function<void(RenderObject *, double)> updateFunction;
-
-    std::function<void(RenderObject *, double)> fixedUpdateFunction;
-
   public:
     Game *game = nullptr;
 
@@ -270,11 +262,6 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
         -> std::vector<std::shared_ptr<T>>;
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
-
-    inline void SetStart(std::function<void(RenderObject *)> func);
-    inline void SetUpdate(std::function<void(RenderObject *, double)> func);
-    inline void
-    SetFixedUpdate(std::function<void(RenderObject *, double)> func);
 
     virtual inline void Start();
     virtual inline void Update(double deltaTime);
@@ -867,40 +854,6 @@ auto RenderObject::GetChildByType(const bool nested) -> std::shared_ptr<T>
     return nullptr;
 }
 
-void RenderObject::SetStart(std::function<void(RenderObject *)> func)
-{
-    if (startFunction)
-    {
-        std::cerr << "WARNING! Start function has already been set. "
-                     "Overriding with new function.\n";
-    }
-
-    startFunction = std::move(func);
-}
-
-void RenderObject::SetUpdate(std::function<void(RenderObject *, double)> func)
-{
-    if (updateFunction)
-    {
-        std::cerr << "WARNING! Update function has already been set. "
-                     "Overriding with new function.\n";
-    }
-
-    updateFunction = std::move(func);
-}
-
-void RenderObject::SetFixedUpdate(
-    std::function<void(RenderObject *, double)> func)
-{
-    if (fixedUpdateFunction)
-    {
-        std::cerr << "WARNING! Fixed update function has already been set. "
-                     "Overriding with new function.\n";
-    }
-
-    fixedUpdateFunction = std::move(func);
-}
-
 void RenderObject::Start() {}
 
 void RenderObject::Update(const double deltaTime) {}
@@ -920,11 +873,6 @@ void RenderObject::InternalUpdate(const double deltaTime)
     if (!hasStarted)
     {
         Start();
-
-        if (startFunction)
-        {
-            startFunction(this);
-        }
 
         hasStarted = true;
     }
@@ -965,11 +913,6 @@ void RenderObject::InternalUpdate(const double deltaTime)
 
     Update(deltaTime);
 
-    if (updateFunction)
-    {
-        updateFunction(this, deltaTime);
-    }
-
     for (const auto &child : children)
     {
         if (child->IsEnabled())
@@ -982,11 +925,6 @@ void RenderObject::InternalUpdate(const double deltaTime)
 void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
 {
     FixedUpdate(fixedDeltaTime);
-
-    if (fixedUpdateFunction)
-    {
-        fixedUpdateFunction(this, fixedDeltaTime);
-    }
 
     for (const auto &child : children)
     {

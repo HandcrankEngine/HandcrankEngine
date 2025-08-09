@@ -34,37 +34,3 @@ auto main(int argc, char *argv[]) -> int
     return game->Run();
 }
 ```
-
-## Inline Update and FixedUpdate Events
-
-```cpp
-#include <iostream>
-
-#include "Handcrank/Handcrank.hpp"
-
-using namespace Handcrank;
-
-auto game = std::make_unique<Game>();
-
-auto main(int argc, char *argv[]) -> int
-{
-    game->SetTitle("Handcrank Engine");
-
-    auto loopDebugger = std::make_unique<RenderObject>();
-
-    loopDebugger->SetUpdate(
-        [](RenderObject *ref, const double deltaTime)
-        { std::cout << "Update " << std::to_string(deltaTime) << std::endl; });
-
-    loopDebugger->SetFixedUpdate(
-        [](RenderObject *ref, const double fixedDeltaTime)
-        {
-            std::cout << "Fixed Update " << std::to_string(fixedDeltaTime)
-                      << std::endl;
-        });
-
-    game->AddChildObject(std::move(loopDebugger));
-
-    return game->Run();
-}
-```

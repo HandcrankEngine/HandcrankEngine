@@ -98,7 +98,7 @@ class TextRenderObject : public RenderObject
     {
         if (font == nullptr)
         {
-            std::cerr << "ERROR! Missing font reference.\n";
+            throw std::runtime_error("ERROR! Missing font reference.");
 
             return;
         }
@@ -121,7 +121,7 @@ class TextRenderObject : public RenderObject
 
         if (textSurface == nullptr)
         {
-            std::cerr << "ERROR! Failed to generate text surface.\n";
+            throw std::runtime_error("ERROR! Failed to generate text surface.");
 
             return;
         }
@@ -148,7 +148,7 @@ class TextRenderObject : public RenderObject
     {
         if (font == nullptr)
         {
-            std::cerr << "ERROR! Missing font reference.\n";
+            throw std::runtime_error("ERROR! Missing font reference.");
 
             return;
         }
@@ -172,7 +172,7 @@ class TextRenderObject : public RenderObject
 
         if (textSurface == nullptr)
         {
-            std::cerr << "ERROR! Failed to generate text surface.\n";
+            throw std::runtime_error("ERROR! Failed to generate text surface.");
 
             return;
         }
