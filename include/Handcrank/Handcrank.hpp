@@ -739,6 +739,7 @@ void Game::DestroyChildObjects()
 
             if (child->HasBeenMarkedForDestroy())
             {
+                iter->reset();
                 iter = children.erase(iter);
             }
             else
