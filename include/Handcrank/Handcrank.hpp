@@ -275,6 +275,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     virtual inline void InternalUpdate(double deltaTime);
     virtual inline void InternalFixedUpdate(double fixedDeltaTime);
 
+    virtual inline void OnDestroy();
+
     [[nodiscard]] inline auto GetRect() const -> const SDL_FRect &;
     inline void SetRect(const SDL_FRect &rect);
     inline void SetRect(float x, float y, float w, float h);
@@ -739,6 +741,8 @@ void Game::DestroyChildObjects()
 
             if (child->HasBeenMarkedForDestroy())
             {
+                child->OnDestroy();
+
                 iter->reset();
                 iter = children.erase(iter);
             }
@@ -936,6 +940,8 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
     }
 }
 
+void RenderObject::OnDestroy() {}
+
 auto RenderObject::GetRect() const -> const SDL_FRect & { return rect; }
 
 void RenderObject::SetRect(const SDL_FRect &rect)
@@ -1109,6 +1115,8 @@ void RenderObject::DestroyChildObjects()
 
             if (child->HasBeenMarkedForDestroy())
             {
+                child->OnDestroy();
+
                 iter->reset();
                 iter = children.erase(iter);
             }
