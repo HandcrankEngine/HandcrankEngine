@@ -140,7 +140,7 @@ class TextRenderObject : public RenderObject
     void SetText(const std::string &text) { SetText(text.c_str()); }
 
     /**
-     * Set text content.
+     * Set wrapped text content.
      *
      * @param text Text value to set.
      */
@@ -184,7 +184,7 @@ class TextRenderObject : public RenderObject
     }
 
     /**
-     * Set text content.
+     * Set wrapped text content.
      *
      * @param text Text value to set.
      */
