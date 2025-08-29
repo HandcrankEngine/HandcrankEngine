@@ -91,6 +91,7 @@ class Game
     std::unordered_map<Uint8, bool> mousePressedState;
     std::unordered_map<Uint8, bool> mouseReleasedState;
 
+    double elapsedTime = 0;
     double deltaTime = 0;
     double fixedUpdateDeltaTime = 0;
 
@@ -157,6 +158,8 @@ class Game
         -> bool;
     [[nodiscard]] inline auto IsMouseButtonReleased(Uint8 buttonIndex) const
         -> bool;
+
+    [[nodiscard]] inline auto GetElapsedTime() const -> double;
 
     [[nodiscard]] inline auto GetFrameRate() const -> double;
 
@@ -541,6 +544,8 @@ auto Game::IsMouseButtonReleased(const Uint8 buttonIndex) const -> bool
     return false;
 };
 
+auto Game::GetElapsedTime() const -> double { return elapsedTime; }
+
 auto Game::GetFrameRate() const -> double { return frameRate; }
 
 auto Game::GetFPS() const -> double { return fps; }
@@ -678,6 +683,8 @@ void Game::HandleInput()
 
 void Game::Update()
 {
+    elapsedTime += deltaTime;
+
     for (const auto &iter : children)
     {
         auto *child = iter.get();
