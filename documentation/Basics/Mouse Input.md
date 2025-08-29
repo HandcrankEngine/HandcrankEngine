@@ -3,8 +3,8 @@
 ## Mouse Position
 
 ```cpp
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 
@@ -33,8 +33,8 @@ auto main(int argc, char *argv[]) -> int
 ## MouseOver and MouseOut Events
 
 ```cpp
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 
@@ -61,8 +61,8 @@ auto main(int argc, char *argv[]) -> int
 ## MouseDown and MouseUp Events
 
 ```cpp
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 

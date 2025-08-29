@@ -5,8 +5,8 @@
 ```cpp
 #include "../images/sdl_logo.h"
 
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/ImageRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/ImageRenderObject.hpp"
 
 using namespace Handcrank;
 

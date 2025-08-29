@@ -3,11 +3,11 @@
 #include "../fonts/Roboto/Roboto-Regular.h"
 #include "../images/sdl_logo.h"
 
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
-#include "Handcrank/TextRenderObject.hpp"
-#include "Handcrank/Utilities.hpp"
-#include "Handcrank/VertexRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
+#include "HandcrankEngine/TextRenderObject.hpp"
+#include "HandcrankEngine/Utilities.hpp"
+#include "HandcrankEngine/VertexRenderObject.hpp"
 
 using namespace Handcrank;
 

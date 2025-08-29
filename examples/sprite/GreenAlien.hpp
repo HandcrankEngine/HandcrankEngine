@@ -2,8 +2,8 @@
 
 #include "../images/alienGreen.h"
 
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/SpriteRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/SpriteRenderObject.hpp"
 
 using namespace Handcrank;
 

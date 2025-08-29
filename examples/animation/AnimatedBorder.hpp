@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Handcrank/Animator.hpp"
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Animator.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 

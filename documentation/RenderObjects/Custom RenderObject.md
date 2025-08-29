@@ -3,8 +3,8 @@
 ## Creating Custom Objects
 
 ```cpp
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 

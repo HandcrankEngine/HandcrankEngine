@@ -32,7 +32,7 @@ jobs:
 
       - name: Lint library files
         run: |
-          cppcheck include/Handcrank/*.hpp
+          cppcheck include/HandcrankEngine/*.hpp
 
       - name: Lint example files
         run: |

@@ -1,7 +1,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "Handcrank/Utilities.hpp"
+#include "HandcrankEngine/Utilities.hpp"
 
 #include "../images/sdl_logo.h"
 

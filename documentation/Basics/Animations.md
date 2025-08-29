@@ -3,8 +3,8 @@
 ## Create an Animator
 
 ```cpp
-#include "Handcrank/Animator.hpp"
-#include "Handcrank/Handcrank.hpp"
+#include "HandcrankEngine/Animator.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
 
 using namespace Handcrank;
 
@@ -33,9 +33,9 @@ auto main(int argc, char *argv[]) -> int
 ## Create a Blinking Animation
 
 ```cpp
-#include "Handcrank/Animator.hpp"
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Animator.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 

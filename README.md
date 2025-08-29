@@ -32,7 +32,7 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 ## Quick Start Guide
 
 ```cpp
-#include "Handcrank/Handcrank.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
 
 using namespace Handcrank;
 
@@ -49,24 +49,20 @@ auto main(int argc, char *argv[]) -> int
 ## Documentation
 
 1. [Basics](/documentation/Basics)
-
    1. [Animations](/documentation/Basics/Animations.md)
    1. [Keyboard Input](/documentation/Basics/Keyboard%20Input.md)
    1. [Mouse Input](/documentation/Basics/Mouse%20Input.md)
    1. [Update Loop](/documentation/Basics/Update%20Loop.md)
 
 1. [Building](/documentation/Building)
-
    1. [Windows](/documentation/Building/Windows.md)
    1. [macOS](/documentation/Building/macOS.md)
    1. [Web](/documentation/Building/Web.md)
 
 1. [Examples](/documentation/Examples)
-
    1. [FPS](/documentation/Examples/FPS.md)
 
 1. [RenderObjects](/documentation/RenderObjects)
-
    1. [Custom RenderObject](/documentation/RenderObjects/Custom%20RenderObject.md)
    1. [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject.md)
    1. [RectRenderObject](/documentation/RenderObjects/RectRenderObject.md)
@@ -82,8 +78,8 @@ auto main(int argc, char *argv[]) -> int
 ### Draw Rectangle
 
 ```cpp
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/RectRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
 
@@ -109,8 +105,8 @@ auto main(int argc, char *argv[]) -> int
 ```cpp
 #include "../images/sdl_logo.h"
 
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/ImageRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/ImageRenderObject.hpp"
 
 using namespace Handcrank;
 

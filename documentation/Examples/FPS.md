@@ -3,8 +3,8 @@
 ```cpp
 #include "../fonts/Roboto/Roboto-Regular.h"
 
-#include "Handcrank/Handcrank.hpp"
-#include "Handcrank/TextRenderObject.hpp"
+#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/TextRenderObject.hpp"
 
 using namespace Handcrank;
 
