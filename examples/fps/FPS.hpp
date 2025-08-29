@@ -5,7 +5,7 @@
 
 #include "../fonts/Roboto/Roboto-Regular.h"
 
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 #include "HandcrankEngine/TextRenderObject.hpp"
 

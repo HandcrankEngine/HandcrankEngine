@@ -7,7 +7,7 @@
 
 #include "../images/character-idle.h"
 
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/SpriteRenderObject.hpp"
 
 using namespace Handcrank;

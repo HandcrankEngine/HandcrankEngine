@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "Handcrank.hpp"
+#include "HandcrankEngine.hpp"
 #include "TextureCache.hpp"
 
 namespace Handcrank

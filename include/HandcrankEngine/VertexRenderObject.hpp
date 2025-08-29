@@ -5,7 +5,7 @@
 
 #include <SDL.h>
 
-#include "Handcrank.hpp"
+#include "HandcrankEngine.hpp"
 #include "TextureRenderObject.hpp"
 
 namespace Handcrank

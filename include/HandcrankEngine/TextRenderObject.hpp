@@ -9,7 +9,7 @@
 #include <SDL_ttf.h>
 
 #include "FontCache.hpp"
-#include "Handcrank.hpp"
+#include "HandcrankEngine.hpp"
 
 namespace Handcrank
 {

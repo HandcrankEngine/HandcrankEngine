@@ -1,6 +1,6 @@
 #define HANDCRANK_DEBUG 1
 
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 
 #include "../examples/animation/AnimatedBorder.hpp"
 #include "../examples/fps/FPS.hpp"

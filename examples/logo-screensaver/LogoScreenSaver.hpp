@@ -3,7 +3,7 @@
 #include "../fonts/Roboto/Roboto-Regular.h"
 #include "../images/sdl_logo.h"
 
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 #include "HandcrankEngine/TextRenderObject.hpp"
 #include "HandcrankEngine/Utilities.hpp"

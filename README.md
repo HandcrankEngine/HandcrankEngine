@@ -32,7 +32,7 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 ## Quick Start Guide
 
 ```cpp
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 
 using namespace Handcrank;
 
@@ -78,7 +78,7 @@ auto main(int argc, char *argv[]) -> int
 ### Draw Rectangle
 
 ```cpp
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;
@@ -105,7 +105,7 @@ auto main(int argc, char *argv[]) -> int
 ```cpp
 #include "../images/sdl_logo.h"
 
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/ImageRenderObject.hpp"
 
 using namespace Handcrank;

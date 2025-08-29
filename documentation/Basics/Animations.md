@@ -4,7 +4,7 @@
 
 ```cpp
 #include "HandcrankEngine/Animator.hpp"
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 
 using namespace Handcrank;
 
@@ -34,7 +34,7 @@ auto main(int argc, char *argv[]) -> int
 
 ```cpp
 #include "HandcrankEngine/Animator.hpp"
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 
 using namespace Handcrank;

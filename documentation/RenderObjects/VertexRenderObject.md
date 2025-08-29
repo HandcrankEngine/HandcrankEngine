@@ -7,7 +7,7 @@
 
 #include "../images/sdl_logo.h"
 
-#include "HandcrankEngine/Handcrank.hpp"
+#include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/ImageRenderObject.hpp"
 #include "HandcrankEngine/Utilities.hpp"
 #include "HandcrankEngine/VertexRenderObject.hpp"
