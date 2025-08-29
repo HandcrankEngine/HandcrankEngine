@@ -188,7 +188,10 @@ class TextRenderObject : public RenderObject
      *
      * @param text Text value to set.
      */
-    void SetWrappedText(const std::string &text) { SetText(text.c_str()); }
+    void SetWrappedText(const std::string &text)
+    {
+        SetWrappedText(text.c_str());
+    }
 
     auto GetText() -> std::string { return text; }
 
