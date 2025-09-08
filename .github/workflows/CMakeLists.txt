@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
 
-set(SDL_LIBRARY_DIR "/tmp/.sdl/SDL-2.32.8/lib")
-set(SDL_INCLUDE_DIR "/tmp/.sdl/SDL-2.32.8/include/SDL2")
+set(SDL_LIBRARY_DIR "/tmp/.sdl/SDL-2.32.10/lib")
+set(SDL_INCLUDE_DIR "/tmp/.sdl/SDL-2.32.10/include/SDL2")
 
 set(SDL_IMAGE_LIBRARY_DIR "/tmp/.sdl/SDL_image-2.8.8/lib")
 set(SDL_IMAGE_INCLUDE_DIR "/tmp/.sdl/SDL_image-2.8.8/include/SDL2")
