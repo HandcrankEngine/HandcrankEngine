@@ -1,4 +1,4 @@
-#define HANDCRANK_DEBUG 1
+#define HANDCRANK_ENGINE_DEBUG 1
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
 

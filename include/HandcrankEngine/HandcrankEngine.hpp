@@ -1,7 +1,7 @@
 // Copyright (c) Scott Doxey. All Rights Reserved. Licensed under the MIT
 // License. See LICENSE in the project root for license information.
 
-// #define HANDCRANK_DEBUG 1
+// #define HANDCRANK_ENGINE_DEBUG 1
 
 #pragma once
 
@@ -9,9 +9,9 @@
 #include <emscripten.h>
 #endif
 
-#define HANDCRANK_VERSION_MAJOR 0
-#define HANDCRANK_VERSION_MINOR 0
-#define HANDCRANK_VERSION_PATCH 0
+#define HANDCRANK_ENGINE_VERSION_MAJOR 0
+#define HANDCRANK_ENGINE_VERSION_MINOR 0
+#define HANDCRANK_ENGINE_VERSION_PATCH 0
 
 #include <memory>
 
@@ -111,7 +111,7 @@ class Game
 
     bool focused = false;
 
-#ifdef HANDCRANK_DEBUG
+#ifdef HANDCRANK_ENGINE_DEBUG
     bool debug = false;
 #endif
 
@@ -198,7 +198,7 @@ class Game
 
     inline void Quit();
 
-#ifdef HANDCRANK_DEBUG
+#ifdef HANDCRANK_ENGINE_DEBUG
     inline void ToggleDebug(bool state);
     inline void ToggleDebug();
     [[nodiscard]] inline auto IsDebug() const -> bool;
@@ -763,7 +763,7 @@ void Game::DestroyChildObjects()
 
 void Game::Quit() { quit = true; }
 
-#ifdef HANDCRANK_DEBUG
+#ifdef HANDCRANK_ENGINE_DEBUG
 void Game::ToggleDebug(const bool state) { debug = state; }
 void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
@@ -1048,7 +1048,7 @@ void RenderObject::Render(SDL_Renderer *renderer)
         }
     }
 
-#ifdef HANDCRANK_DEBUG
+#ifdef HANDCRANK_ENGINE_DEBUG
     if (game->IsDebug())
     {
         auto transformedRect = GetTransformedRect();
