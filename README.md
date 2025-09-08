@@ -34,7 +34,7 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 ```cpp
 #include "HandcrankEngine/HandcrankEngine.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 
@@ -81,7 +81,7 @@ auto main(int argc, char *argv[]) -> int
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 
@@ -108,7 +108,7 @@ auto main(int argc, char *argv[]) -> int
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/ImageRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 

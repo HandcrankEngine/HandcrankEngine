@@ -9,7 +9,7 @@
 #include "HandcrankEngine.hpp"
 #include "TextureCache.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class TextureRenderObject : public RenderObject
@@ -100,4 +100,4 @@ class TextureRenderObject : public RenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

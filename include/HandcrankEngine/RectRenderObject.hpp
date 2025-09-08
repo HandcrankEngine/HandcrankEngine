@@ -7,7 +7,7 @@
 
 #include "HandcrankEngine.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class RectRenderObject : public RenderObject
@@ -131,4 +131,4 @@ class RectRenderObject : public RenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

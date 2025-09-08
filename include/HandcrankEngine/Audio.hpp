@@ -8,7 +8,7 @@
 #include "AudioCache.hpp"
 #include "Utilities.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 inline auto PlayMusic(Mix_Music *music) -> int
@@ -137,4 +137,4 @@ inline auto LoadSFX(const void *mem, const int size) -> Mix_Chunk *
     return sfx;
 }
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

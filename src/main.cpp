@@ -7,7 +7,7 @@
 #include "../examples/logo-screensaver/LogoScreenSaver.hpp"
 #include "../examples/paused-screen/PausedScreen.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 

@@ -3,7 +3,7 @@
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto main(int argc, char *argv[]) -> int
 {

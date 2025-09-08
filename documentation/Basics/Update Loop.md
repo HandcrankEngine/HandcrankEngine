@@ -7,7 +7,7 @@
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 

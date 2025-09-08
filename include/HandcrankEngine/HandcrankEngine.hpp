@@ -23,7 +23,7 @@
 #include "TextureCache.hpp"
 #include "Utilities.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 inline const int MAX_R = 255;
@@ -1150,4 +1150,4 @@ void RenderObject::Destroy()
     }
 }
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

@@ -5,7 +5,7 @@
 
 #include "../images/sdl_logo.h"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto main(int argc, char *argv[]) -> int
 {

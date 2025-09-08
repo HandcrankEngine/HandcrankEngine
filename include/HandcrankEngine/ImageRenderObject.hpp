@@ -9,7 +9,7 @@
 #include "HandcrankEngine.hpp"
 #include "TextureRenderObject.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class ImageRenderObject : public TextureRenderObject
@@ -107,4 +107,4 @@ class ImageRenderObject : public TextureRenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

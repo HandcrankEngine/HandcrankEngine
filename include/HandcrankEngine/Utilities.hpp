@@ -10,7 +10,7 @@
 #include <regex>
 #include <string>
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 inline auto TryParseInt(const std::string &value, int &result) -> bool
@@ -199,4 +199,4 @@ inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr, const int index,
     vertices_ptr[3].position.y = destRect.y + destRect.h;
 }
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

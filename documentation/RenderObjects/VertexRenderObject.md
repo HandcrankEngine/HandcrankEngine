@@ -12,7 +12,7 @@
 #include "HandcrankEngine/Utilities.hpp"
 #include "HandcrankEngine/VertexRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 class LogoGrid : public VertexRenderObject
 {

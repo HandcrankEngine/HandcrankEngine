@@ -9,7 +9,7 @@
 #include "HandcrankEngine/RectRenderObject.hpp"
 #include "HandcrankEngine/TextRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 class FPS : public RenderObject
 {

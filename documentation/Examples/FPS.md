@@ -6,7 +6,7 @@
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/TextRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 

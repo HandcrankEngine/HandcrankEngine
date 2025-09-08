@@ -8,7 +8,7 @@
 #include "ImageRenderObject.hpp"
 #include "Vector2.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 const double DEFAULT_FRAME_SPEED = 0.1;
@@ -173,4 +173,4 @@ class SpriteRenderObject : public ImageRenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

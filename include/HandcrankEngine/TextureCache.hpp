@@ -8,7 +8,7 @@
 
 #include "Utilities.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 namespace
@@ -107,4 +107,4 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
     return texture;
 }
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

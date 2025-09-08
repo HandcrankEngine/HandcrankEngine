@@ -5,7 +5,7 @@
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/SpriteRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 class GreenAlien : public SpriteRenderObject
 {

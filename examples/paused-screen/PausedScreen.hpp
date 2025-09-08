@@ -6,7 +6,7 @@
 #include "HandcrankEngine/RectRenderObject.hpp"
 #include "HandcrankEngine/TextRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 class PausedScreen : public RenderObject
 {

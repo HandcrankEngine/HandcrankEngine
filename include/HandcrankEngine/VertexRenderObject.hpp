@@ -8,7 +8,7 @@
 #include "HandcrankEngine.hpp"
 #include "TextureRenderObject.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class VertexRenderObject : public TextureRenderObject
@@ -31,4 +31,4 @@ class VertexRenderObject : public TextureRenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

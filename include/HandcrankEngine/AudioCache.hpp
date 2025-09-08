@@ -8,7 +8,7 @@
 
 #include <SDL_mixer.h>
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 inline const int DEFAULT_AUDIO_FREQUENCY = 44100;
@@ -52,4 +52,4 @@ inline auto SetupAudio() -> int
                          DEFAULT_AUDIO_CHUNK_SIZE);
 }
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

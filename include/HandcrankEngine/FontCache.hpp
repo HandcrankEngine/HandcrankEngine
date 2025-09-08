@@ -8,7 +8,7 @@
 
 #include "Utilities.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 namespace
@@ -124,4 +124,4 @@ inline auto LoadCachedFont(const void *mem, const int size,
     return font;
 }
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

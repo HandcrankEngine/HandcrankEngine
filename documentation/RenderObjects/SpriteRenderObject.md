@@ -10,7 +10,7 @@
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/SpriteRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 class Character : public SpriteRenderObject
 {

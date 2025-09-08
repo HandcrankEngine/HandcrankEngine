@@ -8,7 +8,7 @@
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/ImageRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto game = std::make_unique<Game>();
 

@@ -5,7 +5,7 @@
 
 #include <functional>
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class Animation
@@ -114,4 +114,4 @@ class Animation
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

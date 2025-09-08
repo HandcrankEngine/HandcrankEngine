@@ -9,7 +9,7 @@
 #include "HandcrankEngine/Utilities.hpp"
 #include "HandcrankEngine/VertexRenderObject.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 class LogoScreenSaver : public VertexRenderObject
 {

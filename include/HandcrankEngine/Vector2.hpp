@@ -7,7 +7,7 @@
 
 #include <SDL.h>
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 struct Vector2
@@ -67,4 +67,4 @@ struct Vector2
     [[nodiscard]] auto ToFRect() const -> SDL_FRect { return {x, y}; }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

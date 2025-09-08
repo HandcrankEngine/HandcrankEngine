@@ -5,7 +5,7 @@
 
 #include "HandcrankEngine/Vector2.hpp"
 
-using namespace Handcrank;
+using namespace HandcrankEngine;
 
 auto main(int argc, char *argv[]) -> int
 {

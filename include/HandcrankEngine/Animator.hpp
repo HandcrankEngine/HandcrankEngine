@@ -6,7 +6,7 @@
 #include "Animation.hpp"
 #include "HandcrankEngine.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class Animator : public RenderObject
@@ -230,4 +230,4 @@ class Animator : public RenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine

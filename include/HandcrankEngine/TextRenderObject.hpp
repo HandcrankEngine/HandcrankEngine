@@ -11,7 +11,7 @@
 #include "FontCache.hpp"
 #include "HandcrankEngine.hpp"
 
-namespace Handcrank
+namespace HandcrankEngine
 {
 
 class TextRenderObject : public RenderObject
@@ -220,4 +220,4 @@ class TextRenderObject : public RenderObject
     }
 };
 
-} // namespace Handcrank
+} // namespace HandcrankEngine
