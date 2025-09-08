@@ -5,6 +5,13 @@
       "options": {
         "singleQuote": false
       }
+    },
+    {
+      "files": "*.html",
+      "options": {
+        "singleQuote": true,
+        "tabWidth": 2
+      }
     }
   ]
 }
