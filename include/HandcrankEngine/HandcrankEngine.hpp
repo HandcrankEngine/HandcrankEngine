@@ -147,6 +147,7 @@ class Game
     [[nodiscard]] inline auto HasFocus() const -> bool;
 
     [[nodiscard]] inline auto IsKeyDown(SDL_Keycode keyCode) const -> bool;
+    [[nodiscard]] inline auto IsAnyKeyPressed() const -> bool;
     [[nodiscard]] inline auto IsKeyPressed(SDL_Keycode keyCode) const -> bool;
     [[nodiscard]] inline auto IsKeyReleased(SDL_Keycode keyCode) const -> bool;
 
@@ -480,6 +481,13 @@ auto Game::IsKeyDown(const SDL_Keycode keyCode) const -> bool
     }
 
     return false;
+};
+
+auto Game::IsAnyKeyPressed() const -> bool
+{
+    auto result = keyPressedState.size() > 0;
+
+    return result;
 };
 
 auto Game::IsKeyPressed(const SDL_Keycode keyCode) const -> bool
