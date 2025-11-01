@@ -823,6 +823,12 @@ auto RenderObject::GetClassName() const -> std::string
 
 void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
+    if (game == nullptr)
+    {
+        throw std::runtime_error(
+            "Parent render object has not been mounted yet.");
+    }
+
     child->parent = this;
 
     child->game = game;
