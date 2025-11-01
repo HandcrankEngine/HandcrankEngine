@@ -45,7 +45,8 @@ class SceneManager : public RenderObject
 
     template <typename T> auto SetCurrentScene() -> bool
     {
-        static_assert(std::is_base_of_v<Scene, T>, "T must derive from Scene");
+        static_assert(std::is_base_of_v<Scene, T>,
+                      "T must be derive from Scene");
 
         auto it =
             std::find_if(scenes.begin(), scenes.end(),
@@ -64,7 +65,8 @@ class SceneManager : public RenderObject
 
     template <typename T> auto GetCurrentScene() -> std::shared_ptr<T>
     {
-        static_assert(std::is_base_of_v<Scene, T>, "T must derive from Scene");
+        static_assert(std::is_base_of_v<Scene, T>,
+                      "T must be derive from Scene");
 
         return std::dynamic_pointer_cast<T>(currentScene);
     }

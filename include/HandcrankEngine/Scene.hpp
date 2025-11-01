@@ -24,7 +24,8 @@ class Scene : public RenderObject
 
     template <typename T> void SwitchToScene()
     {
-        static_assert(std::is_base_of_v<Scene, T>, "T must derive from Scene");
+        static_assert(std::is_base_of_v<Scene, T>,
+                      "T must be derive from Scene");
 
         if (SetCurrentScene)
         {
