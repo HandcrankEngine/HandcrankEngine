@@ -5,7 +5,7 @@
 ```cpp
 #pragma once
 
-#include "../images/logo.h"
+#include "../images/sdl_logo.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/ImageRenderObject.hpp"
@@ -23,8 +23,8 @@ class LogoScene : public Scene
     {
         logo = std::make_shared<ImageRenderObject>();
 
-        logo->LoadTexture(game->GetRenderer(), images_logo_png,
-                          images_logo_png_len);
+        logo->LoadTexture(game->GetRenderer(), images_sdl_logo_png,
+                          images_sdl_logo_png_len);
 
         logo->SetScale(scale);
         logo->SetPosition(game->GetWidth() / 2, game->GetHeight() / 2);
@@ -88,8 +88,8 @@ class LogosScene : public Scene
     {
         logo = std::make_shared<ImageRenderObject>();
 
-        logo->LoadTexture(game->GetRenderer(), images_logo_png,
-                          images_logo_png_len);
+        logo->LoadTexture(game->GetRenderer(), images_sdl_logo_png,
+                          images_sdl_logo_png_len);
 
         logo->SetScale(scale);
         logo->SetPosition(game->GetWidth() / 2, game->GetHeight() / 2);
