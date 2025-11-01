@@ -131,6 +131,11 @@ class Animator : public RenderObject
 
     void Update(const double deltaTime) override
     {
+        if (!game->HasFocus())
+        {
+            return;
+        }
+
         if (animations.empty())
         {
             return;
