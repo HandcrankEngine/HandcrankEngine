@@ -81,6 +81,7 @@ class SpriteRenderObject : public ImageRenderObject
                          const Vector2 &padding, const Vector2 &offset)
     {
         spriteFrames.clear();
+        spriteFrames.reserve(columns * rows);
 
         auto availableWidth = width - (padding.x * (columns - 1));
         auto availableHeight = height - (padding.y * (rows - 1));
