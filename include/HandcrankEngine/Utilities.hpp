@@ -48,13 +48,13 @@ inline auto TryParseInt(const std::string &value) -> bool
 }
 
 inline auto LeftPad(const std::string &content, const char pad,
-                    const int length) -> std::string
+                    const size_t length) -> std::string
 {
     return std::string(length - content.size(), pad) + content;
 }
 
 inline auto RightPad(const std::string &content, const char pad,
-                     const int length) -> std::string
+                     const size_t length) -> std::string
 {
     return content + std::string(length - content.size(), pad);
 }
@@ -93,7 +93,7 @@ template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
 
     std::vector<std::string> characters;
 
-    for (int i = (int)rawName.length(); i > 0; i -= 1)
+    for (size_t i = rawName.length(); i > 0; i -= 1)
     {
         if (TryParseInt(&rawName[i]))
         {
@@ -107,7 +107,7 @@ template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
 
                 if (TryParseInt(match[0], length))
                 {
-                    if (length == (int)rawName.length() - (i + 1))
+                    if (length == static_cast<int>(rawName.length()) - (i + 1))
                     {
                         return rawName.substr(i + 1);
                     }
@@ -119,7 +119,7 @@ template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
     return rawName;
 }
 
-inline auto MemHash(const void *mem, const int size) -> std::string
+inline auto MemHash(const void *mem, const size_t size) -> std::string
 {
     auto hash = std::hash<std::string_view>{}(
         std::string_view(static_cast<const char *>(mem), size));
@@ -147,8 +147,8 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
                                 const SDL_Color &color, float textureWidth,
                                 float textureHeight) -> void
 {
-    const int vertices_size = 4;
-    const int indices_size = 6;
+    const size_t vertices_size = 4;
+    const size_t indices_size = 6;
 
     auto index = vertices.size();
 
@@ -174,16 +174,16 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
 
     indices.reserve(indices.size() + indices_size);
 
-    indices.emplace_back(index);
-    indices.emplace_back(index + 1);
-    indices.emplace_back(index + 2);
+    indices.emplace_back(static_cast<int>(index));
+    indices.emplace_back(static_cast<int>(index + 1));
+    indices.emplace_back(static_cast<int>(index + 2));
 
-    indices.emplace_back(index);
-    indices.emplace_back(index + 2);
-    indices.emplace_back(index + 3);
+    indices.emplace_back(static_cast<int>(index));
+    indices.emplace_back(static_cast<int>(index + 2));
+    indices.emplace_back(static_cast<int>(index + 3));
 }
 
-inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr, const int index,
+inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr, const size_t index,
                               const SDL_FRect &destRect) -> void
 {
     vertices_ptr[0].position.x = destRect.x;
