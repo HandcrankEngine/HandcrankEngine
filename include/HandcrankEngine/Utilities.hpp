@@ -76,6 +76,11 @@ inline auto Lerp(const float a, const float b, const float t) -> float
 
 inline auto InverseLerp(const float a, const float b, const float v) -> float
 {
+    if (a == b)
+    {
+        return 0.0F;
+    }
+
     return std::clamp(((v - a) / (b - a)), 0.0F, 1.0F);
 }
 
