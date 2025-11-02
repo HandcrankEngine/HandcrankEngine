@@ -49,9 +49,11 @@ inline auto CleanupFontInits() -> void
 inline auto LoadCachedFont(const char *path, const int ptSize = 24)
     -> TTF_Font *
 {
-    if (fontCache.find(path) != fontCache.end())
+    auto match = fontCache.find(path);
+
+    if (match != fontCache.end())
     {
-        return fontCache.find(path)->second;
+        return match->second;
     }
 
     if (!fontLoadedForFirstTime)
@@ -88,9 +90,11 @@ inline auto LoadCachedFont(const void *mem, const int size,
 {
     auto hash = MemHash(mem, size);
 
-    if (fontCache.find(hash) != fontCache.end())
+    auto match = fontCache.find(hash);
+
+    if (match != fontCache.end())
     {
-        return fontCache.find(hash)->second;
+        return match->second;
     }
 
     if (!fontLoadedForFirstTime)

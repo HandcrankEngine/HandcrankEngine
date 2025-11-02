@@ -40,9 +40,11 @@ inline auto ClearTextureCache() -> void
 inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
     -> SDL_Texture *
 {
-    if (textureCache.find(path) != textureCache.end())
+    auto match = textureCache.find(path);
+
+    if (match != textureCache.end())
     {
-        return textureCache.find(path)->second;
+        return match->second;
     }
 
     auto *surface = IMG_Load(path);
@@ -78,9 +80,11 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
 {
     auto hash = MemHash(mem, size);
 
-    if (textureCache.find(hash) != textureCache.end())
+    auto match = textureCache.find(hash);
+
+    if (match != textureCache.end())
     {
-        return textureCache.find(hash)->second;
+        return match->second;
     }
 
     auto *rw = SDL_RWFromConstMem(mem, size);

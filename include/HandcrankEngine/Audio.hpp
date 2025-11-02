@@ -33,9 +33,11 @@ inline auto PlaySFX(Mix_Chunk *sfx) -> int
 
 inline auto LoadMusic(const char *path) -> Mix_Music *
 {
-    if (audioMusicCache.find(path) != audioMusicCache.end())
+    auto match = audioMusicCache.find(path);
+
+    if (match != audioMusicCache.end())
     {
-        return audioMusicCache.find(path)->second;
+        return match->second;
     }
 
     if (!audioLoadedForFirstTime)
@@ -61,9 +63,11 @@ inline auto LoadMusic(const void *mem, const int size) -> Mix_Music *
 {
     auto hash = MemHash(mem, size);
 
-    if (audioMusicCache.find(hash) != audioMusicCache.end())
+    auto match = audioMusicCache.find(hash);
+
+    if (match != audioMusicCache.end())
     {
-        return audioMusicCache.find(hash)->second;
+        return match->second;
     }
 
     if (!audioLoadedForFirstTime)
@@ -94,9 +98,11 @@ inline auto LoadMusic(const void *mem, const int size) -> Mix_Music *
 
 inline auto LoadSFX(const char *path) -> Mix_Chunk *
 {
-    if (audioSFXCache.find(path) != audioSFXCache.end())
+    auto match = audioSFXCache.find(path);
+
+    if (match != audioSFXCache.end())
     {
-        return audioSFXCache.find(path)->second;
+        return match->second;
     }
 
     auto *sfx = Mix_LoadWAV(path);
@@ -113,9 +119,11 @@ inline auto LoadSFX(const void *mem, const int size) -> Mix_Chunk *
 {
     auto hash = MemHash(mem, size);
 
-    if (audioSFXCache.find(hash) != audioSFXCache.end())
+    auto match = audioSFXCache.find(hash);
+
+    if (match != audioSFXCache.end())
     {
-        return audioSFXCache.find(hash)->second;
+        return match->second;
     }
 
     auto *rw = SDL_RWFromConstMem(mem, size);
