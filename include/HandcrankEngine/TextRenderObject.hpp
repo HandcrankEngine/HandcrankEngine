@@ -185,7 +185,10 @@ class TextRenderObject : public RenderObject
         SetWrappedText(text.c_str());
     }
 
-    auto GetText() -> std::string { return text; }
+    auto GetText() -> std::string
+    {
+        return text != nullptr ? std::string(text) : std::string();
+    }
 
     /**
      * Render text to the scene.
