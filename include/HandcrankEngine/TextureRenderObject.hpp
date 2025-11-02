@@ -15,7 +15,7 @@ namespace HandcrankEngine
 class TextureRenderObject : public RenderObject
 {
   protected:
-    SDL_Texture *texture;
+    SDL_Texture *texture = nullptr;
 
   public:
     explicit TextureRenderObject() = default;

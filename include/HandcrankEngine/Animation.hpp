@@ -22,11 +22,11 @@ class Animation
   private:
     State currentState = State::IDLE;
 
-    double deframeStep;
+    double deframeStep = 0;
 
-    double elapsedTime;
+    double elapsedTime = 0;
 
-    double elapsedDeframeTime;
+    double elapsedDeframeTime = 0;
 
     std::function<int(const double, const double)> tickFunction;
 

@@ -26,7 +26,7 @@ class SpriteRenderObject : public ImageRenderObject
 
     bool isLooping = true;
 
-    double nextTick;
+    double nextTick = 0;
 
   public:
     explicit SpriteRenderObject() = default;

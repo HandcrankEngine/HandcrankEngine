@@ -17,11 +17,11 @@ namespace HandcrankEngine
 class TextRenderObject : public RenderObject
 {
   protected:
-    TTF_Font *font;
+    TTF_Font *font = nullptr;
 
     SDL_Color color{MAX_R, MAX_G, MAX_B, MAX_ALPHA};
 
-    const char *text;
+    const char *text = nullptr;
 
     SDL_Surface *textSurface = nullptr;
 
