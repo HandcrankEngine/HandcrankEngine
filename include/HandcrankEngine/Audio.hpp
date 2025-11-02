@@ -42,9 +42,14 @@ inline auto LoadMusic(const char *path) -> Mix_Music *
 
     if (!audioLoadedForFirstTime)
     {
-        SetupAudio();
-
-        audioLoadedForFirstTime = true;
+        if (SetupAudio() == 0)
+        {
+            audioLoadedForFirstTime = true;
+        }
+        else
+        {
+            return nullptr;
+        }
     }
 
     auto *music = Mix_LoadMUS(path);
