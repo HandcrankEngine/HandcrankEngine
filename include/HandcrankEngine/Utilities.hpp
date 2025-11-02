@@ -50,12 +50,22 @@ inline auto TryParseInt(const std::string &value) -> bool
 inline auto LeftPad(const std::string &content, const char pad,
                     const size_t length) -> std::string
 {
+    if (content.size() >= length)
+    {
+        return content;
+    }
+
     return std::string(length - content.size(), pad) + content;
 }
 
 inline auto RightPad(const std::string &content, const char pad,
                      const size_t length) -> std::string
 {
+    if (content.size() >= length)
+    {
+        return content;
+    }
+
     return content + std::string(length - content.size(), pad);
 }
 
