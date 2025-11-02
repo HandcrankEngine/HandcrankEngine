@@ -112,6 +112,8 @@ inline auto LoadSFX(const char *path) -> Mix_Chunk *
         return nullptr;
     }
 
+    audioSFXCache.insert_or_assign(path, sfx);
+
     return sfx;
 }
 
