@@ -78,7 +78,7 @@ class SceneManager : public RenderObject
         if (std::find(scenes.begin(), scenes.end(), scene) == scenes.end())
         {
             scene->SetCurrentSceneCallback(
-                [this](std::type_index typeIndex) -> bool
+                [this](std::type_index typeIndex) -> void
                 {
                     auto it = std::find_if(
                         scenes.begin(), scenes.end(),
@@ -98,10 +98,7 @@ class SceneManager : public RenderObject
                     if (it != scenes.end())
                     {
                         SetCurrentScene(*it);
-
-                        return true;
                     }
-                    return false;
                 });
             scenes.emplace_back(scene);
         }
