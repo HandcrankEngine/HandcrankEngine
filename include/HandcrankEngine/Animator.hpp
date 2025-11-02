@@ -102,7 +102,7 @@ class Animator : public RenderObject
 
     void SetMode(Mode mode) { this->mode = mode; }
 
-    [[nodiscard]] auto IsLooping() const -> const Mode & { return mode; }
+    [[nodiscard]] auto IsLooping() const -> bool { return looping; }
 
     void SetIsLooping(bool looping) { this->looping = looping; }
 
