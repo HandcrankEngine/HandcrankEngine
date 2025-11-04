@@ -83,7 +83,7 @@ class Animation
     {
         elapsedTime += deltaTime;
 
-        if (elapsedDeframeTime >= deframeStep)
+        if (deframeStep <= 0 || elapsedDeframeTime >= deframeStep)
         {
             auto result = tickFunction(deltaTime, elapsedTime);
 
