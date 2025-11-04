@@ -111,6 +111,11 @@ class SpriteRenderObject : public ImageRenderObject
 
     void CalculateRect()
     {
+        if (frame < 0 || frame >= spriteFrames.size())
+        {
+            return;
+        }
+
         auto srcRect = spriteFrames.at(frame);
 
         SetSrcRect(srcRect);
