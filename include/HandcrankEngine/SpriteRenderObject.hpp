@@ -16,7 +16,7 @@ const double DEFAULT_FRAME_SPEED = 0.1;
 class SpriteRenderObject : public ImageRenderObject
 {
   private:
-    std::vector<SDL_Rect> spriteFrames = std::vector<SDL_Rect>();
+    std::vector<SDL_Rect> spriteFrames;
 
     int frame = 0;
 
