@@ -111,17 +111,16 @@ class SpriteRenderObject : public ImageRenderObject
 
     void CalculateRect()
     {
-        if (frame < 0 || frame >= spriteFrames.size())
+        if (frame >= 0 && frame < spriteFrames.size())
         {
-            return;
+            SetSrcRect(spriteFrames.at(frame));
         }
 
-        auto srcRect = spriteFrames.at(frame);
-
-        SetSrcRect(srcRect);
-
-        rect.w = srcRect.w;
-        rect.h = srcRect.h;
+        if (srcRectSet)
+        {
+            rect.w = srcRect.w;
+            rect.h = srcRect.h;
+        }
     }
 
     void InternalUpdate(const double deltaTime) override
@@ -162,13 +161,6 @@ class SpriteRenderObject : public ImageRenderObject
     void Render(SDL_Renderer *renderer) override
     {
         if (!CanRender())
-        {
-            return;
-        }
-
-        auto spriteFramesSize = size(spriteFrames);
-
-        if (spriteFramesSize <= frame)
         {
             return;
         }
