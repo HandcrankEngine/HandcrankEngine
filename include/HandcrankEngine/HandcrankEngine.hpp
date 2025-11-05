@@ -1107,8 +1107,9 @@ void RenderObject::Render(SDL_Renderer *renderer)
 auto RenderObject::CheckCollisionAABB(
     const std::shared_ptr<RenderObject> &otherRenderObject) -> bool
 {
-    return SDL_HasIntersectionF(&rect, &otherRenderObject->GetRect()) ==
-           SDL_TRUE;
+    auto thisRect = GetTransformedRect();
+    auto otherRect = otherRenderObject->GetTransformedRect();
+    return SDL_HasIntersectionF(&thisRect, &otherRect) == SDL_TRUE;
 }
 
 void RenderObject::DestroyChildObjects()
