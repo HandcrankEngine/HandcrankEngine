@@ -89,9 +89,9 @@ class SpriteRenderObject : public ImageRenderObject
         auto cellWidth = availableWidth / columns;
         auto cellHeight = availableHeight / rows;
 
-        for (auto x = 0; x < columns; x++)
+        for (auto y = 0; y < rows; y++)
         {
-            for (auto y = 0; y < rows; y++)
+            for (auto x = 0; x < columns; x++)
             {
                 AddFrame(
                     {static_cast<int>((offset.x + x) * (cellWidth + padding.x)),
