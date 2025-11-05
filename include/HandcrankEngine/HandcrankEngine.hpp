@@ -315,11 +315,6 @@ Game::Game() { Setup(); }
 
 Game::~Game()
 {
-    for (auto child : children)
-    {
-        child.reset();
-    }
-
     children.clear();
 
     SDL_DestroyWindow(window);
@@ -787,15 +782,7 @@ RenderObject::RenderObject()
     index = ++RenderObject::count;
 }
 
-RenderObject::~RenderObject()
-{
-    for (auto child : children)
-    {
-        child.reset();
-    }
-
-    children.clear();
-}
+RenderObject::~RenderObject() { children.clear(); }
 
 void RenderObject::Enable() { isEnabled = true; }
 
