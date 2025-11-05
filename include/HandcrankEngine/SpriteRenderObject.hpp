@@ -18,7 +18,7 @@ class SpriteRenderObject : public ImageRenderObject
   private:
     std::vector<SDL_Rect> spriteFrames;
 
-    int frame = 0;
+    size_t frame = 0;
 
     double frameSpeed = DEFAULT_FRAME_SPEED;
 
@@ -54,7 +54,7 @@ class SpriteRenderObject : public ImageRenderObject
     }
     auto IsPlaying() const -> bool { return isPlaying; }
 
-    auto GetFrame() const -> int { return frame; }
+    auto GetFrame() const -> size_t { return frame; }
 
     void SetFrameSpeed(const double frameSpeed)
     {
