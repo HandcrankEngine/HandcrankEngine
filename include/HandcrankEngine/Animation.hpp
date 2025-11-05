@@ -45,7 +45,7 @@ class Animation
         this->deframeStep = deframeStep;
     }
 
-    ~Animation() = default;
+    virtual ~Animation() = default;
 
     [[nodiscard]] auto GetState() const -> State { return currentState; }
 
