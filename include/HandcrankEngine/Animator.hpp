@@ -196,7 +196,14 @@ class Animator : public RenderObject
 
         if (!stillRunning)
         {
-            StartParallel();
+            if (looping)
+            {
+                StartParallel();
+            }
+            else
+            {
+                currentState = State::COMPLETE;
+            }
         }
     }
 
