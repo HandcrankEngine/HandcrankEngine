@@ -40,16 +40,9 @@ inline auto LoadMusic(const char *path) -> Mix_Music *
         return match->second;
     }
 
-    if (!audioLoadedForFirstTime)
+    if (SetupAudio() != 0)
     {
-        if (SetupAudio() == 0)
-        {
-            audioLoadedForFirstTime = true;
-        }
-        else
-        {
-            return nullptr;
-        }
+        return nullptr;
     }
 
     auto *music = Mix_LoadMUS(path);
@@ -75,11 +68,9 @@ inline auto LoadMusic(const void *mem, const int size) -> Mix_Music *
         return match->second;
     }
 
-    if (!audioLoadedForFirstTime)
+    if (SetupAudio() != 0)
     {
-        SetupAudio();
-
-        audioLoadedForFirstTime = true;
+        return nullptr;
     }
 
     auto *rw = SDL_RWFromConstMem(mem, size);

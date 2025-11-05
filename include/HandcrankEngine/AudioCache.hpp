@@ -16,7 +16,7 @@ inline const int DEFAULT_AUDIO_CHUNK_SIZE = 1024;
 
 namespace
 {
-bool audioLoadedForFirstTime = false;
+bool audioIsOpen = false;
 
 std::unordered_map<std::string, Mix_Music *> audioMusicCache =
     std::unordered_map<std::string, Mix_Music *>();
@@ -48,8 +48,30 @@ inline auto ClearAudioCache() -> void
 
 inline auto SetupAudio() -> int
 {
-    return Mix_OpenAudio(DEFAULT_AUDIO_FREQUENCY, MIX_DEFAULT_FORMAT, 2,
-                         DEFAULT_AUDIO_CHUNK_SIZE);
+    if (audioIsOpen)
+    {
+        return 0;
+    }
+
+    auto result = Mix_OpenAudio(DEFAULT_AUDIO_FREQUENCY, MIX_DEFAULT_FORMAT, 2,
+                                DEFAULT_AUDIO_CHUNK_SIZE);
+
+    if (result == 0)
+    {
+        audioIsOpen = true;
+    }
+
+    return result;
+}
+
+inline auto TeardownAudio() -> void
+{
+    if (audioIsOpen)
+    {
+        Mix_CloseAudio();
+
+        audioIsOpen = false;
+    }
 }
 
 } // namespace HandcrankEngine
