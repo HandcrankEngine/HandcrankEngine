@@ -23,11 +23,11 @@ class SceneManager : public RenderObject
   public:
     void Start() override {}
 
-    auto SetCurrentScene(const std::shared_ptr<Scene> &scene)
+    auto SetCurrentScene(const std::shared_ptr<Scene> &scene) -> bool
     {
         if (currentScene == scene)
         {
-            return;
+            return false;
         }
 
         if (currentScene != nullptr)
@@ -40,7 +40,11 @@ class SceneManager : public RenderObject
         if (currentScene != nullptr)
         {
             AddChildObject(currentScene);
+
+            return true;
         }
+
+        return false;
     }
 
     template <typename T> auto SetCurrentScene() -> bool
@@ -55,9 +59,7 @@ class SceneManager : public RenderObject
 
         if (it != scenes.end())
         {
-            SetCurrentScene(*it);
-
-            return true;
+            return SetCurrentScene(*it);
         }
 
         return false;
