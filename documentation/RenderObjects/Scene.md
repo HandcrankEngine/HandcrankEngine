@@ -38,8 +38,6 @@ class LogoScene : public Scene
 ## Creating a SceneManager
 
 ```cpp
-#define HANDCRANK_ENGINE_DEBUG 1
-
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/SceneManager.hpp"
 
