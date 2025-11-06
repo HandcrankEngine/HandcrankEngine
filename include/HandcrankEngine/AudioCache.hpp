@@ -11,8 +11,7 @@
 namespace HandcrankEngine
 {
 
-inline const int DEFAULT_AUDIO_FREQUENCY = 44100;
-inline const int DEFAULT_AUDIO_CHUNK_SIZE = 1024;
+inline const int DEFAULT_AUDIO_CHUNK_SIZE = 4096;
 
 namespace
 {
@@ -53,8 +52,8 @@ inline auto SetupAudio() -> int
         return 0;
     }
 
-    auto result = Mix_OpenAudio(DEFAULT_AUDIO_FREQUENCY, MIX_DEFAULT_FORMAT, 2,
-                                DEFAULT_AUDIO_CHUNK_SIZE);
+    auto result = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+                                MIX_DEFAULT_CHANNELS, DEFAULT_AUDIO_CHUNK_SIZE);
 
     if (result == 0)
     {
