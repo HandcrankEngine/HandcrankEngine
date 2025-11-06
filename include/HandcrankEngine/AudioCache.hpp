@@ -17,30 +17,14 @@ namespace
 {
 bool audioIsOpen = false;
 
-std::unordered_map<std::string, Mix_Music *> audioMusicCache =
-    std::unordered_map<std::string, Mix_Music *>();
-std::unordered_map<std::string, Mix_Chunk *> audioSFXCache =
-    std::unordered_map<std::string, Mix_Chunk *>();
+std::unordered_map<std::string, std::shared_ptr<Mix_Music>> audioMusicCache =
+    std::unordered_map<std::string, std::shared_ptr<Mix_Music>>();
+std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>> audioSFXCache =
+    std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>>();
 } // namespace
 
 inline auto ClearAudioCache() -> void
 {
-    for (const auto &audio : audioMusicCache)
-    {
-        if (audio.second != nullptr)
-        {
-            Mix_FreeMusic(audio.second);
-        }
-    }
-
-    for (const auto &audio : audioSFXCache)
-    {
-        if (audio.second != nullptr)
-        {
-            Mix_FreeChunk(audio.second);
-        }
-    }
-
     audioMusicCache.clear();
     audioSFXCache.clear();
 }

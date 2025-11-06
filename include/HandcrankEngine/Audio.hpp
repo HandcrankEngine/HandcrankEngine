@@ -11,6 +11,28 @@
 namespace HandcrankEngine
 {
 
+struct MixMusicDeleter
+{
+    void operator()(Mix_Music *music) const
+    {
+        if (music != nullptr)
+        {
+            Mix_FreeMusic(music);
+        }
+    }
+};
+
+struct MixChunkDeleter
+{
+    void operator()(Mix_Chunk *chunk) const
+    {
+        if (chunk != nullptr)
+        {
+            Mix_FreeChunk(chunk);
+        }
+    }
+};
+
 inline auto PlayMusic(Mix_Music *music) -> int
 {
     if (music == nullptr)
@@ -31,7 +53,7 @@ inline auto PlaySFX(Mix_Chunk *sfx) -> int
     return Mix_PlayChannel(-1, sfx, 0);
 }
 
-inline auto LoadMusic(const char *path) -> Mix_Music *
+inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
 {
     auto match = audioMusicCache.find(path);
 
@@ -45,7 +67,8 @@ inline auto LoadMusic(const char *path) -> Mix_Music *
         return nullptr;
     }
 
-    auto *music = Mix_LoadMUS(path);
+    auto music =
+        std::shared_ptr<Mix_Music>(Mix_LoadMUS(path), MixMusicDeleter{});
 
     if (music == nullptr)
     {
@@ -57,7 +80,8 @@ inline auto LoadMusic(const char *path) -> Mix_Music *
     return music;
 }
 
-inline auto LoadMusic(const void *mem, const int size) -> Mix_Music *
+inline auto LoadMusic(const void *mem, const int size)
+    -> std::shared_ptr<Mix_Music>
 {
     auto hash = MemHash(mem, size);
 
@@ -80,7 +104,8 @@ inline auto LoadMusic(const void *mem, const int size) -> Mix_Music *
         return nullptr;
     }
 
-    auto *music = Mix_LoadMUS_RW(rw, 1);
+    auto music =
+        std::shared_ptr<Mix_Music>(Mix_LoadMUS_RW(rw, 1), MixMusicDeleter{});
 
     if (music == nullptr)
     {
@@ -92,7 +117,7 @@ inline auto LoadMusic(const void *mem, const int size) -> Mix_Music *
     return music;
 }
 
-inline auto LoadSFX(const char *path) -> Mix_Chunk *
+inline auto LoadSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
 {
     auto match = audioSFXCache.find(path);
 
@@ -101,7 +126,7 @@ inline auto LoadSFX(const char *path) -> Mix_Chunk *
         return match->second;
     }
 
-    auto *sfx = Mix_LoadWAV(path);
+    auto sfx = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV(path), MixChunkDeleter{});
 
     if (sfx == nullptr)
     {
@@ -113,7 +138,8 @@ inline auto LoadSFX(const char *path) -> Mix_Chunk *
     return sfx;
 }
 
-inline auto LoadSFX(const void *mem, const int size) -> Mix_Chunk *
+inline auto LoadSFX(const void *mem, const int size)
+    -> std::shared_ptr<Mix_Chunk>
 {
     auto hash = MemHash(mem, size);
 
@@ -131,7 +157,8 @@ inline auto LoadSFX(const void *mem, const int size) -> Mix_Chunk *
         return nullptr;
     }
 
-    auto *sfx = Mix_LoadWAV_RW(rw, 1);
+    auto sfx =
+        std::shared_ptr<Mix_Chunk>(Mix_LoadWAV_RW(rw, 1), MixChunkDeleter{});
 
     if (sfx == nullptr)
     {
