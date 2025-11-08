@@ -13,7 +13,7 @@ namespace HandcrankEngine
 
 namespace
 {
-std::unordered_map<std::string, SDL_Texture *> textureCache =
+inline std::unordered_map<std::string, SDL_Texture *> textureCache =
     std::unordered_map<std::string, SDL_Texture *>();
 }
 

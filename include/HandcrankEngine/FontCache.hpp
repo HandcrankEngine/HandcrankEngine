@@ -15,7 +15,7 @@ namespace
 {
 bool fontLoadedForFirstTime = false;
 
-std::unordered_map<std::string, TTF_Font *> fontCache =
+inline std::unordered_map<std::string, TTF_Font *> fontCache =
     std::unordered_map<std::string, TTF_Font *>();
 } // namespace
 

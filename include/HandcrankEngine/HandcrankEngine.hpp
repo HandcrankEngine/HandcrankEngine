@@ -64,7 +64,7 @@ inline auto operator&(RectAnchor a, RectAnchor b) -> RectAnchor
                                    static_cast<uint8_t>(b));
 }
 
-std::shared_ptr<SDL_Texture> debugRectTexture;
+inline std::shared_ptr<SDL_Texture> debugRectTexture;
 
 class Game
 {
