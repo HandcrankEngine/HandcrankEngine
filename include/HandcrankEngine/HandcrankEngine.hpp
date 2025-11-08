@@ -209,7 +209,7 @@ class Game
 class RenderObject : public std::enable_shared_from_this<RenderObject>
 {
   protected:
-    static unsigned int count;
+    inline static unsigned int count = 0;
 
     int index;
 
@@ -771,8 +771,6 @@ void Game::ToggleDebug(const bool state) { debug = state; }
 void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
 #endif
-
-unsigned int RenderObject::count = 0;
 
 RenderObject::RenderObject()
 {
