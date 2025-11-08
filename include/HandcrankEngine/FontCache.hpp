@@ -49,7 +49,9 @@ inline auto CleanupFontInits() -> void
 inline auto LoadCachedFont(const char *path, const int ptSize = 24)
     -> TTF_Font *
 {
-    auto match = fontCache.find(path);
+    auto cacheKey = std::string(path) + "_" + std::to_string(ptSize);
+
+    auto match = fontCache.find(cacheKey);
 
     if (match != fontCache.end())
     {
