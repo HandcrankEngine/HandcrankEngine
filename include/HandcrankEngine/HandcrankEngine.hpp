@@ -409,6 +409,10 @@ auto Game::Setup() -> bool
                               SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 #endif
 
+    SDL_SetWindowResizable(window, SDL_TRUE);
+
+    SDL_SetWindowMinimumSize(window, width, height);
+
     if (window == nullptr)
     {
         SDL_Log("SDL_CreateWindow %s", SDL_GetError());
