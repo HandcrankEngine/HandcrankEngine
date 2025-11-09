@@ -464,9 +464,9 @@ void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
 
 void Game::SetClearColor(const SDL_Color color) { this->clearColor = color; }
 
-auto Game::GetWidth() const -> int { return width; }
+auto Game::GetWidth() const -> int { return viewport.w; }
 
-auto Game::GetHeight() const -> int { return height; }
+auto Game::GetHeight() const -> int { return viewport.h; }
 
 auto Game::HasFocus() const -> bool { return focused; }
 
