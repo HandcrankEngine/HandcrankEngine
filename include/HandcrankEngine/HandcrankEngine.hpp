@@ -351,6 +351,11 @@ auto Game::GetChildrenByType(const bool nested)
 
     for (const auto &child : children)
     {
+        if (child == nullptr)
+        {
+            continue;
+        }
+
         if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
             results.emplace_back(castedChild);
@@ -724,7 +729,7 @@ void Game::FixedUpdate()
     {
         for (const auto &child : children)
         {
-            if (child->IsEnabled())
+            if (child != nullptr && child->IsEnabled())
             {
                 child->InternalFixedUpdate(fixedUpdateDeltaTime);
             }
@@ -747,7 +752,7 @@ void Game::Render()
 
     for (const auto &child : children)
     {
-        if (child->IsEnabled())
+        if (child != nullptr && child->IsEnabled())
         {
             child->Render(renderer);
         }
@@ -849,6 +854,11 @@ auto RenderObject::GetChildrenByType(const bool nested)
 
     for (const auto &child : children)
     {
+        if (child == nullptr)
+        {
+            continue;
+        }
+
         if (auto castedChild = std::dynamic_pointer_cast<T>(child))
         {
             results.emplace_back(castedChild);
@@ -943,7 +953,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
 
     for (const auto &child : children)
     {
-        if (child->IsEnabled())
+        if (child != nullptr && child->IsEnabled())
         {
             child->InternalUpdate(deltaTime);
         }
@@ -956,7 +966,7 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
 
     for (const auto &child : children)
     {
-        if (child->IsEnabled())
+        if (child != nullptr && child->IsEnabled())
         {
             child->InternalFixedUpdate(fixedDeltaTime);
         }
@@ -1058,7 +1068,7 @@ void RenderObject::Render(SDL_Renderer *renderer)
 
     for (const auto &child : children)
     {
-        if (child->IsEnabled())
+        if (child != nullptr && child->IsEnabled())
         {
             child->Render(renderer);
         }
@@ -1163,7 +1173,10 @@ void RenderObject::Destroy()
 
     for (const auto &child : children)
     {
-        child->Destroy();
+        if (child != nullptr)
+        {
+            child->Destroy();
+        }
     }
 }
 
