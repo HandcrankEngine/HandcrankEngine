@@ -411,8 +411,6 @@ auto Game::Setup() -> bool
 
     SDL_SetWindowResizable(window, SDL_TRUE);
 
-    SDL_SetWindowMinimumSize(window, width, height);
-
     if (window == nullptr)
     {
         SDL_Log("SDL_CreateWindow %s", SDL_GetError());
@@ -442,6 +440,8 @@ auto Game::Setup() -> bool
 
 void Game::SetScreenSize(const int _width, const int _height)
 {
+    SDL_SetWindowMinimumSize(window, _width, _height);
+
     SDL_SetWindowSize(window, _width, _height);
 
     SDL_GL_GetDrawableSize(window, &width, &height);
