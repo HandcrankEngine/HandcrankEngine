@@ -133,6 +133,9 @@ class Game
     [[nodiscard]] inline auto GetRenderer() -> SDL_Renderer *;
     [[nodiscard]] inline auto GetViewport() const -> const SDL_FRect &;
 
+    inline auto SwitchToFullscreen() -> bool;
+    inline auto SwitchToWindowedMode() -> bool;
+
     inline auto Setup() -> bool;
 
     inline void SetScreenSize(int _width, int _height);
@@ -384,6 +387,16 @@ auto Game::GetWindow() -> SDL_Window * { return window; }
 auto Game::GetRenderer() -> SDL_Renderer * { return renderer; }
 
 auto Game::GetViewport() const -> const SDL_FRect & { return viewportf; }
+
+auto Game::SwitchToFullscreen() -> bool
+{
+    return SDL_SetWindowFullscreen(window, SDL_TRUE) == SDL_TRUE;
+}
+
+auto Game::SwitchToWindowedMode() -> bool
+{
+    return SDL_SetWindowFullscreen(window, SDL_FALSE) == SDL_TRUE;
+}
 
 auto Game::Setup() -> bool
 {
