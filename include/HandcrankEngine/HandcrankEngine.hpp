@@ -129,6 +129,7 @@ class Game
         -> std::vector<std::shared_ptr<T>>;
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
+    inline auto GetChildCount() -> int;
 
     [[nodiscard]] inline auto GetWindow() -> SDL_Window *;
     [[nodiscard]] inline auto GetRenderer() -> SDL_Renderer *;
@@ -273,6 +274,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
         -> std::vector<std::shared_ptr<T>>;
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
+    inline auto GetChildCount() -> int;
 
     inline void FillChildrenBuffer();
 
@@ -394,6 +396,8 @@ auto Game::GetChildByType(const bool nested) -> std::shared_ptr<T>
 
     return nullptr;
 }
+
+auto Game::GetChildCount() -> int { return children.size(); }
 
 auto Game::GetWindow() -> SDL_Window * { return window; }
 
@@ -920,6 +924,8 @@ auto RenderObject::GetChildByType(const bool nested) -> std::shared_ptr<T>
 
     return nullptr;
 }
+
+auto RenderObject::GetChildCount() -> int { return children.size(); }
 
 void RenderObject::FillChildrenBuffer()
 {

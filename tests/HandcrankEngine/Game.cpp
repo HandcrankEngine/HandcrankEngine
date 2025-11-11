@@ -17,13 +17,13 @@ auto main(int argc, char *argv[]) -> int
     {
         auto *game = new Game();
 
-        assert(size(game->children) == 0);
+        assert(game->GetChildCount() == 0);
 
         auto renderObject = std::make_shared<RenderObject>();
 
         game->AddChildObject(renderObject);
 
-        assert(size(game->children) == 1);
+        assert(game->GetChildCount() == 1);
 
         std::cout << ".";
     }
@@ -35,13 +35,13 @@ auto main(int argc, char *argv[]) -> int
 
         game->AddChildObject(renderObject);
 
-        assert(size(game->children) == 1);
+        assert(game->GetChildCount() == 1);
 
         renderObject->Destroy();
 
         game->DestroyChildObjects();
 
-        assert(size(game->children) == 0);
+        assert(game->GetChildCount() == 0);
 
         std::cout << ".";
     }
