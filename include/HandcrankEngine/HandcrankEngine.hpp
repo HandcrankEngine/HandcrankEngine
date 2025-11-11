@@ -91,6 +91,9 @@ class Game
     std::unordered_map<Uint8, bool> mousePressedState;
     std::unordered_map<Uint8, bool> mouseReleasedState;
 
+    std::vector<std::shared_ptr<RenderObject>> children;
+    std::vector<std::shared_ptr<RenderObject>> childrenBuffer;
+
     double elapsedTime = 0;
     double deltaTime = 0;
     double fixedUpdateDeltaTime = 0;
@@ -116,8 +119,6 @@ class Game
 #endif
 
   public:
-    std::vector<std::shared_ptr<RenderObject>> children;
-
     inline Game();
     inline ~Game();
 
@@ -193,6 +194,8 @@ class Game
 
     inline void CalculateDeltaTime();
 
+    inline void FillChildrenBuffer();
+
     inline void Update();
     inline void FixedUpdate();
 
@@ -234,6 +237,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     bool isInputActive = false;
 
     std::vector<std::shared_ptr<RenderObject>> children;
+    std::vector<std::shared_ptr<RenderObject>> childrenBuffer;
 
   public:
     Game *game = nullptr;
@@ -269,6 +273,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
         -> std::vector<std::shared_ptr<T>>;
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
+
+    inline void FillChildrenBuffer();
 
     virtual inline void Start();
     virtual inline void Update(double deltaTime);
@@ -319,6 +325,7 @@ Game::Game() { Setup(); }
 Game::~Game()
 {
     children.clear();
+    childrenBuffer.clear();
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
@@ -349,7 +356,7 @@ auto Game::GetChildrenByType(const bool nested)
 
     std::vector<std::shared_ptr<T>> results;
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child == nullptr)
         {
@@ -379,9 +386,10 @@ auto Game::GetChildByType(const bool nested) -> std::shared_ptr<T>
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
 
-    if (auto children = GetChildrenByType<T>(nested); !children.empty())
+    if (auto childrenBuffer = GetChildrenByType<T>(nested);
+        !childrenBuffer.empty())
     {
-        return children.front();
+        return childrenBuffer.front();
     }
 
     return nullptr;
@@ -608,6 +616,8 @@ void Game::Loop()
 
     HandleInput();
 
+    FillChildrenBuffer();
+
     Update();
     FixedUpdate();
 
@@ -706,11 +716,26 @@ void Game::HandleInput()
     }
 }
 
+void Game::FillChildrenBuffer()
+{
+    childrenBuffer = children;
+
+    for (const auto &iter : childrenBuffer)
+    {
+        auto *child = iter.get();
+
+        if (child != nullptr)
+        {
+            child->FillChildrenBuffer();
+        }
+    }
+}
+
 void Game::Update()
 {
     elapsedTime += deltaTime;
 
-    for (const auto &iter : children)
+    for (const auto &iter : childrenBuffer)
     {
         auto *child = iter.get();
 
@@ -727,7 +752,7 @@ void Game::FixedUpdate()
 
     if (fixedUpdateDeltaTime > fixedFrameTime)
     {
-        for (const auto &child : children)
+        for (const auto &child : childrenBuffer)
         {
             if (child != nullptr && child->IsEnabled())
             {
@@ -746,11 +771,11 @@ void Game::Render()
 
     SDL_RenderClear(renderer);
 
-    sort(children.begin(), children.end(),
+    sort(childrenBuffer.begin(), childrenBuffer.end(),
          [](const std::shared_ptr<RenderObject> &a,
             const std::shared_ptr<RenderObject> &b) { return a->z < b->z; });
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child != nullptr && child->IsEnabled())
         {
@@ -802,7 +827,11 @@ RenderObject::RenderObject()
     index = ++RenderObject::count;
 }
 
-RenderObject::~RenderObject() { children.clear(); }
+RenderObject::~RenderObject()
+{
+    children.clear();
+    childrenBuffer.clear();
+}
 
 void RenderObject::Enable() { isEnabled = true; }
 
@@ -852,7 +881,7 @@ auto RenderObject::GetChildrenByType(const bool nested)
 
     std::vector<std::shared_ptr<T>> results;
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child == nullptr)
         {
@@ -890,6 +919,21 @@ auto RenderObject::GetChildByType(const bool nested) -> std::shared_ptr<T>
     }
 
     return nullptr;
+}
+
+void RenderObject::FillChildrenBuffer()
+{
+    childrenBuffer = children;
+
+    for (const auto &iter : childrenBuffer)
+    {
+        auto *child = iter.get();
+
+        if (child != nullptr)
+        {
+            child->FillChildrenBuffer();
+        }
+    }
 }
 
 void RenderObject::Start() {}
@@ -951,7 +995,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
 
     Update(deltaTime);
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child != nullptr && child->IsEnabled())
         {
@@ -964,7 +1008,7 @@ void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
 {
     FixedUpdate(fixedDeltaTime);
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child != nullptr && child->IsEnabled())
         {
@@ -1062,11 +1106,11 @@ void RenderObject::Render(SDL_Renderer *renderer)
         return;
     }
 
-    sort(children.begin(), children.end(),
+    sort(childrenBuffer.begin(), childrenBuffer.end(),
          [](const std::shared_ptr<RenderObject> &a,
             const std::shared_ptr<RenderObject> &b) { return a->z < b->z; });
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child != nullptr && child->IsEnabled())
         {
@@ -1107,7 +1151,7 @@ void RenderObject::Render(SDL_Renderer *renderer)
 {
     auto boundingBox = GetTransformedRect();
 
-    for (const auto &child : children)
+    for (const auto &child : childrenBuffer)
     {
         if (child->IsEnabled())
         {
