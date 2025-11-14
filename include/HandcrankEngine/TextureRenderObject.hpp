@@ -53,6 +53,21 @@ class TextureRenderObject : public RenderObject
     }
 
     /**
+     * Load texture from a path.
+     *
+     * @param renderer A structure representing rendering state.
+     * @param path File path to texture file.
+     * @param color The color to use as the transparent color key.
+     */
+    void LoadTransparentTexture(SDL_Renderer *renderer, const char *path,
+                                const SDL_Color colorKey)
+    {
+        texture = LoadCachedTransparentTexture(renderer, path, colorKey);
+
+        UpdateRectSizeFromTexture();
+    }
+
+    /**
      * Load texture from a read-only buffer.
      *
      * @param renderer A structure representing rendering state.
@@ -62,6 +77,22 @@ class TextureRenderObject : public RenderObject
     void LoadTexture(SDL_Renderer *renderer, const void *mem, const int size)
     {
         texture = LoadCachedTexture(renderer, mem, size);
+
+        UpdateRectSizeFromTexture();
+    }
+
+    /**
+     * Load texture from a read-only buffer.
+     *
+     * @param renderer A structure representing rendering state.
+     * @param mem A pointer to a read-only buffer.
+     * @param size The buffer size, in bytes.
+     * @param color The color to use as the transparent color key.
+     */
+    void LoadTransparentTexture(SDL_Renderer *renderer, const void *mem,
+                                const int size, const SDL_Color colorKey)
+    {
+        texture = LoadCachedTransparentTexture(renderer, mem, size, colorKey);
 
         UpdateRectSizeFromTexture();
     }
