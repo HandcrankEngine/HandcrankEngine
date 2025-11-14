@@ -44,9 +44,6 @@ class TextureRenderObject : public RenderObject
      *
      * @param renderer A structure representing rendering state.
      * @param path File path to texture file.
-     *
-     * @deprecated DEVELOPMENT USE ONLY! Use LoadTexture to load textures in a
-     * release build.
      */
     void LoadTexture(SDL_Renderer *renderer, const char *path)
     {
