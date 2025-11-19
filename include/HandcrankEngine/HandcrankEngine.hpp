@@ -504,12 +504,7 @@ auto Game::IsKeyDown(const SDL_Keycode keyCode) const -> bool
 {
     auto result = keyState.find(keyCode);
 
-    if (result != keyState.end())
-    {
-        return result->second;
-    }
-
-    return false;
+    return result != keyState.end() && result->second;
 };
 
 auto Game::IsAnyKeyPressed() const -> bool
@@ -523,24 +518,14 @@ auto Game::IsKeyPressed(const SDL_Keycode keyCode) const -> bool
 {
     auto result = keyPressedState.find(keyCode);
 
-    if (result != keyPressedState.end())
-    {
-        return result->second;
-    }
-
-    return false;
+    return result != keyPressedState.end() && result->second;
 };
 
 auto Game::IsKeyReleased(const SDL_Keycode keyCode) const -> bool
 {
     auto result = keyReleasedState.find(keyCode);
 
-    if (result != keyReleasedState.end())
-    {
-        return result->second;
-    }
-
-    return false;
+    return result != keyReleasedState.end() && result->second;
 };
 
 auto Game::GetMousePosition() const -> SDL_FPoint { return mousePosition; };
@@ -549,36 +534,21 @@ auto Game::IsMouseButtonDown(const Uint8 buttonIndex) const -> bool
 {
     auto result = mouseState.find(buttonIndex);
 
-    if (result != mouseState.end())
-    {
-        return result->second;
-    }
-
-    return false;
+    return result != mouseState.end() && result->second;
 };
 
 auto Game::IsMouseButtonPressed(const Uint8 buttonIndex) const -> bool
 {
     auto result = mousePressedState.find(buttonIndex);
 
-    if (result != mousePressedState.end())
-    {
-        return result->second;
-    }
-
-    return false;
+    return result != mousePressedState.end() && result->second;
 };
 
 auto Game::IsMouseButtonReleased(const Uint8 buttonIndex) const -> bool
 {
     auto result = mouseReleasedState.find(buttonIndex);
 
-    if (result != mouseReleasedState.end())
-    {
-        return result->second;
-    }
-
-    return false;
+    return result != mouseReleasedState.end() && result->second;
 };
 
 auto Game::GetElapsedTime() const -> double { return elapsedTime; }
