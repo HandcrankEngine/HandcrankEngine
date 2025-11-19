@@ -50,6 +50,9 @@ class SpriteRenderObject : public ImageRenderObject
     void Stop()
     {
         frame = 0;
+
+        CalculateRect();
+
         isPlaying = false;
     }
     auto IsPlaying() const -> bool { return isPlaying; }
