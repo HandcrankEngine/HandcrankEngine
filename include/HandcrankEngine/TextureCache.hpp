@@ -95,11 +95,11 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         return nullptr;
     }
 
-    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
-
     SDL_SetColorKey(
         surface, SDL_TRUE,
         SDL_MapRGB(surface->format, colorKey.r, colorKey.g, colorKey.b));
+
+    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_FreeSurface(surface);
 
