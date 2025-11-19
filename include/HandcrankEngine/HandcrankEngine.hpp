@@ -152,9 +152,15 @@ class Game
     [[nodiscard]] inline auto HasFocus() const -> bool;
 
     [[nodiscard]] inline auto IsKeyDown(SDL_Keycode keyCode) const -> bool;
+    [[nodiscard]] inline auto
+    IsKeyDown(const std::vector<SDL_Keycode> &keyCodes) const -> bool;
     [[nodiscard]] inline auto IsAnyKeyPressed() const -> bool;
     [[nodiscard]] inline auto IsKeyPressed(SDL_Keycode keyCode) const -> bool;
+    [[nodiscard]] inline auto
+    IsKeyPressed(const std::vector<SDL_Keycode> &keyCodes) const -> bool;
     [[nodiscard]] inline auto IsKeyReleased(SDL_Keycode keyCode) const -> bool;
+    [[nodiscard]] inline auto
+    IsKeyReleased(const std::vector<SDL_Keycode> &keyCodes) const -> bool;
 
     [[nodiscard]] inline auto GetMousePosition() const -> SDL_FPoint;
 
@@ -507,6 +513,12 @@ auto Game::IsKeyDown(const SDL_Keycode keyCode) const -> bool
     return result != keyState.end() && result->second;
 };
 
+auto Game::IsKeyDown(const std::vector<SDL_Keycode> &keyCodes) const -> bool
+{
+    return std::any_of(keyCodes.begin(), keyCodes.end(),
+                       [this](SDL_Keycode val) { return IsKeyDown(val); });
+};
+
 auto Game::IsAnyKeyPressed() const -> bool
 {
     auto result = keyPressedState.size() > 0;
@@ -521,11 +533,23 @@ auto Game::IsKeyPressed(const SDL_Keycode keyCode) const -> bool
     return result != keyPressedState.end() && result->second;
 };
 
+auto Game::IsKeyPressed(const std::vector<SDL_Keycode> &keyCodes) const -> bool
+{
+    return std::any_of(keyCodes.begin(), keyCodes.end(),
+                       [this](SDL_Keycode val) { return IsKeyPressed(val); });
+};
+
 auto Game::IsKeyReleased(const SDL_Keycode keyCode) const -> bool
 {
     auto result = keyReleasedState.find(keyCode);
 
     return result != keyReleasedState.end() && result->second;
+};
+
+auto Game::IsKeyReleased(const std::vector<SDL_Keycode> &keyCodes) const -> bool
+{
+    return std::any_of(keyCodes.begin(), keyCodes.end(),
+                       [this](SDL_Keycode val) { return IsKeyReleased(val); });
 };
 
 auto Game::GetMousePosition() const -> SDL_FPoint { return mousePosition; };
