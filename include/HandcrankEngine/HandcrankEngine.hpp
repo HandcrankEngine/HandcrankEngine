@@ -48,8 +48,8 @@ enum class RectAnchor : uint8_t
     LEFT = 0x02,
     BOTTOM = 0x04,
     RIGHT = 0x08,
-    VCENTER = 0x16,
-    HCENTER = 0x32,
+    VCENTER = 0x10,
+    HCENTER = 0x20,
 };
 
 inline auto operator|(RectAnchor a, RectAnchor b) -> RectAnchor
