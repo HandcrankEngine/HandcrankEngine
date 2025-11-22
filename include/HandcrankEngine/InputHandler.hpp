@@ -128,6 +128,7 @@ void InputHandler::HandleInputPollEvent(const SDL_Event event)
     case SDL_CONTROLLERBUTTONUP:
         controllerButtonState[controllerButton] = false;
         controllerButtonReleasedState[controllerButton] = true;
+        break;
 
     default:
         break;
