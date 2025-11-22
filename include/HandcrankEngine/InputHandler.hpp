@@ -212,9 +212,9 @@ auto InputHandler::IsMouseButtonReleased(const Uint8 buttonIndex) const -> bool
 auto InputHandler::IsControllerButtonDown(
     const SDL_GameControllerButton controllerButton) const -> bool
 {
-    auto result = controllerButtonPressedState.find(controllerButton);
+    auto result = controllerButtonState.find(controllerButton);
 
-    return result != controllerButtonPressedState.end() && result->second;
+    return result != controllerButtonState.end() && result->second;
 };
 
 auto InputHandler::IsControllerButtonDown(
