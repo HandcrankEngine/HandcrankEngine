@@ -391,7 +391,7 @@ auto Game::Setup() -> bool
 {
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
     {
         return false;
     }
