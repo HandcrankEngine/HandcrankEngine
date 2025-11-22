@@ -23,6 +23,8 @@ class InputHandler
     std::unordered_map<Uint8, bool> mousePressedState;
     std::unordered_map<Uint8, bool> mouseReleasedState;
 
+    std::unordered_map<Uint8, SDL_GameController *> connectedControllers;
+
     std::unordered_map<SDL_GameControllerButton, bool> controllerButtonState;
     std::unordered_map<SDL_GameControllerButton, bool>
         controllerButtonPressedState;
@@ -118,6 +120,41 @@ void InputHandler::HandleInputPollEvent(const SDL_Event event)
     case SDL_MOUSEBUTTONUP:
         mouseState[mouseButtonIndex] = false;
         mouseReleasedState[mouseButtonIndex] = true;
+        break;
+
+    case SDL_CONTROLLERDEVICEADDED:
+        if (SDL_IsGameController(event.cdevice.which) == SDL_TRUE)
+        {
+            auto *controller = SDL_GameControllerOpen(event.cdevice.which);
+
+            auto id = SDL_JoystickInstanceID(
+                SDL_GameControllerGetJoystick(controller));
+
+            connectedControllers[id] = controller;
+        }
+
+        break;
+
+    case SDL_CONTROLLERDEVICEREMOVED:
+
+        for (const auto &[id, controller] : connectedControllers)
+        {
+            if (controller != nullptr)
+            {
+                auto controllerInstanceId = SDL_JoystickInstanceID(
+                    SDL_GameControllerGetJoystick(controller));
+
+                if (controllerInstanceId == event.cdevice.which)
+                {
+                    SDL_GameControllerClose(controller);
+
+                    connectedControllers.erase(id);
+
+                    break;
+                }
+            }
+        }
+
         break;
 
     case SDL_CONTROLLERBUTTONDOWN:
