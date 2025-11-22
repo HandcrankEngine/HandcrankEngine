@@ -21,6 +21,8 @@
 #include "AudioCache.hpp"
 #include "FontCache.hpp"
 #include "TextureCache.hpp"
+
+#include "InputHandler.hpp"
 #include "Utilities.hpp"
 
 namespace HandcrankEngine
@@ -66,7 +68,7 @@ inline auto operator&(RectAnchor a, RectAnchor b) -> RectAnchor
 
 inline std::shared_ptr<SDL_Texture> debugRectTexture;
 
-class Game
+class Game : public InputHandler
 {
   private:
     SDL_Window *window = nullptr;
@@ -78,18 +80,6 @@ class Game
     SDL_Color clearColor{0, 0, 0, MAX_ALPHA};
 
     bool quit = false;
-
-    SDL_Event event;
-
-    std::unordered_map<SDL_Keycode, bool> keyState;
-    std::unordered_map<SDL_Keycode, bool> keyPressedState;
-    std::unordered_map<SDL_Keycode, bool> keyReleasedState;
-
-    SDL_FPoint mousePosition{};
-
-    std::unordered_map<Uint8, bool> mouseState;
-    std::unordered_map<Uint8, bool> mousePressedState;
-    std::unordered_map<Uint8, bool> mouseReleasedState;
 
     std::vector<std::shared_ptr<RenderObject>> children;
     std::vector<std::shared_ptr<RenderObject>> childrenBuffer;
@@ -150,26 +140,6 @@ class Game
     [[nodiscard]] inline auto GetHeight() const -> int;
 
     [[nodiscard]] inline auto HasFocus() const -> bool;
-
-    [[nodiscard]] inline auto IsKeyDown(SDL_Keycode keyCode) const -> bool;
-    [[nodiscard]] inline auto
-    IsKeyDown(const std::vector<SDL_Keycode> &keyCodes) const -> bool;
-    [[nodiscard]] inline auto IsAnyKeyPressed() const -> bool;
-    [[nodiscard]] inline auto IsKeyPressed(SDL_Keycode keyCode) const -> bool;
-    [[nodiscard]] inline auto
-    IsKeyPressed(const std::vector<SDL_Keycode> &keyCodes) const -> bool;
-    [[nodiscard]] inline auto IsKeyReleased(SDL_Keycode keyCode) const -> bool;
-    [[nodiscard]] inline auto
-    IsKeyReleased(const std::vector<SDL_Keycode> &keyCodes) const -> bool;
-
-    [[nodiscard]] inline auto GetMousePosition() const -> SDL_FPoint;
-
-    [[nodiscard]] inline auto IsMouseButtonDown(Uint8 buttonIndex) const
-        -> bool;
-    [[nodiscard]] inline auto IsMouseButtonPressed(Uint8 buttonIndex) const
-        -> bool;
-    [[nodiscard]] inline auto IsMouseButtonReleased(Uint8 buttonIndex) const
-        -> bool;
 
     [[nodiscard]] inline auto GetElapsedTime() const -> double;
 
@@ -502,75 +472,6 @@ auto Game::GetHeight() const -> int { return viewport.h; }
 
 auto Game::HasFocus() const -> bool { return focused; }
 
-auto Game::IsKeyDown(const SDL_Keycode keyCode) const -> bool
-{
-    auto result = keyState.find(keyCode);
-
-    return result != keyState.end() && result->second;
-};
-
-auto Game::IsKeyDown(const std::vector<SDL_Keycode> &keyCodes) const -> bool
-{
-    return std::any_of(keyCodes.begin(), keyCodes.end(),
-                       [this](SDL_Keycode val) { return IsKeyDown(val); });
-};
-
-auto Game::IsAnyKeyPressed() const -> bool
-{
-    auto result = keyPressedState.size() > 0;
-
-    return result;
-};
-
-auto Game::IsKeyPressed(const SDL_Keycode keyCode) const -> bool
-{
-    auto result = keyPressedState.find(keyCode);
-
-    return result != keyPressedState.end() && result->second;
-};
-
-auto Game::IsKeyPressed(const std::vector<SDL_Keycode> &keyCodes) const -> bool
-{
-    return std::any_of(keyCodes.begin(), keyCodes.end(),
-                       [this](SDL_Keycode val) { return IsKeyPressed(val); });
-};
-
-auto Game::IsKeyReleased(const SDL_Keycode keyCode) const -> bool
-{
-    auto result = keyReleasedState.find(keyCode);
-
-    return result != keyReleasedState.end() && result->second;
-};
-
-auto Game::IsKeyReleased(const std::vector<SDL_Keycode> &keyCodes) const -> bool
-{
-    return std::any_of(keyCodes.begin(), keyCodes.end(),
-                       [this](SDL_Keycode val) { return IsKeyReleased(val); });
-};
-
-auto Game::GetMousePosition() const -> SDL_FPoint { return mousePosition; };
-
-auto Game::IsMouseButtonDown(const Uint8 buttonIndex) const -> bool
-{
-    auto result = mouseState.find(buttonIndex);
-
-    return result != mouseState.end() && result->second;
-};
-
-auto Game::IsMouseButtonPressed(const Uint8 buttonIndex) const -> bool
-{
-    auto result = mousePressedState.find(buttonIndex);
-
-    return result != mousePressedState.end() && result->second;
-};
-
-auto Game::IsMouseButtonReleased(const Uint8 buttonIndex) const -> bool
-{
-    auto result = mouseReleasedState.find(buttonIndex);
-
-    return result != mouseReleasedState.end() && result->second;
-};
-
 auto Game::GetElapsedTime() const -> double { return elapsedTime; }
 
 auto Game::GetFrameRate() const -> double { return frameRate; }
@@ -643,18 +544,10 @@ void Game::Loop()
 
 void Game::HandleInput()
 {
-    keyPressedState.clear();
-    keyReleasedState.clear();
-
-    mousePressedState.clear();
-    mouseReleasedState.clear();
+    HandleInputSetup();
 
     while (SDL_PollEvent(&event) != 0)
     {
-        auto keyCode = event.key.keysym.sym;
-
-        auto mouseButtonIndex = event.button.button;
-
         switch (event.type)
         {
         case SDL_QUIT:
@@ -678,35 +571,11 @@ void Game::HandleInput()
                 focused = true;
             }
             break;
-
-        case SDL_KEYDOWN:
-            keyPressedState[keyCode] = !keyState[keyCode];
-            keyState[keyCode] = true;
-            break;
-
-        case SDL_KEYUP:
-            keyState[keyCode] = false;
-            keyReleasedState[keyCode] = true;
-            break;
-
-        case SDL_MOUSEMOTION:
-            mousePosition.x = event.motion.x;
-            mousePosition.y = event.motion.y;
-            break;
-
-        case SDL_MOUSEBUTTONDOWN:
-            mousePressedState[mouseButtonIndex] = !mouseState[mouseButtonIndex];
-            mouseState[mouseButtonIndex] = true;
-            break;
-
-        case SDL_MOUSEBUTTONUP:
-            mouseState[mouseButtonIndex] = false;
-            mouseReleasedState[mouseButtonIndex] = true;
-            break;
-
         default:
             break;
         }
+
+        HandleInputPollEvent(event);
     }
 }
 
