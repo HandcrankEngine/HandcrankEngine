@@ -21,6 +21,8 @@ class SceneManager : public RenderObject
     std::shared_ptr<Scene> currentScene;
 
   public:
+    using RenderObject::RenderObject;
+
     void Start() override {}
 
     auto SetCurrentScene(const std::shared_ptr<Scene> &scene) -> bool

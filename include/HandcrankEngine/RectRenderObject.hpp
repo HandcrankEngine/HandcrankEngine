@@ -24,14 +24,7 @@ class RectRenderObject : public RenderObject
     SDL_BlendMode blendMode = SDL_BLENDMODE_BLEND;
 
   public:
-    explicit RectRenderObject() = default;
-    explicit RectRenderObject(const float x, const float y)
-        : RenderObject(x, y) {};
-    explicit RectRenderObject(const float x, const float y, const float w,
-                              const float h)
-        : RenderObject(x, y, w, h) {};
-
-    ~RectRenderObject() override = default;
+    using RenderObject::RenderObject;
 
     /**
      * Set rect border color.

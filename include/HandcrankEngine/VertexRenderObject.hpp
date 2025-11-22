@@ -18,9 +18,7 @@ class VertexRenderObject : public TextureRenderObject
     std::vector<int> indices;
 
   public:
-    explicit VertexRenderObject() = default;
-
-    ~VertexRenderObject() override = default;
+    using TextureRenderObject::TextureRenderObject;
 
     void Render(SDL_Renderer *renderer) override
     {

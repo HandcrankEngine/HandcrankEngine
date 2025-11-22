@@ -29,14 +29,7 @@ class SpriteRenderObject : public ImageRenderObject
     double nextTick = 0;
 
   public:
-    explicit SpriteRenderObject() = default;
-    explicit SpriteRenderObject(const float x, const float y)
-        : ImageRenderObject(x, y) {};
-    explicit SpriteRenderObject(const float x, const float y, const float w,
-                                const float h)
-        : ImageRenderObject(x, y, w, h) {};
-
-    ~SpriteRenderObject() override = default;
+    using ImageRenderObject::ImageRenderObject;
 
     void Play() { isPlaying = true; }
     void PlayOnce()

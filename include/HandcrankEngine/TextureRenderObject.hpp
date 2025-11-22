@@ -18,14 +18,7 @@ class TextureRenderObject : public RenderObject
     SDL_Texture *texture = nullptr;
 
   public:
-    explicit TextureRenderObject() = default;
-    explicit TextureRenderObject(const float x, const float y)
-        : RenderObject(x, y) {};
-    explicit TextureRenderObject(const float x, const float y, const float w,
-                                 const float h)
-        : RenderObject(x, y, w, h) {};
-
-    ~TextureRenderObject() override = default;
+    using RenderObject::RenderObject;
 
     /**
      * Set texture from an existing texture reference.

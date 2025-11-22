@@ -28,13 +28,7 @@ class TextRenderObject : public RenderObject
     SDL_Texture *textTexture = nullptr;
 
   public:
-    explicit TextRenderObject() = default;
-
-    explicit TextRenderObject(const float x, const float y)
-        : RenderObject(x, y) {};
-    explicit TextRenderObject(const float x, const float y, const float w,
-                              const float h)
-        : RenderObject(x, y, w, h) {};
+    using RenderObject::RenderObject;
 
     ~TextRenderObject() override
     {

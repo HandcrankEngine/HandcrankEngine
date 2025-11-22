@@ -28,14 +28,7 @@ class ImageRenderObject : public TextureRenderObject
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   public:
-    explicit ImageRenderObject() = default;
-    explicit ImageRenderObject(const float x, const float y)
-        : TextureRenderObject(x, y) {};
-    explicit ImageRenderObject(const float x, const float y, const float w,
-                               const float h)
-        : TextureRenderObject(x, y, w, h) {};
-
-    ~ImageRenderObject() override = default;
+    using TextureRenderObject::TextureRenderObject;
 
     void SetSrcRect(const SDL_Rect &srcRect)
     {

@@ -120,7 +120,7 @@ class Game
 
   public:
     inline Game();
-    inline ~Game();
+    virtual inline ~Game();
 
     inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
@@ -254,12 +254,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     int z = 0;
 
     inline RenderObject();
-    explicit RenderObject(const float x, const float y) { SetPosition(x, y); }
-    explicit RenderObject(const float x, const float y, const float w,
-                          const float h)
-    {
-        SetRect(x, y, w, h);
-    }
+    inline RenderObject(float x, float y);
+    inline RenderObject(float x, float y, float w, float h);
 
     virtual inline ~RenderObject();
 
@@ -819,10 +815,20 @@ auto Game::IsDebug() const -> bool { return debug; }
 
 RenderObject::RenderObject()
 {
-    SetPosition(0, 0);
-    SetDimension(DEFAULT_RECT_WIDTH, DEFAULT_RECT_HEIGHT);
+    SetRect(0, 0, DEFAULT_RECT_WIDTH, DEFAULT_RECT_HEIGHT);
 
     index = ++RenderObject::count;
+}
+
+RenderObject::RenderObject(const float x, const float y) : RenderObject()
+{
+    SetPosition(x, y);
+}
+RenderObject::RenderObject(const float x, const float y, const float w,
+                           const float h)
+    : RenderObject()
+{
+    SetRect(x, y, w, h);
 }
 
 RenderObject::~RenderObject()

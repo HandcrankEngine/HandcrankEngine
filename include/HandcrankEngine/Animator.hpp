@@ -38,7 +38,8 @@ class Animator : public RenderObject
     size_t currentAnimationIndex = 0;
 
   public:
-    explicit Animator() = default;
+    using RenderObject::RenderObject;
+
     explicit Animator(const Mode mode) { this->mode = mode; }
     explicit Animator(const Mode mode, const bool looping)
     {

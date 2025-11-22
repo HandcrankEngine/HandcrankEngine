@@ -16,6 +16,8 @@ class Scene : public RenderObject
     std::function<void(std::type_index)> SetCurrentScene;
 
   public:
+    using RenderObject::RenderObject;
+
     void SetCurrentSceneCallback(
         const std::function<void(std::type_index)> &callback)
     {
