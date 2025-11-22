@@ -78,7 +78,8 @@ class LogoScreenSaver : public VertexRenderObject
 
     void Update(double deltaTime) override
     {
-        if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT))
+        if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
+            game->IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_A))
         {
             currentColor.r = RandomBoolean() ? 255 : 100;
             currentColor.g = RandomBoolean() ? 255 : 100;
@@ -91,6 +92,12 @@ class LogoScreenSaver : public VertexRenderObject
         {
             AddLogoToList(game->GetMousePosition().x - (textureWidth / 2),
                           game->GetMousePosition().y - (textureHeight / 2));
+        }
+
+        if (game->IsControllerButtonDown(SDL_CONTROLLER_BUTTON_A))
+        {
+            AddLogoToList((game->GetWidth() / 2) - (textureWidth / 2),
+                          (game->GetHeight() / 2) - (textureHeight / 2));
         }
 
         if (game->IsKeyPressed(SDLK_c))
