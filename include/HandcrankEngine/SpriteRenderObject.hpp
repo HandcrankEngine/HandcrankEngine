@@ -79,19 +79,14 @@ class SpriteRenderObject : public ImageRenderObject
         spriteFrames.clear();
         spriteFrames.reserve(columns * rows);
 
-        auto cellWidth = (width - padding.x * (columns - 1)) / columns;
-        auto cellHeight = (height - padding.y * (rows - 1)) / rows;
-
         for (auto y = 0; y < rows; y += 1)
         {
             for (auto x = 0; x < columns; x += 1)
             {
                 AddFrame(
-                    {static_cast<int>(offset.x + (x * (cellWidth + padding.x))),
-                     static_cast<int>(offset.y +
-                                      (y * (cellHeight + padding.y))),
-                     static_cast<int>(cellWidth),
-                     static_cast<int>(cellHeight)});
+                    {static_cast<int>(offset.x + (x * (width + padding.x))),
+                     static_cast<int>(offset.y + (y * (height + padding.y))),
+                     static_cast<int>(width), static_cast<int>(height)});
             }
         }
 
