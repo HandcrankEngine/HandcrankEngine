@@ -4,7 +4,6 @@
 #pragma once
 
 #include <cstddef>
-#include <list>
 #include <memory>
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
@@ -17,7 +16,7 @@ class SceneManager : public RenderObject
 {
 
   private:
-    std::list<std::shared_ptr<Scene>> scenes;
+    std::vector<std::shared_ptr<Scene>> scenes;
     std::shared_ptr<Scene> currentScene;
 
   public:
