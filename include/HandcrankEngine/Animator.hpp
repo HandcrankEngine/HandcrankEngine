@@ -163,7 +163,7 @@ class Animator : public RenderObject
 
     void StartSequence()
     {
-        auto animation = animations.front();
+        const auto &animation = animations.front();
 
         if (animation != nullptr)
         {
