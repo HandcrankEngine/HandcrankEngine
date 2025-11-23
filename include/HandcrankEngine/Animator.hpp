@@ -47,8 +47,6 @@ class Animator : public RenderObject
         this->looping = looping;
     }
 
-    ~Animator() override { animations.clear(); }
-
     void Start() override
     {
         if (animations.empty())
