@@ -8,6 +8,9 @@
 
 #include <SDL.h>
 
+namespace HandcrankEngine
+{
+
 class InputHandler
 {
   protected:
@@ -304,3 +307,5 @@ auto InputHandler::IsControllerButtonReleased(
                        [this](SDL_GameControllerButton val)
                        { return IsControllerButtonReleased(val); });
 };
+
+} // namespace HandcrankEngine
