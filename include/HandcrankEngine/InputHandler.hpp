@@ -139,7 +139,6 @@ void InputHandler::HandleInputPollEvent(const SDL_Event event)
         break;
 
     case SDL_CONTROLLERDEVICEREMOVED:
-
         for (const auto &[id, controller] : connectedControllers)
         {
             if (controller != nullptr)
