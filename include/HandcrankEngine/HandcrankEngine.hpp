@@ -651,27 +651,26 @@ void Game::Render()
 
 void Game::DestroyChildObjects()
 {
-    for (auto iter = children.begin(); iter != children.end();)
+    for (const auto &child : children)
     {
-        auto *child = iter->get();
-
         if (child != nullptr)
         {
             child->DestroyChildObjects();
-
-            if (child->HasBeenMarkedForDestroy())
-            {
-                child->OnDestroy();
-
-                iter->reset();
-                iter = children.erase(iter);
-            }
-            else
-            {
-                ++iter;
-            }
         }
     }
+
+    children.erase(std::remove_if(children.begin(), children.end(),
+                                  [](const auto &child)
+                                  {
+                                      if (child->HasBeenMarkedForDestroy())
+                                      {
+                                          child->OnDestroy();
+
+                                          return true;
+                                      }
+                                      return false;
+                                  }),
+                   children.end());
 }
 
 void Game::Quit() { quit = true; }
@@ -1058,27 +1057,26 @@ auto RenderObject::CheckCollisionAABB(
 
 void RenderObject::DestroyChildObjects()
 {
-    for (auto iter = children.begin(); iter != children.end();)
+    for (const auto &child : children)
     {
-        auto *child = iter->get();
-
         if (child != nullptr)
         {
             child->DestroyChildObjects();
-
-            if (child->HasBeenMarkedForDestroy())
-            {
-                child->OnDestroy();
-
-                iter->reset();
-                iter = children.erase(iter);
-            }
-            else
-            {
-                ++iter;
-            }
         }
     }
+
+    children.erase(std::remove_if(children.begin(), children.end(),
+                                  [](const auto &child)
+                                  {
+                                      if (child->HasBeenMarkedForDestroy())
+                                      {
+                                          child->OnDestroy();
+
+                                          return true;
+                                      }
+                                      return false;
+                                  }),
+                   children.end());
 }
 
 [[nodiscard]] auto RenderObject::HasBeenMarkedForDestroy() const -> bool
