@@ -171,7 +171,7 @@ class Game : public InputHandler
 
     inline void CalculateDeltaTime();
 
-    inline void FillChildrenBuffer();
+    inline void PopulateChildrenBuffer();
 
     inline void Update();
     inline void FixedUpdate();
@@ -248,7 +248,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
     inline auto GetChildCount() -> int;
 
-    inline void FillChildrenBuffer();
+    inline void PopulateChildrenBuffer();
 
     virtual inline void Start();
     virtual inline void Update(double deltaTime);
@@ -511,7 +511,7 @@ void Game::Loop()
 
     HandleInput();
 
-    FillChildrenBuffer();
+    PopulateChildrenBuffer();
 
     Update();
     FixedUpdate();
@@ -579,7 +579,7 @@ void Game::HandleInput()
     }
 }
 
-void Game::FillChildrenBuffer()
+void Game::PopulateChildrenBuffer()
 {
     childrenBuffer = children;
 
@@ -589,7 +589,7 @@ void Game::FillChildrenBuffer()
 
         if (child != nullptr)
         {
-            child->FillChildrenBuffer();
+            child->PopulateChildrenBuffer();
         }
     }
 }
@@ -796,7 +796,7 @@ auto RenderObject::GetChildByType(const bool nested) -> std::shared_ptr<T>
 
 auto RenderObject::GetChildCount() -> int { return children.size(); }
 
-void RenderObject::FillChildrenBuffer()
+void RenderObject::PopulateChildrenBuffer()
 {
     childrenBuffer = children;
 
@@ -806,7 +806,7 @@ void RenderObject::FillChildrenBuffer()
 
         if (child != nullptr)
         {
-            child->FillChildrenBuffer();
+            child->PopulateChildrenBuffer();
         }
     }
 }
