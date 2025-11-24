@@ -84,6 +84,8 @@ class Game : public InputHandler
     std::vector<std::shared_ptr<RenderObject>> children;
     std::vector<std::shared_ptr<RenderObject>> childrenBuffer;
 
+    std::vector<std::shared_ptr<RenderObject>> colliders;
+
     double elapsedTime = 0;
     double deltaTime = 0;
     double fixedUpdateDeltaTime = 0;
@@ -120,6 +122,9 @@ class Game : public InputHandler
     template <typename T>
     inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
     inline auto GetChildCount() -> int;
+
+    inline void AddCollider(const std::shared_ptr<RenderObject> &collider);
+    inline void RemoveCollider(const std::shared_ptr<RenderObject> &collider);
 
     [[nodiscard]] inline auto GetWindow() -> SDL_Window *;
     [[nodiscard]] inline auto GetRenderer() -> SDL_Renderer *;
@@ -177,6 +182,8 @@ class Game : public InputHandler
     inline void FixedUpdate();
 
     inline void Render();
+
+    inline void ResolveCollisions();
 
     inline void DestroyChildObjects();
 
@@ -259,6 +266,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     virtual inline void OnMouseDown();
     virtual inline void OnMouseUp();
 
+    virtual inline void OnCollision(const std::shared_ptr<RenderObject> &other);
+
     virtual inline void InternalUpdate(double deltaTime);
     virtual inline void InternalFixedUpdate(double fixedDeltaTime);
 
@@ -277,6 +286,9 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void SetScale(float scale);
 
     inline auto GetTransformedRect() -> SDL_FRect;
+
+    void EnableCollider();
+    void DisableCollider();
 
     inline auto CanRender() -> bool;
     virtual inline void Render(SDL_Renderer *renderer);
@@ -300,6 +312,7 @@ Game::~Game()
 {
     children.clear();
     childrenBuffer.clear();
+    colliders.clear();
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
@@ -370,6 +383,17 @@ auto Game::GetChildByType(const bool nested) -> std::shared_ptr<T>
 }
 
 auto Game::GetChildCount() -> int { return children.size(); }
+
+void Game::AddCollider(const std::shared_ptr<RenderObject> &collider)
+{
+    colliders.emplace_back(collider);
+}
+
+void Game::RemoveCollider(const std::shared_ptr<RenderObject> &collider)
+{
+    colliders.erase(std::remove(colliders.begin(), colliders.end(), collider),
+                    colliders.end());
+}
 
 auto Game::GetWindow() -> SDL_Window * { return window; }
 
@@ -516,6 +540,8 @@ void Game::Loop()
     Update();
     FixedUpdate();
 
+    ResolveCollisions();
+
     Render();
 
     DestroyChildObjects();
@@ -647,6 +673,43 @@ void Game::Render()
     }
 
     SDL_RenderPresent(renderer);
+}
+
+void Game::ResolveCollisions()
+{
+    if (colliders.empty())
+    {
+        return;
+    }
+
+    colliders.erase(
+        std::remove_if(colliders.begin(), colliders.end(),
+                       [](const auto &collider)
+                       { return collider->HasBeenMarkedForDestroy(); }),
+        colliders.end());
+
+    const auto count = colliders.size();
+
+    if (count <= 1)
+    {
+        return;
+    }
+
+    for (auto i = 0; i < count - 1; i += 1)
+    {
+        const auto &rectA = colliders[i]->GetTransformedRect();
+
+        for (auto j = i + 1; j < count; j += 1)
+        {
+            const auto &rectB = colliders[j]->GetTransformedRect();
+
+            if (SDL_HasIntersectionF(&rectA, &rectB) == SDL_TRUE)
+            {
+                colliders[i]->OnCollision(colliders[j]);
+                colliders[j]->OnCollision(colliders[i]);
+            }
+        }
+    }
 }
 
 void Game::DestroyChildObjects()
@@ -824,6 +887,8 @@ void RenderObject::OnMouseDown() {}
 
 void RenderObject::OnMouseUp() {}
 
+void RenderObject::OnCollision(const std::shared_ptr<RenderObject> &other) {}
+
 void RenderObject::InternalUpdate(const double deltaTime)
 {
     if (!hasStarted)
@@ -962,6 +1027,12 @@ auto RenderObject::GetTransformedRect() -> SDL_FRect
     }
 
     return transformedRect;
+}
+
+void RenderObject::EnableCollider() { game->AddCollider(shared_from_this()); }
+void RenderObject::DisableCollider()
+{
+    game->RemoveCollider(shared_from_this());
 }
 
 auto RenderObject::CanRender() -> bool
