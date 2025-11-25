@@ -474,8 +474,8 @@ void Game::SetScreenSize(const int _width, const int _height)
 
     viewport.w = width;
     viewport.h = height;
-    viewportf.w = static_cast<float>(width);
-    viewportf.h = static_cast<float>(height);
+    viewportf.w = static_cast<float>(viewport.w);
+    viewportf.h = static_cast<float>(viewport.h);
 
     dpiScaleX = (float)width / _width;
     dpiScaleY = (float)height / _height;
