@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include "HandcrankEngine.hpp"
 #include "TextureRenderObject.hpp"
@@ -15,7 +15,9 @@ namespace HandcrankEngine
 class ImageRenderObject : public TextureRenderObject
 {
   protected:
-    SDL_Rect srcRect = SDL_Rect();
+    SDL_Texture *texture;
+
+    SDL_FRect srcRect = SDL_FRect();
 
     bool srcRectSet = false;
 
@@ -25,12 +27,12 @@ class ImageRenderObject : public TextureRenderObject
 
     int alpha = MAX_ALPHA;
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
 
   public:
     using TextureRenderObject::TextureRenderObject;
 
-    void SetSrcRect(const SDL_Rect &srcRect)
+    void SetSrcRect(const SDL_FRect &srcRect)
     {
         this->srcRect.x = srcRect.x;
         this->srcRect.y = srcRect.y;
@@ -40,7 +42,7 @@ class ImageRenderObject : public TextureRenderObject
         srcRectSet = true;
     }
 
-    void SetSrcRect(int x, int y, int w, int h)
+    void SetSrcRect(float x, float y, float w, float h)
     {
         this->srcRect.x = x;
         this->srcRect.y = y;
@@ -50,7 +52,7 @@ class ImageRenderObject : public TextureRenderObject
         srcRectSet = true;
     }
 
-    void SetFlip(const SDL_RendererFlip flip) { this->flip = flip; }
+    void SetFlip(const SDL_FlipMode flip) { this->flip = flip; }
 
     void SetTintColor(const SDL_Color &tintColor)
     {
@@ -93,8 +95,9 @@ class ImageRenderObject : public TextureRenderObject
 
         SDL_SetTextureAlphaMod(texture, alpha);
 
-        SDL_RenderCopyExF(renderer, texture, srcRectSet ? &srcRect : nullptr,
-                          &transformedRect, 0, &centerPoint, flip);
+        SDL_RenderTextureRotated(renderer, texture,
+                                 srcRectSet ? &srcRect : nullptr,
+                                 &transformedRect, 0, &centerPoint, flip);
 
         RenderObject::Render(renderer);
     }
