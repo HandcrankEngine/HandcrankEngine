@@ -205,6 +205,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
 
     std::string name;
 
+    std::string tag;
+
     SDL_FRect rect = SDL_FRect();
 
     RectAnchor anchor = RectAnchor::TOP | RectAnchor::LEFT;
@@ -243,6 +245,10 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetIndex() const -> int;
 
     [[nodiscard]] inline auto GetName() const -> std::string;
+    inline void SetName(const std::string &name);
+
+    [[nodiscard]] inline auto GetTag() const -> std::string;
+    inline void SetTag(const std::string &tag);
 
     [[nodiscard]] inline auto GetClassName() const -> std::string;
 
@@ -775,14 +781,15 @@ auto RenderObject::GetIndex() const -> int { return index; }
 
 auto RenderObject::GetName() const -> std::string
 {
-    if (parent != nullptr)
-    {
-        return parent->GetName() + " > " + GetClassName() + " (" +
-               std::to_string(index) + ")";
-    }
-
-    return GetClassName() + " (" + std::to_string(index) + ")";
+    return name.empty() ? GetClassName() : name;
 }
+void RenderObject::SetName(const std::string &name) { this->name = name; }
+
+auto RenderObject::GetTag() const -> std::string
+{
+    return tag.empty() ? "untagged" : tag;
+}
+void RenderObject::SetTag(const std::string &tag) { this->tag = tag; }
 
 auto RenderObject::GetClassName() const -> std::string
 {
