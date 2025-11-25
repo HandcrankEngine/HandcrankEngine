@@ -252,6 +252,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
 
     [[nodiscard]] inline auto GetClassName() const -> std::string;
 
+    [[nodiscard]] inline auto ShowInHierarchy() const -> std::string;
+
     inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
     template <typename T>
@@ -794,6 +796,16 @@ void RenderObject::SetTag(const std::string &tag) { this->tag = tag; }
 auto RenderObject::GetClassName() const -> std::string
 {
     return GetClassNameSimple(*this);
+}
+
+auto RenderObject::ShowInHierarchy() const -> std::string
+{
+    if (parent != nullptr)
+    {
+        return parent->GetName() + " > " + GetName();
+    }
+
+    return GetName();
 }
 
 void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
