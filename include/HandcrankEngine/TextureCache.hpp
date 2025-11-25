@@ -120,8 +120,8 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
  * @param mem A pointer to a read-only buffer.
  * @param size The buffer size, in bytes.
  */
-inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
-                              const int size) -> SDL_Texture *
+inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
+    -> SDL_Texture *
 {
     auto hash = MemHash(mem, size);
 
@@ -165,7 +165,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem,
  * @param color The color to use as the transparent color key.
  */
 inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
-                                         const void *mem, const int size,
+                                         const void *mem, int size,
                                          const SDL_Color colorKey)
     -> SDL_Texture *
 {

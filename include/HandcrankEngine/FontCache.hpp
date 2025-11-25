@@ -46,8 +46,7 @@ inline auto CleanupFontInits() -> void
  * @param path File path to font file.
  * @param ptSize The size of the font.
  */
-inline auto LoadCachedFont(const char *path, const int ptSize = 24)
-    -> TTF_Font *
+inline auto LoadCachedFont(const char *path, int ptSize = 24) -> TTF_Font *
 {
     auto cacheKey = std::string(path) + "_" + std::to_string(ptSize);
 
@@ -87,8 +86,8 @@ inline auto LoadCachedFont(const char *path, const int ptSize = 24)
  * @param size The buffer size, in bytes.
  * @param ptSize The size of the font.
  */
-inline auto LoadCachedFont(const void *mem, const int size,
-                           const int ptSize = 24) -> TTF_Font *
+inline auto LoadCachedFont(const void *mem, int size, int ptSize = 24)
+    -> TTF_Font *
 {
     auto hash = MemHash(mem, size) + "_" + std::to_string(ptSize);
 

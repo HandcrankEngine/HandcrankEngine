@@ -24,7 +24,7 @@ class AnimatedBorder : public RenderObject
         animator = std::make_shared<Animator>(Animator::Mode::SEQUENCE, true);
 
         animator->AddAnimation(std::make_shared<Animation>(
-            [&](const double deltaTime, const double elapsedTime)
+            [&](double deltaTime, double elapsedTime)
             {
                 cube->SetRect(0, game->GetHeight() - 10, 0, 10);
 
@@ -32,7 +32,7 @@ class AnimatedBorder : public RenderObject
             }));
 
         animator->AddAnimation(std::make_shared<Animation>(
-            [&](const double deltaTime, const double elapsedTime)
+            [&](double deltaTime, double elapsedTime)
             {
                 auto rect = cube->GetRect();
 
@@ -49,13 +49,13 @@ class AnimatedBorder : public RenderObject
             }));
 
         animator->AddAnimation(std::make_shared<Animation>(
-            [&](const double deltaTime, const double elapsedTime)
+            [&](double deltaTime, double elapsedTime)
             { return elapsedTime > 1 ? 0 : 1; }));
 
         game->AddChildObject(animator);
     }
 
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         if (!game->HasFocus())
         {

@@ -80,8 +80,7 @@ inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
     return music;
 }
 
-inline auto LoadMusic(const void *mem, const int size)
-    -> std::shared_ptr<Mix_Music>
+inline auto LoadMusic(const void *mem, int size) -> std::shared_ptr<Mix_Music>
 {
     auto hash = MemHash(mem, size);
 
@@ -138,8 +137,7 @@ inline auto LoadSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
     return sfx;
 }
 
-inline auto LoadSFX(const void *mem, const int size)
-    -> std::shared_ptr<Mix_Chunk>
+inline auto LoadSFX(const void *mem, int size) -> std::shared_ptr<Mix_Chunk>
 {
     auto hash = MemHash(mem, size);
 

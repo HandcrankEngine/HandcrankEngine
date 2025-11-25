@@ -16,7 +16,7 @@ struct Vector2
     float y;
 
     Vector2() : x(0), y(0) {}
-    Vector2(const float x, const float y) : x(x), y(y) {}
+    Vector2(float x, float y) : x(x), y(y) {}
     explicit Vector2(const SDL_FPoint &point) : x(point.x), y(point.y) {}
     explicit Vector2(const SDL_FRect &rect) : x(rect.x), y(rect.y) {}
 
@@ -30,12 +30,12 @@ struct Vector2
         return {x - other.x, y - other.y};
     }
 
-    auto operator*(const float number) const -> Vector2
+    auto operator*(float number) const -> Vector2
     {
         return {x * number, y * number};
     }
 
-    auto operator/(const float number) const -> Vector2
+    auto operator/(float number) const -> Vector2
     {
         if (number == 0)
         {
@@ -45,14 +45,14 @@ struct Vector2
         return {x / number, y / number};
     }
 
-    static auto Lerp(const Vector2 &start, const Vector2 &destination,
-                     const float t) -> Vector2
+    static auto Lerp(const Vector2 &start, const Vector2 &destination, float t)
+        -> Vector2
     {
         return LerpUnclamped(start, destination, std::clamp<float>(t, 0, 1));
     }
 
     static auto LerpUnclamped(const Vector2 &start, const Vector2 &destination,
-                              const float t) -> Vector2
+                              float t) -> Vector2
     {
         auto newPosition = Vector2(start);
 

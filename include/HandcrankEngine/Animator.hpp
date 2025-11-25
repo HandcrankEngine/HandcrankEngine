@@ -41,7 +41,7 @@ class Animator : public RenderObject
     using RenderObject::RenderObject;
 
     explicit Animator(const Mode mode) { this->mode = mode; }
-    explicit Animator(const Mode mode, const bool looping)
+    explicit Animator(const Mode mode, bool looping)
     {
         this->mode = mode;
         this->looping = looping;
@@ -110,17 +110,17 @@ class Animator : public RenderObject
         animations.emplace_back(animation);
     }
 
-    void AddDelay(const float delay)
+    void AddDelay(float delay)
     {
         AddAnimation(std::make_shared<Animation>(
-            [delay](const double deltaTime, const double elapsedTime)
+            [delay](double deltaTime, double elapsedTime)
             { return elapsedTime > delay ? 0 : 1; }));
     }
 
     void AddStep(const std::function<void()> &stepFunction)
     {
         AddAnimation(std::make_shared<Animation>(
-            [stepFunction](const double deltaTime, const double elapsedTime)
+            [stepFunction](double deltaTime, double elapsedTime)
             {
                 stepFunction();
 
@@ -128,7 +128,7 @@ class Animator : public RenderObject
             }));
     }
 
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         if (!game->HasFocus())
         {
@@ -173,7 +173,7 @@ class Animator : public RenderObject
         currentState = State::RUNNING;
     }
 
-    void UpdateParallel(const double deltaTime)
+    void UpdateParallel(double deltaTime)
     {
         if (currentState != State::RUNNING)
         {
@@ -206,7 +206,7 @@ class Animator : public RenderObject
         }
     }
 
-    void UpdateSequence(const double deltaTime)
+    void UpdateSequence(double deltaTime)
     {
         if (currentState != State::RUNNING)
         {

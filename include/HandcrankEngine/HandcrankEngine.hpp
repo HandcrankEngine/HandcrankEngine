@@ -335,8 +335,7 @@ void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 }
 
 template <typename T>
-auto Game::GetChildrenByType(const bool nested)
-    -> std::vector<std::shared_ptr<T>>
+auto Game::GetChildrenByType(bool nested) -> std::vector<std::shared_ptr<T>>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -368,7 +367,7 @@ auto Game::GetChildrenByType(const bool nested)
 }
 
 template <typename T>
-auto Game::GetChildByType(const bool nested) -> std::shared_ptr<T>
+auto Game::GetChildByType(bool nested) -> std::shared_ptr<T>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -464,7 +463,7 @@ auto Game::Setup() -> bool
     return true;
 }
 
-void Game::SetScreenSize(const int _width, const int _height)
+void Game::SetScreenSize(int _width, int _height)
 {
     SDL_SetWindowMinimumSize(window, _width, _height);
 
@@ -502,7 +501,7 @@ auto Game::GetFrameRate() const -> double { return frameRate; }
 
 auto Game::GetFPS() const -> double { return fps; }
 
-void Game::SetFrameRate(const double frameRate) { this->frameRate = frameRate; }
+void Game::SetFrameRate(double frameRate) { this->frameRate = frameRate; }
 
 auto Game::GetQuit() const -> bool { return quit; }
 
@@ -739,7 +738,7 @@ void Game::DestroyChildObjects()
 void Game::Quit() { quit = true; }
 
 #ifdef HANDCRANK_ENGINE_DEBUG
-void Game::ToggleDebug(const bool state) { debug = state; }
+void Game::ToggleDebug(bool state) { debug = state; }
 void Game::ToggleDebug() { debug = !debug; }
 auto Game::IsDebug() const -> bool { return debug; }
 #endif
@@ -751,13 +750,11 @@ RenderObject::RenderObject()
     index = ++RenderObject::count;
 }
 
-RenderObject::RenderObject(const float x, const float y) : RenderObject()
+RenderObject::RenderObject(float x, float y) : RenderObject()
 {
     SetPosition(x, y);
 }
-RenderObject::RenderObject(const float x, const float y, const float w,
-                           const float h)
-    : RenderObject()
+RenderObject::RenderObject(float x, float y, float w, float h) : RenderObject()
 {
     SetRect(x, y, w, h);
 }
@@ -808,7 +805,7 @@ void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 }
 
 template <typename T>
-auto RenderObject::GetChildrenByType(const bool nested)
+auto RenderObject::GetChildrenByType(bool nested)
     -> std::vector<std::shared_ptr<T>>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
@@ -841,7 +838,7 @@ auto RenderObject::GetChildrenByType(const bool nested)
 }
 
 template <typename T>
-auto RenderObject::GetChildByType(const bool nested) -> std::shared_ptr<T>
+auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -875,9 +872,9 @@ void RenderObject::PopulateChildrenBuffer()
 
 void RenderObject::Start() {}
 
-void RenderObject::Update(const double deltaTime) {}
+void RenderObject::Update(double deltaTime) {}
 
-void RenderObject::FixedUpdate(const double deltaTime) {}
+void RenderObject::FixedUpdate(double deltaTime) {}
 
 void RenderObject::OnMouseOver() {}
 
@@ -889,7 +886,7 @@ void RenderObject::OnMouseUp() {}
 
 void RenderObject::OnCollision(const std::shared_ptr<RenderObject> &other) {}
 
-void RenderObject::InternalUpdate(const double deltaTime)
+void RenderObject::InternalUpdate(double deltaTime)
 {
     if (!hasStarted)
     {
@@ -943,7 +940,7 @@ void RenderObject::InternalUpdate(const double deltaTime)
     }
 }
 
-void RenderObject::InternalFixedUpdate(const double fixedDeltaTime)
+void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
 {
     FixedUpdate(fixedDeltaTime);
 
@@ -966,20 +963,19 @@ void RenderObject::SetRect(const SDL_FRect &rect)
     SetDimension(rect.w, rect.h);
 }
 
-void RenderObject::SetRect(const float x, const float y, const float w,
-                           const float h)
+void RenderObject::SetRect(float x, float y, float w, float h)
 {
     SetPosition(x, y);
     SetDimension(w, h);
 }
 
-void RenderObject::SetPosition(const float x, const float y)
+void RenderObject::SetPosition(float x, float y)
 {
     rect.x = x;
     rect.y = y;
 }
 
-void RenderObject::SetDimension(const float w, const float h)
+void RenderObject::SetDimension(float w, float h)
 {
     rect.w = w;
     rect.h = h;
@@ -990,7 +986,7 @@ void RenderObject::SetAnchor(const RectAnchor anchor) { this->anchor = anchor; }
 
 auto RenderObject::GetScale() const -> float { return scale; }
 
-void RenderObject::SetScale(const float scale) { this->scale = scale; }
+void RenderObject::SetScale(float scale) { this->scale = scale; }
 
 auto RenderObject::GetTransformedRect() -> SDL_FRect
 {

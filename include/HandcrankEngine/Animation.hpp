@@ -28,18 +28,16 @@ class Animation
 
     double elapsedDeframeTime = 0;
 
-    std::function<int(const double, const double)> tickFunction;
+    std::function<int(double, double)> tickFunction;
 
   public:
     Animation() = default;
-    Animation(
-        const std::function<int(const double, const double)> &tickFunction)
+    Animation(const std::function<int(double, double)> &tickFunction)
     {
         this->tickFunction = tickFunction;
     }
-    Animation(
-        const std::function<int(const double, const double)> &tickFunction,
-        const double deframeStep)
+    Animation(const std::function<int(double, double)> &tickFunction,
+              double deframeStep)
     {
         this->tickFunction = tickFunction;
         this->deframeStep = deframeStep;
@@ -79,7 +77,7 @@ class Animation
         }
     }
 
-    virtual auto Tick(const double deltaTime) -> int
+    virtual auto Tick(double deltaTime) -> int
     {
         elapsedTime += deltaTime;
 
@@ -102,16 +100,12 @@ class Animation
         return 1;
     }
 
-    void
-    SetTick(const std::function<int(const double, const double)> &tickFunction)
+    void SetTick(const std::function<int(double, double)> &tickFunction)
     {
         this->tickFunction = tickFunction;
     }
 
-    void SetDeframeStep(const double deframeStep)
-    {
-        this->deframeStep = deframeStep;
-    }
+    void SetDeframeStep(double deframeStep) { this->deframeStep = deframeStep; }
 };
 
 } // namespace HandcrankEngine

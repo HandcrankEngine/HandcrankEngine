@@ -41,7 +41,7 @@ class PausedScreen : public RenderObject
         background->Disable();
     }
 
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         if (game->HasFocus() && background->IsEnabled())
         {

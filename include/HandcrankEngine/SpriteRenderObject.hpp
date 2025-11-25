@@ -52,17 +52,14 @@ class SpriteRenderObject : public ImageRenderObject
 
     auto GetFrame() const -> size_t { return frame; }
 
-    void SetFrameSpeed(const double frameSpeed)
-    {
-        this->frameSpeed = frameSpeed;
-    }
+    void SetFrameSpeed(double frameSpeed) { this->frameSpeed = frameSpeed; }
 
     void SetFrames(const std::vector<SDL_Rect> &spriteFrames)
     {
         this->spriteFrames = spriteFrames;
     }
 
-    void SetFrameIndex(const int frameIndex)
+    void SetFrameIndex(int frameIndex)
     {
         auto spriteFramesSize = size(spriteFrames);
 
@@ -72,8 +69,7 @@ class SpriteRenderObject : public ImageRenderObject
         }
     }
 
-    void CalculateFrames(const float width, const float height,
-                         const int columns, const int rows,
+    void CalculateFrames(float width, float height, int columns, int rows,
                          const Vector2 &padding, const Vector2 &offset)
     {
         spriteFrames.clear();
@@ -111,7 +107,7 @@ class SpriteRenderObject : public ImageRenderObject
         }
     }
 
-    void InternalUpdate(const double deltaTime) override
+    void InternalUpdate(double deltaTime) override
     {
         ImageRenderObject::InternalUpdate(deltaTime);
 

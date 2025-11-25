@@ -59,7 +59,7 @@ class TextRenderObject : public RenderObject
      * @deprecated DEVELOPMENT USE ONLY! Use SDL_LoadFont to load
      * fonts in a release build.
      */
-    void LoadFont(const char *path, const int ptSize = 24)
+    void LoadFont(const char *path, int ptSize = 24)
     {
         font = LoadCachedFont(path, ptSize);
     }
@@ -71,7 +71,7 @@ class TextRenderObject : public RenderObject
      * @param size The buffer size, in bytes.
      * @param ptSize The size of the font.
      */
-    void LoadFontRW(const void *mem, const int size, const int ptSize = 24)
+    void LoadFontRW(const void *mem, int size, int ptSize = 24)
     {
         font = LoadCachedFont(mem, size, ptSize);
     }

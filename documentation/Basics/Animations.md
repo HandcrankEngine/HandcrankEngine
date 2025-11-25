@@ -17,7 +17,7 @@ auto main(int argc, char *argv[]) -> int
     auto animator = std::make_shared<Animator>(Animator::Mode::SEQUENCE, true);
 
     animator->AddAnimation(std::make_shared<Animation>(
-        [&](const double deltaTime, const double elapsedTime)
+        [&](double deltaTime, double elapsedTime)
         {
             std::cout << elapsedTime << std::endl;
 
@@ -57,7 +57,7 @@ auto main(int argc, char *argv[]) -> int
 
     // Fade in
     animator->AddAnimation(std::make_shared<Animation>(
-        [&](const double deltaTime, const double elapsedTime)
+        [&](double deltaTime, double elapsedTime)
         {
             auto color = cube->GetFillColor();
 
@@ -72,12 +72,12 @@ auto main(int argc, char *argv[]) -> int
 
     // Pause for 1 second
     animator->AddAnimation(std::make_shared<Animation>(
-        [&](const double deltaTime, const double elapsedTime)
+        [&](double deltaTime, double elapsedTime)
         { return elapsedTime > 1 ? 0 : 1; }));
 
     // Fade out
     animator->AddAnimation(std::make_shared<Animation>(
-        [&](const double deltaTime, const double elapsedTime)
+        [&](double deltaTime, double elapsedTime)
         {
             auto color = cube->GetFillColor();
 
@@ -92,7 +92,7 @@ auto main(int argc, char *argv[]) -> int
 
     // Pause for half a second
     animator->AddAnimation(std::make_shared<Animation>(
-        [&](const double deltaTime, const double elapsedTime)
+        [&](double deltaTime, double elapsedTime)
         { return elapsedTime > 0.5 ? 0 : 1; }));
 
     game->AddChildObject(animator);

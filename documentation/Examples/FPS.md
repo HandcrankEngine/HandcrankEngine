@@ -18,7 +18,7 @@ class FPS : public TextRenderObject
         LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
                    fonts_Roboto_Roboto_Regular_ttf_len, 30);
     }
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         SetText(std::to_string(game->GetFPS()));
     }

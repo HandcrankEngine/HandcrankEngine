@@ -39,7 +39,7 @@ class FPS : public RenderObject
         background->AddChildObject(label);
     }
 
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         if (!game->HasFocus())
         {

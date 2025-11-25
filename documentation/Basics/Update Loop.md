@@ -14,11 +14,12 @@ auto game = std::make_unique<Game>();
 class LoopDebugger : public RenderObject
 {
   public:
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         std::cout << "Update " << std::to_string(deltaTime) << std::endl;
     }
-    void FixedUpdate(const double fixedDeltaTime) override
+
+    void FixedUpdate(double fixedDeltaTime) override
     {
         std::cout << "Fixed Update " << std::to_string(fixedDeltaTime)
                   << std::endl;

@@ -69,12 +69,12 @@ inline auto RightPad(const std::string &content, const char pad,
     return content + std::string(length - content.size(), pad);
 }
 
-inline auto Lerp(const float a, const float b, const float t) -> float
+inline auto Lerp(float a, float b, float t) -> float
 {
     return ((1 - t) * a) + (b * t);
 }
 
-inline auto InverseLerp(const float a, const float b, const float v) -> float
+inline auto InverseLerp(float a, float b, float v) -> float
 {
     if (a == b)
     {
@@ -84,7 +84,7 @@ inline auto InverseLerp(const float a, const float b, const float v) -> float
     return std::clamp(((v - a) / (b - a)), 0.0F, 1.0F);
 }
 
-inline auto RandomNumberRange(const int min, const int max) -> int
+inline auto RandomNumberRange(int min, int max) -> int
 {
     return (rand() % (max - min + 1)) + min;
 }

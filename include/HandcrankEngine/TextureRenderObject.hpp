@@ -67,7 +67,7 @@ class TextureRenderObject : public RenderObject
      * @param mem A pointer to a read-only buffer.
      * @param size The buffer size, in bytes.
      */
-    void LoadTexture(SDL_Renderer *renderer, const void *mem, const int size)
+    void LoadTexture(SDL_Renderer *renderer, const void *mem, int size)
     {
         texture = LoadCachedTexture(renderer, mem, size);
 
@@ -83,7 +83,7 @@ class TextureRenderObject : public RenderObject
      * @param color The color to use as the transparent color key.
      */
     void LoadTransparentTexture(SDL_Renderer *renderer, const void *mem,
-                                const int size, const SDL_Color colorKey)
+                                int size, const SDL_Color colorKey)
     {
         texture = LoadCachedTransparentTexture(renderer, mem, size, colorKey);
 

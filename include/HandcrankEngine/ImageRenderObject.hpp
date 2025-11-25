@@ -40,7 +40,7 @@ class ImageRenderObject : public TextureRenderObject
         srcRectSet = true;
     }
 
-    void SetSrcRect(const int x, const int y, const int w, const int h)
+    void SetSrcRect(int x, int y, int w, int h)
     {
         this->srcRect.x = x;
         this->srcRect.y = y;
@@ -71,7 +71,7 @@ class ImageRenderObject : public TextureRenderObject
         return tintColor;
     }
 
-    void SetAlpha(const int alpha) { this->alpha = alpha; }
+    void SetAlpha(int alpha) { this->alpha = alpha; }
 
     [[nodiscard]] auto GetAlpha() const -> int { return alpha; }
 

@@ -96,7 +96,7 @@ class LogosScene : public Scene
         AddChildObject(logo);
     }
 
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         if (game->IsAnyKeyPressed())
         {

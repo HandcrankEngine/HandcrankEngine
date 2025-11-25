@@ -14,7 +14,8 @@ class Button : public RectRenderObject
 {
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
-    void Update(const double deltaTime) override
+
+    void Update(double deltaTime) override
     {
         if (game->IsKeyPressed(SDLK_SPACE))
         {

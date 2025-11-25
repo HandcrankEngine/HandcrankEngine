@@ -14,7 +14,7 @@ auto game = std::make_unique<Game>();
 class InputManager : public RenderObject
 {
   public:
-    void Update(const double deltaTime) override
+    void Update(double deltaTime) override
     {
         if (game->IsKeyPressed(SDLK_ESCAPE) || game->IsKeyPressed(SDLK_q))
         {

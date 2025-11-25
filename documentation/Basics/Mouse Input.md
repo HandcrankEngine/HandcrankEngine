@@ -14,7 +14,8 @@ class Cursor : public RectRenderObject
 {
   public:
     void Start() override { SetFillColor(255, 0, 0, 255); }
-    void Update(const double deltaTime) override
+
+    void Update(double deltaTime) override
     {
         SetRect(game->GetMousePosition().x - 50, game->GetMousePosition().y - 50);
     }
