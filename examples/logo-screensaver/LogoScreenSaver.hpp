@@ -33,9 +33,6 @@ class LogoScreenSaver : public VertexRenderObject
 
     SDL_Color currentColor = {255, 255, 255, 255};
 
-    int textureWidth;
-    int textureHeight;
-
   public:
     void Start() override
     {
@@ -57,15 +54,12 @@ class LogoScreenSaver : public VertexRenderObject
 
         background->AddChildObject(label);
 
-        texture = LoadCachedTexture(game->GetRenderer(), images_sdl_logo_png,
-                                    images_sdl_logo_png_len);
+        LoadTexture(game->GetRenderer(), images_sdl_logo_png,
+                    images_sdl_logo_png_len);
 
         int length = 1;
 
         items.reserve(length);
-
-        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
-                         &textureHeight);
 
         for (auto i = 0; i < length; i += 1)
         {

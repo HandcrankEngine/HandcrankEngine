@@ -17,6 +17,9 @@ class TextureRenderObject : public RenderObject
   protected:
     SDL_Texture *texture = nullptr;
 
+    int textureWidth;
+    int textureHeight;
+
   public:
     using RenderObject::RenderObject;
 
@@ -109,9 +112,6 @@ class TextureRenderObject : public RenderObject
         {
             return;
         }
-
-        int textureWidth;
-        int textureHeight;
 
         SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
                          &textureHeight);
