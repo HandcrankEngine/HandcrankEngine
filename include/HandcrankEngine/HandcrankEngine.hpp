@@ -33,6 +33,8 @@ inline const int MAX_G = 255;
 inline const int MAX_B = 255;
 inline const int MAX_ALPHA = 255;
 
+inline const SDL_Color DEFAULT_COLOR = {MAX_R, MAX_G, MAX_B, MAX_ALPHA};
+
 const double MILLISECONDS = 1000.0;
 
 const double DEFAULT_FRAME_RATE = 60;
