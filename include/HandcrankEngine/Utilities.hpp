@@ -198,7 +198,7 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
     indices.emplace_back(static_cast<int>(index + 3));
 }
 
-inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr, const size_t index,
+inline auto UpdateTextureQuad(SDL_Vertex *vertices_ptr,
                               const SDL_FRect &destRect) -> void
 {
     vertices_ptr[0].position.x = destRect.x;

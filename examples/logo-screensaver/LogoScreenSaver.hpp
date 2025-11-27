@@ -135,7 +135,7 @@ class LogoScreenSaver : public VertexRenderObject
             items[i].rect.x = std::clamp<float>(x, minX, maxX);
             items[i].rect.y = std::clamp<float>(y, minY, maxY);
 
-            UpdateTextureQuad(vertices.data() + (i * 4), (i * 4), item.rect);
+            UpdateTextureQuad(vertices.data() + (i * 4), item.rect);
         }
     }
 
