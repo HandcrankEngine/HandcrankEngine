@@ -13,9 +13,20 @@ namespace HandcrankEngine
 
 class VertexRenderObject : public TextureRenderObject
 {
+
+  public:
+    struct VertexRenderItem
+    {
+        SDL_FRect rect;
+        SDL_FRect srcRect;
+        SDL_Color color;
+    };
+
   protected:
     std::vector<SDL_Vertex> vertices;
     std::vector<int> indices;
+
+    std::vector<VertexRenderItem> vertexRenderItems;
 
   public:
     using TextureRenderObject::TextureRenderObject;
@@ -26,6 +37,20 @@ class VertexRenderObject : public TextureRenderObject
                            vertices.size(), indices.data(), indices.size());
 
         RenderObject::Render(renderer);
+    }
+
+    void AddVertexRenderItem(const VertexRenderItem &vertexRenderItem)
+    {
+        vertexRenderItems.emplace_back(vertexRenderItem);
+
+        GenerateTextureQuad(vertices, indices, vertexRenderItem.rect,
+                            vertexRenderItem.srcRect, vertexRenderItem.color,
+                            textureWidth, textureHeight);
+    }
+
+    void UpdateVertexRenderItemPosition(int index, const SDL_FRect &position)
+    {
+        UpdateTextureQuad(vertices.data() + (index * 4), position);
     }
 };
 
