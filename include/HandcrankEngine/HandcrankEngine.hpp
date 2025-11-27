@@ -35,13 +35,13 @@ inline const int MAX_ALPHA = 255;
 
 inline const SDL_Color DEFAULT_COLOR = {MAX_R, MAX_G, MAX_B, MAX_ALPHA};
 
-const double MILLISECONDS = 1000.0;
+inline const double MILLISECONDS = 1000.0;
 
-const double DEFAULT_FRAME_RATE = 60;
-const int DEFAULT_WINDOW_WIDTH = 800;
-const int DEFAULT_WINDOW_HEIGHT = 600;
-const float DEFAULT_RECT_WIDTH = 100;
-const float DEFAULT_RECT_HEIGHT = 100;
+inline const double DEFAULT_FRAME_RATE = 60;
+inline const int DEFAULT_WINDOW_WIDTH = 800;
+inline const int DEFAULT_WINDOW_HEIGHT = 600;
+inline const float DEFAULT_RECT_WIDTH = 100;
+inline const float DEFAULT_RECT_HEIGHT = 100;
 
 class Game;
 class RenderObject;
