@@ -29,6 +29,15 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 | [macOS](documentation/Build/macOS.md)     |   2.32.8    |   ✅   |   ❌   |
 | [Web](documentation/Build/Web.md)         |   2.32.8    |   ✅   |   ❌   |
 
+## Install
+
+If you are on macOS, you can use [brew](https://brew.sh) to install.
+
+```bash
+$ brew tap handcrankengine/handcrankengine
+$ brew install handcrankengine
+```
+
 ## Quick Start Guide
 
 ```cpp
