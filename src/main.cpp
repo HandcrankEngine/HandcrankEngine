@@ -16,6 +16,11 @@ class InputManager : public RenderObject
   public:
     void Update(double deltaTime) override
     {
+        if (!game->HasFocus())
+        {
+            return;
+        }
+
         if (game->IsKeyPressed(SDLK_ESCAPE) || game->IsKeyPressed(SDLK_q))
         {
             game->Quit();
