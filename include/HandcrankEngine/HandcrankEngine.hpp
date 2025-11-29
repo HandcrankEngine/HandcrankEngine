@@ -83,6 +83,8 @@ class Game : public InputHandler
 
     bool quit = false;
 
+    bool fullscreen = false;
+
     std::vector<std::shared_ptr<RenderObject>> children;
     std::vector<std::shared_ptr<RenderObject>> childrenBuffer;
 
@@ -131,6 +133,7 @@ class Game : public InputHandler
 
     inline auto SwitchToFullscreen() -> bool;
     inline auto SwitchToWindowedMode() -> bool;
+    inline auto IsFullscreen() -> bool;
 
     inline auto Setup() -> bool;
 
@@ -409,13 +412,29 @@ auto Game::GetViewport() const -> const SDL_FRect & { return viewportf; }
 
 auto Game::SwitchToFullscreen() -> bool
 {
-    return SDL_SetWindowFullscreen(window, SDL_TRUE) == SDL_TRUE;
+    auto result = SDL_SetWindowFullscreen(window, SDL_TRUE) == 0;
+
+    if (result)
+    {
+        fullscreen = true;
+    }
+
+    return result;
 }
 
 auto Game::SwitchToWindowedMode() -> bool
 {
-    return SDL_SetWindowFullscreen(window, SDL_FALSE) == SDL_TRUE;
+    auto result = SDL_SetWindowFullscreen(window, SDL_FALSE) == 0;
+
+    if (result)
+    {
+        fullscreen = false;
+    }
+
+    return result;
 }
+
+auto Game::IsFullscreen() -> bool { return fullscreen; }
 
 auto Game::Setup() -> bool
 {
