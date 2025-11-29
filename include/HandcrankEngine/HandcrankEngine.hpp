@@ -103,9 +103,6 @@ class Game : public InputHandler
     int width = DEFAULT_WINDOW_WIDTH;
     int height = DEFAULT_WINDOW_HEIGHT;
 
-    float dpiScaleX = 1;
-    float dpiScaleY = 1;
-
     bool focused = false;
 
 #ifdef HANDCRANK_ENGINE_DEBUG
@@ -485,9 +482,6 @@ void Game::SetScreenSize(int _width, int _height)
     viewport.h = height;
     viewportf.w = static_cast<float>(viewport.w);
     viewportf.h = static_cast<float>(viewport.h);
-
-    dpiScaleX = (float)width / _width;
-    dpiScaleY = (float)height / _height;
 
     SDL_RenderSetScale(renderer, 1.0F, 1.0F);
     SDL_RenderSetLogicalSize(renderer, width, height);
