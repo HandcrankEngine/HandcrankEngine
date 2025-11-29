@@ -133,7 +133,7 @@ class Game : public InputHandler
 
     inline auto SwitchToFullscreen() -> bool;
     inline auto SwitchToWindowedMode() -> bool;
-    inline auto IsFullscreen() -> bool;
+    [[nodiscard]] inline auto IsFullscreen() const -> bool;
 
     inline auto Setup() -> bool;
 
@@ -434,7 +434,7 @@ auto Game::SwitchToWindowedMode() -> bool
     return result;
 }
 
-auto Game::IsFullscreen() -> bool { return fullscreen; }
+auto Game::IsFullscreen() const -> bool { return fullscreen; }
 
 auto Game::Setup() -> bool
 {
