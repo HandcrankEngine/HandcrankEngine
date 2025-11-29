@@ -430,6 +430,9 @@ auto Game::SwitchToWindowedMode() -> bool
 
     if (result)
     {
+        SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED);
+
         fullscreen = false;
     }
 
