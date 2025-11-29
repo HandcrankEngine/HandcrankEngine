@@ -139,6 +139,8 @@ class Game : public InputHandler
 
     inline void SetScreenSize(int _width, int _height);
 
+    inline void RecalculateScreenSize();
+
     inline void SetTitle(const char *name);
 
     inline void SetClearColor(SDL_Color color);
@@ -508,6 +510,11 @@ void Game::SetScreenSize(int _width, int _height)
     SDL_RenderSetViewport(renderer, &viewport);
 }
 
+void Game::RecalculateScreenSize()
+{
+    SDL_GL_GetDrawableSize(window, &width, &height);
+}
+
 void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
 
 void Game::SetClearColor(const SDL_Color color) { this->clearColor = color; }
@@ -608,7 +615,7 @@ void Game::HandleInput()
                 event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
                 event.window.event == SDL_WINDOWEVENT_MINIMIZED)
             {
-                SDL_GL_GetDrawableSize(window, &width, &height);
+                RecalculateScreenSize();
             }
             else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
             {
