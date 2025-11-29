@@ -24,6 +24,11 @@ class InputManager : public RenderObject
         {
             game->ToggleDebug();
         }
+        else if (game->IsKeyDown(SDLK_LGUI) && game->IsKeyPressed(SDLK_f))
+        {
+            game->IsFullscreen() ? game->SwitchToWindowedMode()
+                                 : game->SwitchToFullscreen();
+        }
     }
 };
 
