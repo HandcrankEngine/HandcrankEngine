@@ -3,6 +3,7 @@
 ## Loading and Rendering Images
 
 ```cpp
+// documentation/RenderObjects/ImageRenderObject/LoadingAndRenderingImages.cpp
 #include "../images/sdl_logo.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
@@ -26,7 +27,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<SDL_Logo>()));
+    game->AddChildObject(std::make_shared<SDL_Logo>());
 
     return game->Run();
 }

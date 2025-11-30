@@ -2,10 +2,11 @@
 
 1. [Basics](/documentation/Basics)
 
-   1. [Animations](/documentation/Basics/Animations.md)
-   1. [Keyboard Input](/documentation/Basics/Keyboard%20Input.md)
-   1. [Mouse Input](/documentation/Basics/Mouse%20Input.md)
-   1. [Update Loop](/documentation/Basics/Update%20Loop.md)
+   1. [Animations](/documentation/Basics/Animations/README.md)
+   1. [Keyboard Input](/documentation/Basics/Keyboard%20Input/README.md)
+   1. [Mouse Input](/documentation/Basics/Mouse%20Input/README.md)
+   1. [Update Loop](/documentation/Basics/Update%20Loop/README.md)
+   1. [Window](/documentation/Basics/Window/README.md)
 
 1. [Building](/documentation/Building)
 
@@ -19,13 +20,12 @@
 
 1. [RenderObjects](/documentation/RenderObjects)
 
-   1. [Custom RenderObject](/documentation/RenderObjects/Custom%20RenderObject.md)
-   1. [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject.md)
-   1. [RectRenderObject](/documentation/RenderObjects/RectRenderObject.md)
-   1. [Scene](/documentation/RenderObjects/Scene.md)
-   1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject.md)
-   1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject.md)
-   1. [VertexRenderObject](/documentation/RenderObjects/VertexRenderObject.md)
+   1. [Custom RenderObjects](/documentation/RenderObjects/Custom%20RenderObjects/README.md)
+   1. [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject/README.md)
+   1. [RectRenderObject](/documentation/RenderObjects/RectRenderObject/README.md)
+   1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject/README.md)
+   1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject/README.md)
+   1. [VertexRenderObject](/documentation/RenderObjects/VertexRenderObject/README.md)
 
 1. [Testing](/documentation/Testing)
 
