@@ -456,9 +456,9 @@ auto Game::Setup() -> bool
     }
 
 #ifdef __EMSCRIPTEN__
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED,
-                              SDL_WINDOWPOS_UNDEFINED, width, height,
-                              SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+    window =
+        SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                         width, height, SDL_WINDOW_OPENGL);
 #else
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED, width, height,
