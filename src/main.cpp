@@ -41,11 +41,11 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<InputManager>()));
-    game->AddChildObject(std::move(std::make_unique<LogoScreenSaver>()));
-    game->AddChildObject(std::move(std::make_unique<FPS>()));
-    game->AddChildObject(std::move(std::make_unique<AnimatedBorder>()));
-    game->AddChildObject(std::move(std::make_unique<PausedScreen>()));
+    game->AddChildObject(std::make_shared<InputManager>());
+    game->AddChildObject(std::make_shared<LogoScreenSaver>());
+    game->AddChildObject(std::make_shared<FPS>());
+    game->AddChildObject(std::make_shared<AnimatedBorder>());
+    game->AddChildObject(std::make_shared<PausedScreen>());
 
     return game->Run();
 }

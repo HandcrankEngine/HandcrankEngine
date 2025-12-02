@@ -29,7 +29,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<FPS>()));
+    game->AddChildObject(std::make_shared<FPS>());
 
     return game->Run();
 }
