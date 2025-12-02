@@ -1,10 +1,3 @@
-# VertexRenderObject
-
-## Render a Single Texture Multiple Times
-
-```cpp
-#pragma once
-
 #include "../images/sdl_logo.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
@@ -42,4 +35,14 @@ class LogoGrid : public VertexRenderObject
         }
     }
 };
-```
+
+auto game = std::make_unique<Game>();
+
+auto main(int argc, char *argv[]) -> int
+{
+    game->SetTitle("Handcrank Engine");
+
+    game->AddChildObject(std::make_shared<LogoGrid>());
+
+    return game->Run();
+}

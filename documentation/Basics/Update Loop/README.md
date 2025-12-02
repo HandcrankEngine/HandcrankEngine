@@ -3,6 +3,7 @@
 ## Update and FixedUpdate Events
 
 ```cpp
+// documentation/Basics/Update Loop/UpdateLoop.cpp
 #include <iostream>
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
@@ -30,7 +31,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<LoopDebugger>()));
+    game->AddChildObject(std::make_shared<LoopDebugger>());
 
     return game->Run();
 }

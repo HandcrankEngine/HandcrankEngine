@@ -3,6 +3,7 @@
 ## Mouse Position
 
 ```cpp
+// documentation/Basics/Mouse Input/MousePosition.cpp
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 
@@ -17,7 +18,7 @@ class Cursor : public RectRenderObject
 
     void Update(double deltaTime) override
     {
-        SetRect(game->GetMousePosition().x - 50, game->GetMousePosition().y - 50);
+        SetPosition(game->GetMousePosition().x - 50, game->GetMousePosition().y - 50);
     }
 };
 
@@ -25,7 +26,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<Cursor>()));
+    game->AddChildObject(std::make_shared<Cursor>());
 
     return game->Run();
 }
@@ -34,6 +35,7 @@ auto main(int argc, char *argv[]) -> int
 ## MouseOver and MouseOut Events
 
 ```cpp
+// documentation/Basics/Mouse Input/MouseOverAndMouseOutEvents.cpp
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 
@@ -53,7 +55,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<Button>()));
+    game->AddChildObject(std::make_shared<Button>());
 
     return game->Run();
 }
@@ -62,6 +64,7 @@ auto main(int argc, char *argv[]) -> int
 ## MouseDown and MouseUp Events
 
 ```cpp
+// documentation/Basics/Mouse Input/MouseDownAndMouseUpEvents.cpp
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 
@@ -81,7 +84,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<Button>()));
+    game->AddChildObject(std::make_shared<Button>());
 
     return game->Run();
 }

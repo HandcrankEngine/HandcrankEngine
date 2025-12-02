@@ -1,6 +1,7 @@
 # FPS
 
 ```cpp
+// documentation/Examples/FPS/FPS.cpp
 #include "../fonts/Roboto/Roboto-Regular.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
@@ -28,7 +29,7 @@ auto main(int argc, char *argv[]) -> int
 {
     game->SetTitle("Handcrank Engine");
 
-    game->AddChildObject(std::move(std::make_unique<FPS>()));
+    game->AddChildObject(std::make_shared<FPS>());
 
     return game->Run();
 }

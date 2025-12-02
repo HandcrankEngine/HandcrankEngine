@@ -22,3 +22,7 @@ Makefile
 
 .idea/
 cmake-build-debug/
+
+# Node
+
+node_modules/

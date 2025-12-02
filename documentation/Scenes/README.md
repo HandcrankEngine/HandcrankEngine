@@ -3,8 +3,7 @@
 ## Creating a Scene
 
 ```cpp
-#pragma once
-
+// documentation/Scenes/CreatingAScene.cpp
 #include "../images/sdl_logo.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
@@ -33,11 +32,19 @@ class LogoScene : public Scene
         AddChildObject(logo);
     }
 };
+
+auto game = std::make_unique<Game>();
+
+auto main() -> int
+{
+    return game->Run();
+}
 ```
 
-## Creating a SceneManager
+## Managing Scenes with SceneManager
 
 ```cpp
+// documentation/Scenes/ManagingScenesWithSceneManager.hpp
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/SceneManager.hpp"
 
@@ -61,20 +68,21 @@ auto main() -> int
 }
 ```
 
-## Switching to Another Scene
+## Switching Scenes
 
 ```cpp
-#pragma once
-
-#include "../images/logo.h"
+// documentation/Scenes/SwitchingScenes.cpp
+#include "../images/sdl_logo.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/ImageRenderObject.hpp"
 #include "HandcrankEngine/Scene.hpp"
 
-#include "scenes/TitleScene.hpp"
-
 using namespace HandcrankEngine;
+
+class TitleScene : public Scene
+{
+};
 
 class LogosScene : public Scene
 {
@@ -104,4 +112,11 @@ class LogosScene : public Scene
         }
     }
 };
+
+auto game = std::make_unique<Game>();
+
+auto main() -> int
+{
+    return game->Run();
+}
 ```

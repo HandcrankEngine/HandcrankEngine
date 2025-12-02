@@ -1,9 +1,8 @@
 # RenderObjects
 
-1.  [Custom RenderObject](/documentation/RenderObjects/Custom%20RenderObject.md)
-1.  [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject.md)
-1.  [RectRenderObject](/documentation/RenderObjects/RectRenderObject.md)
-1.  [Scene](/documentation/RenderObjects/Scene.md)
-1.  [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject.md)
-1.  [TextRenderObject](/documentation/RenderObjects/TextRenderObject.md)
-1.  [VertexRenderObject](/documentation/RenderObjects/VertexRenderObject.md)
+1. [Custom RenderObjects](/documentation/RenderObjects/Custom%20RenderObjects/README.md)
+1. [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject/README.md)
+1. [RectRenderObject](/documentation/RenderObjects/RectRenderObject/README.md)
+1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject/README.md)
+1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject/README.md)
+1. [VertexRenderObject](/documentation/RenderObjects/VertexRenderObject/README.md)
