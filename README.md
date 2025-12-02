@@ -72,10 +72,6 @@ auto main(int argc, char *argv[]) -> int
    1. [Windows](/documentation/Building/Windows.md)
    1. [Web](/documentation/Building/Web.md)
 
-1. [Examples](/documentation/Examples)
-
-   1. [FPS](/documentation/Examples/FPS.md)
-
 1. [RenderObjects](/documentation/RenderObjects)
 
    1. [Custom RenderObjects](/documentation/RenderObjects/Custom%20RenderObjects/README.md)
@@ -84,6 +80,12 @@ auto main(int argc, char *argv[]) -> int
    1. [SpriteRenderObject](/documentation/RenderObjects/SpriteRenderObject/README.md)
    1. [TextRenderObject](/documentation/RenderObjects/TextRenderObject/README.md)
    1. [VertexRenderObject](/documentation/RenderObjects/VertexRenderObject/README.md)
+
+1. [Scenes](/documentation/Scenes)
+
+1. [Examples](/documentation/Examples)
+
+   1. [FPS](/documentation/Examples/FPS.md)
 
 1. [Testing](/documentation/Testing)
 
