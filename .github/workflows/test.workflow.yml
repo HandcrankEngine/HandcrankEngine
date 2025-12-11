@@ -16,19 +16,19 @@ on:
       SDL_VERSION:
         description: "SDL version"
         required: false
-        default: "2.32.10"
+        default: "3.4.8"
       SDL_IMAGE_VERSION:
         description: "SDL_image version"
         required: false
-        default: "2.8.10"
+        default: "3.4.4"
       SDL_TTF_VERSION:
         description: "SDL_ttf version"
         required: false
-        default: "2.24.0"
+        default: "3.2.2"
       SDL_MIXER_VERSION:
         description: "SDL_mixer version"
         required: false
-        default: "2.8.1"
+        default: "3.2.0"
 
 jobs:
   tests:
