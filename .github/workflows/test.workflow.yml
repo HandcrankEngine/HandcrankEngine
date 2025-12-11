@@ -16,15 +16,15 @@ on:
       SDL_VERSION:
         description: "SDL version"
         required: false
-        default: "2.32.10"
+        default: "3.4.0"
       SDL_IMAGE_VERSION:
         description: "SDL_image version"
         required: false
-        default: "2.8.8"
+        default: "3.2.6"
       SDL_TTF_VERSION:
         description: "SDL_ttf version"
         required: false
-        default: "2.24.0"
+        default: "3.2.2"
       SDL_MIXER_VERSION:
         description: "SDL_mixer version"
         required: false
@@ -42,9 +42,9 @@ jobs:
       - name: Install SDL dependencies
         uses: HandcrankEngine/install-sdl-packages@v0.3.0
         with:
-          SDL_VERSION: ${{ inputs.SDL_VERSION || '2.32.10' }}
-          SDL_IMAGE_VERSION: ${{ inputs.SDL_IMAGE_VERSION || '2.8.8' }}
-          SDL_TTF_VERSION: ${{ inputs.SDL_TTF_VERSION || '2.24.0' }}
+          SDL_VERSION: ${{ inputs.SDL_VERSION || '3.2.26' }}
+          SDL_IMAGE_VERSION: ${{ inputs.SDL_IMAGE_VERSION || '3.2.6' }}
+          SDL_TTF_VERSION: ${{ inputs.SDL_TTF_VERSION || '3.2.2' }}
           SDL_MIXER_VERSION: ${{ inputs.SDL_MIXER_VERSION || '2.8.1' }}
 
       - name: Run tests
