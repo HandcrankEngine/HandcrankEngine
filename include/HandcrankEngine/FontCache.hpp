@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include "Utilities.hpp"
 
@@ -108,18 +108,18 @@ inline auto LoadCachedFont(const void *mem, int size, int ptSize = 24)
         fontLoadedForFirstTime = true;
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
     if (rw == nullptr)
     {
         return nullptr;
     }
 
-    auto *font = TTF_OpenFontRW(rw, 1, ptSize);
+    auto *font = TTF_OpenFontIO(rw, 1, ptSize);
 
     if (font == nullptr)
     {
-        SDL_RWclose(rw);
+        SDL_CloseIO(rw);
 
         return nullptr;
     }
