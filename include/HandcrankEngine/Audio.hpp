@@ -168,4 +168,8 @@ inline auto LoadSFX(const void *mem, int size) -> std::shared_ptr<Mix_Chunk>
     return sfx;
 }
 
+inline void StopAllMusic() { Mix_HaltMusic(); }
+
+inline void StopAllSFX() { Mix_HaltChannel(-1); }
+
 } // namespace HandcrankEngine
