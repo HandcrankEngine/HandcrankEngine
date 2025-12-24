@@ -53,6 +53,16 @@ inline auto PlaySFX(Mix_Chunk *sfx) -> int
     return Mix_PlayChannel(-1, sfx, 0);
 }
 
+inline auto PlaySFXOnChannel(int channel, Mix_Chunk *sfx) -> int
+{
+    if (sfx == nullptr)
+    {
+        return -1;
+    }
+
+    return Mix_PlayChannel(channel, sfx, 0);
+}
+
 inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
 {
     auto match = audioMusicCache.find(path);
