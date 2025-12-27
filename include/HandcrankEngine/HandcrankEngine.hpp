@@ -125,7 +125,6 @@ class Game : public InputHandler
     inline auto GetChildCount() -> int;
 
     inline void AddCollider(const std::shared_ptr<RenderObject> &collider);
-    inline void RemoveCollider(const std::shared_ptr<RenderObject> &collider);
 
     [[nodiscard]] inline auto GetWindow() -> SDL_Window *;
     [[nodiscard]] inline auto GetRenderer() -> SDL_Renderer *;
@@ -221,6 +220,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
 
     bool isEnabled = true;
 
+    bool isCollisionEnabled = false;
+
     bool isMarkedForDestroy = false;
 
     bool isInputHovered = false;
@@ -245,6 +246,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void Enable();
     inline void Disable();
     [[nodiscard]] inline auto IsEnabled() const -> bool;
+
+    [[nodiscard]] inline auto IsCollisionEnabled() const -> bool;
 
     [[nodiscard]] inline auto GetIndex() const -> int;
 
@@ -398,12 +401,6 @@ auto Game::GetChildCount() -> int { return children.size(); }
 void Game::AddCollider(const std::shared_ptr<RenderObject> &collider)
 {
     colliders.emplace_back(collider);
-}
-
-void Game::RemoveCollider(const std::shared_ptr<RenderObject> &collider)
-{
-    colliders.erase(std::remove(colliders.begin(), colliders.end(), collider),
-                    colliders.end());
 }
 
 auto Game::GetWindow() -> SDL_Window * { return window; }
@@ -716,8 +713,11 @@ void Game::ResolveCollisions()
 
     colliders.erase(
         std::remove_if(colliders.begin(), colliders.end(),
-                       [](const auto &collider)
-                       { return collider->HasBeenMarkedForDestroy(); }),
+                       [](const std::shared_ptr<RenderObject> &collider)
+                       {
+                           return !collider->IsCollisionEnabled() ||
+                                  collider->HasBeenMarkedForDestroy();
+                       }),
         colliders.end());
 
     const auto count = colliders.size();
@@ -803,6 +803,11 @@ void RenderObject::Enable() { isEnabled = true; }
 void RenderObject::Disable() { isEnabled = false; }
 
 auto RenderObject::IsEnabled() const -> bool { return isEnabled; }
+
+auto RenderObject::IsCollisionEnabled() const -> bool
+{
+    return isCollisionEnabled;
+}
 
 auto RenderObject::GetIndex() const -> int { return index; }
 
@@ -1069,11 +1074,13 @@ auto RenderObject::GetTransformedRect() -> SDL_FRect
     return transformedRect;
 }
 
-void RenderObject::EnableCollider() { game->AddCollider(shared_from_this()); }
-void RenderObject::DisableCollider()
+void RenderObject::EnableCollider()
 {
-    game->RemoveCollider(shared_from_this());
+    game->AddCollider(shared_from_this());
+
+    isCollisionEnabled = true;
 }
+void RenderObject::DisableCollider() { isCollisionEnabled = false; }
 
 auto RenderObject::CanRender() -> bool
 {
@@ -1198,6 +1205,8 @@ void RenderObject::DestroyChildObjects()
 void RenderObject::Destroy()
 {
     isMarkedForDestroy = true;
+
+    DisableCollider();
 
     for (const auto &child : children)
     {
