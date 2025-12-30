@@ -65,7 +65,9 @@ inline auto PlaySFXOnChannel(int channel, Mix_Chunk *sfx) -> int
 
 inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
 {
-    auto match = audioMusicCache.find(path);
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
+
+    auto match = audioMusicCache.find(cacheKey);
 
     if (match != audioMusicCache.end())
     {
@@ -85,7 +87,7 @@ inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
         return nullptr;
     }
 
-    audioMusicCache.insert_or_assign(path, music);
+    audioMusicCache.insert_or_assign(cacheKey, music);
 
     return music;
 }
@@ -128,7 +130,9 @@ inline auto LoadMusic(const void *mem, int size) -> std::shared_ptr<Mix_Music>
 
 inline auto LoadSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
 {
-    auto match = audioSFXCache.find(path);
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
+
+    auto match = audioSFXCache.find(cacheKey);
 
     if (match != audioSFXCache.end())
     {
@@ -142,7 +146,7 @@ inline auto LoadSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
         return nullptr;
     }
 
-    audioSFXCache.insert_or_assign(path, sfx);
+    audioSFXCache.insert_or_assign(cacheKey, sfx);
 
     return sfx;
 }

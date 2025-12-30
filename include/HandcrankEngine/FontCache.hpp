@@ -17,8 +17,8 @@ namespace
 {
 bool fontLoadedForFirstTime = false;
 
-inline std::unordered_map<std::string, TTF_Font *> fontCache =
-    std::unordered_map<std::string, TTF_Font *>();
+inline std::unordered_map<std::size_t, TTF_Font *> fontCache =
+    std::unordered_map<std::size_t, TTF_Font *>();
 } // namespace
 
 inline auto ClearFontCache() -> void
@@ -51,7 +51,8 @@ inline auto CleanupFontInits() -> void
 inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
     -> TTF_Font *
 {
-    auto cacheKey = std::string(path) + "_" + std::to_string(ptSize);
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path)) ^
+                    std::hash<int>{}(ptSize);
 
     auto match = fontCache.find(cacheKey);
 
@@ -92,7 +93,7 @@ inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
 inline auto LoadCachedFont(const void *mem, int size,
                            int ptSize = DEFAULT_FONT_SIZE) -> TTF_Font *
 {
-    auto cacheKey = MemHash(mem, size) + "_" + std::to_string(ptSize);
+    auto cacheKey = MemHash(mem, size) ^ std::hash<int>{}(ptSize);
 
     auto match = fontCache.find(cacheKey);
 

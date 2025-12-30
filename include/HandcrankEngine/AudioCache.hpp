@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <string>
 #include <unordered_map>
 
 #include <SDL_mixer.h>
@@ -17,12 +16,12 @@ namespace
 {
 bool audioIsOpen = false;
 
-inline std::unordered_map<std::string, std::shared_ptr<Mix_Music>>
+inline std::unordered_map<std::size_t, std::shared_ptr<Mix_Music>>
     audioMusicCache =
-        std::unordered_map<std::string, std::shared_ptr<Mix_Music>>();
-inline std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>>
+        std::unordered_map<std::size_t, std::shared_ptr<Mix_Music>>();
+inline std::unordered_map<std::size_t, std::shared_ptr<Mix_Chunk>>
     audioSFXCache =
-        std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>>();
+        std::unordered_map<std::size_t, std::shared_ptr<Mix_Chunk>>();
 } // namespace
 
 inline auto ClearAudioCache() -> void

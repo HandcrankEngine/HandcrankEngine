@@ -13,8 +13,8 @@ namespace HandcrankEngine
 
 namespace
 {
-inline std::unordered_map<std::string, SDL_Texture *> textureCache =
-    std::unordered_map<std::string, SDL_Texture *>();
+inline std::unordered_map<std::size_t, SDL_Texture *> textureCache =
+    std::unordered_map<std::size_t, SDL_Texture *>();
 }
 
 inline auto ClearTextureCache() -> void
@@ -40,7 +40,9 @@ inline auto ClearTextureCache() -> void
 inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
     -> SDL_Texture *
 {
-    auto match = textureCache.find(path);
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
+
+    auto match = textureCache.find(cacheKey);
 
     if (match != textureCache.end())
     {
@@ -63,7 +65,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
         return nullptr;
     }
 
-    textureCache.insert_or_assign(path, texture);
+    textureCache.insert_or_assign(cacheKey, texture);
 
     return texture;
 }
@@ -81,7 +83,9 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
                                          const SDL_Color colorKey)
     -> SDL_Texture *
 {
-    auto match = textureCache.find(path);
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
+
+    auto match = textureCache.find(cacheKey);
 
     if (match != textureCache.end())
     {
@@ -108,7 +112,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         return nullptr;
     }
 
-    textureCache.insert_or_assign(path, texture);
+    textureCache.insert_or_assign(cacheKey, texture);
 
     return texture;
 }

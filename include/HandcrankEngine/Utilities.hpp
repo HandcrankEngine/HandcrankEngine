@@ -134,11 +134,10 @@ template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
     return rawName;
 }
 
-inline auto MemHash(const void *mem, const size_t size) -> std::string
+inline auto MemHash(const void *mem, const size_t size) -> size_t
 {
-    auto hash = std::hash<std::string_view>{}(
+    return std::hash<std::string_view>{}(
         std::string_view(static_cast<const char *>(mem), size));
-    return std::to_string(hash);
 }
 
 inline auto ToString(const SDL_Rect &rect) -> std::string
