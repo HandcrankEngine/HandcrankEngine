@@ -43,3 +43,5 @@ echo "SDL_ttf found at ${SDL_TTF_PATH}"
 export SDL_MIXER_INCLUDE_PATH="${SDL_MIXER_PATH}/include/SDL2"
 
 echo "SDL_mixer found at ${SDL_MIXER_PATH}"
+
+export LD_LIBRARY_PATH="${SDL_PATH}/lib:${SDL_IMAGE_PATH}/lib:${SDL_TTF_PATH}/lib:${SDL_MIXER_PATH}/lib:${LD_LIBRARY_PATH}"

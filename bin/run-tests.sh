@@ -34,6 +34,7 @@ COLOROFF=$(tput sgr0)
             printf "%s PASS%s\n" "${GREENON}" "${COLOROFF}"
         else
             printf "%s FAIL%s\n" "${REDON}" "${COLOROFF}"
+            exit 1
         fi
 
         rm test
