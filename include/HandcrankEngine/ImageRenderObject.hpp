@@ -54,9 +54,7 @@ class ImageRenderObject : public TextureRenderObject
 
     void SetTintColor(const SDL_Color &tintColor)
     {
-        this->tintColor.r = tintColor.r;
-        this->tintColor.g = tintColor.g;
-        this->tintColor.b = tintColor.b;
+        this->tintColor = tintColor;
     }
 
     void SetTintColor(const Uint8 r, const Uint8 g, const Uint8 b)
