@@ -33,10 +33,7 @@ class RectRenderObject : public RenderObject
      */
     void SetBorderColor(const SDL_Color &borderColor)
     {
-        this->borderColor.r = borderColor.r;
-        this->borderColor.g = borderColor.g;
-        this->borderColor.b = borderColor.b;
-        this->borderColor.a = borderColor.a;
+        this->borderColor = borderColor;
 
         borderColorSet = true;
     }
@@ -64,10 +61,7 @@ class RectRenderObject : public RenderObject
      */
     void SetFillColor(const SDL_Color &fillColor)
     {
-        this->fillColor.r = fillColor.r;
-        this->fillColor.g = fillColor.g;
-        this->fillColor.b = fillColor.b;
-        this->fillColor.a = fillColor.a;
+        this->fillColor = fillColor;
 
         fillColorSet = true;
     }
