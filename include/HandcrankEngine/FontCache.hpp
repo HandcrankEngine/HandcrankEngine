@@ -89,9 +89,9 @@ inline auto LoadCachedFont(const char *path, int ptSize = 24) -> TTF_Font *
 inline auto LoadCachedFont(const void *mem, int size, int ptSize = 24)
     -> TTF_Font *
 {
-    auto hash = MemHash(mem, size) + "_" + std::to_string(ptSize);
+    auto cacheKey = MemHash(mem, size) + "_" + std::to_string(ptSize);
 
-    auto match = fontCache.find(hash);
+    auto match = fontCache.find(cacheKey);
 
     if (match != fontCache.end())
     {
@@ -124,7 +124,7 @@ inline auto LoadCachedFont(const void *mem, int size, int ptSize = 24)
         return nullptr;
     }
 
-    fontCache.insert_or_assign(hash, font);
+    fontCache.insert_or_assign(cacheKey, font);
 
     return font;
 }

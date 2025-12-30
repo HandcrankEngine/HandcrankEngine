@@ -92,9 +92,9 @@ inline auto LoadMusic(const char *path) -> std::shared_ptr<Mix_Music>
 
 inline auto LoadMusic(const void *mem, int size) -> std::shared_ptr<Mix_Music>
 {
-    auto hash = MemHash(mem, size);
+    auto cacheKey = MemHash(mem, size);
 
-    auto match = audioMusicCache.find(hash);
+    auto match = audioMusicCache.find(cacheKey);
 
     if (match != audioMusicCache.end())
     {
@@ -121,7 +121,7 @@ inline auto LoadMusic(const void *mem, int size) -> std::shared_ptr<Mix_Music>
         return nullptr;
     }
 
-    audioMusicCache.insert_or_assign(hash, music);
+    audioMusicCache.insert_or_assign(cacheKey, music);
 
     return music;
 }
@@ -149,9 +149,9 @@ inline auto LoadSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
 
 inline auto LoadSFX(const void *mem, int size) -> std::shared_ptr<Mix_Chunk>
 {
-    auto hash = MemHash(mem, size);
+    auto cacheKey = MemHash(mem, size);
 
-    auto match = audioSFXCache.find(hash);
+    auto match = audioSFXCache.find(cacheKey);
 
     if (match != audioSFXCache.end())
     {
@@ -173,7 +173,7 @@ inline auto LoadSFX(const void *mem, int size) -> std::shared_ptr<Mix_Chunk>
         return nullptr;
     }
 
-    audioSFXCache.insert_or_assign(hash, sfx);
+    audioSFXCache.insert_or_assign(cacheKey, sfx);
 
     return sfx;
 }

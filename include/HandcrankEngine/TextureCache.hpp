@@ -123,9 +123,9 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
     -> SDL_Texture *
 {
-    auto hash = MemHash(mem, size);
+    auto cacheKey = MemHash(mem, size);
 
-    auto match = textureCache.find(hash);
+    auto match = textureCache.find(cacheKey);
 
     if (match != textureCache.end())
     {
@@ -151,7 +151,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
         return nullptr;
     }
 
-    textureCache.insert_or_assign(hash, texture);
+    textureCache.insert_or_assign(cacheKey, texture);
 
     return texture;
 }
@@ -169,9 +169,9 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
                                          const SDL_Color colorKey)
     -> SDL_Texture *
 {
-    auto hash = MemHash(mem, size);
+    auto cacheKey = MemHash(mem, size);
 
-    auto match = textureCache.find(hash);
+    auto match = textureCache.find(cacheKey);
 
     if (match != textureCache.end())
     {
@@ -201,7 +201,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         return nullptr;
     }
 
-    textureCache.insert_or_assign(hash, texture);
+    textureCache.insert_or_assign(cacheKey, texture);
 
     return texture;
 }
