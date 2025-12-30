@@ -17,22 +17,22 @@ namespace
 {
 bool fontLoadedForFirstTime = false;
 
-inline std::unordered_map<std::size_t, TTF_Font *> fontCache =
-    std::unordered_map<std::size_t, TTF_Font *>();
+inline std::unordered_map<std::size_t, std::shared_ptr<TTF_Font>> fontCache =
+    std::unordered_map<std::size_t, std::shared_ptr<TTF_Font>>();
 } // namespace
 
-inline auto ClearFontCache() -> void
+struct FontDeleter
 {
-    for (const auto &font : fontCache)
+    void operator()(TTF_Font *font) const
     {
-        if (font.second != nullptr)
+        if (font != nullptr)
         {
-            TTF_CloseFont(font.second);
+            TTF_CloseFont(font);
         }
     }
+};
 
-    fontCache.clear();
-}
+inline auto ClearFontCache() -> void { fontCache.clear(); }
 
 inline auto CleanupFontInits() -> void
 {
@@ -58,7 +58,7 @@ inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
 
     if (match != fontCache.end())
     {
-        return match->second;
+        return match->second.get();
     }
 
     if (!fontLoadedForFirstTime)
@@ -71,7 +71,8 @@ inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
         fontLoadedForFirstTime = true;
     }
 
-    auto *font = TTF_OpenFont(path, ptSize);
+    auto font =
+        std::shared_ptr<TTF_Font>(TTF_OpenFont(path, ptSize), FontDeleter{});
 
     if (font == nullptr)
     {
@@ -80,7 +81,7 @@ inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
 
     fontCache.insert_or_assign(cacheKey, font);
 
-    return font;
+    return font.get();
 }
 
 /**
@@ -99,7 +100,7 @@ inline auto LoadCachedFont(const void *mem, int size,
 
     if (match != fontCache.end())
     {
-        return match->second;
+        return match->second.get();
     }
 
     if (!fontLoadedForFirstTime)
@@ -119,7 +120,8 @@ inline auto LoadCachedFont(const void *mem, int size,
         return nullptr;
     }
 
-    auto *font = TTF_OpenFontRW(rw, 1, ptSize);
+    auto font =
+        std::shared_ptr<TTF_Font>(TTF_OpenFontRW(rw, 1, ptSize), FontDeleter{});
 
     if (font == nullptr)
     {
@@ -130,7 +132,7 @@ inline auto LoadCachedFont(const void *mem, int size,
 
     fontCache.insert_or_assign(cacheKey, font);
 
-    return font;
+    return font.get();
 }
 
 } // namespace HandcrankEngine

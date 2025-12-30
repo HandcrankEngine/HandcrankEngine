@@ -13,22 +13,23 @@ namespace HandcrankEngine
 
 namespace
 {
-inline std::unordered_map<std::size_t, SDL_Texture *> textureCache =
-    std::unordered_map<std::size_t, SDL_Texture *>();
+inline std::unordered_map<std::size_t, std::shared_ptr<SDL_Texture>>
+    textureCache =
+        std::unordered_map<std::size_t, std::shared_ptr<SDL_Texture>>();
 }
 
-inline auto ClearTextureCache() -> void
+struct TextureDeleter
 {
-    for (const auto &texture : textureCache)
+    void operator()(SDL_Texture *texture) const
     {
-        if (texture.second != nullptr)
+        if (texture != nullptr)
         {
-            SDL_DestroyTexture(texture.second);
+            SDL_DestroyTexture(texture);
         }
     }
+};
 
-    textureCache.clear();
-}
+inline auto ClearTextureCache() -> void { textureCache.clear(); }
 
 /**
  * Load texture from a path.
@@ -46,7 +47,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
 
     if (match != textureCache.end())
     {
-        return match->second;
+        return match->second.get();
     }
 
     auto *surface = IMG_Load(path);
@@ -56,7 +57,8 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
         return nullptr;
     }
 
-    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    auto texture = std::shared_ptr<SDL_Texture>(
+        SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
     SDL_FreeSurface(surface);
 
@@ -67,7 +69,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
 
     textureCache.insert_or_assign(cacheKey, texture);
 
-    return texture;
+    return texture.get();
 }
 
 /**
@@ -89,7 +91,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 
     if (match != textureCache.end())
     {
-        return match->second;
+        return match->second.get();
     }
 
     auto *surface = IMG_Load(path);
@@ -103,7 +105,8 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         surface, SDL_TRUE,
         SDL_MapRGB(surface->format, colorKey.r, colorKey.g, colorKey.b));
 
-    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    auto texture = std::shared_ptr<SDL_Texture>(
+        SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
     SDL_FreeSurface(surface);
 
@@ -114,7 +117,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 
     textureCache.insert_or_assign(cacheKey, texture);
 
-    return texture;
+    return texture.get();
 }
 
 /**
@@ -133,7 +136,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
 
     if (match != textureCache.end())
     {
-        return match->second;
+        return match->second.get();
     }
 
     auto *rw = SDL_RWFromConstMem(mem, size);
@@ -146,7 +149,8 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
         return nullptr;
     }
 
-    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    auto texture = std::shared_ptr<SDL_Texture>(
+        SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
     SDL_FreeSurface(surface);
 
@@ -157,7 +161,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
 
     textureCache.insert_or_assign(cacheKey, texture);
 
-    return texture;
+    return texture.get();
 }
 
 /**
@@ -179,7 +183,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 
     if (match != textureCache.end())
     {
-        return match->second;
+        return match->second.get();
     }
 
     auto *rw = SDL_RWFromConstMem(mem, size);
@@ -196,7 +200,8 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         return nullptr;
     }
 
-    auto *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    auto texture = std::shared_ptr<SDL_Texture>(
+        SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
     SDL_FreeSurface(surface);
 
@@ -207,7 +212,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 
     textureCache.insert_or_assign(cacheKey, texture);
 
-    return texture;
+    return texture.get();
 }
 
 } // namespace HandcrankEngine
