@@ -11,6 +11,11 @@
 namespace HandcrankEngine
 {
 
+inline const int DEFAULT_KEY_MAP_SIZE = 250;
+inline const int DEFAULT_MOUSE_BUTTON_MAP_SIZE = 48;
+inline const int DEFAULT_CONNECTED_GAME_CONTROLLER_MAP_SIZE = 12;
+inline const int DEFAULT_GAME_CONTROLLER_BUTTON_MAP_SIZE = 25;
+
 class InputHandler
 {
   protected:
@@ -35,6 +40,8 @@ class InputHandler
         controllerButtonReleasedState;
 
   public:
+    inline InputHandler();
+
     void HandleInputSetup();
     void HandleInputPollEvent(SDL_Event event);
 
@@ -78,6 +85,25 @@ class InputHandler
         const std::vector<SDL_GameControllerButton> &controllerButtons) const
         -> bool;
 };
+
+InputHandler::InputHandler()
+{
+    keyState.reserve(DEFAULT_KEY_MAP_SIZE);
+    keyPressedState.reserve(DEFAULT_KEY_MAP_SIZE);
+    keyReleasedState.reserve(DEFAULT_KEY_MAP_SIZE);
+
+    mouseState.reserve(DEFAULT_MOUSE_BUTTON_MAP_SIZE);
+    mousePressedState.reserve(DEFAULT_MOUSE_BUTTON_MAP_SIZE);
+    mouseReleasedState.reserve(DEFAULT_MOUSE_BUTTON_MAP_SIZE);
+
+    connectedControllers.reserve(DEFAULT_CONNECTED_GAME_CONTROLLER_MAP_SIZE);
+
+    controllerButtonState.reserve(DEFAULT_GAME_CONTROLLER_BUTTON_MAP_SIZE);
+    controllerButtonPressedState.reserve(
+        DEFAULT_GAME_CONTROLLER_BUTTON_MAP_SIZE);
+    controllerButtonReleasedState.reserve(
+        DEFAULT_GAME_CONTROLLER_BUTTON_MAP_SIZE);
+}
 
 void InputHandler::HandleInputSetup()
 {
