@@ -242,7 +242,8 @@ class Animator : public RenderObject
                     }
                 }
 
-                animations[currentAnimationIndex]->Start();
+                currentAnimation = animations[currentAnimationIndex];
+                currentAnimation->Start();
             }
         }
     }
