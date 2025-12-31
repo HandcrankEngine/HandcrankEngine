@@ -9,6 +9,8 @@
 namespace HandcrankEngine
 {
 
+inline const int DEFAULT_ANIMATION_VECTOR_SIZE = 10;
+
 class Animator : public RenderObject
 {
   public:
@@ -40,11 +42,16 @@ class Animator : public RenderObject
   public:
     using RenderObject::RenderObject;
 
-    explicit Animator(const Mode mode) { this->mode = mode; }
+    explicit Animator(const Mode mode)
+    {
+        this->mode = mode;
+        this->animations.reserve(DEFAULT_ANIMATION_VECTOR_SIZE);
+    }
     explicit Animator(const Mode mode, bool looping)
     {
         this->mode = mode;
         this->looping = looping;
+        this->animations.reserve(DEFAULT_ANIMATION_VECTOR_SIZE);
     }
 
     void Start() override
