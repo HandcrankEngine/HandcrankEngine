@@ -508,6 +508,9 @@ void Game::SetScreenSize(int _width, int _height)
     SDL_RenderSetLogicalSize(renderer, width, height);
 
     SDL_RenderSetViewport(renderer, &viewport);
+
+    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
+                          SDL_WINDOWPOS_CENTERED);
 }
 
 void Game::RecalculateScreenSize()
