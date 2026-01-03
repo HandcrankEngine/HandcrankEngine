@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include <algorithm>
 #include <functional>
@@ -158,7 +158,7 @@ inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
                                 std::vector<int> &indices,
                                 const SDL_FRect &destRect,
                                 const SDL_FRect &srcRect,
-                                const SDL_Color &color, float textureWidth,
+                                const SDL_FColor &color, float textureWidth,
                                 float textureHeight) -> void
 {
     const size_t vertices_size = 4;

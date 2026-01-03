@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 namespace HandcrankEngine
 {
@@ -31,13 +31,11 @@ class InputHandler
     std::unordered_map<Uint8, bool> mousePressedState;
     std::unordered_map<Uint8, bool> mouseReleasedState;
 
-    std::unordered_map<Uint8, SDL_GameController *> connectedControllers;
+    std::unordered_map<Uint8, SDL_Gamepad *> connectedControllers;
 
-    std::unordered_map<SDL_GameControllerButton, bool> controllerButtonState;
-    std::unordered_map<SDL_GameControllerButton, bool>
-        controllerButtonPressedState;
-    std::unordered_map<SDL_GameControllerButton, bool>
-        controllerButtonReleasedState;
+    std::unordered_map<SDL_GamepadButton, bool> controllerButtonState;
+    std::unordered_map<SDL_GamepadButton, bool> controllerButtonPressedState;
+    std::unordered_map<SDL_GamepadButton, bool> controllerButtonReleasedState;
 
   public:
     inline InputHandler();
@@ -66,24 +64,19 @@ class InputHandler
         -> bool;
 
     [[nodiscard]] inline auto
-    IsControllerButtonDown(SDL_GameControllerButton controllerButton) const
-        -> bool;
+    IsControllerButtonDown(SDL_GamepadButton controllerButton) const -> bool;
     [[nodiscard]] inline auto IsControllerButtonDown(
-        const std::vector<SDL_GameControllerButton> &controllerButtons) const
-        -> bool;
+        const std::vector<SDL_GamepadButton> &controllerButtons) const -> bool;
     [[nodiscard]] inline auto IsAnyControllerButtonPressed() const -> bool;
     [[nodiscard]] inline auto
-    IsControllerButtonPressed(SDL_GameControllerButton controllerButton) const
-        -> bool;
+    IsControllerButtonPressed(SDL_GamepadButton controllerButton) const -> bool;
     [[nodiscard]] inline auto IsControllerButtonPressed(
-        const std::vector<SDL_GameControllerButton> &controllerButtons) const
-        -> bool;
+        const std::vector<SDL_GamepadButton> &controllerButtons) const -> bool;
     [[nodiscard]] inline auto
-    IsControllerButtonReleased(SDL_GameControllerButton controllerButton) const
+    IsControllerButtonReleased(SDL_GamepadButton controllerButton) const
         -> bool;
     [[nodiscard]] inline auto IsControllerButtonReleased(
-        const std::vector<SDL_GameControllerButton> &controllerButtons) const
-        -> bool;
+        const std::vector<SDL_GamepadButton> &controllerButtons) const -> bool;
 };
 
 InputHandler::InputHandler()
@@ -119,62 +112,61 @@ void InputHandler::HandleInputSetup()
 
 void InputHandler::HandleInputPollEvent(const SDL_Event event)
 {
-    auto keyCode = event.key.keysym.sym;
+    auto keyCode = event.key.key;
 
     auto mouseButtonIndex = event.button.button;
-    auto controllerButton = (SDL_GameControllerButton)event.cbutton.button;
+    auto controllerButton = (SDL_GamepadButton)event.gbutton.button;
 
     switch (event.type)
     {
-    case SDL_KEYDOWN:
+    case SDL_EVENT_KEY_DOWN:
         keyPressedState[keyCode] = !keyState[keyCode];
         keyState[keyCode] = true;
         break;
 
-    case SDL_KEYUP:
+    case SDL_EVENT_KEY_UP:
         keyState[keyCode] = false;
         keyReleasedState[keyCode] = true;
         break;
 
-    case SDL_MOUSEMOTION:
+    case SDL_EVENT_MOUSE_MOTION:
         mousePosition.x = event.motion.x;
         mousePosition.y = event.motion.y;
         break;
 
-    case SDL_MOUSEBUTTONDOWN:
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
         mousePressedState[mouseButtonIndex] = !mouseState[mouseButtonIndex];
         mouseState[mouseButtonIndex] = true;
         break;
 
-    case SDL_MOUSEBUTTONUP:
+    case SDL_EVENT_MOUSE_BUTTON_UP:
         mouseState[mouseButtonIndex] = false;
         mouseReleasedState[mouseButtonIndex] = true;
         break;
 
-    case SDL_CONTROLLERDEVICEADDED:
-        if (SDL_IsGameController(event.cdevice.which) == SDL_TRUE)
+    case SDL_EVENT_GAMEPAD_ADDED:
+        if (SDL_IsGamepad(event.cdevice.which))
         {
-            auto *controller = SDL_GameControllerOpen(event.cdevice.which);
+            auto *controller = SDL_OpenGamepad(event.cdevice.which);
 
-            auto id = SDL_JoystickInstanceID(
-                SDL_GameControllerGetJoystick(controller));
+            auto id = SDL_GetJoystickID(SDL_GetGamepadJoystick(controller));
 
             connectedControllers[id] = controller;
         }
 
         break;
 
-    case SDL_CONTROLLERDEVICEREMOVED:
+    case SDL_EVENT_GAMEPAD_REMOVED:
         for (const auto &[id, controller] : connectedControllers)
         {
             if (controller != nullptr)
             {
-                auto controllerInstanceId = SDL_JoystickInstanceID(
-                    SDL_GameControllerGetJoystick(controller));
+                auto controllerInstanceId =
+                    SDL_GetJoystickID(SDL_GetGamepadJoystick(controller));
 
                 if (controllerInstanceId == event.cdevice.which)
                 {
-                    SDL_GameControllerClose(controller);
+                    SDL_CloseGamepad(controller);
 
                     connectedControllers.erase(id);
 
@@ -185,12 +177,12 @@ void InputHandler::HandleInputPollEvent(const SDL_Event event)
 
         break;
 
-    case SDL_CONTROLLERBUTTONDOWN:
+    case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
         controllerButtonPressedState[controllerButton] =
             !controllerButtonState[controllerButton];
         controllerButtonState[controllerButton] = true;
         break;
-    case SDL_CONTROLLERBUTTONUP:
+    case SDL_EVENT_GAMEPAD_BUTTON_UP:
         controllerButtonState[controllerButton] = false;
         controllerButtonReleasedState[controllerButton] = true;
         break;
@@ -276,7 +268,7 @@ auto InputHandler::IsMouseButtonReleased(const Uint8 buttonIndex) const -> bool
 };
 
 auto InputHandler::IsControllerButtonDown(
-    const SDL_GameControllerButton controllerButton) const -> bool
+    const SDL_GamepadButton controllerButton) const -> bool
 {
     auto result = controllerButtonState.find(controllerButton);
 
@@ -284,11 +276,10 @@ auto InputHandler::IsControllerButtonDown(
 };
 
 auto InputHandler::IsControllerButtonDown(
-    const std::vector<SDL_GameControllerButton> &controllerButtons) const
-    -> bool
+    const std::vector<SDL_GamepadButton> &controllerButtons) const -> bool
 {
     return std::any_of(controllerButtons.begin(), controllerButtons.end(),
-                       [this](SDL_GameControllerButton val)
+                       [this](SDL_GamepadButton val)
                        { return IsControllerButtonDown(val); });
 };
 
@@ -300,7 +291,7 @@ auto InputHandler::IsAnyControllerButtonPressed() const -> bool
 };
 
 auto InputHandler::IsControllerButtonPressed(
-    const SDL_GameControllerButton controllerButton) const -> bool
+    const SDL_GamepadButton controllerButton) const -> bool
 {
     auto result = controllerButtonPressedState.find(controllerButton);
 
@@ -308,16 +299,15 @@ auto InputHandler::IsControllerButtonPressed(
 };
 
 auto InputHandler::IsControllerButtonPressed(
-    const std::vector<SDL_GameControllerButton> &controllerButtons) const
-    -> bool
+    const std::vector<SDL_GamepadButton> &controllerButtons) const -> bool
 {
     return std::any_of(controllerButtons.begin(), controllerButtons.end(),
-                       [this](SDL_GameControllerButton val)
+                       [this](SDL_GamepadButton val)
                        { return IsControllerButtonPressed(val); });
 };
 
 auto InputHandler::IsControllerButtonReleased(
-    const SDL_GameControllerButton controllerButton) const -> bool
+    const SDL_GamepadButton controllerButton) const -> bool
 {
     auto result = controllerButtonReleasedState.find(controllerButton);
 
@@ -325,11 +315,10 @@ auto InputHandler::IsControllerButtonReleased(
 };
 
 auto InputHandler::IsControllerButtonReleased(
-    const std::vector<SDL_GameControllerButton> &controllerButtons) const
-    -> bool
+    const std::vector<SDL_GamepadButton> &controllerButtons) const -> bool
 {
     return std::any_of(controllerButtons.begin(), controllerButtons.end(),
-                       [this](SDL_GameControllerButton val)
+                       [this](SDL_GamepadButton val)
                        { return IsControllerButtonReleased(val); });
 };
 
