@@ -5,7 +5,7 @@
 
 > Handcrank Engine is an easy-to-use game engine based on simple principles that are quick to understand and build with.
 
-[![Made With SDL2](https://img.shields.io/badge/Made_With-SDL2-blue)](https://www.libsdl.org/)
+[![Made With SDL3](https://img.shields.io/badge/Made_With-SDL3-blue)](https://www.libsdl.org/)
 [![Build](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/build.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/build.workflow.yml)
 [![Lint](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/lint.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/lint.workflow.yml)
 [![Tests](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/test.workflow.yml/badge.svg)](https://github.com/HandcrankEngine/HandcrankEngine/actions/workflows/test.workflow.yml)
@@ -25,9 +25,9 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 
 | Platform                                  | SDL Version | Tested | Stable |
 | ----------------------------------------- | :---------: | :----: | :----: |
-| [Windows](documentation/Build/Windows.md) |   2.32.8    |   ✅   |   ❌   |
-| [macOS](documentation/Build/macOS.md)     |   2.32.8    |   ✅   |   ❌   |
-| [Web](documentation/Build/Web.md)         |   2.32.8    |   ✅   |   ❌   |
+| [Windows](documentation/Build/Windows.md) |    3.4.0    |   ✅   |   ❌   |
+| [macOS](documentation/Build/macOS.md)     |    3.2.6    |   ✅   |   ❌   |
+| [Web](documentation/Build/Web.md)         |    3.2.2    |   ✅   |   ❌   |
 
 ## Install
 
@@ -59,7 +59,6 @@ auto main(int argc, char *argv[]) -> int
 ## Documentation
 
 1. [Basics](/documentation/Basics)
-
    1. [Animations](/documentation/Basics/Animations/README.md)
    1. [Keyboard Input](/documentation/Basics/Keyboard%20Input/README.md)
    1. [Mouse Input](/documentation/Basics/Mouse%20Input/README.md)
@@ -67,13 +66,11 @@ auto main(int argc, char *argv[]) -> int
    1. [Window](/documentation/Basics/Window/README.md)
 
 1. [Building](/documentation/Building)
-
    1. [macOS](/documentation/Building/macOS.md)
    1. [Windows](/documentation/Building/Windows.md)
    1. [Web](/documentation/Building/Web.md)
 
 1. [RenderObjects](/documentation/RenderObjects)
-
    1. [Custom RenderObjects](/documentation/RenderObjects/Custom%20RenderObjects/README.md)
    1. [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject/README.md)
    1. [RectRenderObject](/documentation/RenderObjects/RectRenderObject/README.md)
@@ -84,11 +81,9 @@ auto main(int argc, char *argv[]) -> int
 1. [Scenes](/documentation/Scenes)
 
 1. [Examples](/documentation/Examples)
-
    1. [FPS](/documentation/Examples/FPS.md)
 
 1. [Testing](/documentation/Testing)
-
    1. [Valgrind](/documentation/Testing/Valgrind.md)
 
 ## Getting Started

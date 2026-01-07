@@ -21,15 +21,15 @@ class InputManager : public RenderObject
             return;
         }
 
-        if (game->IsKeyPressed(SDLK_ESCAPE) || game->IsKeyPressed(SDLK_q))
+        if (game->IsKeyPressed(SDLK_ESCAPE) || game->IsKeyPressed(SDLK_Q))
         {
             game->Quit();
         }
-        else if (game->IsKeyPressed(SDLK_d))
+        else if (game->IsKeyPressed(SDLK_D))
         {
             game->ToggleDebug();
         }
-        else if (game->IsKeyDown(SDLK_LGUI) && game->IsKeyPressed(SDLK_f))
+        else if (game->IsKeyDown(SDLK_LGUI) && game->IsKeyPressed(SDLK_F))
         {
             game->IsFullscreen() ? game->SwitchToWindowedMode()
                                  : game->SwitchToFullscreen();

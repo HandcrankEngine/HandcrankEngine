@@ -15,10 +15,10 @@
 
 #include <memory>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
-#include "AudioCache.hpp"
+// #include "AudioCache.hpp"
 #include "FontCache.hpp"
 #include "TextureCache.hpp"
 
@@ -332,7 +332,7 @@ Game::~Game()
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
 
-    ClearAudioCache();
+    // ClearAudioCache();
 
     ClearFontCache();
     CleanupFontInits();
@@ -411,7 +411,7 @@ auto Game::GetViewport() const -> const SDL_FRect & { return viewportf; }
 
 auto Game::SwitchToFullscreen() -> bool
 {
-    auto result = SDL_SetWindowFullscreen(window, SDL_TRUE) == 0;
+    auto result = SDL_SetWindowFullscreen(window, true);
 
     if (result)
     {
@@ -423,7 +423,7 @@ auto Game::SwitchToFullscreen() -> bool
 
 auto Game::SwitchToWindowedMode() -> bool
 {
-    auto result = SDL_SetWindowFullscreen(window, SDL_FALSE) == 0;
+    auto result = SDL_SetWindowFullscreen(window, false);
 
     if (result)
     {
@@ -440,9 +440,7 @@ auto Game::IsFullscreen() const -> bool { return fullscreen; }
 
 auto Game::Setup() -> bool
 {
-    SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
-
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
+    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
     {
         return false;
     }
@@ -453,16 +451,11 @@ auto Game::Setup() -> bool
     }
 
 #ifdef __EMSCRIPTEN__
-    window =
-        SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                         width, height, SDL_WINDOW_OPENGL);
+    window = SDL_CreateWindow("", width, height, SDL_WINDOW_OPENGL);
 #else
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, width, height,
-                              SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+    window = SDL_CreateWindow(
+        "", width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_HIGH_PIXEL_DENSITY);
 #endif
-
-    SDL_SetWindowResizable(window, SDL_TRUE);
 
     if (window == nullptr)
     {
@@ -471,19 +464,25 @@ auto Game::Setup() -> bool
         return false;
     }
 
+    SDL_SetWindowResizable(window, true);
+
     if (renderer != nullptr)
     {
         SDL_DestroyRenderer(renderer);
     }
 
-    renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, nullptr);
 
     if (renderer == nullptr)
     {
         SDL_Log("SDL_CreateRenderer %s", SDL_GetError());
 
         return false;
+    }
+
+    if (SDL_SetRenderVSync(renderer, 1))
+    {
+        SDL_Log("SDL_SetRenderVSync %s", SDL_GetError());
     }
 
     SetScreenSize(width, height);
@@ -497,17 +496,19 @@ void Game::SetScreenSize(int _width, int _height)
 
     SDL_SetWindowSize(window, _width, _height);
 
-    SDL_GL_GetDrawableSize(window, &width, &height);
+    SDL_GetWindowSizeInPixels(window, &width, &height);
 
     viewport.w = width;
     viewport.h = height;
     viewportf.w = static_cast<float>(viewport.w);
     viewportf.h = static_cast<float>(viewport.h);
 
-    SDL_RenderSetScale(renderer, 1.0F, 1.0F);
-    SDL_RenderSetLogicalSize(renderer, width, height);
+    SDL_SetRenderScale(renderer, 1.0F, 1.0F);
+    SDL_SetRenderLogicalPresentation(
+        renderer, width, height,
+        SDL_RendererLogicalPresentation::SDL_LOGICAL_PRESENTATION_STRETCH);
 
-    SDL_RenderSetViewport(renderer, &viewport);
+    SDL_SetRenderViewport(renderer, &viewport);
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
@@ -515,7 +516,7 @@ void Game::SetScreenSize(int _width, int _height)
 
 void Game::RecalculateScreenSize()
 {
-    SDL_GL_GetDrawableSize(window, &width, &height);
+    SDL_GetWindowSizeInPixels(window, &width, &height);
 }
 
 void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
@@ -604,30 +605,32 @@ void Game::HandleInput()
 {
     HandleInputSetup();
 
-    while (SDL_PollEvent(&event) != 0)
+    while (SDL_PollEvent(&event))
     {
+        SDL_ConvertEventToRenderCoordinates(renderer, &event);
+
         switch (event.type)
         {
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
             Quit();
             break;
 
-        case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_RESIZED ||
-                event.window.event == SDL_WINDOWEVENT_RESTORED ||
-                event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
-                event.window.event == SDL_WINDOWEVENT_MINIMIZED)
-            {
-                RecalculateScreenSize();
-            }
-            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-            {
-                focused = false;
-            }
-            else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-            {
-                focused = true;
-            }
+        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_RESTORED:
+        case SDL_EVENT_WINDOW_MAXIMIZED:
+        case SDL_EVENT_WINDOW_MINIMIZED:
+            SDL_GetWindowSizeInPixels(window, &width, &height);
+
+            break;
+
+        case SDL_EVENT_WINDOW_FOCUS_GAINED:
+            focused = true;
+
+            break;
+
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            focused = false;
+
             break;
         default:
             break;
@@ -738,7 +741,7 @@ void Game::ResolveCollisions()
         {
             const auto &rectB = colliders[j]->GetTransformedRect();
 
-            if (SDL_HasIntersectionF(&rectA, &rectB) == SDL_TRUE)
+            if (SDL_HasRectIntersectionFloat(&rectA, &rectB))
             {
                 colliders[i]->OnCollision(colliders[j]);
                 colliders[j]->OnCollision(colliders[i]);
@@ -951,7 +954,7 @@ void RenderObject::InternalUpdate(double deltaTime)
 
     auto mousePosition = game->GetMousePosition();
 
-    if (SDL_PointInFRect(&mousePosition, &transformedRect) == SDL_TRUE)
+    if (SDL_PointInRectFloat(&mousePosition, &transformedRect))
     {
         if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT))
         {
@@ -1091,7 +1094,7 @@ auto RenderObject::CanRender() -> bool
 
     auto viewport = game->GetViewport();
 
-    return SDL_HasIntersectionF(&boundingBox, &viewport) == SDL_TRUE;
+    return SDL_HasRectIntersectionFloat(&boundingBox, &viewport);
 }
 
 void RenderObject::Render(SDL_Renderer *renderer)
@@ -1120,24 +1123,27 @@ void RenderObject::Render(SDL_Renderer *renderer)
 
         if (debugRectTexture == nullptr)
         {
-            auto *tempSurface = SDL_CreateRGBSurfaceWithFormat(
-                0, 1, 1, 32, SDL_PIXELFORMAT_RGBA32);
+            auto *tempSurface = SDL_CreateSurface(1, 1, SDL_PIXELFORMAT_RGBA32);
 
-            if (tempSurface != nullptr)
+            const auto *formatDetails =
+                SDL_GetPixelFormatDetails(tempSurface->format);
+
+            if (formatDetails != nullptr)
             {
-                SDL_FillRect(tempSurface, nullptr,
-                             SDL_MapRGBA(tempSurface->format, 0, 255, 0, 100));
+                SDL_FillSurfaceRect(
+                    tempSurface, nullptr,
+                    SDL_MapRGBA(formatDetails, nullptr, 0, 255, 0, 100));
 
                 debugRectTexture = std::shared_ptr<SDL_Texture>(
                     SDL_CreateTextureFromSurface(renderer, tempSurface),
                     SDL_DestroyTexture);
-
-                SDL_FreeSurface(tempSurface);
             }
+
+            SDL_DestroySurface(tempSurface);
         }
 
-        SDL_RenderCopyF(renderer, debugRectTexture.get(), nullptr,
-                        &transformedRect);
+        SDL_RenderTexture(renderer, debugRectTexture.get(), nullptr,
+                          &transformedRect);
     }
 #endif
 }
@@ -1173,7 +1179,7 @@ auto RenderObject::CheckCollisionAABB(
 {
     auto thisRect = GetTransformedRect();
     auto otherRect = otherRenderObject->GetTransformedRect();
-    return SDL_HasIntersectionF(&thisRect, &otherRect) == SDL_TRUE;
+    return SDL_HasRectIntersectionFloat(&thisRect, &otherRect);
 }
 
 void RenderObject::DestroyChildObjects()

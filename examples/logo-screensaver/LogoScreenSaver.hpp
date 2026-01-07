@@ -17,7 +17,7 @@ class LogoScreenSaver : public VertexRenderObject
     {
         SDL_FRect rect;
         SDL_FRect srcRect;
-        SDL_Color color;
+        SDL_FColor color;
         int xDirection;
         int yDirection;
         int speed;
@@ -31,7 +31,7 @@ class LogoScreenSaver : public VertexRenderObject
 
     std::vector<Item> items;
 
-    SDL_Color currentColor = {255, 255, 255, 255};
+    SDL_FColor currentColor = {1, 1, 1, 1};
 
   public:
     void Start() override
@@ -73,11 +73,11 @@ class LogoScreenSaver : public VertexRenderObject
     void Update(double deltaTime) override
     {
         if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
-            game->IsControllerButtonPressed(SDL_CONTROLLER_BUTTON_A))
+            game->IsControllerButtonPressed(SDL_GAMEPAD_BUTTON_SOUTH))
         {
-            currentColor.r = RandomBoolean() ? 255 : 100;
-            currentColor.g = RandomBoolean() ? 255 : 100;
-            currentColor.b = RandomBoolean() ? 255 : 100;
+            currentColor.r = RandomBoolean() ? 1 : 0.25F;
+            currentColor.g = RandomBoolean() ? 1 : 0.25F;
+            currentColor.b = RandomBoolean() ? 1 : 0.25F;
         }
 
         if (game->IsMouseButtonPressed(SDL_BUTTON_LEFT) ||
@@ -88,13 +88,13 @@ class LogoScreenSaver : public VertexRenderObject
                           game->GetMousePosition().y - (textureHeight / 2));
         }
 
-        if (game->IsControllerButtonDown(SDL_CONTROLLER_BUTTON_A))
+        if (game->IsControllerButtonDown(SDL_GAMEPAD_BUTTON_SOUTH))
         {
             AddLogoToList((game->GetWidth() / 2) - (textureWidth / 2),
                           (game->GetHeight() / 2) - (textureHeight / 2));
         }
 
-        if (game->IsKeyPressed(SDLK_c))
+        if (game->IsKeyPressed(SDLK_C))
         {
             items.clear();
 
