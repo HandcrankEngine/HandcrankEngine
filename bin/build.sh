@@ -17,6 +17,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
         -I"${SDL_IMAGE_INCLUDE_PATH}" -L"${SDL_IMAGE_PATH}/lib" \
         -I"${SDL_TTF_INCLUDE_PATH}" -L"${SDL_TTF_PATH}/lib" \
         -I"${SDL_MIXER_INCLUDE_PATH}" -L"${SDL_MIXER_PATH}/lib" \
-        -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+        -I"/opt/homebrew/Cellar/box2d/3.1.1/include" -L"/opt/homebrew/Cellar/box2d/3.1.1/lib" \
+        -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lbox2d
 
 )

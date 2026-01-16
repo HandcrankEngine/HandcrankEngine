@@ -78,6 +78,15 @@ include_directories("images")
 include_directories("include")
 include_directories("examples")
 
+set(BOX2D_LIBRARY_DIR "/opt/homebrew/Cellar/box2d/3.1.1/lib")
+set(BOX2D_INCLUDE_DIR "/opt/homebrew/Cellar/box2d/3.1.1/include")
+
+find_library(BOX2D_LIBRARY NAMES BOX2D HINTS ${BOX2D_LIBRARY_DIR})
+
+find_package(BOX2D REQUIRED)
+
+include_directories(${BOX2D_INCLUDE_DIR})
+
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE INCLUDES "include/*.hpp")
 file(GLOB_RECURSE EXAMPLES "examples/*.hpp")

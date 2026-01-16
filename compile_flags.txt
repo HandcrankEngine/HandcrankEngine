@@ -3,3 +3,4 @@
 -I/opt/homebrew/Cellar/sdl2_image/2.8.8/include/SDL2
 -I/opt/homebrew/Cellar/sdl2_ttf/2.24.0/include/SDL2
 -I/opt/homebrew/Cellar/sdl2_mixer/2.8.1_1/include/SDL2
+-I/opt/homebrew/Cellar/box2d/3.1.1/include
