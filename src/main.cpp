@@ -3,6 +3,7 @@
 #include "HandcrankEngine/HandcrankEngine.hpp"
 
 #include "../examples/animation/AnimatedBorder.hpp"
+#include "../examples/box2d/PhysicsDemo.hpp"
 #include "../examples/fps/FPS.hpp"
 #include "../examples/logo-screensaver/LogoScreenSaver.hpp"
 #include "../examples/paused-screen/PausedScreen.hpp"
@@ -42,10 +43,11 @@ auto main(int argc, char *argv[]) -> int
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<InputManager>());
-    game->AddChildObject(std::make_shared<LogoScreenSaver>());
+    // game->AddChildObject(std::make_shared<LogoScreenSaver>());
     game->AddChildObject(std::make_shared<FPS>());
-    game->AddChildObject(std::make_shared<AnimatedBorder>());
-    game->AddChildObject(std::make_shared<PausedScreen>());
+    // game->AddChildObject(std::make_shared<AnimatedBorder>());
+    // game->AddChildObject(std::make_shared<PausedScreen>());
+    game->AddChildObject(std::make_shared<PhysicsDemo>());
 
     return game->Run();
 }
