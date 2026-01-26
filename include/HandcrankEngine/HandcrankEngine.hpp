@@ -901,11 +901,27 @@ auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
 
-    auto children = GetChildrenByType<T>(nested);
-
-    if (!children.empty())
+    for (const auto &child : childrenBuffer)
     {
-        return children.front();
+        if (child == nullptr)
+        {
+            continue;
+        }
+
+        if (auto castedChild = std::dynamic_pointer_cast<T>(child))
+        {
+            return castedChild;
+        }
+
+        if (nested)
+        {
+            auto childResults = child->GetChildByType<T>(nested);
+
+            if (childResults)
+            {
+                return childResults;
+            }
+        }
     }
 
     return nullptr;
