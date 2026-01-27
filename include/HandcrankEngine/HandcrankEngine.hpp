@@ -170,15 +170,7 @@ class Game : public InputHandler
     inline void Loop();
 
 #ifdef __EMSCRIPTEN__
-    static inline void StaticLoop(void *userData)
-    {
-        auto *gameInstance = static_cast<Game *>(userData);
-
-        if (gameInstance != nullptr)
-        {
-            gameInstance->Loop();
-        }
-    }
+    static inline void StaticLoop(void *userData);
 #endif
 
     inline void HandleInput();
@@ -605,6 +597,18 @@ void Game::Loop()
 
     SDL_Delay(1);
 }
+
+#ifdef __EMSCRIPTEN__
+void Game::StaticLoop(void *userData)
+{
+    auto *gameInstance = static_cast<Game *>(userData);
+
+    if (gameInstance != nullptr)
+    {
+        gameInstance->Loop();
+    }
+}
+#endif
 
 void Game::HandleInput()
 {
