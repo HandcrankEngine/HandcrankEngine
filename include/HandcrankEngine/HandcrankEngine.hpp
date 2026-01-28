@@ -1068,7 +1068,7 @@ void RenderObject::SetScale(float scale) { this->scale = scale; }
 
 auto RenderObject::GetTransformedRect() -> SDL_FRect
 {
-    SDL_FRect transformedRect = {rect.x, rect.y, rect.w, rect.h};
+    SDL_FRect transformedRect = rect;
 
     transformedRect.w *= scale;
     transformedRect.h *= scale;
