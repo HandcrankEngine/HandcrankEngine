@@ -11,7 +11,7 @@
 
 #include <typeindex>
 
-#include "HandcrankEngine/HandcrankEngine.hpp"
+#include "HandcrankEngine.hpp"
 
 namespace HandcrankEngine
 {

@@ -12,8 +12,8 @@
 #include <cstddef>
 #include <memory>
 
-#include "HandcrankEngine/HandcrankEngine.hpp"
-#include "HandcrankEngine/Scene.hpp"
+#include "HandcrankEngine.hpp"
+#include "Scene.hpp"
 
 namespace HandcrankEngine
 {
