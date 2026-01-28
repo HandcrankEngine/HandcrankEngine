@@ -1036,16 +1036,14 @@ void RenderObject::OnDestroy() {}
 
 auto RenderObject::GetRect() const -> const SDL_FRect & { return rect; }
 
-void RenderObject::SetRect(const SDL_FRect &rect)
-{
-    SetPosition(rect.x, rect.y);
-    SetDimension(rect.w, rect.h);
-}
+void RenderObject::SetRect(const SDL_FRect &rect) { this->rect = rect; }
 
 void RenderObject::SetRect(float x, float y, float w, float h)
 {
-    SetPosition(x, y);
-    SetDimension(w, h);
+    rect.x = x;
+    rect.y = y;
+    rect.w = w;
+    rect.h = h;
 }
 
 void RenderObject::SetPosition(float x, float y)
