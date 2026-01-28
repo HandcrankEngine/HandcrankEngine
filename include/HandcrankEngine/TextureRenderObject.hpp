@@ -122,8 +122,7 @@ class TextureRenderObject : public RenderObject
         SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
                          &textureHeight);
 
-        rect.w = textureWidth;
-        rect.h = textureHeight;
+        SetDimension(textureWidth, textureHeight);
     }
 };
 

@@ -108,8 +108,7 @@ class SpriteRenderObject : public ImageRenderObject
 
         if (srcRectSet)
         {
-            rect.w = srcRect.w;
-            rect.h = srcRect.h;
+            SetDimension(srcRect.w, srcRect.h);
         }
     }
 

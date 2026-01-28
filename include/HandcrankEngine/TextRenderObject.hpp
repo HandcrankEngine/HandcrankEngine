@@ -122,8 +122,7 @@ class TextRenderObject : public RenderObject
             throw std::runtime_error("ERROR! Failed to generate text surface.");
         }
 
-        rect.w = textSurface->w;
-        rect.h = textSurface->h;
+        SetDimension(textSurface->w, textSurface->h);
 
         textTexture = nullptr;
     }
@@ -169,8 +168,7 @@ class TextRenderObject : public RenderObject
             throw std::runtime_error("ERROR! Failed to generate text surface.");
         }
 
-        rect.w = textSurface->w;
-        rect.h = textSurface->h;
+        SetDimension(textSurface->w, textSurface->h);
 
         textTexture = nullptr;
     }
