@@ -160,8 +160,8 @@ class TextRenderObject : public RenderObject
             textSurface = nullptr;
         }
 
-        textSurface =
-            TTF_RenderText_Blended_Wrapped(font, this->text, color, rect.w);
+        textSurface = TTF_RenderText_Blended_Wrapped(font, this->text, color,
+                                                     GetRect().w);
 
         if (textSurface == nullptr)
         {

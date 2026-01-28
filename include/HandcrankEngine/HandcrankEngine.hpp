@@ -199,6 +199,9 @@ class Game : public InputHandler
 
 class RenderObject : public std::enable_shared_from_this<RenderObject>
 {
+  private:
+    SDL_FRect rect = SDL_FRect();
+
   protected:
     inline static unsigned int count = 0;
 
@@ -207,8 +210,6 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     std::string name;
 
     std::string tag;
-
-    SDL_FRect rect = SDL_FRect();
 
     RectAnchor anchor = RectAnchor::TOP | RectAnchor::LEFT;
 
