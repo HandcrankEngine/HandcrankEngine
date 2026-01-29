@@ -202,6 +202,12 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
   private:
     SDL_FRect rect = SDL_FRect();
 
+    SDL_FRect transformedRect = SDL_FRect();
+    bool transformedRectIsDirty = true;
+
+    SDL_FRect boundingBox = SDL_FRect();
+    bool boundingBoxIsDirty = true;
+
   protected:
     inline static unsigned int count = 0;
 
@@ -300,6 +306,14 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void SetScale(float scale);
 
     inline auto GetTransformedRect() -> SDL_FRect;
+    inline void SetTransformedRect();
+
+    inline void SetTransformedRectAsDirty();
+
+    inline auto GetBoundingBox() -> SDL_FRect;
+    inline void SetBoundingBox();
+
+    inline void SetBoundingBoxAsDirty();
 
     void EnableCollider();
     void DisableCollider();
@@ -310,8 +324,6 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline auto
     CheckCollisionAABB(const std::shared_ptr<RenderObject> &otherRenderObject)
         -> bool;
-
-    inline auto CalculateBoundingBox() -> SDL_FRect;
 
     inline void DestroyChildObjects();
 
@@ -812,9 +824,19 @@ RenderObject::~RenderObject()
     childrenBuffer.clear();
 }
 
-void RenderObject::Enable() { isEnabled = true; }
+void RenderObject::Enable()
+{
+    isEnabled = true;
 
-void RenderObject::Disable() { isEnabled = false; }
+    SetBoundingBoxAsDirty();
+}
+
+void RenderObject::Disable()
+{
+    isEnabled = false;
+
+    SetBoundingBoxAsDirty();
+}
 
 auto RenderObject::IsEnabled() const -> bool { return isEnabled; }
 
@@ -1036,7 +1058,13 @@ void RenderObject::OnDestroy() {}
 
 auto RenderObject::GetRect() const -> const SDL_FRect & { return rect; }
 
-void RenderObject::SetRect(const SDL_FRect &rect) { this->rect = rect; }
+void RenderObject::SetRect(const SDL_FRect &rect)
+{
+    this->rect = rect;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
+}
 
 void RenderObject::SetRect(float x, float y, float w, float h)
 {
@@ -1044,30 +1072,61 @@ void RenderObject::SetRect(float x, float y, float w, float h)
     rect.y = y;
     rect.w = w;
     rect.h = h;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
 }
 
 void RenderObject::SetPosition(float x, float y)
 {
     rect.x = x;
     rect.y = y;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
 }
 
 void RenderObject::SetDimension(float w, float h)
 {
     rect.w = w;
     rect.h = h;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
 }
 
 auto RenderObject::GetAnchor() const -> const RectAnchor & { return anchor; }
-void RenderObject::SetAnchor(const RectAnchor anchor) { this->anchor = anchor; }
+void RenderObject::SetAnchor(const RectAnchor anchor)
+{
+    this->anchor = anchor;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
+}
 
 auto RenderObject::GetScale() const -> float { return scale; }
 
-void RenderObject::SetScale(float scale) { this->scale = scale; }
-
-auto RenderObject::GetTransformedRect() -> SDL_FRect
+void RenderObject::SetScale(float scale)
 {
-    SDL_FRect transformedRect = rect;
+    this->scale = scale;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
+}
+
+[[nodiscard]] auto RenderObject::GetTransformedRect() -> SDL_FRect
+{
+    if (transformedRectIsDirty)
+    {
+        SetTransformedRect();
+    }
+
+    return transformedRect;
+}
+
+void RenderObject::SetTransformedRect()
+{
+    transformedRect = rect;
 
     transformedRect.w *= scale;
     transformedRect.h *= scale;
@@ -1092,14 +1151,80 @@ auto RenderObject::GetTransformedRect() -> SDL_FRect
 
     if (parent != nullptr)
     {
-        transformedRect.x += parent->GetRect().x;
-        transformedRect.y += parent->GetRect().y;
+        transformedRect.x += parent->GetTransformedRect().x;
+        transformedRect.y += parent->GetTransformedRect().y;
 
         transformedRect.w *= parent->scale;
         transformedRect.h *= parent->scale;
     }
 
-    return transformedRect;
+    transformedRectIsDirty = false;
+}
+
+void RenderObject::SetTransformedRectAsDirty()
+{
+    if (transformedRectIsDirty)
+    {
+        return;
+    }
+
+    transformedRectIsDirty = true;
+
+    for (const auto &child : children)
+    {
+        child->SetTransformedRectAsDirty();
+    }
+}
+
+[[nodiscard]] auto RenderObject::GetBoundingBox() -> SDL_FRect
+{
+    if (boundingBoxIsDirty)
+    {
+        SetBoundingBox();
+    }
+
+    return boundingBox;
+}
+
+void RenderObject::SetBoundingBox()
+{
+    boundingBox = GetTransformedRect();
+
+    for (const auto &child : childrenBuffer)
+    {
+        if (child->IsEnabled())
+        {
+            const auto childBoundingBox = child->GetBoundingBox();
+
+            float rightExtent = childBoundingBox.x + childBoundingBox.w;
+            float bottomExtent = childBoundingBox.y + childBoundingBox.h;
+            float currentRight = boundingBox.x + boundingBox.w;
+            float currentBottom = boundingBox.y + boundingBox.h;
+
+            boundingBox.x = fminf(boundingBox.x, childBoundingBox.x);
+            boundingBox.y = fminf(boundingBox.y, childBoundingBox.y);
+
+            boundingBox.w = fmaxf(currentRight, rightExtent) - boundingBox.x;
+            boundingBox.h = fmaxf(currentBottom, bottomExtent) - boundingBox.y;
+        }
+    }
+
+    boundingBoxIsDirty = false;
+}
+
+void RenderObject::SetBoundingBoxAsDirty()
+{
+    if (boundingBoxIsDirty)
+    {
+        return;
+    }
+
+    boundingBoxIsDirty = true;
+
+    if (parent != nullptr)
+    {
+        parent->SetBoundingBoxAsDirty();
+    }
 }
 
 void RenderObject::EnableCollider()
@@ -1112,7 +1237,7 @@ void RenderObject::DisableCollider() { isCollisionEnabled = false; }
 
 auto RenderObject::CanRender() -> bool
 {
-    auto boundingBox = CalculateBoundingBox();
+    auto boundingBox = GetBoundingBox();
 
     auto viewport = game->GetViewport();
 
@@ -1165,32 +1290,6 @@ void RenderObject::Render(SDL_Renderer *renderer)
                         &transformedRect);
     }
 #endif
-}
-
-[[nodiscard]] auto RenderObject::CalculateBoundingBox() -> SDL_FRect
-{
-    auto boundingBox = GetTransformedRect();
-
-    for (const auto &child : childrenBuffer)
-    {
-        if (child->IsEnabled())
-        {
-            const auto childBoundingBox = child->CalculateBoundingBox();
-
-            float rightExtent = childBoundingBox.x + childBoundingBox.w;
-            float bottomExtent = childBoundingBox.y + childBoundingBox.h;
-            float currentRight = boundingBox.x + boundingBox.w;
-            float currentBottom = boundingBox.y + boundingBox.h;
-
-            boundingBox.x = fminf(boundingBox.x, childBoundingBox.x);
-            boundingBox.y = fminf(boundingBox.y, childBoundingBox.y);
-
-            boundingBox.w = fmaxf(currentRight, rightExtent) - boundingBox.x;
-            boundingBox.h = fmaxf(currentBottom, bottomExtent) - boundingBox.y;
-        }
-    }
-
-    return boundingBox;
 }
 
 auto RenderObject::CheckCollisionAABB(
