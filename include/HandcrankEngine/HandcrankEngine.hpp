@@ -51,6 +51,7 @@ inline const float DEFAULT_RECT_HEIGHT = 100;
 
 class Game;
 class RenderObject;
+class Quadtree;
 
 enum class RectAnchor : uint8_t
 {
@@ -96,6 +97,10 @@ class Game : public InputHandler
 
     std::vector<std::shared_ptr<RenderObject>> colliders;
 
+    std::vector<std::shared_ptr<RenderObject>> collidersInQuad;
+
+    std::shared_ptr<Quadtree> collisionTree;
+
     double elapsedTime = 0;
     double deltaTime = 0;
     double fixedUpdateDeltaTime = 0;
@@ -115,6 +120,8 @@ class Game : public InputHandler
 
 #ifdef HANDCRANK_ENGINE_DEBUG
     bool debug = false;
+
+    std::vector<SDL_FRect> debugRects;
 #endif
 
   public:
@@ -333,6 +340,41 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void Destroy();
 };
 
+class Quadtree
+{
+  private:
+    static const int MAX_OBJECTS = 10;
+    static const int MAX_LEVELS = 5;
+
+    SDL_FRect bounds;
+
+    std::vector<std::shared_ptr<RenderObject>> objects;
+    std::array<std::unique_ptr<Quadtree>, 4> nodes;
+
+    int level;
+
+  public:
+    inline Quadtree(int level, SDL_FRect bounds);
+
+    inline void UpdateBounds(SDL_FRect bounds);
+
+    [[nodiscard]] inline auto GetIndex(const SDL_FRect &rect) const -> int;
+
+    inline void Insert(const std::shared_ptr<RenderObject> &renderObject);
+
+    inline void
+    Retrieve(const std::shared_ptr<RenderObject> &renderObject,
+             std::vector<std::shared_ptr<RenderObject>> &returnObjects);
+
+    inline void Split();
+
+    inline void Clear();
+
+#ifdef HANDCRANK_ENGINE_DEBUG
+    void RetrieveDebugQuadRects(std::vector<SDL_FRect> &rects);
+#endif
+};
+
 inline Game::Game() { Setup(); }
 
 inline Game::~Game()
@@ -501,6 +543,8 @@ inline auto Game::Setup() -> bool
 
     SetScreenSize(width, height);
 
+    collisionTree = std::make_shared<Quadtree>(0, viewportf);
+
     return true;
 }
 
@@ -524,6 +568,11 @@ inline void Game::SetScreenSize(int _width, int _height)
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
+
+    if (collisionTree != nullptr)
+    {
+        collisionTree->UpdateBounds(viewportf);
+    }
 }
 
 inline void Game::RecalculateScreenSize()
@@ -738,6 +787,21 @@ inline void Game::Render()
         }
     }
 
+#ifdef HANDCRANK_ENGINE_DEBUG
+    if (IsDebug())
+    {
+        debugRects.clear();
+        collisionTree->RetrieveDebugQuadRects(debugRects);
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 100);
+
+        for (const auto &debugRect : debugRects)
+        {
+            SDL_RenderDrawRectF(renderer, &debugRect);
+        }
+    }
+#endif
+
     SDL_RenderPresent(renderer);
 }
 
@@ -764,18 +828,33 @@ inline void Game::ResolveCollisions()
         return;
     }
 
-    for (auto i = 0; i < count - 1; i += 1)
-    {
-        const auto &rectA = colliders[i]->GetTransformedRect();
+    collisionTree->Clear();
 
-        for (auto j = i + 1; j < count; j += 1)
+    for (const auto &collider : colliders)
+    {
+        collisionTree->Insert(collider);
+    }
+
+    for (const auto &collider : colliders)
+    {
+        collidersInQuad.clear();
+        collisionTree->Retrieve(collider, collidersInQuad);
+
+        const auto &rectA = collider->GetTransformedRect();
+
+        for (const auto &colliderInQuad : collidersInQuad)
         {
-            const auto &rectB = colliders[j]->GetTransformedRect();
+            if (collider.get() <= colliderInQuad.get())
+            {
+                continue;
+            }
+
+            const auto &rectB = colliderInQuad->GetTransformedRect();
 
             if (SDL_HasIntersectionF(&rectA, &rectB) == SDL_TRUE)
             {
-                colliders[i]->OnCollision(colliders[j]);
-                colliders[j]->OnCollision(colliders[i]);
+                collider->OnCollision(colliderInQuad);
+                colliderInQuad->OnCollision(collider);
             }
         }
     }
@@ -1367,5 +1446,159 @@ inline void RenderObject::Destroy()
         }
     }
 }
+
+inline Quadtree::Quadtree(int level, SDL_FRect bounds)
+{
+    this->level = level;
+    this->bounds = bounds;
+
+    objects.reserve(MAX_OBJECTS);
+}
+
+inline void Quadtree::UpdateBounds(SDL_FRect bounds) { this->bounds = bounds; }
+
+inline auto Quadtree::GetIndex(const SDL_FRect &rect) const -> int
+{
+    int index = -1;
+
+    auto top = rect.y + rect.h < bounds.y + (bounds.h / 2);
+    auto bottom = rect.y > bounds.y + (bounds.h / 2);
+    auto left = rect.x + rect.w < bounds.x + (bounds.w / 2);
+    auto right = rect.x > bounds.x + (bounds.w / 2);
+
+    if (top && left)
+    {
+        return 0;
+    }
+
+    if (top && right)
+    {
+        return 1;
+    }
+
+    if (bottom && right)
+    {
+        return 2;
+    }
+
+    if (bottom && left)
+    {
+        return 3;
+    }
+
+    return index;
+}
+
+inline void Quadtree::Insert(const std::shared_ptr<RenderObject> &renderObject)
+{
+    if (nodes[0] != nullptr)
+    {
+        auto index = GetIndex(renderObject->GetTransformedRect());
+
+        if (index != -1)
+        {
+            nodes[index]->Insert(renderObject);
+
+            return;
+        }
+    }
+
+    objects.push_back(renderObject);
+
+    if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS)
+    {
+        if (nodes[0] == nullptr)
+        {
+            Split();
+        }
+
+        auto i = 0;
+
+        while (i < objects.size())
+        {
+            auto index = GetIndex(objects[i]->GetTransformedRect());
+
+            if (index != -1)
+            {
+                nodes[index]->Insert(objects[i]);
+
+                objects[i] = objects.back();
+                objects.pop_back();
+            }
+            else
+            {
+                i += 1;
+            }
+        }
+    }
+}
+
+inline void
+Quadtree::Retrieve(const std::shared_ptr<RenderObject> &renderObject,
+                   std::vector<std::shared_ptr<RenderObject>> &returnObjects)
+{
+    auto index = GetIndex(renderObject->GetTransformedRect());
+
+    if (index != -1 && nodes[0] != nullptr)
+    {
+        nodes[index]->Retrieve(renderObject, returnObjects);
+    }
+
+    for (const auto &object : objects)
+    {
+        if (object != renderObject)
+        {
+            returnObjects.push_back(object);
+        }
+    }
+}
+
+inline void Quadtree::Split()
+{
+    const auto subWidth = bounds.w / 2;
+    const auto subHeight = bounds.h / 2;
+    const auto x = bounds.x;
+    const auto y = bounds.y;
+    nodes[0] = std::make_unique<Quadtree>(level + 1,
+                                          SDL_FRect{x, y, subWidth, subHeight});
+    nodes[1] = std::make_unique<Quadtree>(
+        level + 1, SDL_FRect{x + subWidth, y, subWidth, subHeight});
+    nodes[2] = std::make_unique<Quadtree>(
+        level + 1, SDL_FRect{x + subWidth, y + subHeight, subWidth, subHeight});
+    nodes[3] = std::make_unique<Quadtree>(
+        level + 1, SDL_FRect{x, y + subHeight, subWidth, subHeight});
+}
+
+inline void Quadtree::Clear()
+{
+    objects.clear();
+
+    for (auto i = 0; i < nodes.size(); i += 1)
+    {
+        if (nodes[i] != nullptr)
+        {
+            nodes[i]->Clear();
+            nodes[i] = nullptr;
+        }
+    }
+}
+
+#ifdef HANDCRANK_ENGINE_DEBUG
+inline void Quadtree::RetrieveDebugQuadRects(std::vector<SDL_FRect> &rects)
+{
+    rects.push_back(bounds);
+
+    if (nodes.size() > 0)
+    {
+        for (const auto &node : nodes)
+        {
+            if (node != nullptr)
+            {
+                node->RetrieveDebugQuadRects(rects);
+            }
+        }
+    }
+}
+#endif
 
 } // namespace HandcrankEngine
