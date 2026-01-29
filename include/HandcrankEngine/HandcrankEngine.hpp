@@ -62,13 +62,13 @@ enum class RectAnchor : uint8_t
     HCENTER = 0x20,
 };
 
-inline auto operator|(RectAnchor a, RectAnchor b) -> RectAnchor
+[[nodiscard]] inline auto operator|(RectAnchor a, RectAnchor b) -> RectAnchor
 {
     return static_cast<RectAnchor>(static_cast<uint8_t>(a) |
                                    static_cast<uint8_t>(b));
 }
 
-inline auto operator&(RectAnchor a, RectAnchor b) -> RectAnchor
+[[nodiscard]] inline auto operator&(RectAnchor a, RectAnchor b) -> RectAnchor
 {
     return static_cast<RectAnchor>(static_cast<uint8_t>(a) &
                                    static_cast<uint8_t>(b));
@@ -124,11 +124,12 @@ class Game : public InputHandler
     inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
     template <typename T>
-    inline auto GetChildrenByType(bool nested = false)
+    [[nodiscard]] inline auto GetChildrenByType(bool nested = false)
         -> std::vector<std::shared_ptr<T>>;
     template <typename T>
-    inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
-    inline auto GetChildCount() -> int;
+    [[nodiscard]] inline auto GetChildByType(bool nested = false)
+        -> std::shared_ptr<T>;
+    [[nodiscard]] inline auto GetChildCount() -> int;
 
     inline void AddCollider(const std::shared_ptr<RenderObject> &collider);
 
@@ -165,7 +166,7 @@ class Game : public InputHandler
 
     [[nodiscard]] inline auto GetQuit() const -> bool;
 
-    inline auto Run() -> int;
+    [[nodiscard]] inline auto Run() -> int;
 
     inline void Loop();
 
@@ -269,11 +270,12 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void AddChildObject(const std::shared_ptr<RenderObject> &child);
 
     template <typename T>
-    inline auto GetChildrenByType(bool nested = false)
+    [[nodiscard]] inline auto GetChildrenByType(bool nested = false)
         -> std::vector<std::shared_ptr<T>>;
     template <typename T>
-    inline auto GetChildByType(bool nested = false) -> std::shared_ptr<T>;
-    inline auto GetChildCount() -> int;
+    [[nodiscard]] inline auto GetChildByType(bool nested = false)
+        -> std::shared_ptr<T>;
+    [[nodiscard]] inline auto GetChildCount() -> int;
 
     inline void PopulateChildrenBuffer();
 
@@ -305,23 +307,23 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetScale() const -> float;
     inline void SetScale(float scale);
 
-    inline auto GetTransformedRect() -> SDL_FRect;
+    [[nodiscard]] inline auto GetTransformedRect() -> SDL_FRect;
     inline void SetTransformedRect();
 
     inline void SetTransformedRectAsDirty();
 
-    inline auto GetBoundingBox() -> SDL_FRect;
+    [[nodiscard]] inline auto GetBoundingBox() -> SDL_FRect;
     inline void SetBoundingBox();
 
     inline void SetBoundingBoxAsDirty();
 
-    void EnableCollider();
-    void DisableCollider();
+    inline void EnableCollider();
+    inline void DisableCollider();
 
-    inline auto CanRender() -> bool;
+    [[nodiscard]] inline auto CanRender() -> bool;
     virtual inline void Render(SDL_Renderer *renderer);
 
-    inline auto
+    [[nodiscard]] inline auto
     CheckCollisionAABB(const std::shared_ptr<RenderObject> &otherRenderObject)
         -> bool;
 
@@ -332,9 +334,9 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void Destroy();
 };
 
-Game::Game() { Setup(); }
+inline Game::Game() { Setup(); }
 
-Game::~Game()
+inline Game::~Game()
 {
     children.clear();
     childrenBuffer.clear();
@@ -353,7 +355,7 @@ Game::~Game()
     SDL_Quit();
 };
 
-void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
+inline void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
     child->game = this;
 
@@ -361,7 +363,8 @@ void Game::AddChildObject(const std::shared_ptr<RenderObject> &child)
 }
 
 template <typename T>
-auto Game::GetChildrenByType(bool nested) -> std::vector<std::shared_ptr<T>>
+inline auto Game::GetChildrenByType(bool nested)
+    -> std::vector<std::shared_ptr<T>>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -393,7 +396,7 @@ auto Game::GetChildrenByType(bool nested) -> std::vector<std::shared_ptr<T>>
 }
 
 template <typename T>
-auto Game::GetChildByType(bool nested) -> std::shared_ptr<T>
+inline auto Game::GetChildByType(bool nested) -> std::shared_ptr<T>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -407,20 +410,20 @@ auto Game::GetChildByType(bool nested) -> std::shared_ptr<T>
     return nullptr;
 }
 
-auto Game::GetChildCount() -> int { return children.size(); }
+inline auto Game::GetChildCount() -> int { return children.size(); }
 
-void Game::AddCollider(const std::shared_ptr<RenderObject> &collider)
+inline void Game::AddCollider(const std::shared_ptr<RenderObject> &collider)
 {
     colliders.emplace_back(collider);
 }
 
-auto Game::GetWindow() -> SDL_Window * { return window; }
+inline auto Game::GetWindow() -> SDL_Window * { return window; }
 
-auto Game::GetRenderer() -> SDL_Renderer * { return renderer; }
+inline auto Game::GetRenderer() -> SDL_Renderer * { return renderer; }
 
-auto Game::GetViewport() const -> const SDL_FRect & { return viewportf; }
+inline auto Game::GetViewport() const -> const SDL_FRect & { return viewportf; }
 
-auto Game::SwitchToFullscreen() -> bool
+inline auto Game::SwitchToFullscreen() -> bool
 {
     auto result = SDL_SetWindowFullscreen(window, SDL_TRUE) == 0;
 
@@ -432,7 +435,7 @@ auto Game::SwitchToFullscreen() -> bool
     return result;
 }
 
-auto Game::SwitchToWindowedMode() -> bool
+inline auto Game::SwitchToWindowedMode() -> bool
 {
     auto result = SDL_SetWindowFullscreen(window, SDL_FALSE) == 0;
 
@@ -447,9 +450,9 @@ auto Game::SwitchToWindowedMode() -> bool
     return result;
 }
 
-auto Game::IsFullscreen() const -> bool { return fullscreen; }
+inline auto Game::IsFullscreen() const -> bool { return fullscreen; }
 
-auto Game::Setup() -> bool
+inline auto Game::Setup() -> bool
 {
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
 
@@ -502,7 +505,7 @@ auto Game::Setup() -> bool
     return true;
 }
 
-void Game::SetScreenSize(int _width, int _height)
+inline void Game::SetScreenSize(int _width, int _height)
 {
     SDL_SetWindowMinimumSize(window, _width, _height);
 
@@ -524,32 +527,41 @@ void Game::SetScreenSize(int _width, int _height)
                           SDL_WINDOWPOS_CENTERED);
 }
 
-void Game::RecalculateScreenSize()
+inline void Game::RecalculateScreenSize()
 {
     SDL_GL_GetDrawableSize(window, &width, &height);
 }
 
-void Game::SetTitle(const char *name) { SDL_SetWindowTitle(window, name); }
+inline void Game::SetTitle(const char *name)
+{
+    SDL_SetWindowTitle(window, name);
+}
 
-void Game::SetClearColor(const SDL_Color color) { this->clearColor = color; }
+inline void Game::SetClearColor(const SDL_Color color)
+{
+    this->clearColor = color;
+}
 
-auto Game::GetWidth() const -> int { return viewport.w; }
+inline auto Game::GetWidth() const -> int { return viewport.w; }
 
-auto Game::GetHeight() const -> int { return viewport.h; }
+inline auto Game::GetHeight() const -> int { return viewport.h; }
 
-auto Game::HasFocus() const -> bool { return focused; }
+inline auto Game::HasFocus() const -> bool { return focused; }
 
-auto Game::GetElapsedTime() const -> double { return elapsedTime; }
+inline auto Game::GetElapsedTime() const -> double { return elapsedTime; }
 
-auto Game::GetFrameRate() const -> double { return frameRate; }
+inline auto Game::GetFrameRate() const -> double { return frameRate; }
 
-auto Game::GetFPS() const -> double { return fps; }
+inline auto Game::GetFPS() const -> double { return fps; }
 
-void Game::SetFrameRate(double frameRate) { this->frameRate = frameRate; }
+inline void Game::SetFrameRate(double frameRate)
+{
+    this->frameRate = frameRate;
+}
 
-auto Game::GetQuit() const -> bool { return quit; }
+inline auto Game::GetQuit() const -> bool { return quit; }
 
-auto Game::Run() -> int
+inline auto Game::Run() -> int
 {
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(Game::StaticLoop, this, 0, 1);
@@ -563,7 +575,7 @@ auto Game::Run() -> int
     return 0;
 }
 
-void Game::Loop()
+inline void Game::Loop()
 {
     framesThisSecond++;
 
@@ -612,7 +624,7 @@ void Game::Loop()
 }
 
 #ifdef __EMSCRIPTEN__
-void Game::StaticLoop(void *userData)
+inline void Game::StaticLoop(void *userData)
 {
     auto *gameInstance = static_cast<Game *>(userData);
 
@@ -623,7 +635,7 @@ void Game::StaticLoop(void *userData)
 }
 #endif
 
-void Game::HandleInput()
+inline void Game::HandleInput()
 {
     HandleInputSetup();
 
@@ -660,7 +672,7 @@ void Game::HandleInput()
     }
 }
 
-void Game::PopulateChildrenBuffer()
+inline void Game::PopulateChildrenBuffer()
 {
     childrenBuffer = children;
 
@@ -675,7 +687,7 @@ void Game::PopulateChildrenBuffer()
     }
 }
 
-void Game::Update()
+inline void Game::Update()
 {
     elapsedTime += deltaTime;
 
@@ -690,7 +702,7 @@ void Game::Update()
     }
 }
 
-void Game::FixedUpdate()
+inline void Game::FixedUpdate()
 {
     fixedUpdateDeltaTime += deltaTime;
 
@@ -708,7 +720,7 @@ void Game::FixedUpdate()
     }
 }
 
-void Game::Render()
+inline void Game::Render()
 {
     SDL_SetRenderDrawColor(renderer, clearColor.r, clearColor.g, clearColor.b,
                            clearColor.a);
@@ -730,7 +742,7 @@ void Game::Render()
     SDL_RenderPresent(renderer);
 }
 
-void Game::ResolveCollisions()
+inline void Game::ResolveCollisions()
 {
     if (colliders.empty())
     {
@@ -770,7 +782,7 @@ void Game::ResolveCollisions()
     }
 }
 
-void Game::DestroyChildObjects()
+inline void Game::DestroyChildObjects()
 {
     for (const auto &child : children)
     {
@@ -794,77 +806,81 @@ void Game::DestroyChildObjects()
                    children.end());
 }
 
-void Game::Quit() { quit = true; }
+inline void Game::Quit() { quit = true; }
 
 #ifdef HANDCRANK_ENGINE_DEBUG
-void Game::ToggleDebug(bool state) { debug = state; }
-void Game::ToggleDebug() { debug = !debug; }
-auto Game::IsDebug() const -> bool { return debug; }
+inline void Game::ToggleDebug(bool state) { debug = state; }
+inline void Game::ToggleDebug() { debug = !debug; }
+inline auto Game::IsDebug() const -> bool { return debug; }
 #endif
 
-RenderObject::RenderObject()
+inline RenderObject::RenderObject()
 {
     SetRect(0, 0, DEFAULT_RECT_WIDTH, DEFAULT_RECT_HEIGHT);
 
     index = ++RenderObject::count;
 }
 
-RenderObject::RenderObject(float x, float y) : RenderObject()
+inline RenderObject::RenderObject(float x, float y) : RenderObject()
 {
     SetPosition(x, y);
 }
-RenderObject::RenderObject(float x, float y, float w, float h) : RenderObject()
+inline RenderObject::RenderObject(float x, float y, float w, float h)
+    : RenderObject()
 {
     SetRect(x, y, w, h);
 }
 
-RenderObject::~RenderObject()
+inline RenderObject::~RenderObject()
 {
     children.clear();
     childrenBuffer.clear();
 }
 
-void RenderObject::Enable()
+inline void RenderObject::Enable()
 {
     isEnabled = true;
 
     SetBoundingBoxAsDirty();
 }
 
-void RenderObject::Disable()
+inline void RenderObject::Disable()
 {
     isEnabled = false;
 
     SetBoundingBoxAsDirty();
 }
 
-auto RenderObject::IsEnabled() const -> bool { return isEnabled; }
+inline auto RenderObject::IsEnabled() const -> bool { return isEnabled; }
 
-auto RenderObject::IsCollisionEnabled() const -> bool
+inline auto RenderObject::IsCollisionEnabled() const -> bool
 {
     return isCollisionEnabled;
 }
 
-auto RenderObject::GetIndex() const -> int { return index; }
+inline auto RenderObject::GetIndex() const -> int { return index; }
 
-auto RenderObject::GetName() const -> std::string
+inline auto RenderObject::GetName() const -> std::string
 {
     return name.empty() ? GetClassName() : name;
 }
-void RenderObject::SetName(const std::string &name) { this->name = name; }
+inline void RenderObject::SetName(const std::string &name)
+{
+    this->name = name;
+}
 
-auto RenderObject::GetTag() const -> std::string
+inline auto RenderObject::GetTag() const -> std::string
 {
     return tag.empty() ? "untagged" : tag;
 }
-void RenderObject::SetTag(const std::string &tag) { this->tag = tag; }
+inline void RenderObject::SetTag(const std::string &tag) { this->tag = tag; }
 
-auto RenderObject::GetClassName() const -> std::string
+inline auto RenderObject::GetClassName() const -> std::string
 {
     return GetClassNameSimple(*this);
 }
 
-auto RenderObject::ShowInHierarchy() const -> std::string
+inline auto RenderObject::ShowInHierarchy() const -> std::string
 {
     if (parent != nullptr)
     {
@@ -874,7 +890,8 @@ auto RenderObject::ShowInHierarchy() const -> std::string
     return GetName();
 }
 
-void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
+inline void
+RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 {
     if (game == nullptr)
     {
@@ -890,7 +907,7 @@ void RenderObject::AddChildObject(const std::shared_ptr<RenderObject> &child)
 }
 
 template <typename T>
-auto RenderObject::GetChildrenByType(bool nested)
+inline auto RenderObject::GetChildrenByType(bool nested)
     -> std::vector<std::shared_ptr<T>>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
@@ -923,7 +940,7 @@ auto RenderObject::GetChildrenByType(bool nested)
 }
 
 template <typename T>
-auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
+inline auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
 {
     static_assert(std::is_base_of_v<RenderObject, T>,
                   "T must be derived from RenderObject");
@@ -954,9 +971,9 @@ auto RenderObject::GetChildByType(bool nested) -> std::shared_ptr<T>
     return nullptr;
 }
 
-auto RenderObject::GetChildCount() -> int { return children.size(); }
+inline auto RenderObject::GetChildCount() -> int { return children.size(); }
 
-void RenderObject::PopulateChildrenBuffer()
+inline void RenderObject::PopulateChildrenBuffer()
 {
     childrenBuffer = children;
 
@@ -971,23 +988,26 @@ void RenderObject::PopulateChildrenBuffer()
     }
 }
 
-void RenderObject::Start() {}
+inline void RenderObject::Start() {}
 
-void RenderObject::Update(double deltaTime) {}
+inline void RenderObject::Update(double deltaTime) {}
 
-void RenderObject::FixedUpdate(double deltaTime) {}
+inline void RenderObject::FixedUpdate(double deltaTime) {}
 
-void RenderObject::OnMouseOver() {}
+inline void RenderObject::OnMouseOver() {}
 
-void RenderObject::OnMouseOut() {}
+inline void RenderObject::OnMouseOut() {}
 
-void RenderObject::OnMouseDown() {}
+inline void RenderObject::OnMouseDown() {}
 
-void RenderObject::OnMouseUp() {}
+inline void RenderObject::OnMouseUp() {}
 
-void RenderObject::OnCollision(const std::shared_ptr<RenderObject> &other) {}
+inline void
+RenderObject::OnCollision(const std::shared_ptr<RenderObject> &other)
+{
+}
 
-void RenderObject::InternalUpdate(double deltaTime)
+inline void RenderObject::InternalUpdate(double deltaTime)
 {
     if (!hasStarted)
     {
@@ -1041,7 +1061,7 @@ void RenderObject::InternalUpdate(double deltaTime)
     }
 }
 
-void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
+inline void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
 {
     FixedUpdate(fixedDeltaTime);
 
@@ -1054,11 +1074,11 @@ void RenderObject::InternalFixedUpdate(double fixedDeltaTime)
     }
 }
 
-void RenderObject::OnDestroy() {}
+inline void RenderObject::OnDestroy() {}
 
-auto RenderObject::GetRect() const -> const SDL_FRect & { return rect; }
+inline auto RenderObject::GetRect() const -> const SDL_FRect & { return rect; }
 
-void RenderObject::SetRect(const SDL_FRect &rect)
+inline void RenderObject::SetRect(const SDL_FRect &rect)
 {
     this->rect = rect;
 
@@ -1066,7 +1086,7 @@ void RenderObject::SetRect(const SDL_FRect &rect)
     SetBoundingBoxAsDirty();
 }
 
-void RenderObject::SetRect(float x, float y, float w, float h)
+inline void RenderObject::SetRect(float x, float y, float w, float h)
 {
     rect.x = x;
     rect.y = y;
@@ -1077,7 +1097,7 @@ void RenderObject::SetRect(float x, float y, float w, float h)
     SetBoundingBoxAsDirty();
 }
 
-void RenderObject::SetPosition(float x, float y)
+inline void RenderObject::SetPosition(float x, float y)
 {
     rect.x = x;
     rect.y = y;
@@ -1086,7 +1106,7 @@ void RenderObject::SetPosition(float x, float y)
     SetBoundingBoxAsDirty();
 }
 
-void RenderObject::SetDimension(float w, float h)
+inline void RenderObject::SetDimension(float w, float h)
 {
     rect.w = w;
     rect.h = h;
@@ -1095,8 +1115,11 @@ void RenderObject::SetDimension(float w, float h)
     SetBoundingBoxAsDirty();
 }
 
-auto RenderObject::GetAnchor() const -> const RectAnchor & { return anchor; }
-void RenderObject::SetAnchor(const RectAnchor anchor)
+inline auto RenderObject::GetAnchor() const -> const RectAnchor &
+{
+    return anchor;
+}
+inline void RenderObject::SetAnchor(const RectAnchor anchor)
 {
     this->anchor = anchor;
 
@@ -1104,9 +1127,9 @@ void RenderObject::SetAnchor(const RectAnchor anchor)
     SetBoundingBoxAsDirty();
 }
 
-auto RenderObject::GetScale() const -> float { return scale; }
+inline auto RenderObject::GetScale() const -> float { return scale; }
 
-void RenderObject::SetScale(float scale)
+inline void RenderObject::SetScale(float scale)
 {
     this->scale = scale;
 
@@ -1114,7 +1137,7 @@ void RenderObject::SetScale(float scale)
     SetBoundingBoxAsDirty();
 }
 
-[[nodiscard]] auto RenderObject::GetTransformedRect() -> SDL_FRect
+inline auto RenderObject::GetTransformedRect() -> SDL_FRect
 {
     if (transformedRectIsDirty)
     {
@@ -1124,7 +1147,7 @@ void RenderObject::SetScale(float scale)
     return transformedRect;
 }
 
-void RenderObject::SetTransformedRect()
+inline void RenderObject::SetTransformedRect()
 {
     transformedRect = rect;
 
@@ -1161,7 +1184,7 @@ void RenderObject::SetTransformedRect()
     transformedRectIsDirty = false;
 }
 
-void RenderObject::SetTransformedRectAsDirty()
+inline void RenderObject::SetTransformedRectAsDirty()
 {
     if (transformedRectIsDirty)
     {
@@ -1176,7 +1199,7 @@ void RenderObject::SetTransformedRectAsDirty()
     }
 }
 
-[[nodiscard]] auto RenderObject::GetBoundingBox() -> SDL_FRect
+inline auto RenderObject::GetBoundingBox() -> SDL_FRect
 {
     if (boundingBoxIsDirty)
     {
@@ -1186,7 +1209,7 @@ void RenderObject::SetTransformedRectAsDirty()
     return boundingBox;
 }
 
-void RenderObject::SetBoundingBox()
+inline void RenderObject::SetBoundingBox()
 {
     boundingBox = GetTransformedRect();
 
@@ -1212,7 +1235,7 @@ void RenderObject::SetBoundingBox()
     boundingBoxIsDirty = false;
 }
 
-void RenderObject::SetBoundingBoxAsDirty()
+inline void RenderObject::SetBoundingBoxAsDirty()
 {
     if (boundingBoxIsDirty)
     {
@@ -1227,15 +1250,15 @@ void RenderObject::SetBoundingBoxAsDirty()
     }
 }
 
-void RenderObject::EnableCollider()
+inline void RenderObject::EnableCollider()
 {
     game->AddCollider(shared_from_this());
 
     isCollisionEnabled = true;
 }
-void RenderObject::DisableCollider() { isCollisionEnabled = false; }
+inline void RenderObject::DisableCollider() { isCollisionEnabled = false; }
 
-auto RenderObject::CanRender() -> bool
+inline auto RenderObject::CanRender() -> bool
 {
     auto boundingBox = GetBoundingBox();
 
@@ -1244,7 +1267,7 @@ auto RenderObject::CanRender() -> bool
     return SDL_HasIntersectionF(&boundingBox, &viewport) == SDL_TRUE;
 }
 
-void RenderObject::Render(SDL_Renderer *renderer)
+inline void RenderObject::Render(SDL_Renderer *renderer)
 {
     if (!CanRender())
     {
@@ -1292,7 +1315,7 @@ void RenderObject::Render(SDL_Renderer *renderer)
 #endif
 }
 
-auto RenderObject::CheckCollisionAABB(
+inline auto RenderObject::CheckCollisionAABB(
     const std::shared_ptr<RenderObject> &otherRenderObject) -> bool
 {
     auto thisRect = GetTransformedRect();
@@ -1300,7 +1323,7 @@ auto RenderObject::CheckCollisionAABB(
     return SDL_HasIntersectionF(&thisRect, &otherRect) == SDL_TRUE;
 }
 
-void RenderObject::DestroyChildObjects()
+inline void RenderObject::DestroyChildObjects()
 {
     for (const auto &child : children)
     {
@@ -1324,12 +1347,12 @@ void RenderObject::DestroyChildObjects()
                    children.end());
 }
 
-[[nodiscard]] auto RenderObject::HasBeenMarkedForDestroy() const -> bool
+inline auto RenderObject::HasBeenMarkedForDestroy() const -> bool
 {
     return isMarkedForDestroy;
 }
 
-void RenderObject::Destroy()
+inline void RenderObject::Destroy()
 {
     isMarkedForDestroy = true;
 
