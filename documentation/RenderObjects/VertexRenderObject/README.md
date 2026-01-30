@@ -7,7 +7,6 @@
 #include "../images/sdl_logo.h"
 
 #include "HandcrankEngine/HandcrankEngine.hpp"
-#include "HandcrankEngine/ImageRenderObject.hpp"
 #include "HandcrankEngine/Utilities.hpp"
 #include "HandcrankEngine/VertexRenderObject.hpp"
 
@@ -19,7 +18,7 @@ class LogoGrid : public VertexRenderObject
     void Start() override
     {
         texture = LoadCachedTexture(game->GetRenderer(), images_sdl_logo_png,
-                                  images_sdl_logo_png_len);
+                                    images_sdl_logo_png_len);
 
         int textureWidth;
         int textureHeight;
@@ -42,10 +41,10 @@ class LogoGrid : public VertexRenderObject
     }
 };
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<LogoGrid>());

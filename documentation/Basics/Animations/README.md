@@ -11,10 +11,10 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     auto animator = std::make_shared<Animator>(Animator::Mode::SEQUENCE, true);
@@ -43,10 +43,10 @@ auto main(int argc, char *argv[]) -> int
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     auto cube = std::make_shared<RectRenderObject>(0, 0, 250, 250);
@@ -75,9 +75,9 @@ auto main(int argc, char *argv[]) -> int
         }));
 
     // Pause for 1 second
-    animator->AddAnimation(std::make_shared<Animation>(
-        [&](double deltaTime, double elapsedTime)
-        { return elapsedTime > 1 ? 0 : 1; }));
+    animator->AddAnimation(
+        std::make_shared<Animation>([&](double deltaTime, double elapsedTime)
+                                    { return elapsedTime > 1 ? 0 : 1; }));
 
     // Fade out
     animator->AddAnimation(std::make_shared<Animation>(
@@ -95,9 +95,9 @@ auto main(int argc, char *argv[]) -> int
         }));
 
     // Pause for half a second
-    animator->AddAnimation(std::make_shared<Animation>(
-        [&](double deltaTime, double elapsedTime)
-        { return elapsedTime > 0.5 ? 0 : 1; }));
+    animator->AddAnimation(
+        std::make_shared<Animation>([&](double deltaTime, double elapsedTime)
+                                    { return elapsedTime > 0.5 ? 0 : 1; }));
 
     game->AddChildObject(animator);
 

@@ -8,10 +8,10 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     return game->Run();
@@ -27,10 +27,10 @@ auto main(int argc, char *argv[]) -> int
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     auto rect = std::make_shared<RectRenderObject>();
@@ -55,16 +55,16 @@ auto main(int argc, char *argv[]) -> int
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     auto image = std::make_shared<ImageRenderObject>();
 
     image->LoadTexture(game->GetRenderer(), images_sdl_logo_png,
-                         images_sdl_logo_png_len);
+                       images_sdl_logo_png_len);
 
     game->AddChildObject(image);
 

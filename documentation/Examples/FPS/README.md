@@ -9,8 +9,6 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class FPS : public TextRenderObject
 {
   public:
@@ -27,6 +25,8 @@ class FPS : public TextRenderObject
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<FPS>());

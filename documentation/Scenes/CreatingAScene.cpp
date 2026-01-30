@@ -27,10 +27,9 @@ class LogoScene : public Scene
     }
 };
 
-auto game = std::make_unique<Game>();
-
 auto main() -> int
 {
+    auto game = std::make_unique<Game>();
+
     return game->Run();
 }
-

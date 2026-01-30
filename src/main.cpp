@@ -9,8 +9,6 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class InputManager : public RenderObject
 {
   public:
@@ -39,6 +37,8 @@ class InputManager : public RenderObject
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<InputManager>());

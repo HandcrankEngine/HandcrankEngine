@@ -9,8 +9,6 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class Cursor : public RectRenderObject
 {
   public:
@@ -18,12 +16,15 @@ class Cursor : public RectRenderObject
 
     void Update(double deltaTime) override
     {
-        SetPosition(game->GetMousePosition().x - 50, game->GetMousePosition().y - 50);
+        SetPosition(game->GetMousePosition().x - 50,
+                    game->GetMousePosition().y - 50);
     }
 };
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<Cursor>());
@@ -41,8 +42,6 @@ auto main(int argc, char *argv[]) -> int
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class Button : public RectRenderObject
 {
   public:
@@ -53,6 +52,8 @@ class Button : public RectRenderObject
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<Button>());
@@ -70,8 +71,6 @@ auto main(int argc, char *argv[]) -> int
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class Button : public RectRenderObject
 {
   public:
@@ -82,6 +81,8 @@ class Button : public RectRenderObject
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<Button>());

@@ -7,10 +7,10 @@ class LogosScene : public Scene
 {
 };
 
-auto game = std::make_unique<Game>();
-
 auto main() -> int
 {
+    auto game = std::make_unique<Game>();
+
     auto sceneManager = std::make_shared<SceneManager>();
 
     game->AddChildObject(sceneManager);

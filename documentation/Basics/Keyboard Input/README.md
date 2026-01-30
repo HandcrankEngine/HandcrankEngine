@@ -9,8 +9,6 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class Button : public RectRenderObject
 {
   public:
@@ -31,6 +29,8 @@ class Button : public RectRenderObject
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<Button>());

@@ -17,7 +17,7 @@ class Character : public SpriteRenderObject
     void Start() override
     {
         LoadTexture(game->GetRenderer(), images_alienGreen_png,
-                      images_alienGreen_png_len);
+                    images_alienGreen_png_len);
 
         SetFrameSpeed(0.1);
 
@@ -27,10 +27,10 @@ class Character : public SpriteRenderObject
     }
 };
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<Character>());

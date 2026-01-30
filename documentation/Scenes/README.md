@@ -33,10 +33,10 @@ class LogoScene : public Scene
     }
 };
 
-auto game = std::make_unique<Game>();
-
 auto main() -> int
 {
+    auto game = std::make_unique<Game>();
+
     return game->Run();
 }
 ```
@@ -44,23 +44,25 @@ auto main() -> int
 ## Managing Scenes with SceneManager
 
 ```cpp
-// documentation/Scenes/ManagingScenesWithSceneManager.hpp
+// documentation/Scenes/ManagingScenesWithSceneManager.cpp
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/SceneManager.hpp"
 
-#include "scenes/LogoScene.hpp"
-
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
+class LogosScene : public Scene
+{
+};
 
 auto main() -> int
 {
+    auto game = std::make_unique<Game>();
+
     auto sceneManager = std::make_shared<SceneManager>();
 
     game->AddChildObject(sceneManager);
 
-    sceneManager->AddScene(std::make_shared<LogoScene>());
+    sceneManager->AddScene(std::make_shared<LogosScene>());
 
     sceneManager->SetCurrentScene<LogosScene>();
 
@@ -113,10 +115,10 @@ class LogosScene : public Scene
     }
 };
 
-auto game = std::make_unique<Game>();
-
 auto main() -> int
 {
+    auto game = std::make_unique<Game>();
+
     return game->Run();
 }
 ```

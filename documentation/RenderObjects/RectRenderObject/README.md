@@ -9,10 +9,10 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     auto square = std::make_shared<RectRenderObject>();

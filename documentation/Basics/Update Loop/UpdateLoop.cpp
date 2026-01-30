@@ -4,8 +4,6 @@
 
 using namespace HandcrankEngine;
 
-auto game = std::make_unique<Game>();
-
 class LoopDebugger : public RenderObject
 {
   public:
@@ -23,6 +21,8 @@ class LoopDebugger : public RenderObject
 
 auto main(int argc, char *argv[]) -> int
 {
+    auto game = std::make_unique<Game>();
+
     game->SetTitle("Handcrank Engine");
 
     game->AddChildObject(std::make_shared<LoopDebugger>());
