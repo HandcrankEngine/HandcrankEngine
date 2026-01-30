@@ -23,8 +23,8 @@ class TextureRenderObject : public RenderObject
   protected:
     SDL_Texture *texture = nullptr;
 
-    int textureWidth;
-    int textureHeight;
+    int textureWidth = 0;
+    int textureHeight = 0;
 
   public:
     using RenderObject::RenderObject;
