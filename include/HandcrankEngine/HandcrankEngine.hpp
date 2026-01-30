@@ -795,7 +795,8 @@ inline void Game::DestroyChildObjects()
     children.erase(std::remove_if(children.begin(), children.end(),
                                   [](const auto &child)
                                   {
-                                      if (child->HasBeenMarkedForDestroy())
+                                      if (child != nullptr &&
+                                          child->HasBeenMarkedForDestroy())
                                       {
                                           child->OnDestroy();
 
@@ -1215,7 +1216,7 @@ inline void RenderObject::SetBoundingBox()
 
     for (const auto &child : childrenBuffer)
     {
-        if (child->IsEnabled())
+        if (child != nullptr && child->IsEnabled())
         {
             const auto childBoundingBox = child->GetBoundingBox();
 
@@ -1336,7 +1337,8 @@ inline void RenderObject::DestroyChildObjects()
     children.erase(std::remove_if(children.begin(), children.end(),
                                   [](const auto &child)
                                   {
-                                      if (child->HasBeenMarkedForDestroy())
+                                      if (child != nullptr &&
+                                          child->HasBeenMarkedForDestroy())
                                       {
                                           child->OnDestroy();
 
