@@ -212,7 +212,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
   protected:
     inline static unsigned int count = 0;
 
-    int index;
+    int index = -1;
 
     std::string name;
 
