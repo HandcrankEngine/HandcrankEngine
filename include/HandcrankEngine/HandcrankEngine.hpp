@@ -203,11 +203,11 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
   private:
     SDL_FRect rect = SDL_FRect();
 
-    SDL_FRect transformedRect = SDL_FRect();
-    bool transformedRectIsDirty = true;
+    mutable SDL_FRect transformedRect = SDL_FRect();
+    mutable bool transformedRectIsDirty = true;
 
-    SDL_FRect boundingBox = SDL_FRect();
-    bool boundingBoxIsDirty = true;
+    mutable SDL_FRect boundingBox = SDL_FRect();
+    mutable bool boundingBoxIsDirty = true;
 
   protected:
     inline static unsigned int count = 0;
@@ -307,13 +307,13 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetScale() const -> float;
     inline void SetScale(float scale);
 
-    [[nodiscard]] inline auto GetTransformedRect() -> SDL_FRect;
-    inline void SetTransformedRect();
+    [[nodiscard]] inline auto GetTransformedRect() const -> const SDL_FRect &;
+    inline void SetTransformedRect() const;
 
     inline void SetTransformedRectAsDirty();
 
-    [[nodiscard]] inline auto GetBoundingBox() -> SDL_FRect;
-    inline void SetBoundingBox();
+    [[nodiscard]] inline auto GetBoundingBox() const -> const SDL_FRect &;
+    inline void SetBoundingBox() const;
 
     inline void SetBoundingBoxAsDirty();
 
@@ -1138,7 +1138,7 @@ inline void RenderObject::SetScale(float scale)
     SetBoundingBoxAsDirty();
 }
 
-inline auto RenderObject::GetTransformedRect() -> SDL_FRect
+inline auto RenderObject::GetTransformedRect() const -> const SDL_FRect &
 {
     if (transformedRectIsDirty)
     {
@@ -1148,7 +1148,7 @@ inline auto RenderObject::GetTransformedRect() -> SDL_FRect
     return transformedRect;
 }
 
-inline void RenderObject::SetTransformedRect()
+inline void RenderObject::SetTransformedRect() const
 {
     transformedRect = rect;
 
@@ -1200,7 +1200,7 @@ inline void RenderObject::SetTransformedRectAsDirty()
     }
 }
 
-inline auto RenderObject::GetBoundingBox() -> SDL_FRect
+inline auto RenderObject::GetBoundingBox() const -> const SDL_FRect &
 {
     if (boundingBoxIsDirty)
     {
@@ -1210,7 +1210,7 @@ inline auto RenderObject::GetBoundingBox() -> SDL_FRect
     return boundingBox;
 }
 
-inline void RenderObject::SetBoundingBox()
+inline void RenderObject::SetBoundingBox() const
 {
     boundingBox = GetTransformedRect();
 
