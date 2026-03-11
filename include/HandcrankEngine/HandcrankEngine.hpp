@@ -320,12 +320,11 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void EnableCollider();
     inline void DisableCollider();
 
-    [[nodiscard]] inline auto CanRender() -> bool;
+    [[nodiscard]] inline auto CanRender() const -> bool;
     virtual inline void Render(SDL_Renderer *renderer);
 
-    [[nodiscard]] inline auto
-    CheckCollisionAABB(const std::shared_ptr<RenderObject> &otherRenderObject)
-        -> bool;
+    [[nodiscard]] inline auto CheckCollisionAABB(
+        const std::shared_ptr<RenderObject> &otherRenderObject) const -> bool;
 
     inline void DestroyChildObjects();
 
@@ -1259,7 +1258,7 @@ inline void RenderObject::EnableCollider()
 }
 inline void RenderObject::DisableCollider() { isCollisionEnabled = false; }
 
-inline auto RenderObject::CanRender() -> bool
+inline auto RenderObject::CanRender() const -> bool
 {
     auto boundingBox = GetBoundingBox();
 
@@ -1317,7 +1316,7 @@ inline void RenderObject::Render(SDL_Renderer *renderer)
 }
 
 inline auto RenderObject::CheckCollisionAABB(
-    const std::shared_ptr<RenderObject> &otherRenderObject) -> bool
+    const std::shared_ptr<RenderObject> &otherRenderObject) const -> bool
 {
     auto thisRect = GetTransformedRect();
     auto otherRect = otherRenderObject->GetTransformedRect();
