@@ -30,6 +30,7 @@
 
 #include "InputHandler.hpp"
 #include "Utilities.hpp"
+#include "Vector2.hpp"
 
 namespace HandcrankEngine
 {
@@ -299,6 +300,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline void SetRect(const SDL_FRect &rect);
     inline void SetRect(float x, float y, float w, float h);
     inline void SetPosition(float x, float y);
+    inline void SetPosition(Vector2 position);
     inline void SetDimension(float w, float h);
 
     [[nodiscard]] inline auto GetAnchor() const -> const RectAnchor &;
@@ -1101,6 +1103,15 @@ inline void RenderObject::SetPosition(float x, float y)
 {
     rect.x = x;
     rect.y = y;
+
+    SetTransformedRectAsDirty();
+    SetBoundingBoxAsDirty();
+}
+
+inline void RenderObject::SetPosition(Vector2 position)
+{
+    rect.x = position.x;
+    rect.y = position.y;
 
     SetTransformedRectAsDirty();
     SetBoundingBoxAsDirty();
