@@ -10,6 +10,7 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
 
 #include <SDL.h>
 
@@ -72,5 +73,11 @@ struct Vector2
 
     [[nodiscard]] auto ToFRect() const -> SDL_FRect { return {x, y}; }
 };
+
+inline auto ToString(const Vector2 &vector) -> std::string
+{
+    return "Vector2(" + std::to_string(vector.x) + ", " +
+           std::to_string(vector.y) + ")";
+}
 
 } // namespace HandcrankEngine
