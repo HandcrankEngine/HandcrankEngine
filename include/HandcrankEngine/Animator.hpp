@@ -123,11 +123,13 @@ class Animator : public RenderObject
         animations.emplace_back(animation);
     }
 
-    void AddDelay(float delay)
+    void AddDelay(float delayInMilliseconds)
     {
+        float delayInSeconds = delayInMilliseconds / MILLISECONDS;
+
         AddAnimation(std::make_shared<Animation>(
-            [delay](double deltaTime, double elapsedTime)
-            { return elapsedTime > delay ? 0 : 1; }));
+            [delayInSeconds](double deltaTime, double elapsedTime)
+            { return elapsedTime > delayInSeconds ? 0 : 1; }));
     }
 
     void AddStep(const std::function<void()> &stepFunction)
