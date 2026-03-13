@@ -102,6 +102,24 @@ auto main(int argc, char *argv[]) -> int
     }
 
     {
+        auto value = RandomNumberRange(-1.0, 1.0);
+
+        assert(value >= -1.0);
+        assert(value <= 1.0);
+
+        std::cout << ".";
+    }
+
+    {
+        auto value = RandomNumberRange(-1.0F, 1.0F);
+
+        assert(value >= -1.0F);
+        assert(value <= 1.0F);
+
+        std::cout << ".";
+    }
+
+    {
         auto value = RandomBoolean();
 
         assert(value == true || value == false);

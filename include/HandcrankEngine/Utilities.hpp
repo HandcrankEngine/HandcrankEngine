@@ -13,6 +13,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <random>
 #include <regex>
 #include <string>
 
@@ -90,9 +91,21 @@ inline auto InverseLerp(float a, float b, float v) -> float
     return std::clamp(((v - a) / (b - a)), 0.0F, 1.0F);
 }
 
-inline auto RandomNumberRange(int min, int max) -> int
+template <typename T> inline auto RandomNumberRange(T min, T max) -> T
 {
-    return (rand() % (max - min + 1)) + min;
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
+    if constexpr (std::is_floating_point_v<T>)
+    {
+        std::uniform_real_distribution<T> distrib(min, max);
+        return distrib(gen);
+    }
+    else
+    {
+        std::uniform_int_distribution<T> distrib(min, max);
+        return distrib(gen);
+    }
 }
 
 inline auto RandomColorRange(const SDL_Color min, const SDL_Color max)
