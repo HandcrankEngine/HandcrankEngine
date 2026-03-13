@@ -245,6 +245,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     int z = 0;
 
     inline RenderObject();
+    inline RenderObject(Vector2 position);
     inline RenderObject(float x, float y);
     inline RenderObject(float x, float y, float w, float h);
 
@@ -823,6 +824,10 @@ inline RenderObject::RenderObject()
     index = ++RenderObject::count;
 }
 
+inline RenderObject::RenderObject(Vector2 position) : RenderObject()
+{
+    SetPosition(position);
+}
 inline RenderObject::RenderObject(float x, float y) : RenderObject()
 {
     SetPosition(x, y);
