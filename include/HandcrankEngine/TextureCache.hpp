@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include "Utilities.hpp"
 
@@ -66,7 +66,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
     auto texture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
@@ -107,14 +107,15 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         return nullptr;
     }
 
-    SDL_SetColorKey(
-        surface, SDL_TRUE,
-        SDL_MapRGB(surface->format, colorKey.r, colorKey.g, colorKey.b));
+    SDL_SetSurfaceColorKey(
+        surface, true,
+        SDL_MapRGB(SDL_GetPixelFormatDetails(surface->format), nullptr,
+                   colorKey.r, colorKey.g, colorKey.b));
 
     auto texture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
@@ -145,10 +146,9 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
         return match->second.get();
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
-    auto *surface =
-        IMG_isSVG(rw) == SDL_TRUE ? IMG_LoadSVG_RW(rw) : IMG_Load_RW(rw, 1);
+    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, 1);
 
     if (surface == nullptr)
     {
@@ -158,7 +158,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
     auto texture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
@@ -192,14 +192,14 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
         return match->second.get();
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
+    auto *rw = SDL_IOFromConstMem(mem, size);
 
-    auto *surface =
-        IMG_isSVG(rw) == SDL_TRUE ? IMG_LoadSVG_RW(rw) : IMG_Load_RW(rw, 1);
+    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, 1);
 
-    SDL_SetColorKey(
-        surface, SDL_TRUE,
-        SDL_MapRGB(surface->format, colorKey.r, colorKey.g, colorKey.b));
+    SDL_SetSurfaceColorKey(
+        surface, true,
+        SDL_MapRGB(SDL_GetPixelFormatDetails(surface->format), nullptr,
+                   colorKey.r, colorKey.g, colorKey.b));
 
     if (surface == nullptr)
     {
@@ -209,7 +209,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
     auto texture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     if (texture == nullptr)
     {
