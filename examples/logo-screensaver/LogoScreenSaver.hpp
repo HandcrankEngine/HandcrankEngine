@@ -3,6 +3,7 @@
 #include "../fonts/Roboto/Roboto-Regular.h"
 #include "../images/sdl_logo.h"
 
+#include "HandcrankEngine/Audio.hpp"
 #include "HandcrankEngine/HandcrankEngine.hpp"
 #include "HandcrankEngine/RectRenderObject.hpp"
 #include "HandcrankEngine/TextRenderObject.hpp"
@@ -32,6 +33,8 @@ class LogoScreenSaver : public VertexRenderObject
     std::vector<Item> items;
 
     SDL_Color currentColor = {255, 255, 255, 255};
+
+    std::shared_ptr<Mix_Chunk> pickupSfx;
 
   public:
     void Start() override
@@ -68,6 +71,8 @@ class LogoScreenSaver : public VertexRenderObject
 
             AddLogoToList(x, y);
         }
+
+        pickupSfx = LoadCachedSFX("../sfx/pickup.wav");
     }
 
     void Update(double deltaTime) override
@@ -125,11 +130,15 @@ class LogoScreenSaver : public VertexRenderObject
             if (x > maxX || x < minX)
             {
                 items[i].xDirection = -item.xDirection;
+
+                PlaySFX(pickupSfx.get());
             }
 
             if (y > maxY || y < minY)
             {
                 items[i].yDirection = -item.yDirection;
+
+                PlaySFX(pickupSfx.get());
             }
 
             items[i].rect.x = std::clamp<float>(x, minX, maxX);
