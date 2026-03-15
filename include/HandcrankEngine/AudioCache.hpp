@@ -119,14 +119,14 @@ inline auto LoadCachedMusic(const void *mem, int size)
         return match->second;
     }
 
-    if (SetupAudio() != 0)
+    auto *rw = SDL_RWFromConstMem(mem, size);
+
+    if (rw == nullptr)
     {
         return nullptr;
     }
 
-    auto *rw = SDL_RWFromConstMem(mem, size);
-
-    if (rw == nullptr)
+    if (SetupAudio() != 0)
     {
         return nullptr;
     }
@@ -153,6 +153,11 @@ inline auto LoadCachedSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
     if (match != audioSFXCache.end())
     {
         return match->second;
+    }
+
+    if (SetupAudio() != 0)
+    {
+        return nullptr;
     }
 
     auto sfx = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV(path), MixChunkDeleter{});
@@ -182,6 +187,11 @@ inline auto LoadCachedSFX(const void *mem, int size)
     auto *rw = SDL_RWFromConstMem(mem, size);
 
     if (rw == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (SetupAudio() != 0)
     {
         return nullptr;
     }
