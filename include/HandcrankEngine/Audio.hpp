@@ -11,11 +11,8 @@
 
 #include <SDL_mixer.h>
 
-#include "AudioCache.hpp"
-
 namespace HandcrankEngine
 {
-
 
 inline auto PlayMusic(Mix_Music *music) -> int
 {
@@ -46,5 +43,9 @@ inline auto PlaySFXOnChannel(int channel, Mix_Chunk *sfx) -> int
 
     return Mix_PlayChannel(channel, sfx, 0);
 }
+
+inline void StopAllMusic() { Mix_HaltMusic(); }
+
+inline void StopAllSFX() { Mix_HaltChannel(-1); }
 
 } // namespace HandcrankEngine

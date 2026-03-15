@@ -209,10 +209,6 @@ inline auto LoadCachedSFX(const void *mem, int size)
     return sfx;
 }
 
-inline void StopAllMusic() { Mix_HaltMusic(); }
-
-inline void StopAllSFX() { Mix_HaltChannel(-1); }
-
 inline auto TeardownAudio() -> void
 {
     if (audioIsOpen)
