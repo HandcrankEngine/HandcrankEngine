@@ -18,7 +18,7 @@
 namespace HandcrankEngine
 {
 
-inline const int DEFAULT_AUDIO_CHUNK_SIZE = 4096;
+inline const int DEFAULT_AUDIO_CHUNK_SIZE = 512;
 
 namespace
 {
