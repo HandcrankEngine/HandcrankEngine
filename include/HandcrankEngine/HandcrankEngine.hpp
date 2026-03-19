@@ -651,9 +651,8 @@ inline void Game::HandleInput()
 
         case SDL_WINDOWEVENT:
             if (event.window.event == SDL_WINDOWEVENT_RESIZED ||
-                event.window.event == SDL_WINDOWEVENT_RESTORED ||
-                event.window.event == SDL_WINDOWEVENT_MAXIMIZED ||
-                event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+                event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED ||
+                event.window.event == SDL_WINDOWEVENT_DISPLAY_CHANGED)
             {
                 RecalculateScreenSize();
             }
