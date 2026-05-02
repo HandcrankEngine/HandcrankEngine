@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <filesystem>
+#include <iostream>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -47,6 +50,14 @@ inline auto ClearTextureCache() -> void { textureCache.clear(); }
 inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
     -> SDL_Texture *
 {
+    if (!std::filesystem::exists(path))
+    {
+        std::cerr << "[Handcrank Engine] Image file not found: " << path
+                  << "\n";
+
+        return nullptr;
+    }
+
     auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
 
     auto match = textureCache.find(cacheKey);
@@ -91,6 +102,14 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
                                          const SDL_Color colorKey)
     -> SDL_Texture *
 {
+    if (!std::filesystem::exists(path))
+    {
+        std::cerr << "[Handcrank Engine] Image file not found: " << path
+                  << "\n";
+
+        return nullptr;
+    }
+
     auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
 
     auto match = textureCache.find(cacheKey);

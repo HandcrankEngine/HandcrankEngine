@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <filesystem>
+#include <iostream>
 #include <unordered_map>
 
 #include <SDL_mixer.h>
@@ -80,6 +82,14 @@ inline auto SetupAudio() -> int
 
 inline auto LoadCachedMusic(const char *path) -> std::shared_ptr<Mix_Music>
 {
+    if (!std::filesystem::exists(path))
+    {
+        std::cerr << "[Handcrank Engine] Audio file not found: " << path
+                  << "\n";
+
+        return nullptr;
+    }
+
     auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
 
     auto match = audioMusicCache.find(cacheKey);
@@ -146,6 +156,14 @@ inline auto LoadCachedMusic(const void *mem, int size)
 
 inline auto LoadCachedSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
 {
+    if (!std::filesystem::exists(path))
+    {
+        std::cerr << "[Handcrank Engine] Audio file not found: " << path
+                  << "\n";
+
+        return nullptr;
+    }
+
     auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
 
     auto match = audioSFXCache.find(cacheKey);
