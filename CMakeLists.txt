@@ -29,10 +29,10 @@ function(INSTALL_SDL_LIBRARY NAME VERSION REPO_NAME REPO_URL)
     message(STATUS "Installing ${NAME} ${VERSION} via FetchContent")
 
     FetchContent_Declare(
-            ${REPO_NAME}
-            GIT_REPOSITORY "${REPO_URL}"
-            GIT_TAG release-${VERSION}
-        )
+      ${REPO_NAME}
+      GIT_REPOSITORY "${REPO_URL}"
+      GIT_TAG release-${VERSION}
+    )
 
     set(${NAME_LIBRARY}_LIBRARY ${REPO_NAME}::${REPO_NAME} PARENT_SCOPE)
 
