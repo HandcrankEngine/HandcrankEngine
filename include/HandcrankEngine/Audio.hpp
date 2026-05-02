@@ -14,34 +14,34 @@
 namespace HandcrankEngine
 {
 
-inline auto PlayMusic(Mix_Music *music) -> int
+inline auto PlayMusic(Mix_Music *music) -> bool
 {
     if (music == nullptr)
     {
-        return -1;
+        return false;
     }
 
-    return Mix_PlayMusic(music, -1);
+    return Mix_PlayMusic(music, -1) == SDL_TRUE;
 }
 
-inline auto PlaySFX(Mix_Chunk *sfx) -> int
+inline auto PlaySFX(Mix_Chunk *sfx) -> bool
 {
     if (sfx == nullptr)
     {
-        return -1;
+        return false;
     }
 
-    return Mix_PlayChannel(-1, sfx, 0);
+    return Mix_PlayChannel(-1, sfx, 0) == SDL_TRUE;
 }
 
-inline auto PlaySFXOnChannel(int channel, Mix_Chunk *sfx) -> int
+inline auto PlaySFXOnChannel(int channel, Mix_Chunk *sfx) -> bool
 {
     if (sfx == nullptr)
     {
-        return -1;
+        return false;
     }
 
-    return Mix_PlayChannel(channel, sfx, 0);
+    return Mix_PlayChannel(channel, sfx, 0) == SDL_TRUE;
 }
 
 inline void StopAllMusic() { Mix_HaltMusic(); }
