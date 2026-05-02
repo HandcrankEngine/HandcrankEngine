@@ -59,7 +59,6 @@ auto main(int argc, char *argv[]) -> int
 ## Documentation
 
 1. [Basics](/documentation/Basics)
-
    1. [Animations](/documentation/Basics/Animations/README.md)
    1. [Keyboard Input](/documentation/Basics/Keyboard%20Input/README.md)
    1. [Mouse Input](/documentation/Basics/Mouse%20Input/README.md)
@@ -67,13 +66,11 @@ auto main(int argc, char *argv[]) -> int
    1. [Window](/documentation/Basics/Window/README.md)
 
 1. [Building](/documentation/Building)
-
    1. [macOS](/documentation/Building/macOS.md)
    1. [Windows](/documentation/Building/Windows.md)
    1. [Web](/documentation/Building/Web.md)
 
 1. [RenderObjects](/documentation/RenderObjects)
-
    1. [Custom RenderObjects](/documentation/RenderObjects/Custom%20RenderObjects/README.md)
    1. [ImageRenderObject](/documentation/RenderObjects/ImageRenderObject/README.md)
    1. [RectRenderObject](/documentation/RenderObjects/RectRenderObject/README.md)
@@ -84,11 +81,9 @@ auto main(int argc, char *argv[]) -> int
 1. [Scenes](/documentation/Scenes)
 
 1. [Examples](/documentation/Examples)
-
    1. [FPS](/documentation/Examples/FPS.md)
 
 1. [Testing](/documentation/Testing)
-
    1. [Valgrind](/documentation/Testing/Valgrind.md)
 
 ## Getting Started
