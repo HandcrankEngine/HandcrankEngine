@@ -62,11 +62,11 @@ struct MixChunkDeleter
     }
 };
 
-inline auto SetupAudio() -> int
+inline auto SetupAudio() -> bool
 {
     if (audioIsOpen)
     {
-        return 0;
+        return true;
     }
 
     auto result = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
@@ -77,7 +77,7 @@ inline auto SetupAudio() -> int
         audioIsOpen = true;
     }
 
-    return result;
+    return true;
 }
 
 inline auto LoadCachedMusic(const char *path) -> std::shared_ptr<Mix_Music>
@@ -99,7 +99,7 @@ inline auto LoadCachedMusic(const char *path) -> std::shared_ptr<Mix_Music>
         return match->second;
     }
 
-    if (SetupAudio() != 0)
+    if (!SetupAudio())
     {
         return nullptr;
     }
@@ -136,7 +136,7 @@ inline auto LoadCachedMusic(const void *mem, int size)
         return nullptr;
     }
 
-    if (SetupAudio() != 0)
+    if (!SetupAudio())
     {
         return nullptr;
     }
@@ -173,7 +173,7 @@ inline auto LoadCachedSFX(const char *path) -> std::shared_ptr<Mix_Chunk>
         return match->second;
     }
 
-    if (SetupAudio() != 0)
+    if (!SetupAudio())
     {
         return nullptr;
     }
@@ -209,7 +209,7 @@ inline auto LoadCachedSFX(const void *mem, int size)
         return nullptr;
     }
 
-    if (SetupAudio() != 0)
+    if (!SetupAudio())
     {
         return nullptr;
     }
