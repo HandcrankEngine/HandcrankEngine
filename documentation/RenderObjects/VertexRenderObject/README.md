@@ -20,11 +20,10 @@ class LogoGrid : public VertexRenderObject
         texture = LoadCachedTexture(game->GetRenderer(), images_sdl_logo_png,
                                     images_sdl_logo_png_len);
 
-        int textureWidth;
-        int textureHeight;
+        float textureWidth;
+        float textureHeight;
 
-        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth,
-                         &textureHeight);
+        SDL_GetTextureSize(texture, &textureWidth, &textureHeight);
 
         for (auto x = 0; x < game->GetWidth(); x += textureWidth + 10)
         {
@@ -32,10 +31,9 @@ class LogoGrid : public VertexRenderObject
             {
                 GenerateTextureQuad(
                     vertices, indices,
-                    {(float)x, (float)y, (float)textureWidth,
-                     (float)textureHeight},
-                    {0, 0, (float)textureWidth, (float)textureHeight},
-                    {255, 255, 255, 255}, textureWidth, textureHeight);
+                    {(float)x, (float)y, textureWidth, textureHeight},
+                    {0, 0, textureWidth, textureHeight}, {255, 255, 255, 255},
+                    textureWidth, textureHeight);
             }
         }
     }
