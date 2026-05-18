@@ -10,14 +10,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
 set(SDL_LIBRARY_DIR "/tmp/.sdl/SDL-2.32.10/lib")
 set(SDL_INCLUDE_DIR "/tmp/.sdl/SDL-2.32.10/include/SDL2")
 
-set(SDL_IMAGE_LIBRARY_DIR "/tmp/.sdl/SDL_image-2.8.10/lib")
-set(SDL_IMAGE_INCLUDE_DIR "/tmp/.sdl/SDL_image-2.8.10/include/SDL2")
+set(SDL_IMAGE_LIBRARY_DIR "/tmp/.sdl/SDL_image-2.8.12/lib")
+set(SDL_IMAGE_INCLUDE_DIR "/tmp/.sdl/SDL_image-2.8.12/include/SDL2")
 
 set(SDL_TTF_LIBRARY_DIR "/tmp/.sdl/SDL_ttf-2.24.0/lib")
 set(SDL_TTF_INCLUDE_DIR "/tmp/.sdl/SDL_ttf-2.24.0/include/SDL2")
 
-set(SDL_MIXER_LIBRARY_DIR "/tmp/.sdl/SDL_mixer-2.8.1/lib")
-set(SDL_MIXER_INCLUDE_DIR "/tmp/.sdl/SDL_mixer-2.8.1/include/SDL2")
+set(SDL_MIXER_LIBRARY_DIR "/tmp/.sdl/SDL_mixer-2.8.2/lib")
+set(SDL_MIXER_INCLUDE_DIR "/tmp/.sdl/SDL_mixer-2.8.2/include/SDL2")
 
 find_library(SDL2_LIBRARY NAMES SDL2 HINTS ${SDL_LIBRARY_DIR})
 find_library(SDL2_IMAGE_LIBRARY NAMES SDL2_image HINTS ${SDL_IMAGE_LIBRARY_DIR})

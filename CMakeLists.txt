@@ -69,9 +69,9 @@ set(SDL2MIXER_XMP OFF)
 set(SDL2MIXER_INSTALL OFF)
 
 INSTALL_SDL_LIBRARY("sdl2" "2.32.10" "SDL2" "https://github.com/libsdl-org/SDL.git")
-INSTALL_SDL_LIBRARY("sdl2_image" "2.8.10" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
+INSTALL_SDL_LIBRARY("sdl2_image" "2.8.12" "SDL2_image" "https://github.com/libsdl-org/SDL_image.git")
 INSTALL_SDL_LIBRARY("sdl2_ttf" "2.24.0" "SDL2_ttf" "https://github.com/libsdl-org/SDL_ttf.git")
-INSTALL_SDL_LIBRARY("sdl2_mixer" "2.8.1" "SDL2_mixer" "https://github.com/libsdl-org/SDL_mixer.git")
+INSTALL_SDL_LIBRARY("sdl2_mixer" "2.8.2" "SDL2_mixer" "https://github.com/libsdl-org/SDL_mixer.git")
 
 include_directories("fonts")
 include_directories("images")

@@ -20,7 +20,7 @@ on:
       SDL_IMAGE_VERSION:
         description: "SDL_image version"
         required: false
-        default: "2.8.10"
+        default: "2.8.12"
       SDL_TTF_VERSION:
         description: "SDL_ttf version"
         required: false
@@ -28,7 +28,7 @@ on:
       SDL_MIXER_VERSION:
         description: "SDL_mixer version"
         required: false
-        default: "2.8.1"
+        default: "2.8.2"
 
 jobs:
   build:
@@ -39,9 +39,9 @@ jobs:
       matrix:
         include:
           - SDL_VERSION: 2.32.10
-            SDL_IMAGE_VERSION: 2.8.10
+            SDL_IMAGE_VERSION: 2.8.12
             SDL_TTF_VERSION: 2.24.0
-            SDL_MIXER_VERSION: 2.8.1
+            SDL_MIXER_VERSION: 2.8.2
 
     steps:
       - name: Check out repository
