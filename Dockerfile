@@ -24,6 +24,7 @@ RUN mkdir -p /tmp/.sdl && \
     curl -L https://github.com/libsdl-org/SDL/releases/download/release-${SDL_VERSION}/SDL2-${SDL_VERSION}.tar.gz > SDL.tar.gz && \
     mkdir SDL-${SDL_VERSION} && \
     tar -xzvf SDL.tar.gz --strip-components=1 -C SDL-${SDL_VERSION} && \
+    rm SDL.tar.gz && \
     cd SDL-${SDL_VERSION} && \
     ./configure --prefix=/tmp/.sdl/SDL-${SDL_VERSION} && \
     make && \
@@ -37,6 +38,7 @@ RUN mkdir -p /tmp/.sdl && \
     curl -L https://github.com/libsdl-org/SDL_image/releases/download/release-${SDL_IMAGE_VERSION}/SDL2_image-${SDL_IMAGE_VERSION}.tar.gz > SDL_image.tar.gz && \
     mkdir SDL_image-${SDL_IMAGE_VERSION} && \
     tar -xzvf SDL_image.tar.gz --strip-components=1 -C SDL_image-${SDL_IMAGE_VERSION} && \
+    rm SDL_image.tar.gz && \
     cd SDL_image-${SDL_IMAGE_VERSION} && \
     ./configure --prefix=/tmp/.sdl/SDL_image-${SDL_IMAGE_VERSION} && \
     make && \
@@ -48,6 +50,7 @@ RUN mkdir -p /tmp/.sdl && \
     curl -L https://github.com/libsdl-org/SDL_ttf/releases/download/release-${SDL_TTF_VERSION}/SDL2_ttf-${SDL_TTF_VERSION}.tar.gz > SDL_ttf.tar.gz && \
     mkdir SDL_ttf-${SDL_TTF_VERSION} && \
     tar -xzvf SDL_ttf.tar.gz --strip-components=1 -C SDL_ttf-${SDL_TTF_VERSION} && \
+    rm SDL_ttf.tar.gz && \
     cd SDL_ttf-${SDL_TTF_VERSION} && \
     ./configure --prefix=/tmp/.sdl/SDL_ttf-${SDL_TTF_VERSION} && \
     make && \
@@ -59,6 +62,7 @@ RUN mkdir -p /tmp/.sdl && \
     curl -L https://github.com/libsdl-org/SDL_mixer/releases/download/release-${SDL_MIXER_VERSION}/SDL2_mixer-${SDL_MIXER_VERSION}.tar.gz > SDL_mixer.tar.gz && \
     mkdir SDL_mixer-${SDL_MIXER_VERSION} && \
     tar -xzvf SDL_mixer.tar.gz --strip-components=1 -C SDL_mixer-${SDL_MIXER_VERSION} && \
+    rm SDL_mixer.tar.gz && \
     cd SDL_mixer-${SDL_MIXER_VERSION} && \
     ./configure --prefix=/tmp/.sdl/SDL_mixer-${SDL_MIXER_VERSION} && \
     make && \
