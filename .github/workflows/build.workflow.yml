@@ -16,19 +16,19 @@ on:
       SDL_VERSION:
         description: "SDL version"
         required: false
-        default: "2.32.10"
+        default: "3.4.10"
       SDL_IMAGE_VERSION:
         description: "SDL_image version"
         required: false
-        default: "2.8.12"
+        default: "3.4.4"
       SDL_TTF_VERSION:
         description: "SDL_ttf version"
         required: false
-        default: "2.24.0"
+        default: "3.2.2"
       SDL_MIXER_VERSION:
         description: "SDL_mixer version"
         required: false
-        default: "2.8.2"
+        default: "3.2.4"
 
 jobs:
   build:
@@ -38,10 +38,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - SDL_VERSION: 2.32.10
-            SDL_IMAGE_VERSION: 2.8.12
-            SDL_TTF_VERSION: 2.24.0
-            SDL_MIXER_VERSION: 2.8.2
+          - SDL_VERSION: 3.4.10
+            SDL_IMAGE_VERSION: 3.4.4
+            SDL_TTF_VERSION: 3.2.2
+            SDL_MIXER_VERSION: 3.2.4
 
     steps:
       - name: Check out repository
