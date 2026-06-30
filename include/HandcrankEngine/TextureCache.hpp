@@ -222,8 +222,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 
     SDL_SetSurfaceColorKey(
         surface, true,
-        SDL_MapRGB(SDL_GetPixelFormatDetails(surface->format), nullptr,
-                   colorKey.r, colorKey.g, colorKey.b));
+        SDL_MapSurfaceRGB(surface, colorKey.r, colorKey.g, colorKey.b));
 
     auto texture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer, surface), TextureDeleter{});
