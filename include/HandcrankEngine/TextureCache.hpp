@@ -167,7 +167,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const void *mem, int size)
 
     auto *rw = SDL_IOFromConstMem(mem, size);
 
-    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, 1);
+    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, true);
 
     if (surface == nullptr)
     {
@@ -213,7 +213,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 
     auto *rw = SDL_IOFromConstMem(mem, size);
 
-    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, 1);
+    auto *surface = IMG_isSVG(rw) ? IMG_LoadSVG_IO(rw) : IMG_Load_IO(rw, true);
 
     SDL_SetSurfaceColorKey(
         surface, true,
