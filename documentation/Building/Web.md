@@ -17,6 +17,12 @@ brew install emscripten
 
 ## Build
 
+### Docker
+
+```bash
+docker compose up webgl
+```
+
 ### emcc
 
 ```bash
