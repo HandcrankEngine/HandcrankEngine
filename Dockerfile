@@ -1,59 +1,53 @@
 FROM ubuntu:latest
 
 ARG EMSDK_VERSION=5.0.7
-ARG SDL_VERSION=3.4.10
+ARG SDL_VERSION=3.4.0
 ARG SDL_IMAGE_VERSION=3.4.4
 ARG SDL_TTF_VERSION=3.2.2
 ARG SDL_MIXER_VERSION=3.2.4
 
-ARG DEPS_PREFIX="/build/dependencies"
+ENV DEPS_PREFIX=/usr/local
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get upgrade -y
-
-RUN apt-get install -y \
-    curl \
+RUN apt-get update && apt-get install -y \
     build-essential \
-    pkg-config \
-    libpng-dev \
-    libjpeg-dev \
-    libtiff-dev \
-    libwebp-dev \
-    libfreetype-dev \
-    valgrind
-
-RUN apt-get install -y \
     cmake \
-    make \
-    ninja-build \
+    curl \
     gnome-desktop-testing \
     libasound2-dev \
-    libpulse-dev \
     libaudio-dev \
-    libjack-dev \
-    libsndio-dev \
-    libx11-dev \
-    libxext-dev \
-    libxrandr-dev \
-    libxcursor-dev \
-    libxfixes-dev \
-    libxi-dev \
-    libxss-dev \
-    libxtst-dev \
-    libxkbcommon-dev \
+    libdbus-1-dev \
     libdrm-dev \
+    libegl1-mesa-dev \
+    libfreetype-dev \
+    libfreetype6-dev \
     libgbm-dev \
     libgl1-mesa-dev \
     libgles2-mesa-dev \
-    libegl1-mesa-dev \
-    libdbus-1-dev \
+    libharfbuzz-dev \
     libibus-1.0-dev \
-    libudev-dev
-
-RUN apt-get install -y \
-    libfreetype6-dev \
-    libharfbuzz-dev
+    libjack-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libpulse-dev \
+    libsndio-dev \
+    libtiff-dev \
+    libudev-dev \
+    libwebp-dev \
+    libx11-dev \
+    libxcursor-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxrandr-dev \
+    libxss-dev \
+    libxtst-dev \
+    make \
+    ninja-build \
+    pkg-config \
+    valgrind && rm -rf /var/lib/apt/lists/*
 
 # Install Emscripten
 RUN mkdir -p /tmp/.emscripten && \
@@ -83,7 +77,8 @@ RUN mkdir -p /tmp/.sdl && \
         -DSDL_SHARED=OFF \
         -DSDL_STATIC=ON \
         -DSDL_TESTS=OFF \
-        -DSDL_EXAMPLES=OFF && \
+        -DSDL_EXAMPLES=OFF \
+        -GNinja && \
     cmake --build dist -j$(nproc) && \
     cmake --install dist
 
@@ -98,10 +93,12 @@ RUN mkdir -p /tmp/.sdl && \
     emcmake cmake -S . -B dist \
         -DCMAKE_INSTALL_PREFIX="${DEPS_PREFIX}" \
         -DSDL3_DIR="${DEPS_PREFIX}/lib/cmake/SDL3" \
+        -DSDL_STATIC_LIBS=ON \
         -DCMAKE_BUILD_TYPE=Release \
         -DSDL3IMAGE_SHARED=OFF \
         -DSDL3IMAGE_BUILD_SHARED_LIBS=OFF \
-        -DSDLIMAGE_SAMPLES=OFF && \
+        -DSDLIMAGE_SAMPLES=OFF \
+        -GNinja && \
     cmake --build dist -j$(nproc) && \
     cmake --install dist
 
@@ -117,12 +114,14 @@ RUN mkdir -p /tmp/.sdl && \
     emcmake cmake -S . -B dist \
         -DCMAKE_INSTALL_PREFIX="${DEPS_PREFIX}" \
         -DSDL3_DIR="${DEPS_PREFIX}/lib/cmake/SDL3" \
+        -DSDL_STATIC_LIBS=ON \
         -DCMAKE_BUILD_TYPE=Release \
         -DSDL3TTF_SHARED=OFF \
         -DSDLTTF_SAMPLES=OFF \
         -DCMAKE_C_FLAGS="-sUSE_FREETYPE=1 -sUSE_HARFBUZZ=1" \
         -DCMAKE_CXX_FLAGS="-sUSE_FREETYPE=1 -sUSE_HARFBUZZ=1" \
-        -DSDL3TTF_HARFBUZZ=ON && \
+        -DSDL3TTF_HARFBUZZ=ON \
+        -GNinja && \
     cmake --build dist -j$(nproc) && \
     cmake --install dist
 
@@ -137,9 +136,11 @@ RUN mkdir -p /tmp/.sdl && \
     emcmake cmake -S . -B dist \
         -DCMAKE_INSTALL_PREFIX="${DEPS_PREFIX}" \
         -DSDL3_DIR="${DEPS_PREFIX}/lib/cmake/SDL3" \
+        -DSDL_STATIC_LIBS=ON \
         -DCMAKE_BUILD_TYPE=Release \
         -DSDL3MIXER_SHARED=OFF \
-        -DSDLMIXER_SAMPLES=OFF && \
+        -DSDLMIXER_SAMPLES=OFF \
+        -GNinja && \
     cmake --build dist -j$(nproc) && \
     cmake --install dist
 
