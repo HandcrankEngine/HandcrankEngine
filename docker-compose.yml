@@ -16,7 +16,7 @@ services:
       - ./src:/app/src
       - ./tests:/app/tests
     tty: true
-  build:
+  webgl:
     build:
       context: .
       args:
