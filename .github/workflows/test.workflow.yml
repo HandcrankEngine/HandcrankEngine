@@ -16,7 +16,7 @@ on:
       SDL_VERSION:
         description: "SDL version"
         required: false
-        default: "3.4.12"
+        default: "3.4.14"
       SDL_IMAGE_VERSION:
         description: "SDL_image version"
         required: false
@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - SDL_VERSION: 3.4.12
+          - SDL_VERSION: 3.4.14
             SDL_IMAGE_VERSION: 3.4.4
             SDL_TTF_VERSION: 3.2.2
             SDL_MIXER_VERSION: 3.2.4

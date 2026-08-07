@@ -68,7 +68,7 @@ set(SDL3MIXER_WAVPACK OFF)
 set(SDL3MIXER_XMP OFF)
 set(SDL3MIXER_INSTALL OFF)
 
-INSTALL_SDL_LIBRARY("sdl3" "3.4.12" "SDL3" "https://github.com/libsdl-org/SDL.git")
+INSTALL_SDL_LIBRARY("sdl3" "3.4.14" "SDL3" "https://github.com/libsdl-org/SDL.git")
 INSTALL_SDL_LIBRARY("sdl3_image" "3.4.4" "SDL3_image" "https://github.com/libsdl-org/SDL_image.git")
 INSTALL_SDL_LIBRARY("sdl3_ttf" "3.2.2" "SDL3_ttf" "https://github.com/libsdl-org/SDL_ttf.git")
 INSTALL_SDL_LIBRARY("sdl3_mixer" "3.2.4" "SDL3_mixer" "https://github.com/libsdl-org/SDL_mixer.git")
