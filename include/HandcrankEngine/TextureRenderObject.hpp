@@ -122,6 +122,11 @@ class TextureRenderObject : public RenderObject
 
         SetDimension(textureWidth, textureHeight);
     }
+
+    void SetScaleMode(SDL_ScaleMode scaleMode)
+    {
+        SDL_SetTextureScaleMode(texture, scaleMode);
+    }
 };
 
 } // namespace HandcrankEngine
