@@ -112,6 +112,8 @@ class Game : public InputHandler
     int width = DEFAULT_WINDOW_WIDTH;
     int height = DEFAULT_WINDOW_HEIGHT;
 
+    float renderScale = 1.0F / 2;
+
     bool focused = false;
 
 #ifdef HANDCRANK_ENGINE_DEBUG
@@ -146,7 +148,10 @@ class Game : public InputHandler
 
     inline void SetScreenSize(int _width, int _height);
 
-    inline void RecalculateScreenSize();
+    inline void SetRenderScale(float scale);
+    [[nodiscard]] inline auto GetRenderScale() const -> float;
+
+    inline void ApplyRenderScale();
 
     inline void SetTitle(const char *name);
 
@@ -472,12 +477,8 @@ inline auto Game::Setup() -> bool
         SDL_DestroyWindow(window);
     }
 
-#ifdef __EMSCRIPTEN__
-    window = SDL_CreateWindow("", width, height, SDL_WINDOW_OPENGL);
-#else
     window = SDL_CreateWindow(
         "", width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_HIGH_PIXEL_DENSITY);
-#endif
 
     if (window == nullptr)
     {
@@ -518,27 +519,42 @@ inline void Game::SetScreenSize(int _width, int _height)
 
     SDL_SetWindowSize(window, _width, _height);
 
-    SDL_GetWindowSizeInPixels(window, &width, &height);
+    width = _width;
+    height = _height;
 
-    viewport.w = width;
-    viewport.h = height;
-    viewportf.w = static_cast<float>(viewport.w);
-    viewportf.h = static_cast<float>(viewport.h);
-
-    SDL_SetRenderScale(renderer, 1.0F, 1.0F);
-    SDL_SetRenderLogicalPresentation(
-        renderer, width, height,
-        SDL_RendererLogicalPresentation::SDL_LOGICAL_PRESENTATION_STRETCH);
-
-    SDL_SetRenderViewport(renderer, &viewport);
+    ApplyRenderScale();
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED,
                           SDL_WINDOWPOS_CENTERED);
 }
 
-inline void Game::RecalculateScreenSize()
+inline void Game::SetRenderScale(const float scale)
 {
-    SDL_GetWindowSizeInPixels(window, &width, &height);
+    renderScale = scale;
+
+    if (renderScale <= 0)
+    {
+        renderScale = 1.0F;
+    }
+
+    ApplyRenderScale();
+}
+
+inline auto Game::GetRenderScale() const -> float { return renderScale; }
+
+inline void Game::ApplyRenderScale()
+{
+    SDL_SetRenderLogicalPresentation(
+        renderer, width, height,
+        SDL_RendererLogicalPresentation::SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
+    SDL_SetRenderScale(renderer, renderScale, renderScale);
+
+    viewportf.w = static_cast<float>(width) / renderScale;
+    viewportf.h = static_cast<float>(height) / renderScale;
+
+    viewport.w = static_cast<int>(viewportf.w);
+    viewport.h = static_cast<int>(viewportf.h);
 }
 
 inline void Game::SetTitle(const char *name)
@@ -656,14 +672,6 @@ inline void Game::HandleInput()
         {
         case SDL_EVENT_QUIT:
             Quit();
-            break;
-
-        case SDL_EVENT_WINDOW_RESIZED:
-        case SDL_EVENT_WINDOW_RESTORED:
-        case SDL_EVENT_WINDOW_MAXIMIZED:
-        case SDL_EVENT_WINDOW_MINIMIZED:
-            SDL_GetWindowSizeInPixels(window, &width, &height);
-
             break;
 
         case SDL_EVENT_WINDOW_FOCUS_GAINED:
