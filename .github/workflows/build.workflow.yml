@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install SDL dependencies
-        uses: HandcrankEngine/install-sdl-packages@3dd8adf2ce1e6698313aecb05a2f8fa59be27b8c # v0.5.0
+        uses: HandcrankEngine/install-sdl-packages@28e412ca7918a0341f2846f5181a097dfc2059be # v0.5.0
         with:
           SDL_VERSION: ${{ inputs.SDL_VERSION || matrix.SDL_VERSION }}
           SDL_IMAGE_VERSION: ${{ inputs.SDL_IMAGE_VERSION || matrix.SDL_IMAGE_VERSION }}
