@@ -111,10 +111,10 @@ template <typename T> inline auto RandomNumberRange(T min, T max) -> T
 inline auto RandomColorRange(const SDL_Color min, const SDL_Color max)
     -> SDL_Color
 {
-    return SDL_Color{(Uint8)RandomNumberRange(min.r, max.r),
-                     (Uint8)RandomNumberRange(min.g, max.g),
-                     (Uint8)RandomNumberRange(min.b, max.b),
-                     (Uint8)RandomNumberRange(min.a, max.a)};
+    return SDL_Color{static_cast<Uint8>(RandomNumberRange(min.r, max.r)),
+                     static_cast<Uint8>(RandomNumberRange(min.g, max.g)),
+                     static_cast<Uint8>(RandomNumberRange(min.b, max.b)),
+                     static_cast<Uint8>(RandomNumberRange(min.a, max.a))};
 }
 
 inline auto RandomBoolean() -> bool { return rand() > (RAND_MAX / 2); }
@@ -178,7 +178,7 @@ inline auto operator+(const SDL_FRect &a, const SDL_FRect &b) -> SDL_FRect
     return {a.x + b.x, a.y + b.y, a.w + b.w, a.h + b.h};
 }
 
-inline SDL_FRect TextureQuadCenterOffset = {0.5F, 0.5F, -1.0F, -1.0F};
+inline SDL_FRect TextureQuadCenterOffset = {1.0F / 2, 1.0F / 2, -1.0F, -1.0F};
 
 inline auto GenerateTextureQuad(std::vector<SDL_Vertex> &vertices,
                                 std::vector<int> &indices,

@@ -614,11 +614,11 @@ inline void Game::Loop()
 #endif
 
     float elapsedSeconds = (frameStart - previousFrameStart) /
-                           (float)SDL_GetPerformanceFrequency();
+                           static_cast<float>(SDL_GetPerformanceFrequency());
 
     if (elapsedSeconds >= 1)
     {
-        fps = (int)(framesThisSecond / elapsedSeconds);
+        fps = static_cast<int>(framesThisSecond / elapsedSeconds);
         framesThisSecond = 0;
         previousFrameStart = frameStart;
     }
@@ -734,7 +734,8 @@ inline void Game::Render()
 
     sort(childrenBuffer.begin(), childrenBuffer.end(),
          [](const std::shared_ptr<RenderObject> &a,
-            const std::shared_ptr<RenderObject> &b) { return a->z < b->z; });
+            const std::shared_ptr<RenderObject> &b) -> bool
+         { return a->z < b->z; });
 
     for (const auto &child : childrenBuffer)
     {
@@ -756,7 +757,7 @@ inline void Game::ResolveCollisions()
 
     colliders.erase(
         std::remove_if(colliders.begin(), colliders.end(),
-                       [](const std::shared_ptr<RenderObject> &collider)
+                       [](const std::shared_ptr<RenderObject> &collider) -> bool
                        {
                            return !collider->IsCollisionEnabled() ||
                                   collider->HasBeenMarkedForDestroy();
@@ -798,7 +799,7 @@ inline void Game::DestroyChildObjects()
     }
 
     children.erase(std::remove_if(children.begin(), children.end(),
-                                  [](const auto &child)
+                                  [](const auto &child) -> auto
                                   {
                                       if (child != nullptr &&
                                           child->HasBeenMarkedForDestroy())
@@ -1295,7 +1296,8 @@ inline void RenderObject::Render(SDL_Renderer *renderer)
 
     sort(childrenBuffer.begin(), childrenBuffer.end(),
          [](const std::shared_ptr<RenderObject> &a,
-            const std::shared_ptr<RenderObject> &b) { return a->z < b->z; });
+            const std::shared_ptr<RenderObject> &b) -> bool
+         { return a->z < b->z; });
 
     for (const auto &child : childrenBuffer)
     {
@@ -1356,7 +1358,7 @@ inline void RenderObject::DestroyChildObjects()
     }
 
     children.erase(std::remove_if(children.begin(), children.end(),
-                                  [](const auto &child)
+                                  [](const auto &child) -> auto
                                   {
                                       if (child != nullptr &&
                                           child->HasBeenMarkedForDestroy())
