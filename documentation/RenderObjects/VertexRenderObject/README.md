@@ -29,11 +29,12 @@ class LogoGrid : public VertexRenderObject
         {
             for (auto y = 0; y < game->GetHeight(); y += textureHeight + 10)
             {
-                GenerateTextureQuad(
-                    vertices, indices,
-                    {(float)x, (float)y, textureWidth, textureHeight},
-                    {0, 0, textureWidth, textureHeight}, {1, 1, 1, 1},
-                    textureWidth, textureHeight);
+                GenerateTextureQuad(vertices, indices,
+                                    {static_cast<float>(x),
+                                     static_cast<float>(y), textureWidth,
+                                     textureHeight},
+                                    {0, 0, textureWidth, textureHeight},
+                                    {1, 1, 1, 1}, textureWidth, textureHeight);
             }
         }
     }

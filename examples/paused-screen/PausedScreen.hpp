@@ -21,14 +21,14 @@ class PausedScreen : public RenderObject
     {
         AddChildObject(background);
 
-        background->SetRect(
-            {0, 0, (float)game->GetWidth(), (float)game->GetHeight()});
+        background->SetRect({0, 0, static_cast<float>(game->GetWidth()),
+                             static_cast<float>(game->GetHeight())});
         background->SetFillColor({0, 0, 0, 200});
 
         label->SetAnchor(RectAnchor::HCENTER | RectAnchor::VCENTER);
 
-        label->SetRect(
-            {(float)game->GetWidth() / 2, (float)game->GetHeight() / 2});
+        label->SetRect({static_cast<float>(game->GetWidth() / 2),
+                        static_cast<float>(game->GetHeight() / 2)});
         label->LoadFontRW(fonts_Roboto_Roboto_Regular_ttf,
                           fonts_Roboto_Roboto_Regular_ttf_len, 100);
 

@@ -41,8 +41,9 @@ class LogoScreenSaver : public VertexRenderObject
     {
         AddChildObject(background);
 
-        background->SetRect({(float)game->GetWidth() - 200,
-                             (float)game->GetHeight() - 125, 200, 70});
+        background->SetRect({static_cast<float>(game->GetWidth() - 200),
+                             static_cast<float>(game->GetHeight() - 125), 200,
+                             70});
         background->SetFillColor({255, 255, 255, 255});
 
         background->z = 1;
@@ -151,13 +152,12 @@ class LogoScreenSaver : public VertexRenderObject
   private:
     void AddLogoToList(float x, float y)
     {
-        items.emplace_back(Item{
-            {(float)x, (float)y, (float)textureWidth, (float)textureHeight},
-            {0, 0, (float)textureWidth, (float)textureHeight},
-            currentColor,
-            RandomBoolean() ? -1 : 1,
-            RandomBoolean() ? -1 : 1,
-            (rand() % 400) + 100});
+        items.emplace_back(Item{{x, y, textureWidth, textureHeight},
+                                {0, 0, textureWidth, textureHeight},
+                                currentColor,
+                                RandomBoolean() ? -1 : 1,
+                                RandomBoolean() ? -1 : 1,
+                                (rand() % 400) + 100});
 
         GenerateTextureQuad(vertices, indices, items.back().rect,
                             items.back().srcRect, items.back().color,

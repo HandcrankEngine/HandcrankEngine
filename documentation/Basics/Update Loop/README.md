@@ -15,13 +15,12 @@ class LoopDebugger : public RenderObject
   public:
     void Update(double deltaTime) override
     {
-        std::cout << "Update " << std::to_string(deltaTime) << std::endl;
+        std::cout << "Update " << std::to_string(deltaTime) << "\n";
     }
 
     void FixedUpdate(double fixedDeltaTime) override
     {
-        std::cout << "Fixed Update " << std::to_string(fixedDeltaTime)
-                  << std::endl;
+        std::cout << "Fixed Update " << std::to_string(fixedDeltaTime) << "\n";
     }
 };
 

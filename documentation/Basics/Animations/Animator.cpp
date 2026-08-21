@@ -14,9 +14,9 @@ auto main(int argc, char *argv[]) -> int
     auto animator = std::make_shared<Animator>(Animator::Mode::SEQUENCE, true);
 
     animator->AddAnimation(std::make_shared<Animation>(
-        [&](double deltaTime, double elapsedTime)
+        [&](double deltaTime, double elapsedTime) -> int
         {
-            std::cout << elapsedTime << std::endl;
+            std::cout << elapsedTime << "\n";
 
             return 1;
         }));
