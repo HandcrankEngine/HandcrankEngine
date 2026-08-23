@@ -23,11 +23,11 @@ https://github.com/user-attachments/assets/bdf51feb-13ae-4da3-8a40-8987b28a0842
 
 ## Platforms
 
-| Platform                                  | SDL Version | Tested | Stable |
-| ----------------------------------------- | :---------: | :----: | :----: |
-| [Windows](documentation/Build/Windows.md) |   3.4.14    |   ✅   |   ❌   |
-| [macOS](documentation/Build/macOS.md)     |   3.4.14    |   ✅   |   ❌   |
-| [Web](documentation/Build/Web.md)         |   3.4.14    |   ✅   |   ❌   |
+| Platform                                     | SDL Version | Tested | Stable |
+| -------------------------------------------- | :---------: | :----: | :----: |
+| [Windows](documentation/Building/Windows.md) |   3.4.14    |   ✅   |   ❌   |
+| [macOS](documentation/Building/macOS.md)     |   3.4.14    |   ✅   |   ❌   |
+| [Web](documentation/Building/Web.md)         |   3.4.14    |   ✅   |   ❌   |
 
 ## Install
 
