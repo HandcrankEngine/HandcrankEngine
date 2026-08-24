@@ -247,13 +247,12 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     inline RenderObject();
     inline RenderObject(Vector2 position);
     template <typename T1, typename T2,
-              typename = std::enable_if_t<std::is_arithmetic_v<T1> &&
-                                          std::is_arithmetic_v<T2>>>
+              typename = std::enable_if_t<is_numeric_v<T1> && is_numeric_v<T2>>>
     inline RenderObject(T1 x, T2 y);
-    template <typename T1, typename T2, typename T3, typename T4,
-              typename = std::enable_if_t<
-                  std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> &&
-                  std::is_arithmetic_v<T3> && std::is_arithmetic_v<T4>>>
+    template <
+        typename T1, typename T2, typename T3, typename T4,
+        typename = std::enable_if_t<is_numeric_v<T1> && is_numeric_v<T2> &&
+                                    is_numeric_v<T3> && is_numeric_v<T4>>>
     inline RenderObject(T1 x, T2 y, T3 w, T4 h);
 
     virtual inline ~RenderObject();
