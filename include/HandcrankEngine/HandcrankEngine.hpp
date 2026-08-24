@@ -246,8 +246,15 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
 
     inline RenderObject();
     inline RenderObject(Vector2 position);
-    inline RenderObject(float x, float y);
-    inline RenderObject(float x, float y, float w, float h);
+    template <typename T1, typename T2,
+              typename = std::enable_if_t<std::is_arithmetic_v<T1> &&
+                                          std::is_arithmetic_v<T2>>>
+    inline RenderObject(T1 x, T2 y);
+    template <typename T1, typename T2, typename T3, typename T4,
+              typename = std::enable_if_t<
+                  std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> &&
+                  std::is_arithmetic_v<T3> && std::is_arithmetic_v<T4>>>
+    inline RenderObject(T1 x, T2 y, T3 w, T4 h);
 
     virtual inline ~RenderObject();
 
@@ -832,14 +839,17 @@ inline RenderObject::RenderObject(Vector2 position) : RenderObject()
 {
     SetPosition(position);
 }
-inline RenderObject::RenderObject(float x, float y) : RenderObject()
+
+template <typename T1, typename T2, typename Enable>
+inline RenderObject::RenderObject(T1 x, T2 y) : RenderObject()
 {
-    SetPosition(x, y);
+    SetPosition(static_cast<float>(x), static_cast<float>(y));
 }
-inline RenderObject::RenderObject(float x, float y, float w, float h)
-    : RenderObject()
+template <typename T1, typename T2, typename T3, typename T4, typename Enable>
+inline RenderObject::RenderObject(T1 x, T2 y, T3 w, T4 h) : RenderObject()
 {
-    SetRect(x, y, w, h);
+    SetRect(static_cast<float>(x), static_cast<float>(y), static_cast<float>(w),
+            static_cast<float>(h));
 }
 
 inline RenderObject::~RenderObject()
