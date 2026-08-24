@@ -20,6 +20,13 @@
 namespace HandcrankEngine
 {
 
+template <typename T>
+inline constexpr bool is_numeric_v =
+    (std::is_integral_v<T> || std::is_floating_point_v<T>) &&
+    !std::is_same_v<T, bool> && !std::is_same_v<T, char> &&
+    !std::is_same_v<T, wchar_t> && !std::is_same_v<T, char16_t> &&
+    !std::is_same_v<T, char32_t>;
+
 inline auto TryParseInt(const std::string &value, int &result) -> bool
 {
     try
@@ -91,20 +98,19 @@ inline auto InverseLerp(float a, float b, float v) -> float
     return std::clamp(((v - a) / (b - a)), 0.0F, 1.0F);
 }
 
-template <typename T> inline auto RandomNumberRange(T min, T max) -> T
+template <typename T, typename = std::enable_if_t<is_numeric_v<T>>>
+inline auto RandomNumberRange(T min, T max) -> T
 {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
+    thread_local std::random_device rd;
+    thread_local std::mt19937 gen(rd());
 
     if constexpr (std::is_floating_point_v<T>)
     {
-        std::uniform_real_distribution<T> distrib(min, max);
-        return distrib(gen);
+        return std::uniform_real_distribution<T>{min, max}(gen);
     }
     else
     {
-        std::uniform_int_distribution<T> distrib(min, max);
-        return distrib(gen);
+        return std::uniform_int_distribution{min, max}(gen);
     }
 }
 

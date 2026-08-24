@@ -93,10 +93,10 @@ auto main(int argc, char *argv[]) -> int
     }
 
     {
-        auto value = RandomNumberRange(-1, 1);
+        auto value = RandomNumberRange(-10, 10);
 
-        assert(value >= -1);
-        assert(value <= 1);
+        assert(value >= -10);
+        assert(value <= 10);
 
         std::cout << ".";
     }
