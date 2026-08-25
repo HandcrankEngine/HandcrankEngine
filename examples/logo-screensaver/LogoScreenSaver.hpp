@@ -73,7 +73,7 @@ class LogoScreenSaver : public VertexRenderObject
             AddLogoToList(x, y);
         }
 
-        pickupSfx = LoadCachedSFX("./sfx/pickup.wav");
+        pickupSfx = LoadCachedSFX("../sfx/pickup.wav");
     }
 
     void Update(double deltaTime) override

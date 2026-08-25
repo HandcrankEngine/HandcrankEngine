@@ -129,12 +129,24 @@ inline auto RandomBoolean() -> bool { return rand() > (RAND_MAX / 2); }
 
 inline auto GetFilePath(const char *path) -> std::filesystem::path
 {
+    const auto *basePath = SDL_GetBasePath();
+
+    std::filesystem::path fullPath = (basePath != nullptr) ? basePath : "";
+
+    if (path != nullptr)
+    {
+        std::filesystem::path relativePath(path);
+
+        fullPath /= relativePath.is_absolute() ? relativePath.relative_path()
+                                               : relativePath;
+    }
+
     std::error_code ec;
-    auto resolvedPath = std::filesystem::canonical(path, ec);
+    auto resolvedPath = std::filesystem::canonical(fullPath, ec);
 
     if (ec)
     {
-        std::cerr << "[Handcrank Engine] File not found: " << path << "\n";
+        std::cerr << "[Handcrank Engine] File not found: " << fullPath << "\n";
 
         return {};
     }
