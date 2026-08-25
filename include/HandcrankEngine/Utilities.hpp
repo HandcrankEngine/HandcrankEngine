@@ -12,7 +12,9 @@
 #include <SDL3/SDL.h>
 
 #include <algorithm>
+#include <filesystem>
 #include <functional>
+#include <iostream>
 #include <random>
 #include <regex>
 #include <string>
@@ -124,6 +126,21 @@ inline auto RandomColorRange(const SDL_Color min, const SDL_Color max)
 }
 
 inline auto RandomBoolean() -> bool { return rand() > (RAND_MAX / 2); }
+
+inline auto GetFilePath(const char *path) -> std::filesystem::path
+{
+    std::error_code ec;
+    auto resolvedPath = std::filesystem::canonical(path, ec);
+
+    if (ec)
+    {
+        std::cerr << "[Handcrank Engine] File not found: " << path << "\n";
+
+        return {};
+    }
+
+    return resolvedPath;
+}
 
 template <typename T> auto GetClassNameSimple(const T &obj) -> std::string
 {

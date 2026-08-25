@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <filesystem>
-#include <iostream>
 #include <unordered_map>
 
 #include <SDL3_mixer/SDL_mixer.h>
@@ -71,15 +69,10 @@ inline auto SetupAudio() -> bool
 
 inline auto LoadCachedMusic(const char *path) -> std::shared_ptr<MIX_Audio>
 {
-    if (!std::filesystem::exists(path))
-    {
-        std::cerr << "[Handcrank Engine] Audio file not found: " << path
-                  << "\n";
+    const auto filePath = GetFilePath(path);
 
-        return nullptr;
-    }
-
-    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
+    auto cacheKey =
+        std::hash<std::string_view>{}(std::string_view(filePath.c_str()));
 
     auto match = audioCache.find(cacheKey);
 
@@ -93,8 +86,8 @@ inline auto LoadCachedMusic(const char *path) -> std::shared_ptr<MIX_Audio>
         return nullptr;
     }
 
-    auto music = std::shared_ptr<MIX_Audio>(MIX_LoadAudio(mixer, path, true),
-                                            MixAudioDeleter{});
+    auto music = std::shared_ptr<MIX_Audio>(
+        MIX_LoadAudio(mixer, filePath.c_str(), true), MixAudioDeleter{});
 
     if (music == nullptr)
     {
@@ -145,15 +138,10 @@ inline auto LoadCachedMusic(const void *mem, int size)
 
 inline auto LoadCachedSFX(const char *path) -> std::shared_ptr<MIX_Audio>
 {
-    if (!std::filesystem::exists(path))
-    {
-        std::cerr << "[Handcrank Engine] Audio file not found: " << path
-                  << "\n";
+    const auto filePath = GetFilePath(path);
 
-        return nullptr;
-    }
-
-    auto cacheKey = std::hash<std::string_view>{}(std::string_view(path));
+    auto cacheKey =
+        std::hash<std::string_view>{}(std::string_view(filePath.c_str()));
 
     auto match = audioCache.find(cacheKey);
 
@@ -167,8 +155,8 @@ inline auto LoadCachedSFX(const char *path) -> std::shared_ptr<MIX_Audio>
         return nullptr;
     }
 
-    auto sfx = std::shared_ptr<MIX_Audio>(MIX_LoadAudio(mixer, path, true),
-                                          MixAudioDeleter{});
+    auto sfx = std::shared_ptr<MIX_Audio>(
+        MIX_LoadAudio(mixer, filePath.c_str(), true), MixAudioDeleter{});
 
     if (sfx == nullptr)
     {
