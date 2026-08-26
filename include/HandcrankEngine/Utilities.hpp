@@ -110,9 +110,15 @@ inline auto RandomNumberRange(T min, T max) -> T
     {
         return std::uniform_real_distribution<T>{min, max}(gen);
     }
+    else if constexpr (std::is_signed_v<T>)
+    {
+        return static_cast<T>(
+            std::uniform_int_distribution<long long>{min, max}(gen));
+    }
     else
     {
-        return std::uniform_int_distribution{min, max}(gen);
+        return static_cast<T>(
+            std::uniform_int_distribution<unsigned long long>{min, max}(gen));
     }
 }
 
