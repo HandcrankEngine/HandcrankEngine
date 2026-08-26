@@ -33,7 +33,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     # NSHumanReadableCopyright
     MACOSX_BUNDLE_COPYRIGHT="Copyright (c) Scott Doxey. All Rights Reserved."
 
-    CONTENTS="build/${MACOSX_BUNDLE_EXECUTABLE_NAME}.app/Contents"
+    export CONTENTS="build/${MACOSX_BUNDLE_EXECUTABLE_NAME}.app/Contents"
     MACOS="${CONTENTS}/MacOS"
     FRAMEWORKS="${CONTENTS}/Frameworks"
     RESOURCES="${CONTENTS}/Resources"
@@ -57,6 +57,10 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
     cp "build/${MACOSX_BUNDLE_EXECUTABLE_NAME}" "${MACOS}/"
 
     cp "resources/${MACOSX_BUNDLE_ICON_FILE}" "${RESOURCES}"
+
+    [ -d "fonts" ] && find fonts -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
+    [ -d "images" ] && find images -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
+    [ -d "sfx" ] && find sfx -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
 
     cp "${SDL_PATH}/lib/libSDL3.dylib" "${FRAMEWORKS}"
     cp "${SDL_IMAGE_PATH}/lib/libSDL3_image.dylib" "${FRAMEWORKS}"
