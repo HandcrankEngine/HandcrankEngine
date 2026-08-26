@@ -71,8 +71,7 @@ inline auto LoadCachedMusic(const char *path) -> std::shared_ptr<MIX_Audio>
 {
     const auto filePath = GetFilePath(path);
 
-    auto cacheKey =
-        std::hash<std::string_view>{}(std::string_view(filePath.c_str()));
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(filePath));
 
     auto match = audioCache.find(cacheKey);
 
@@ -140,8 +139,7 @@ inline auto LoadCachedSFX(const char *path) -> std::shared_ptr<MIX_Audio>
 {
     const auto filePath = GetFilePath(path);
 
-    auto cacheKey =
-        std::hash<std::string_view>{}(std::string_view(filePath.c_str()));
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(filePath));
 
     auto match = audioCache.find(cacheKey);
 

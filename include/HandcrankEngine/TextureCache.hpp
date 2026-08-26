@@ -49,8 +49,7 @@ inline auto LoadCachedTexture(SDL_Renderer *renderer, const char *path)
 {
     const auto filePath = GetFilePath(path);
 
-    auto cacheKey =
-        std::hash<std::string_view>{}(std::string_view(filePath.c_str()));
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(filePath));
 
     auto match = textureCache.find(cacheKey);
 
@@ -96,8 +95,7 @@ inline auto LoadCachedTransparentTexture(SDL_Renderer *renderer,
 {
     const auto filePath = GetFilePath(path);
 
-    auto cacheKey =
-        std::hash<std::string_view>{}(std::string_view(filePath.c_str()));
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(filePath));
 
     auto match = textureCache.find(cacheKey);
 

@@ -127,7 +127,7 @@ inline auto RandomColorRange(const SDL_Color min, const SDL_Color max)
 
 inline auto RandomBoolean() -> bool { return rand() > (RAND_MAX / 2); }
 
-inline auto GetFilePath(const char *path) -> std::filesystem::path
+inline auto GetFilePath(const char *path) -> std::string
 {
     const auto *basePath = SDL_GetBasePath();
 
@@ -151,7 +151,7 @@ inline auto GetFilePath(const char *path) -> std::filesystem::path
         return {};
     }
 
-    return resolvedPath;
+    return resolvedPath.string();
 }
 
 template <typename T> auto GetClassNameSimple(const T &obj) -> std::string

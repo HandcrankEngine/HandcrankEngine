@@ -59,9 +59,8 @@ inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
 {
     const auto filePath = GetFilePath(path);
 
-    auto cacheKey =
-        std::hash<std::string_view>{}(std::string_view(filePath.c_str())) ^
-        std::hash<int>{}(ptSize);
+    auto cacheKey = std::hash<std::string_view>{}(std::string_view(filePath)) ^
+                    std::hash<int>{}(ptSize);
 
     auto match = fontCache.find(cacheKey);
 
