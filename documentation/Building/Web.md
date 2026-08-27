@@ -20,7 +20,7 @@ brew install emscripten
 ### Docker
 
 ```bash
-docker compose up webgl
+docker compose up webgl --build
 ```
 
 ### emcc

@@ -1,7 +1,8 @@
 services:
-  test:
+  linux:
     build:
-      context: ./tests/valgrind
+      context: .
+      dockerfile: Dockerfile.linux
       args:
         SDL_VERSION: 3.4.14
         SDL_IMAGE_VERSION: 3.4.4
@@ -19,6 +20,7 @@ services:
   webgl:
     build:
       context: .
+      dockerfile: Dockerfile.webgl
       args:
         EMSDK_VERSION: 5.0.7
         SDL_VERSION: 3.4.14
