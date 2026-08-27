@@ -33,6 +33,7 @@ include_directories(
 
 include_directories("../../fonts")
 include_directories("../../images")
+include_directories("../../sfx")
 include_directories("../../include")
 include_directories("../../examples")
 

@@ -69,6 +69,7 @@ INSTALL_SDL_LIBRARY("sdl3_mixer" "3.2.4" "SDL3_mixer" "https://github.com/libsdl
 
 include_directories("fonts")
 include_directories("images")
+include_directories("sfx")
 include_directories("include")
 include_directories("examples")
 
