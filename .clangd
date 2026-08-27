@@ -4,8 +4,9 @@ CompileFlags:
     - "-std=c++17"
     - "-Ifonts"
     - "-Iimages"
-    - "-Iinclude"
+    - "-Isfx"
     - "-Iexamples"
+    - "-Iinclude"
     - "-Isrc"
 Diagnostics:
   UnusedIncludes: Strict

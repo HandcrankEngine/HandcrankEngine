@@ -10,10 +10,10 @@ services:
         SDL_MIXER_VERSION: 3.2.4
     volumes:
       - ./bin:/app/bin
-      - ./examples:/app/examples
       - ./fonts:/app/fonts
       - ./images:/app/images
       - ./sfx:/app/sfx
+      - ./examples:/app/examples
       - ./include:/app/include
       - ./src:/app/src
       - ./tests:/app/tests
