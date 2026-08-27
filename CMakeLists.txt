@@ -14,30 +14,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 include(FetchContent)
 
 function(INSTALL_SDL_LIBRARY NAME VERSION REPO_NAME REPO_URL)
-  string(TOUPPER "${NAME}" NAME_LIBRARY)
+  message(STATUS "Installing ${NAME} ${VERSION} via FetchContent")
 
-  if(EXISTS "/opt/homebrew/Cellar/${NAME}/${VERSION}/")
-    set(${NAME_LIBRARY}_LIBRARY_DIR "/opt/homebrew/Cellar/${NAME}/${VERSION}/lib")
-    set(${NAME_LIBRARY}_INCLUDE_DIR "/opt/homebrew/Cellar/${NAME}/${VERSION}/include")
+  FetchContent_Declare(
+  ${REPO_NAME}
+  GIT_REPOSITORY "${REPO_URL}"
+  GIT_TAG release-${VERSION}
+)
 
-    find_library(${NAME_LIBRARY}_LIBRARY NAMES ${NAME_LIBRARY} HINTS ${${NAME_LIBRARY}_LIBRARY_DIR})
+  set(${NAME_LIBRARY}_LIBRARY ${REPO_NAME}::${REPO_NAME} PARENT_SCOPE)
 
-    include_directories(${${NAME_LIBRARY}_INCLUDE_DIR})
-
-    message(STATUS "Found ${NAME} ${VERSION} installed via brew ${${NAME_LIBRARY}_LIBRARY_DIR}")
-  else()
-    message(STATUS "Installing ${NAME} ${VERSION} via FetchContent")
-
-    FetchContent_Declare(
-      ${REPO_NAME}
-      GIT_REPOSITORY "${REPO_URL}"
-      GIT_TAG release-${VERSION}
-    )
-
-    set(${NAME_LIBRARY}_LIBRARY ${REPO_NAME}::${REPO_NAME} PARENT_SCOPE)
-
-    FetchContent_MakeAvailable(${NAME_LIBRARY})
-  endif()
+  FetchContent_MakeAvailable(${NAME_LIBRARY})
 endfunction()
 
 # SDL3 Flags
