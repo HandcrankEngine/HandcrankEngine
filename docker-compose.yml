@@ -13,6 +13,7 @@ services:
       - ./examples:/app/examples
       - ./fonts:/app/fonts
       - ./images:/app/images
+      - ./sfx:/app/sfx
       - ./include:/app/include
       - ./src:/app/src
       - ./tests:/app/tests
