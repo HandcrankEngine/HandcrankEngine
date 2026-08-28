@@ -58,9 +58,9 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     cp "resources/${MACOSX_BUNDLE_ICON_FILE}" "${RESOURCES}"
 
-    [ -d "fonts" ] && find fonts -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
-    [ -d "images" ] && find images -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
-    [ -d "sfx" ] && find sfx -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
+    for DIR in fonts images sfx; do
+        [ -d "${DIR}" ] && find "${DIR}" -type f ! -name "*.h" -exec sh -c 'echo "copying ${0}" && mkdir -p "${CONTENTS}/$(dirname ${0})" && cp "${0}" "${CONTENTS}/${0}"' {} \;
+    done
 
     cp "${SDL_PATH}/lib/libSDL3.dylib" "${FRAMEWORKS}"
     cp "${SDL_IMAGE_PATH}/lib/libSDL3_image.dylib" "${FRAMEWORKS}"
