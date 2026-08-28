@@ -139,6 +139,7 @@ WORKDIR /app
 COPY ./bin ./bin
 COPY ./fonts ./fonts
 COPY ./images ./images
+COPY ./sfx ./sfx
 COPY ./include ./include
 COPY ./examples ./examples
 COPY ./src ./src
@@ -147,7 +148,7 @@ COPY ./templates ./templates
 RUN mkdir -p /tmp/dist/web
 
 RUN em++ -std=c++17 -Os -o /tmp/dist/web/index.html src/*.cpp \
-    -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
+    -Ifonts -Iimages -Isfx -Iinclude -Iexamples -Isrc \
     -I"${DEPS_PREFIX}"/include -L"${DEPS_PREFIX}"/lib \
     -lSDL3 -lSDL3_image -lSDL3_ttf -lSDL3_mixer \
     -s USE_FREETYPE=1 -s USE_HARFBUZZ=1 \

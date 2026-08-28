@@ -115,6 +115,7 @@ WORKDIR /app
 COPY ./bin ./bin
 COPY ./fonts ./fonts
 COPY ./images ./images
+COPY ./sfx ./sfx
 COPY ./include ./include
 COPY ./examples ./examples
 COPY ./src ./src
@@ -123,7 +124,7 @@ COPY ./templates ./templates
 RUN mkdir -p /tmp/dist/linux
 
 RUN g++ -std=c++17 -o /tmp/dist/linux/demo-template src/*.cpp \
-    -Ifonts -Iimages -Iinclude -Iexamples -Isrc \
+    -Ifonts -Iimages -Isfx -Iinclude -Iexamples -Isrc \
     /usr/local/lib/libSDL3_ttf.a \
     /usr/local/lib/libSDL3_mixer.a \
     /usr/local/lib/libSDL3_image.a \
