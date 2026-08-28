@@ -69,7 +69,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     find_dependencies() {
         local LIBRARY="${1}"
-        otool -L "${LIBRARY}" | grep -E '\.dylib' | awk '{print $1}' | while read DEPENDENCY; do
+        otool -L "${LIBRARY}" | grep -E '\.dylib' | awk '{print $1}' | while read -r DEPENDENCY; do
             if [[ -f "${DEPENDENCY}" && "${DEPENDENCY}" != *"/usr/lib/"* && "${DEPENDENCY}" != *"/System/"* && ! -f "${FRAMEWORKS}/$(basename "${DEPENDENCY}")" ]]; then
                 cp "${DEPENDENCY}" "${FRAMEWORKS}/"
                 find_dependencies "${DEPENDENCY}"
