@@ -123,7 +123,7 @@ COPY ./templates ./templates
 
 RUN mkdir -p /tmp/dist/linux
 
-RUN g++ -std=c++17 -o /tmp/dist/linux/demo-template src/*.cpp \
+RUN g++ -std=c++17 -o /tmp/dist/linux/handcrank-engine src/*.cpp \
     -Ifonts -Iimages -Isfx -Iinclude -Iexamples -Isrc \
     /usr/local/lib/libSDL3_ttf.a \
     /usr/local/lib/libSDL3_mixer.a \
