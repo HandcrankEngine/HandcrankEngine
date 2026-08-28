@@ -14,6 +14,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 include(FetchContent)
 
 function(INSTALL_SDL_LIBRARY NAME VERSION REPO_NAME REPO_URL)
+  string(TOUPPER "${NAME}" NAME_LIBRARY)
+
   message(STATUS "Installing ${NAME} ${VERSION} via FetchContent")
 
   FetchContent_Declare(
