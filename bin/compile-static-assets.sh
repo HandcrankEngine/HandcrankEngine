@@ -8,8 +8,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
     cd ..
 
-    [ -d "fonts" ] && find fonts -type f ! -name "*.h" -exec sh -c 'echo "#pragma once\n" > "${0%.*}.h" && xxd -i "$0" >> "${0%.*}.h"' {} \;
-    [ -d "images" ] && find images -type f ! -name "*.h" -exec sh -c 'echo "#pragma once\n" > "${0%.*}.h" && xxd -i "$0" >> "${0%.*}.h"' {} \;
-    [ -d "sfx" ] && find sfx -type f ! -name "*.h" -exec sh -c 'echo "#pragma once\n" > "${0%.*}.h" && xxd -i "$0" >> "${0%.*}.h"' {} \;
+    for DIR in fonts images sfx; do
+        [ -d "${DIR}" ] && find "${DIR}" -type f ! -name "*.h" -exec sh -c 'printf "#pragma once\n\n%s\n" "$(xxd -i "$0")" > "${0%.*}.h"' {} \;
+    done
 
 )
