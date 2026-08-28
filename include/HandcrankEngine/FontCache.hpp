@@ -54,6 +54,7 @@ inline auto CleanupFontInits() -> void
  * @param path File path to font file.
  * @param ptSize The size of the font.
  */
+
 inline auto LoadCachedFont(const char *path, int ptSize = DEFAULT_FONT_SIZE)
     -> TTF_Font *
 {
