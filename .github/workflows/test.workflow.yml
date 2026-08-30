@@ -57,3 +57,16 @@ jobs:
 
       - name: Run tests
         run: ./bin/run-tests.sh
+
+      - name: Run build
+        run: |
+          . ./bin/find-sdl.sh
+          mkdir -p build/
+          g++ -std=c++17 -o build/temp tests/mocks/RunAndQuitTest.cpp -Iinclude -Isrc \
+            -I"${SDL_INCLUDE_PATH}" -L"${SDL_PATH}/lib" \
+            -I"${SDL_IMAGE_INCLUDE_PATH}" -L"${SDL_IMAGE_PATH}/lib" \
+            -I"${SDL_TTF_INCLUDE_PATH}" -L"${SDL_TTF_PATH}/lib" \
+            -I"${SDL_MIXER_INCLUDE_PATH}" -L"${SDL_MIXER_PATH}/lib" \
+            -lSDL3 -lSDL3_image -lSDL3_ttf -lSDL3_mixer
+          ./build/temp
+          rm ./build/temp
