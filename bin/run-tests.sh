@@ -16,7 +16,7 @@ COLOROFF=$(tput sgr0)
 
     printf "Running Unit Tests\n"
 
-    find ./tests -type f -name "*.cpp" | while read -r FILE; do
+    find ./tests/HandcrankEngine -type f -name "*.cpp" | while read -r FILE; do
 
         printf " - Running %s " "${FILE}"
 

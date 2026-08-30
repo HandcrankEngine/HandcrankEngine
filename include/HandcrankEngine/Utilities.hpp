@@ -63,26 +63,36 @@ inline auto TryParseInt(const std::string &value) -> bool
     return false;
 }
 
-inline auto LeftPad(const std::string &content, const char pad,
+inline auto LeftPad(std::string_view content, const char pad,
                     const size_t length) -> std::string
 {
     if (content.size() >= length)
     {
-        return content;
+        return std::string(content);
     }
 
-    return std::string(length - content.size(), pad) + content;
+    std::string result;
+    result.reserve(length);
+    result.append(length - content.size(), pad);
+    result.append(content);
+
+    return result;
 }
 
-inline auto RightPad(const std::string &content, const char pad,
+inline auto RightPad(std::string_view content, const char pad,
                      const size_t length) -> std::string
 {
     if (content.size() >= length)
     {
-        return content;
+        return std::string(content);
     }
 
-    return content + std::string(length - content.size(), pad);
+    std::string result;
+    result.reserve(length);
+    result.append(content);
+    result.append(length - content.size(), pad);
+
+    return result;
 }
 
 inline auto Lerp(float a, float b, float t) -> float
