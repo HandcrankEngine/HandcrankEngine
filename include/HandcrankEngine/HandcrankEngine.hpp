@@ -273,8 +273,8 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetName() const -> std::string;
     inline void SetName(const std::string &name);
 
-    [[nodiscard]] inline auto GetTag() const -> std::string;
-    inline void SetTag(const std::string &tag);
+    [[nodiscard]] inline auto GetTag() const -> const std::string &;
+    inline void SetTag(std::string_view tag);
 
     [[nodiscard]] inline auto GetClassName() const -> std::string;
 
@@ -903,11 +903,13 @@ inline void RenderObject::SetName(const std::string &name)
     this->name = name;
 }
 
-inline auto RenderObject::GetTag() const -> std::string
+inline auto RenderObject::GetTag() const -> const std::string &
 {
-    return tag.empty() ? "untagged" : tag;
+    static const std::string untaggedStr = "untagged";
+
+    return tag.empty() ? untaggedStr : tag;
 }
-inline void RenderObject::SetTag(const std::string &tag) { this->tag = tag; }
+inline void RenderObject::SetTag(std::string_view tag) { this->tag = tag; }
 
 inline auto RenderObject::GetClassName() const -> std::string
 {
