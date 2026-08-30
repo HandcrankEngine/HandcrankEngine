@@ -271,7 +271,7 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetIndex() const -> int;
 
     [[nodiscard]] inline auto GetName() const -> std::string;
-    inline void SetName(const std::string &name);
+    inline void SetName(std::string_view name);
 
     [[nodiscard]] inline auto GetTag() const -> const std::string &;
     inline void SetTag(std::string_view tag);
@@ -898,10 +898,7 @@ inline auto RenderObject::GetName() const -> std::string
 {
     return name.empty() ? GetClassName() : name;
 }
-inline void RenderObject::SetName(const std::string &name)
-{
-    this->name = name;
-}
+inline void RenderObject::SetName(std::string_view name) { this->name = name; }
 
 inline auto RenderObject::GetTag() const -> const std::string &
 {
