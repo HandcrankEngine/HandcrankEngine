@@ -271,10 +271,10 @@ class RenderObject : public std::enable_shared_from_this<RenderObject>
     [[nodiscard]] inline auto GetIndex() const -> int;
 
     [[nodiscard]] inline auto GetName() const -> std::string;
-    inline void SetName(const std::string &name);
+    inline void SetName(std::string_view name);
 
-    [[nodiscard]] inline auto GetTag() const -> std::string;
-    inline void SetTag(const std::string &tag);
+    [[nodiscard]] inline auto GetTag() const -> const std::string &;
+    inline void SetTag(std::string_view tag);
 
     [[nodiscard]] inline auto GetClassName() const -> std::string;
 
@@ -898,16 +898,15 @@ inline auto RenderObject::GetName() const -> std::string
 {
     return name.empty() ? GetClassName() : name;
 }
-inline void RenderObject::SetName(const std::string &name)
-{
-    this->name = name;
-}
+inline void RenderObject::SetName(std::string_view name) { this->name = name; }
 
-inline auto RenderObject::GetTag() const -> std::string
+inline auto RenderObject::GetTag() const -> const std::string &
 {
-    return tag.empty() ? "untagged" : tag;
+    static const std::string untaggedStr = "untagged";
+
+    return tag.empty() ? untaggedStr : tag;
 }
-inline void RenderObject::SetTag(const std::string &tag) { this->tag = tag; }
+inline void RenderObject::SetTag(std::string_view tag) { this->tag = tag; }
 
 inline auto RenderObject::GetClassName() const -> std::string
 {

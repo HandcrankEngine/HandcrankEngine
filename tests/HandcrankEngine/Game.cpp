@@ -9,13 +9,13 @@ auto main(int argc, char *argv[]) -> int
 {
 
     {
-        auto *game = new Game();
+        auto game = std::make_unique<Game>();
 
         std::cout << ".";
     }
 
     {
-        auto *game = new Game();
+        auto game = std::make_unique<Game>();
 
         assert(game->GetChildCount() == 0);
 
@@ -29,7 +29,7 @@ auto main(int argc, char *argv[]) -> int
     }
 
     {
-        auto *game = new Game();
+        auto game = std::make_unique<Game>();
 
         auto renderObject = std::make_shared<RenderObject>();
 
